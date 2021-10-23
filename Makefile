@@ -16,6 +16,10 @@ ANSIBLEPKGS+=python-resolvelib-srpm
 ANSIBLEPKGS+=ansible-core-srpm
 
 ANSIBLEPKGS+=ansible-collections-openstack-srpm
+ANSIBLEPKGS+=ansible-collection-ansible-netcommon-srpm
+ANSIBLEPKGS+=ansible-collection-ansible-posix-srpm
+ANSIBLEPKGS+=ansible-collection-ansible-utils-srpm
+ANSIBLEPKGS+=ansible-collection-community-general-srpm
 
 ANSIBLEPKGS+=ansible-srpm
 

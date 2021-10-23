@@ -6,7 +6,7 @@
 LANG=C
 MOCKS+=ansiblerepo-7-x86_64
 MOCKS+=ansiblerepo-8-x86_64
-#MOCKS+=ansiblerepo-f34-x86_64
+MOCKS+=ansiblerepo-f34-x86_64
 #MOCKS+=ansiblerepo-amz2-x86_64
 
 MOCKCFGS+=$(MOCKS)
