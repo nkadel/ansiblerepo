@@ -12,6 +12,7 @@ Source:         https://github.com/containers/ansible-podman-collections/archive
 
 BuildRequires:  ansible-core >= 2.11.0
 # Manually added
+BuildRequires:  podman
 BuildRequires:  python%{python3_pkgversion}-jinja2
 BuildRequires:  python%{python3_pkgversion}-yaml
 
