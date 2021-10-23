@@ -1,0 +1,8 @@
+*.cfg
+*.out
+*.repo
+*[0-9]
+*\#*
+*~
+rpmbuild
+ansiblerepo

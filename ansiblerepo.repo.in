@@ -1,0 +1,13 @@
+[ansiblerepo]
+name=AWX repo - $basearch
+baseurl=file://@REPOBASEDIR@/ansiblerepo/@RELEASEDIR@/$releasever/$basearch
+enabled=0
+gpgcheck=0
+metadata_expire=1
+
+[ansiblerepo-source]
+name=AWX repo - Source
+baseurl=file://@REPOBASEDIR@/ansiblerepo/@RELEASEDIR@/$releasever/SRPMS/
+enabled=0
+gpgcheck=0
+metadata_expire=1

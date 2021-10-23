@@ -1,0 +1,7 @@
+%ansible_collection_url() https://galaxy.ansible.com/%{collection_namespace}/%{collection_name}
+
+%ansible_collection_build() ansible-galaxy collection build
+
+%ansible_collection_install() ansible-galaxy collection install -n -p %{buildroot}%{_datadir}/ansible/collections %{collection_namespace}-%{collection_name}-%{version}.tar.gz
+
+%ansible_collection_files %{_datadir}/ansible/collections/ansible_collections/%{collection_namespace}/
