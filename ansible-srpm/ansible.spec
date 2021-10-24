@@ -66,7 +66,6 @@ done
 rm -rf %{pypi_name}.egg-info
 
 %build
-#CFLAGS="$RPM_OPT_FLAGS" %{__python3} setup.py build
 %py3_build
 
 %if %{with docs}
@@ -225,3 +224,6 @@ rm -rf html/.{doctrees,buildinfo}
 %changelog
 * Sat Oct 23 2021 Nico Kadel-Garcia - 4.7.0-1
 - Initial package.
+- Split up excessively long %%doc and %%license lines
+- Add more BuildRequires
+- Add 'with docs' and 'with checks' to enable only after bugs resolved
