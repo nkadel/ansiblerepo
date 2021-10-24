@@ -15,11 +15,19 @@ ANSIBLEPKGS+=python-resolvelib-srpm
 
 ANSIBLEPKGS+=ansible-core-srpm
 
-ANSIBLEPKGS+=ansible-collections-openstack-srpm
 ANSIBLEPKGS+=ansible-collection-ansible-netcommon-srpm
 ANSIBLEPKGS+=ansible-collection-ansible-posix-srpm
 ANSIBLEPKGS+=ansible-collection-ansible-utils-srpm
+ANSIBLEPKGS+=ansible-collection-chocolatey-chocolatey-srpm
 ANSIBLEPKGS+=ansible-collection-community-general-srpm
+ANSIBLEPKGS+=ansible-collection-community-kubernetes-srpm
+ANSIBLEPKGS+=ansible-collection-community-mysql-srpm
+ANSIBLEPKGS+=ansible-collection-community-podman-srpm
+ANSIBLEPKGS+=ansible-collection-containers-podman-srpm
+ANSIBLEPKGS+=ansible-collection-google-cloud-srpm
+ANSIBLEPKGS+=ansible-collection-microsoft-sql-srpm
+ANSIBLEPKGS+=ansible-collection-netbox-netbox-srpm
+ANSIBLEPKGS+=ansible-collections-openstack-srpm
 
 ANSIBLEPKGS+=ansible-srpm
 
@@ -92,7 +100,6 @@ $(REPOS):
 $(REPODIRS): $(REPOS)
 	@install -d -m 755 `dirname $@`
 	/usr/bin/createrepo_c -q `dirname $@`
-
 
 .PHONY: cfg
 cfg:: cfgs
@@ -258,5 +265,4 @@ maintainer-clean: distclean
 	@for name in $(ANSIBLEPKGS); do \
 	    (cd $$name; git clean -x -d -f); \
 	done
-
 
