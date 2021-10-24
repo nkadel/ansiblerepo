@@ -30,7 +30,7 @@ BuildRequires:  python%{python3_pkgversion}-setuptools
 BuildRequires:  python%{python3_pkgversion}-sphinx
 # manually added
 BuildRequires:  python%{python3_pkgversion}-cryptography
-BuildRequires:  python%{python3_pkgversion}-sphinx_rtd_theme
+BuildRequires:  python%{python3_pkgversion}-resolvelib
 BuildRequires:  python%{python3_pkgversion}-sphinx_rtd_theme
 
 %description
@@ -214,150 +214,13 @@ rm -rf html/.{doctrees,buildinfo}
 %doc html
 %endif
 
-#%%license ansible_collections/ansible/netcommon/LICENSE
-#%%license ansible_collections/ansible/utils/LICENSE
-#%%license ansible_collections/arista/eos/LICENSE
-#%%license ansible_collections/awx/awx/plugins/modules/license.py
-#%%license ansible_collections/awx/awx/plugins/modules/tower_license.py
-#%%license ansible_collections/azure/azcollection/LICENSE
-#%%license ansible_collections/chocolatey/chocolatey/LICENSE
-#%%license ansible_collections/cisco/aci/LICENSE
-#%%license ansible_collections/cisco/asa/LICENSE
-#%%license ansible_collections/cisco/intersight/LICENSE.txt
-#%%license ansible_collections/cisco/ios/LICENSE
-#%%license ansible_collections/cisco/iosxr/LICENSE
-#%%license ansible_collections/cisco/mso/LICENSE
-#%%license ansible_collections/cisco/nso/LICENSE
-#%%license ansible_collections/cisco/nxos/LICENSE
-#%%license ansible_collections/cisco/ucs/LICENSE.txt
-#%%license ansible_collections/community/fortios/LICENSE
-#%%license ansible_collections/community/google/LICENSE
-#%%license ansible_collections/community/grafana/LICENSE
-#%%license ansible_collections/community/hashi_vault/LICENSE
-#%%license ansible_collections/community/kubernetes/LICENSE
-#%%license ansible_collections/community/kubevirt/LICENSE
-#%%license ansible_collections/community/libvirt/LICENSE
-#%%license ansible_collections/community/okd/LICENSE
-#%%license ansible_collections/community/proxysql/LICENSE
-#%%license ansible_collections/community/skydive/LICENSE
-#%%license ansible_collections/community/vmware/LICENSE
-#%%license ansible_collections/community/vmware/docs/community.vmware.vcenter_license_module.rst
-#%%license ansible_collections/community/vmware/plugins/modules/vcenter_license.py
-#%%license ansible_collections/community/zabbix/LICENSE
-#%%license ansible_collections/cyberark/conjur/LICENSE
-#%%license ansible_collections/cyberark/pas/LICENSE
-#%%license ansible_collections/dellemc/enterprise_sonic/LICENSE
-#%%license ansible_collections/dellemc/os10/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_aaa/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_acl/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_bfd/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_bgp/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_copy_config/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_dns/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_ecmp/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_fabric_summary/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_flow_monitor/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_image_upgrade/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_interface/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_lag/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_lldp/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_logging/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_network_validation/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_ntp/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_prefix_list/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_qos/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_raguard/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_route_map/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_snmp/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_system/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_template/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_uplink/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_users/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_vlan/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_vlt/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_vrf/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_vrrp/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_vxlan/LICENSE
-#%%license ansible_collections/dellemc/os10/roles/os10_xstp/LICENSE
-#%%license ansible_collections/dellemc/os6/LICENSE
-#%%license ansible_collections/dellemc/os6/roles/os6_aaa/LICENSE
-#%%license ansible_collections/dellemc/os6/roles/os6_acl/LICENSE
-#%%license ansible_collections/dellemc/os6/roles/os6_bgp/LICENSE
-#%%license ansible_collections/dellemc/os6/roles/os6_interface/LICENSE
-#%%license ansible_collections/dellemc/os6/roles/os6_lag/LICENSE
-#%%license ansible_collections/dellemc/os6/roles/os6_lldp/LICENSE
-#%%license ansible_collections/dellemc/os6/roles/os6_logging/LICENSE
-#%%license ansible_collections/dellemc/os6/roles/os6_ntp/LICENSE
-#%%license ansible_collections/dellemc/os6/roles/os6_qos/LICENSE
-#%%license ansible_collections/dellemc/os6/roles/os6_snmp/LICENSE
-#%%license ansible_collections/dellemc/os6/roles/os6_system/LICENSE
-#%%license ansible_collections/dellemc/os6/roles/os6_users/LICENSE
-#%%license ansible_collections/dellemc/os6/roles/os6_vlan/LICENSE
-#%%license ansible_collections/dellemc/os6/roles/os6_vrrp/LICENSE
-#%%license ansible_collections/dellemc/os6/roles/os6_xstp/LICENSE
-#%%license ansible_collections/dellemc/os9/LICENSE
-#%%license ansible_collections/dellemc/os9/roles/os9_aaa/LICENSE
-#%%license ansible_collections/dellemc/os9/roles/os9_acl/LICENSE
-#%%license ansible_collections/dellemc/os9/roles/os9_bgp/LICENSE
-#%%license ansible_collections/dellemc/os9/roles/os9_copy_config/LICENSE
-#%%license ansible_collections/dellemc/os9/roles/os9_dcb/LICENSE
-#%%license ansible_collections/dellemc/os9/roles/os9_dns/LICENSE
-#%%license ansible_collections/dellemc/os9/roles/os9_ecmp/LICENSE
-#%%license ansible_collections/dellemc/os9/roles/os9_interface/LICENSE
-#%%license ansible_collections/dellemc/os9/roles/os9_lag/LICENSE
-#%%license ansible_collections/dellemc/os9/roles/os9_lldp/LICENSE
-#%%license ansible_collections/dellemc/os9/roles/os9_logging/LICENSE
-#%%license ansible_collections/dellemc/os9/roles/os9_ntp/LICENSE
-#%%license ansible_collections/dellemc/os9/roles/os9_prefix_list/LICENSE
-#%%license ansible_collections/dellemc/os9/roles/os9_sflow/LICENSE
-#%%license ansible_collections/dellemc/os9/roles/os9_snmp/LICENSE
-#%%license ansible_collections/dellemc/os9/roles/os9_system/LICENSE
-#%%license ansible_collections/dellemc/os9/roles/os9_users/LICENSE
-#%%license ansible_collections/dellemc/os9/roles/os9_vlan/LICENSE
-#%%license ansible_collections/dellemc/os9/roles/os9_vlt/LICENSE
-#%%license ansible_collections/dellemc/os9/roles/os9_vrf/LICENSE
-#%%license ansible_collections/dellemc/os9/roles/os9_vrrp/LICENSE
-#%%license ansible_collections/dellemc/os9/roles/os9_xstp/LICENSE
-#%%license ansible_collections/f5networks/f5_modules/plugins/lookup/bigiq_license.py
-#%%license ansible_collections/f5networks/f5_modules/plugins/lookup/license_hopper.py
-#%%license ansible_collections/f5networks/f5_modules/plugins/modules/bigip_device_license.py
-#%%license ansible_collections/f5networks/f5_modules/plugins/modules/bigiq_regkey_license.py
-#%%license ansible_collections/f5networks/f5_modules/plugins/modules/bigiq_regkey_license_assignment.py
-#%%license ansible_collections/f5networks/f5_modules/plugins/modules/bigiq_utility_license.py
-#%%license ansible_collections/f5networks/f5_modules/plugins/modules/bigiq_utility_license_assignment.py
-#%%license ansible_collections/f5networks/f5_modules/tests/unit/modules/network/f5/fixtures/load_license_pool.json
-#%%license ansible_collections/f5networks/f5_modules/tests/unit/modules/network/f5/fixtures/load_license_pool_members.json
-#%%license ansible_collections/f5networks/f5_modules/tests/unit/modules/network/f5/fixtures/load_regkey_license_key.json
-#%%license ansible_collections/f5networks/f5_modules/tests/unit/modules/network/f5/fixtures/load_regkey_license_pool.json
-#%%license ansible_collections/f5networks/f5_modules/tests/unit/modules/network/f5/test_bigip_device_license.py
-#%%license ansible_collections/f5networks/f5_modules/tests/unit/modules/network/f5/test_bigiq_regkey_license.py
-#%%license ansible_collections/f5networks/f5_modules/tests/unit/modules/network/f5/test_bigiq_regkey_license_assignment.py
-#%%license ansible_collections/f5networks/f5_modules/tests/unit/modules/network/f5/test_bigiq_utility_license.py
-#%%license ansible_collections/f5networks/f5_modules/tests/unit/modules/network/f5/test_bigiq_utility_license_assignment.py
-#%%license ansible_collections/frr/frr/LICENSE
-#%%license ansible_collections/gluster/gluster/LICENSE
-#%%license ansible_collections/google/cloud/LICENSE
-#%%license ansible_collections/google/cloud/roles/gcloud/LICENSE
-#%%license ansible_collections/ibm/qradar/LICENSE
-#%%license ansible_collections/infinidat/infinibox/LICENSE
-#%%license ansible_collections/inspur/sm/LICENSE
-#%%license ansible_collections/junipernetworks/junos/LICENSE
-#%%license ansible_collections/kubernetes/core/LICENSE
-#%%license ansible_collections/mellanox/onyx/LICENSE
-#%%license ansible_collections/netapp/ontap/plugins/modules/na_ontap_license.py
-#%%license ansible_collections/netapp/ontap/roles/na_ontap_cluster_config/LICENSE
-#%%license ansible_collections/netapp/ontap/roles/na_ontap_nas_create/LICENSE
-#%%license ansible_collections/netapp/ontap/roles/na_ontap_san_create/LICENSE
-#%%license ansible_collections/netapp/ontap/roles/na_ontap_vserver_create/LICENSE
-#%%license ansible_collections/netbox/netbox/LICENSE
-#%%license ansible_collections/openvswitch/openvswitch/LICENSE
-#%%license ansible_collections/ovirt/ovirt/licenses/Apache-license.txt
-#%%license ansible_collections/ovirt/ovirt/licenses/GPL-license.txt
-#%%license ansible_collections/splunk/es/LICENSE
-#%%license ansible_collections/t_systems_mms/icinga_director/LICENSE
-#%%license ansible_collections/theforeman/foreman/LICENSE
-#%%license ansible_collections/vyos/vyos/LICENSE
-#%%license ansible_collections/dellemc/openmanage/COPYING.md
+%license ansible_collections/ansible/netcommon/LICENSE ansible_collections/ansible/utils/LICENSE ansible_collections/arista/eos/LICENSE ansible_collections/awx/awx/plugins/modules/license.py ansible_collections/awx/awx/plugins/modules/tower_license.py ansible_collections/azure/azcollection/LICENSE ansible_collections/chocolatey/chocolatey/LICENSE
+%license ansible_collections/cisco/aci/LICENSE ansible_collections/cisco/asa/LICENSE ansible_collections/cisco/intersight/LICENSE.txt ansible_collections/cisco/ios/LICENSE ansible_collections/cisco/iosxr/LICENSE ansible_collections/cisco/mso/LICENSE ansible_collections/cisco/nso/LICENSE ansible_collections/cisco/nxos/LICENSE ansible_collections/cisco/ucs/LICENSE.txt
+%license ansible_collections/community/fortios/LICENSE ansible_collections/community/google/LICENSE ansible_collections/community/grafana/LICENSE ansible_collections/community/hashi_vault/LICENSE ansible_collections/community/kubernetes/LICENSE ansible_collections/community/kubevirt/LICENSE ansible_collections/community/libvirt/LICENSE ansible_collections/community/okd/LICENSE ansible_collections/community/proxysql/LICENSE ansible_collections/community/skydive/LICENSE ansible_collections/community/vmware/LICENSE ansible_collections/community/vmware/docs/community.vmware.vcenter_license_module.rst ansible_collections/community/vmware/plugins/modules/vcenter_license.py ansible_collections/community/zabbix/LICENSE
+%license ansible_collections/cyberark/conjur/LICENSE ansible_collections/cyberark/pas/LICENSE ansible_collections/dellemc/enterprise_sonic/LICENSE ansible_collections/dellemc/os10/LICENSE ansible_collections/dellemc/os10/roles/os10_aaa/LICENSE ansible_collections/dellemc/os10/roles/os10_acl/LICENSE ansible_collections/dellemc/os10/roles/os10_bfd/LICENSE ansible_collections/dellemc/os10/roles/os10_bgp/LICENSE ansible_collections/dellemc/os10/roles/os10_copy_config/LICENSE ansible_collections/dellemc/os10/roles/os10_dns/LICENSE ansible_collections/dellemc/os10/roles/os10_ecmp/LICENSE ansible_collections/dellemc/os10/roles/os10_fabric_summary/LICENSE ansible_collections/dellemc/os10/roles/os10_flow_monitor/LICENSE ansible_collections/dellemc/os10/roles/os10_image_upgrade/LICENSE ansible_collections/dellemc/os10/roles/os10_interface/LICENSE ansible_collections/dellemc/os10/roles/os10_lag/LICENSE ansible_collections/dellemc/os10/roles/os10_lldp/LICENSE ansible_collections/dellemc/os10/roles/os10_logging/LICENSE ansible_collections/dellemc/os10/roles/os10_network_validation/LICENSE ansible_collections/dellemc/os10/roles/os10_ntp/LICENSE ansible_collections/dellemc/os10/roles/os10_prefix_list/LICENSE ansible_collections/dellemc/os10/roles/os10_qos/LICENSE ansible_collections/dellemc/os10/roles/os10_raguard/LICENSE ansible_collections/dellemc/os10/roles/os10_route_map/LICENSE ansible_collections/dellemc/os10/roles/os10_snmp/LICENSE ansible_collections/dellemc/os10/roles/os10_system/LICENSE ansible_collections/dellemc/os10/roles/os10_template/LICENSE ansible_collections/dellemc/os10/roles/os10_uplink/LICENSE ansible_collections/dellemc/os10/roles/os10_users/LICENSE ansible_collections/dellemc/os10/roles/os10_vlan/LICENSE ansible_collections/dellemc/os10/roles/os10_vlt/LICENSE ansible_collections/dellemc/os10/roles/os10_vrf/LICENSE ansible_collections/dellemc/os10/roles/os10_vrrp/LICENSE ansible_collections/dellemc/os10/roles/os10_vxlan/LICENSE ansible_collections/dellemc/os10/roles/os10_xstp/LICENSE ansible_collections/dellemc/os6/LICENSE ansible_collections/dellemc/os6/roles/os6_aaa/LICENSE ansible_collections/dellemc/os6/roles/os6_acl/LICENSE ansible_collections/dellemc/os6/roles/os6_bgp/LICENSE ansible_collections/dellemc/os6/roles/os6_interface/LICENSE ansible_collections/dellemc/os6/roles/os6_lag/LICENSE ansible_collections/dellemc/os6/roles/os6_lldp/LICENSE ansible_collections/dellemc/os6/roles/os6_logging/LICENSE ansible_collections/dellemc/os6/roles/os6_ntp/LICENSE ansible_collections/dellemc/os6/roles/os6_qos/LICENSE ansible_collections/dellemc/os6/roles/os6_snmp/LICENSE ansible_collections/dellemc/os6/roles/os6_system/LICENSE ansible_collections/dellemc/os6/roles/os6_users/LICENSE ansible_collections/dellemc/os6/roles/os6_vlan/LICENSE ansible_collections/dellemc/os6/roles/os6_vrrp/LICENSE ansible_collections/dellemc/os6/roles/os6_xstp/LICENSE ansible_collections/dellemc/os9/LICENSE ansible_collections/dellemc/os9/roles/os9_aaa/LICENSE ansible_collections/dellemc/os9/roles/os9_acl/LICENSE ansible_collections/dellemc/os9/roles/os9_bgp/LICENSE ansible_collections/dellemc/os9/roles/os9_copy_config/LICENSE ansible_collections/dellemc/os9/roles/os9_dcb/LICENSE ansible_collections/dellemc/os9/roles/os9_dns/LICENSE ansible_collections/dellemc/os9/roles/os9_ecmp/LICENSE ansible_collections/dellemc/os9/roles/os9_interface/LICENSE ansible_collections/dellemc/os9/roles/os9_lag/LICENSE ansible_collections/dellemc/os9/roles/os9_lldp/LICENSE ansible_collections/dellemc/os9/roles/os9_logging/LICENSE ansible_collections/dellemc/os9/roles/os9_ntp/LICENSE ansible_collections/dellemc/os9/roles/os9_prefix_list/LICENSE ansible_collections/dellemc/os9/roles/os9_sflow/LICENSE ansible_collections/dellemc/os9/roles/os9_snmp/LICENSE ansible_collections/dellemc/os9/roles/os9_system/LICENSE ansible_collections/dellemc/os9/roles/os9_users/LICENSE ansible_collections/dellemc/os9/roles/os9_vlan/LICENSE ansible_collections/dellemc/os9/roles/os9_vlt/LICENSE ansible_collections/dellemc/os9/roles/os9_vrf/LICENSE ansible_collections/dellemc/os9/roles/os9_vrrp/LICENSE ansible_collections/dellemc/os9/roles/os9_xstp/LICENSE ansible_collections/f5networks/f5_modules/plugins/lookup/bigiq_license.py
+%license ansible_collections/f5networks/f5_modules/plugins/lookup/license_hopper.py ansible_collections/f5networks/f5_modules/plugins/modules/bigip_device_license.py ansible_collections/f5networks/f5_modules/plugins/modules/bigiq_regkey_license.py ansible_collections/f5networks/f5_modules/plugins/modules/bigiq_regkey_license_assignment.py ansible_collections/f5networks/f5_modules/plugins/modules/bigiq_utility_license.py ansible_collections/f5networks/f5_modules/plugins/modules/bigiq_utility_license_assignment.py ansible_collections/f5networks/f5_modules/tests/unit/modules/network/f5/fixtures/load_license_pool.json ansible_collections/f5networks/f5_modules/tests/unit/modules/network/f5/fixtures/load_license_pool_members.json ansible_collections/f5networks/f5_modules/tests/unit/modules/network/f5/fixtures/load_regkey_license_key.json ansible_collections/f5networks/f5_modules/tests/unit/modules/network/f5/fixtures/load_regkey_license_pool.json ansible_collections/f5networks/f5_modules/tests/unit/modules/network/f5/test_bigip_device_license.py ansible_collections/f5networks/f5_modules/tests/unit/modules/network/f5/test_bigiq_regkey_license.py ansible_collections/f5networks/f5_modules/tests/unit/modules/network/f5/test_bigiq_regkey_license_assignment.py ansible_collections/f5networks/f5_modules/tests/unit/modules/network/f5/test_bigiq_utility_license.py ansible_collections/f5networks/f5_modules/tests/unit/modules/network/f5/test_bigiq_utility_license_assignment.py
+%license ansible_collections/frr/frr/LICENSE ansible_collections/gluster/gluster/LICENSE ansible_collections/google/cloud/LICENSE ansible_collections/google/cloud/roles/gcloud/LICENSE ansible_collections/ibm/qradar/LICENSE ansible_collections/infinidat/infinibox/LICENSE ansible_collections/inspur/sm/LICENSE ansible_collections/junipernetworks/junos/LICENSE ansible_collections/kubernetes/core/LICENSE ansible_collections/mellanox/onyx/LICENSE
+%license ansible_collections/netapp/ontap/plugins/modules/na_ontap_license.py ansible_collections/netapp/ontap/roles/na_ontap_cluster_config/LICENSE ansible_collections/netapp/ontap/roles/na_ontap_nas_create/LICENSE ansible_collections/netapp/ontap/roles/na_ontap_san_create/LICENSE ansible_collections/netapp/ontap/roles/na_ontap_vserver_create/LICENSE ansible_collections/netbox/netbox/LICENSE ansible_collections/openvswitch/openvswitch/LICENSE ansible_collections/ovirt/ovirt/licenses/Apache-license.txt ansible_collections/ovirt/ovirt/licenses/GPL-license.txt ansible_collections/splunk/es/LICENSE ansible_collections/t_systems_mms/icinga_director/LICENSE ansible_collections/theforeman/foreman/LICENSE ansible_collections/vyos/vyos/LICENSE ansible_collections/dellemc/openmanage/COPYING.md
 
 %changelog
 * Sat Oct 23 2021 Nico Kadel-Garcia - 4.7.0-1
