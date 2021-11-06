@@ -2,8 +2,8 @@
 %global collection_name podman
 
 Name:           ansible-collection-%{collection_namespace}-%{collection_name}
-Version:        1.6.1
-Release:        0.3%{?dist}
+Version:        1.8.1
+Release:        0%{?dist}
 Summary:        Podman Ansible collection for Podman containers
 
 License:        GPLv3+
@@ -39,6 +39,9 @@ rm -vr changelogs/ ci/ contrib/ tests/ ./galaxy.yml.in .github/ .gitignore
 %{ansible_collection_files}
 
 %changelog
+* Sat Nov 6 2021 Nico Kadel-Garcia <nkadel@gmail.com> - 1.8.1
+- Update to 1.8.1
+
 * Thu Oct 14 2021 Sagi Shnaidman <sshnaidm@redhat.com> - 1.6.1-3
 - Use ansible or ansible-core as BuildRequires
 
