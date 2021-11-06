@@ -2,8 +2,8 @@
 %global collection_name chocolatey
 
 Name:           ansible-collection-%{collection_namespace}-%{collection_name}
-Version:        1.0.2
-Release:        0.2%{?dist}
+Version:        1.1.0
+Release:        0%{?dist}
 Summary:        Ansible collection for Chocolatey
 
 License:        GPLv3+
@@ -43,6 +43,9 @@ rm -vr %{buildroot}%{ansible_collection_files}/%{collection_name}/tests
 %{ansible_collection_files}
 
 %changelog
+* Sat Nov 6 2021 Nico Kadel-Garcia <nkadel@gmail.com> - 1.1.0-0
+- Update to 1.1.0
+
 * Wed Jul 21 2021 Fedora Release Engineering <releng@fedoraproject.org> - 1.0.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
 
