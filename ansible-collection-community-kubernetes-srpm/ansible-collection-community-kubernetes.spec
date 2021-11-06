@@ -2,8 +2,8 @@
 %global collection_name kubernetes
 
 Name:           ansible-collection-%{collection_namespace}-%{collection_name}
-Version:        1.1.1
-Release:        0.5%{?dist}
+Version:        2.0.0
+Release:        0%{?dist}
 Summary:        Kubernetes Collection for Ansible
 
 License:        GPLv3+
@@ -11,6 +11,8 @@ URL:            %{ansible_collection_url}
 Source:         https://github.com/ansible-collections/community.kubernetes/archive/%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires:  ansible-core
+BuildRequires:  python%{python3_pkgversion}-jinja2
+BuildRequires:  python%{python3_pkgversion}-yaml
 
 BuildArch:      noarch
 
