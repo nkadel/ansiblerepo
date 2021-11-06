@@ -27,7 +27,7 @@ def main():
                     f"ansible-collection({info['namespace']}.{info['name']}) = {info['version']}"
                 )
             if args.action == "requires":
-                print("(ansible >= 2.9.0 or ansible-base > 2.10.0)")
+                print("(ansible-core > 2.10.0)")
                 for dep, req in info.get("dependencies", {}).items():
                     print(f"ansible-collection({dep})", end="")
                     if req == "*":

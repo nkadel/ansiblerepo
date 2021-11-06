@@ -15,7 +15,7 @@
 Name: ansible-core
 Summary: A radically simple IT automation system
 Version: 2.11.6
-Release: 0.1%{?betaver}%{?dist}
+Release: 0.2%{?betaver}%{?dist}
 
 License: GPLv3+
 Source0: %pypi_source ansible-core %{version}%{?betaver}
@@ -257,6 +257,9 @@ make PYTHON=%{__python3} tests-py3
 %endif
 
 %changelog
+* Sat Nov 6 2021 Nico Kadel-Garcia <nkadel@gmail.com> - 2.11.6
+- Update ansible-generate to demand ansible-core, not ansible-base
+
 * Thu Oct 14 2021 Maxwell G <gotmax@e.email> - 2.11.6-1
 - Update to 2.11.6.
 
