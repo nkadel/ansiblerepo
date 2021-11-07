@@ -2,8 +2,8 @@
 %global collection_name general
 
 Name:           ansible-collection-%{collection_namespace}-%{collection_name}
-Version:        3.8.0
-Release:        1%{?dist}
+Version:        4.0.0
+Release:        0%{?dist}
 Summary:        Modules and plugins supported by Ansible community
 
 # plugins/module_utils/_mount.py: Python Software Foundation License version 2
@@ -15,11 +15,11 @@ URL:            %{ansible_collection_url}
 Source:         https://github.com/ansible-collections/community.general/archive/%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires:  ansible-core >= 2.11.0
-# Manually added
-BuildRequires:  python%{python3_pkgversion}-jinja2
-BuildRequires:  python%{python3_pkgversion}-yaml
 
 BuildArch:      noarch
+# Manually added for RHEL
+BuildRequires:  python%{python3_pkgversion}-jinja2
+BuildRequires:  python%{python3_pkgversion}-yaml
 
 %description
 %{summary}.
@@ -29,7 +29,6 @@ BuildArch:      noarch
 rm -vr .github .azure-pipelines
 find -type f ! -executable -name '*.py' -print -exec sed -i -e '1{\@^#!.*@d}' '{}' +
 find -type f -name '.gitignore' -print -delete
-sed -i -e 's|env python$|env python3|' scripts/inventory/*.py scripts/vault/*.py
 
 %build
 %ansible_collection_build
@@ -44,6 +43,9 @@ rm -vr %{buildroot}%{ansible_collection_files}/%{collection_name}/tests
 %{ansible_collection_files}
 
 %changelog
+* Wed Nov 03 2021 Sagi Shnaidman (@sshnaidm) <sshnaidm@redhat.com> - 4.0.0-1
+- Update to 4.0.0
+
 * Tue Oct 12 2021 Maxwell G (@gotmax23) <gotmax@e.email - 3.8.0-1
 - Update to 3.8.0. Fixes rhbz#2013282
 
