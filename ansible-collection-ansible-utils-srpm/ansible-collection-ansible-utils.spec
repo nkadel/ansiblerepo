@@ -2,8 +2,8 @@
 %global collection_name utils
 
 Name:           ansible-collection-%{collection_namespace}-%{collection_name}
-Version:        2.3.0
-Release:        0.3%{?dist}
+Version:        2.4.2
+Release:        0%{?dist}
 Summary:        Ansible Network Collection for Common Code
 
 License:        GPLv3+
@@ -39,6 +39,9 @@ find -type f -name '.gitignore' -print -delete
 %{ansible_collection_files}
 
 %changelog
+* Sat Nov 6 2021 Nico Kadel-Garcia <nkadel@gmail.com> - 2.4.2
+- Update to 2.4.2
+
 * Thu Oct 14 2021 Sagi Shnaidman <sshnaidm@redhat.com> - 2.3.0-3
 - Use ansible or ansible-core as BuildRequires
 
