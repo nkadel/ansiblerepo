@@ -14,7 +14,7 @@
 #
 %bcond_with checks
 
-Name:           python-%{pypi_name}
+Name:           %{pypi_name}
 Version:        %{pypi_version}
 Release:        0.1%{?dist}
 Summary:        Radically simple IT automation
