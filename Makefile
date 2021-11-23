@@ -22,7 +22,6 @@ ANSIBLEPKGS+=ansible-collection-chocolatey-chocolatey-srpm
 ANSIBLEPKGS+=ansible-collection-community-general-srpm
 ANSIBLEPKGS+=ansible-collection-community-kubernetes-srpm
 ANSIBLEPKGS+=ansible-collection-community-mysql-srpm
-ANSIBLEPKGS+=ansible-collection-community-podman-srpm
 ANSIBLEPKGS+=ansible-collection-containers-podman-srpm
 ANSIBLEPKGS+=ansible-collection-google-cloud-srpm
 ANSIBLEPKGS+=ansible-collection-microsoft-sql-srpm
