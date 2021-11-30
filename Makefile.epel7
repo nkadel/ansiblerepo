@@ -5,7 +5,6 @@
 # Assure that sorting is case sensitive
 LANG=C
 
-# Requires compat-nettle32
 MOCKS+=epel-7-x86_64
 #MOCKS+=epel-8-x86_64
 
