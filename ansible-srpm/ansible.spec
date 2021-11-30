@@ -1,6 +1,6 @@
 # Created by pyp2rpm-3.3.7
 %global pypi_name ansible
-%global pypi_version 4.8.0
+%global pypi_version 4.9.0
 
 #
 # If we should enable docs building
@@ -22,8 +22,10 @@ Summary:        Radically simple IT automation
 License:        GPLv3+
 URL:            https://ansible.com/
 Source0:        https://files.pythonhosted.org/packages/source/a/%{pypi_name}/%{pypi_name}-%{pypi_version}.tar.gz
+# Manually set,
+BuildArch:	noarch
 
-BuildRequires:  ansible-core < 2.12
+BuildRequires:  ansible-core < 2.13
 BuildRequires:  ansible-core >= 2.11.6
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
@@ -41,7 +43,7 @@ cloud provisioning, ad-hoc task execution, network automation, and multi-node
 orchestration. Ansible makes complex changes like zero-downtime rolling updates
 with load...
 
-Requires:       ansible-core < 2.12
+Requires:       ansible-core < 2.13
 Requires:       ansible-core >= 2.11.6
 
 %package -n %{pypi_name}-doc
@@ -51,6 +53,12 @@ Documentation for ansible
 
 %prep
 %autosetup -n %{pypi_name}-%{pypi_version}
+# Remove bundled egg-info
+rm -rf %{pypi_name}.egg-info
+
+find . -name '*.swp' \
+     -exec echo "Flushing: {}" \; \
+     -exec rm -f "{}" \;
 
 grep -rl '#!/usr/bin/env python$' . | grep '\.py$' | while read name; do
     echo Fixing bare '#!/usr/bin/env python' in: $name
@@ -62,8 +70,6 @@ grep -rl '#!/usr/bin/python$' . | grep '\.py$' | while read name; do
     sed -i "s|#!/usr/bin/python$|#!/usr/bin/python3|g" "$name"
 done
 
-# Remove bundled egg-info
-rm -rf %{pypi_name}.egg-info
 
 %build
 %py3_build
@@ -85,6 +91,8 @@ rm -rf html/.{doctrees,buildinfo}
 
 %files
 %doc README.rst
+# RHEL 8 does not handle multiple README.md correctly
+%if (0%{?fedora} && 0%{?rhel} != 8)
 %doc ansible_collections/amazon/aws/README.md
 %doc ansible_collections/ansible/netcommon/README.md
 %doc ansible_collections/ansible/posix/.azure-pipelines/README.md
@@ -395,6 +403,8 @@ rm -rf html/.{doctrees,buildinfo}
 %doc ansible_collections/theforeman/foreman/roles/sync_plans/README.md
 %doc ansible_collections/vyos/vyos/README.md
 %doc ansible_collections/wti/remote/README.md
+%endif
+
 %{python3_sitelib}/ansible_collections
 %{python3_sitelib}/%{pypi_name}-%{pypi_version}-py%{python3_version}.egg-info
 
@@ -402,6 +412,8 @@ rm -rf html/.{doctrees,buildinfo}
 %if %{with docs}
 %doc html
 %endif
+# Yes, this is screwball: RHEL 8 does not handle multiple licenses correctly
+%if (0%{?fedora} && 0%{?rhel} != 8)
 %license ansible_collections/ansible/netcommon/LICENSE 
 %license ansible_collections/ansible/utils/LICENSE 
 %license ansible_collections/arista/eos/LICENSE 
@@ -435,6 +447,7 @@ rm -rf html/.{doctrees,buildinfo}
 %license ansible_collections/cyberark/conjur/LICENSE 
 %license ansible_collections/cyberark/pas/LICENSE 
 %license ansible_collections/dellemc/enterprise_sonic/LICENSE 
+%license ansible_collections/dellemc/openmanage/COPYING.md
 %license ansible_collections/dellemc/os10/LICENSE 
 %license ansible_collections/dellemc/os10/roles/os10_aaa/LICENSE 
 %license ansible_collections/dellemc/os10/roles/os10_acl/LICENSE 
@@ -545,7 +558,7 @@ rm -rf html/.{doctrees,buildinfo}
 %license ansible_collections/t_systems_mms/icinga_director/LICENSE 
 %license ansible_collections/theforeman/foreman/LICENSE 
 %license ansible_collections/vyos/vyos/LICENSE 
-%license ansible_collections/dellemc/openmanage/COPYING.md
+%endif
 
 %changelog
 * Sat Nov 6 2021 Nico Kadel-Garcia - 4.8.0
