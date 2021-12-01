@@ -24,7 +24,8 @@ ANSIBLEPKGS+=ansible-collection-community-kubernetes-srpm
 ANSIBLEPKGS+=ansible-collection-community-mysql-srpm
 ANSIBLEPKGS+=ansible-collection-containers-podman-srpm
 ANSIBLEPKGS+=ansible-collection-google-cloud-srpm
-ANSIBLEPKGS+=ansible-collection-microsoft-sql-srpm
+# Requires ruamel, not yet portable to olde rOS
+#ANSIBLEPKGS+=ansible-collection-microsoft-sql-srpm
 ANSIBLEPKGS+=ansible-collection-netbox-netbox-srpm
 ANSIBLEPKGS+=ansible-collections-openstack-srpm
 

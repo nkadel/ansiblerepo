@@ -4,9 +4,9 @@
 
 # Assure that sorting is case sensitive
 LANG=C
-MOCKS+=ansiblerepo-f35-x86_64
+#MOCKS+=ansiblerepo-7-x86_64
 MOCKS+=ansiblerepo-8-x86_64
-MOCKS+=ansiblerepo-7-x86_64
+MOCKS+=ansiblerepo-f35-x86_64
 #MOCKS+=ansiblerepo-amz2-x86_64
 
 MOCKCFGS+=$(MOCKS)
