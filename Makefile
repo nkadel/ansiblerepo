@@ -30,7 +30,8 @@ ANSIBLEPKGS+=ansible-collection-google-cloud-srpm
 ANSIBLEPKGS+=ansible-collection-netbox-netbox-srpm
 ANSIBLEPKGS+=ansible-collections-openstack-srpm
 
-ANSIBLEPKGS+=ansible-srpm
+ANSIBLEPKGS+=ansible-4.x-srpm
+ANSIBLEPKGS+=ansible-5.x-srpm
 
 REPOS+=ansiblerepo/el/7
 REPOS+=ansiblerepo/el/8
@@ -86,8 +87,8 @@ python-resolvelib-srpm:: python-commentjson-srpm
 
 ansible-core-2.11.x-srpm:: python-resolvelib-srpm
 ansible-core-2.12.x-srpm:: python-resolvelib-srpm
-ansible-srpm:: ansible-core-2.11.x-srpm
-ansible-srpm:: ansible-core-2.12.x-srpm
+ansible-4.x-srpm:: ansible-core-2.11.x-srpm
+ansible-5.x-srpm:: ansible-core-2.12.x-srpm
 
 # Actually build in directories
 .PHONY: $(ANSIBLEPKGS)
