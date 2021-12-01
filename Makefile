@@ -13,7 +13,8 @@ ANSIBLEPKGS+=pyflakes-srpm
 ANSIBLEPKGS+=python-flake8-srpm
 ANSIBLEPKGS+=python-resolvelib-srpm
 
-ANSIBLEPKGS+=ansible-core-srpm
+ANSIBLEPKGS+=ansible-core-2.11.x-srpm
+ANSIBLEPKGS+=ansible-core-2.12.x-srpm
 
 ANSIBLEPKGS+=ansible-collection-ansible-netcommon-srpm
 ANSIBLEPKGS+=ansible-collection-ansible-posix-srpm
@@ -83,8 +84,10 @@ python-flake8-srpm:: pyflakes-srpm
 python-resolvelib-srpm:: python-flake8-srpm
 python-resolvelib-srpm:: python-commentjson-srpm
 
-ansible-core-srpm:: python-resolvelib-srpm
-ansible-srpm:: ansible-core-srpm
+ansible-core-2.11.x-srpm:: python-resolvelib-srpm
+ansible-core-2.12.x-srpm:: python-resolvelib-srpm
+ansible-srpm:: ansible-core-2.11.x-srpm
+ansible-srpm:: ansible-core-2.12.x-srpm
 
 # Actually build in directories
 .PHONY: $(ANSIBLEPKGS)
