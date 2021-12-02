@@ -77,7 +77,6 @@ grep -rl '#!/usr/bin/python$' . | grep '\.py$' | while read name; do
     sed -i "s|#!/usr/bin/python$|#!/usr/bin/python3|g" "$name"
 done
 
-
 %build
 %py3_build
 

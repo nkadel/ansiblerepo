@@ -55,16 +55,6 @@ Documentation for ansible
 %prep
 %autosetup -n %{pypi_name}-%{pypi_version}
 
-grep -rl '#!/usr/bin/env python$' . | grep '\.py$' | while read name; do
-    echo Fixing bare '#!/usr/bin/env python' in: $name
-    sed -i "s|#!/usr/bin/env python$|#!/usr/bin/env python3|g" "$name"
-done
-
-grep -rl '#!/usr/bin/python$' . | grep '\.py$' | while read name; do
-    echo Fixing bare '#!/usr/bin/env python' in: $name
-    sed -i "s|#!/usr/bin/python$|#!/usr/bin/python3|g" "$name"
-done
-
 # Remove bundled egg-info
 rm -rf %{pypi_name}.egg-info
 
@@ -329,9 +319,7 @@ rm -rf html/.{doctrees,buildinfo}
 %doc ansible_collections/hetzner/hcloud/README.md
 %doc ansible_collections/hpe/nimble/README.md
 %doc ansible_collections/ibm/qradar/README.md
-%doc ansible_collections/infinidat/infinibox/.README.md.swp
 %doc ansible_collections/infinidat/infinibox/README.md
-%doc ansible_collections/infinidat/infinibox/docs/.DEV_README.md.swp
 %doc ansible_collections/infinidat/infinibox/docs/DEV_README.md
 %doc ansible_collections/inspur/sm/README.md
 %doc ansible_collections/junipernetworks/junos/README.md
