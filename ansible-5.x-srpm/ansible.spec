@@ -59,7 +59,11 @@ Documentation for ansible
 # Remove bundled egg-info
 rm -rf %{pypi_name}.egg-info
 
-find . -name '*.swp' \
+find . -name '*.swp' -type f \
+     -exec echo "Flushing: {}" \; \
+     -exec rm -f "{}" \;
+
+find . -name 'hello' -type f \
      -exec echo "Flushing: {}" \; \
      -exec rm -f "{}" \;
 
@@ -579,6 +583,10 @@ rm -rf html/.{doctrees,buildinfo}
 %endif
 
 %changelog
+* Thu Dec 2 2021 Nico Kadel-Garcia - 5.0.1
+- Update to 5.0.1
+- Discard 'hello' and '*.swp' files
+
 * Sat Nov 6 2021 Nico Kadel-Garcia - 4.8.0
 - Initial package.
 - Split up excessively long %%doc and %%license lines
