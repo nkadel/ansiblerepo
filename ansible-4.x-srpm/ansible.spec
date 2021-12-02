@@ -14,6 +14,9 @@
 #
 %bcond_with checks
 
+# Disable debugionfo package, the submodule generation mishandles this
+%define debug_package %{nil}
+
 Name:           %{pypi_name}
 Version:        %{pypi_version}
 Release:        0.1%{?dist}
@@ -401,7 +404,6 @@ rm -rf html/.{doctrees,buildinfo}
 %files -n %{pypi_name}-doc
 %if %{with docs}
 %doc html
-%endif
 %license ansible_collections/ansible/netcommon/LICENSE 
 %license ansible_collections/ansible/utils/LICENSE 
 %license ansible_collections/arista/eos/LICENSE 
@@ -546,6 +548,7 @@ rm -rf html/.{doctrees,buildinfo}
 %license ansible_collections/theforeman/foreman/LICENSE 
 %license ansible_collections/vyos/vyos/LICENSE 
 %license ansible_collections/dellemc/openmanage/COPYING.md
+%endif
 
 %changelog
 * Sat Nov 6 2021 Nico Kadel-Garcia - 4.8.0
