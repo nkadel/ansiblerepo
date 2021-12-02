@@ -105,10 +105,12 @@ BuildRequires: python%{python3_pkgversion}-pyvmomi
 Recommends: python%{python3_pkgversion}-paramiko
 Recommends: python%{python3_pkgversion}-winrm
 
+Requires: python%{python3_pkgversion}-jinja2
 # needed for json_query filter
 Requires: python%{python3_pkgversion}-jmespath
 # needed for galaxy
 Requires: python%{python3_pkgversion}-resolvelib
+# needed
 
 %if 0%{?fedora}
 BuildRequires: python%{python3_pkgversion}-pyyaml
@@ -248,7 +250,7 @@ make PYTHON=/usr/bin/python3 tests-py3
 
 %changelog
 * Thu Dec  2 2021 Nico Kadel-Garcia
-- Add Requires for pyyaml
+- Add Requires for pyyaml and jinja2
 
 * Mon Nov 08 2021 Kevin Fenzi <kevin@scrye.com> - 2.12.0-1
 - Update to 2.12.0. Fixes rhbz#2022533

@@ -108,6 +108,7 @@ Recommends: python%{python3_pkgversion}-paramiko
 Recommends: python%{python3_pkgversion}-winrm
 %endif
 
+Requires: python%{python3_pkgversion}-jinja2
 # needed for json_query filter
 Requires: python%{python3_pkgversion}-jmespath
 # needed for galaxy
@@ -264,7 +265,7 @@ make PYTHON=%{__python3} tests-py3
 
 %changelog
 * Thu Dec  2 2021 Nico Kadel-Garcia
-- Add Requires for pyyaml
+- Add Requires for pyyaml and jinja2
 
 * Sat Nov 6 2021 Nico Kadel-Garcia <nkadel@gmail.com> - 2.11.6
 - Update ansible-generate to demand ansible-core, not ansible-base
