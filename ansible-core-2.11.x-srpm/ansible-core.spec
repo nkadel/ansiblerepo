@@ -15,7 +15,7 @@
 Name: ansible-core
 Summary: A radically simple IT automation system
 Version: 2.11.6
-Release: 0.2%{?betaver}%{?dist}
+Release: 0.3%{?betaver}%{?dist}
 
 License: GPLv3+
 Source0: %pypi_source ansible-core %{version}%{?betaver}
@@ -112,6 +112,12 @@ Recommends: python%{python3_pkgversion}-winrm
 Requires: python%{python3_pkgversion}-jmespath
 # needed for galaxy
 Requires: python%{python3_pkgversion}-resolvelib
+
+%if 0%{?fedora}
+Requires: python%{python3_pkgversion}-pyyaml
+%else
+Requires: python%{python3_pkgversion}-PyYAML
+%endif
 
 %description
 Ansible is a radically simple model-driven configuration management,
@@ -257,6 +263,9 @@ make PYTHON=%{__python3} tests-py3
 %endif
 
 %changelog
+* Thu Dec  2 2021 Nico Kadel-Garcia
+- Add Requires for pyyaml
+
 * Sat Nov 6 2021 Nico Kadel-Garcia <nkadel@gmail.com> - 2.11.6
 - Update ansible-generate to demand ansible-core, not ansible-base
 

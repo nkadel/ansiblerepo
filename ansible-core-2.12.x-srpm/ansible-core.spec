@@ -15,7 +15,7 @@
 Name: ansible-core
 Summary: A radically simple IT automation system
 Version: 2.12.0
-Release: 0.1%{?betaver}%{?dist}
+Release: 0.2%{?betaver}%{?dist}
 
 License: GPLv3+
 Source0: %pypi_source ansible-core %{version}%{?betaver}
@@ -25,7 +25,6 @@ Source2: ansible-generator
 Source3: macros.ansible
 Url: http://ansible.com
 BuildArch: noarch
-
 #Provides: ansible = %%{version}-%%{release}
 #Obsoletes: ansible <= 2.9.99
 # For now conflict with the ansible 'classic' package.
@@ -110,6 +109,12 @@ Recommends: python%{python3_pkgversion}-winrm
 Requires: python%{python3_pkgversion}-jmespath
 # needed for galaxy
 Requires: python%{python3_pkgversion}-resolvelib
+
+%if 0%{?fedora}
+BuildRequires: python%{python3_pkgversion}-pyyaml
+%else
+BuildRequires: python%{python3_pkgversion}-PyYAML
+%endif
 
 %description
 Ansible is a radically simple model-driven configuration management,
@@ -242,6 +247,9 @@ make PYTHON=/usr/bin/python3 tests-py3
 %endif
 
 %changelog
+* Thu Dec  2 2021 Nico Kadel-Garcia
+- Add Requires for pyyaml
+
 * Mon Nov 08 2021 Kevin Fenzi <kevin@scrye.com> - 2.12.0-1
 - Update to 2.12.0. Fixes rhbz#2022533
 
