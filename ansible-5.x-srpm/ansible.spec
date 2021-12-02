@@ -38,6 +38,9 @@ BuildRequires:  python%{python3_pkgversion}-cryptography
 BuildRequires:  python%{python3_pkgversion}-resolvelib
 BuildRequires:  python%{python3_pkgversion}-sphinx_rtd_theme
 
+Requires:       ansible-core < 2.13
+Requires:       ansible-core >= 2.11.6
+
 %description
 |PyPI version| |Docs badge| |Chat badge| |Build Status| |Code Of Conduct|
 |Mailing Lists| |License|**************Ansible is a radically simple IT
@@ -45,9 +48,6 @@ automation system. It handles configuration management, application deployment,
 cloud provisioning, ad-hoc task execution, network automation, and multi-node
 orchestration. Ansible makes complex changes like zero-downtime rolling updates
 with load...
-
-Requires:       ansible-core < 2.13
-Requires:       ansible-core >= 2.11.6
 
 %package -n %{pypi_name}-doc
 Summary:        ansible documentation

@@ -36,6 +36,9 @@ BuildRequires:  python%{python3_pkgversion}-cryptography
 BuildRequires:  python%{python3_pkgversion}-resolvelib
 BuildRequires:  python%{python3_pkgversion}-sphinx_rtd_theme
 
+Requires:       ansible-core < 2.12
+Requires:       ansible-core >= 2.11.6
+
 %description
 |PyPI version| |Docs badge| |Chat badge| |Build Status| |Code Of Conduct|
 |Mailing Lists| |License|**************Ansible is a radically simple IT
@@ -43,9 +46,6 @@ automation system. It handles configuration management, application deployment,
 cloud provisioning, ad-hoc task execution, network automation, and multi-node
 orchestration. Ansible makes complex changes like zero-downtime rolling updates
 with load...
-
-Requires:       ansible-core < 2.12
-Requires:       ansible-core >= 2.11.6
 
 %package -n %{pypi_name}-doc
 Summary:        ansible documentation
@@ -96,7 +96,8 @@ rm -rf html/.{doctrees,buildinfo}
 
 %files
 %doc README.rst
-
+# RHEL 8 does not handle multiple README.md correctly
+%if (0%{?rhel} && 0%{?rhel} <= 8)
 %doc ansible_collections/amazon/aws/README.md
 %doc ansible_collections/ansible/netcommon/README.md
 %doc ansible_collections/ansible/posix/.azure-pipelines/README.md
@@ -408,7 +409,7 @@ rm -rf html/.{doctrees,buildinfo}
 %doc ansible_collections/theforeman/foreman/roles/sync_plans/README.md
 %doc ansible_collections/vyos/vyos/README.md
 %doc ansible_collections/wti/remote/README.md
-
+%endif
 %{python3_sitelib}/ansible_collections
 %{python3_sitelib}/%{pypi_name}-%{pypi_version}-py%{python3_version}.egg-info
 
