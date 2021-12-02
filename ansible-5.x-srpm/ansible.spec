@@ -1,6 +1,6 @@
 # Created by pyp2rpm-3.3.7
 %global pypi_name ansible
-%global pypi_version 5.0.0
+%global pypi_version 5.0.1
 
 #
 # If we should enable docs building
@@ -27,6 +27,8 @@ URL:            https://ansible.com/
 Source0:        https://files.pythonhosted.org/packages/source/a/%{pypi_name}/%{pypi_name}-%{pypi_version}.tar.gz
 
 BuildRequires:  ansible-core < 2.13
+# roll back demand for 2.12, for python 3.6 compatibility
+#BuildRequires:  ansible-core >= 2.12
 BuildRequires:  ansible-core >= 2.11.6
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
@@ -463,7 +465,6 @@ rm -rf html/.{doctrees,buildinfo}
 %license ansible_collections/cyberark/conjur/LICENSE
 %license ansible_collections/cyberark/pas/LICENSE
 %license ansible_collections/dellemc/enterprise_sonic/LICENSE
-%license ansible_collections/dellemc/openmanage/COPYING.md
 %license ansible_collections/dellemc/os10/LICENSE
 %license ansible_collections/dellemc/os10/roles/os10_aaa/LICENSE
 %license ansible_collections/dellemc/os10/roles/os10_acl/LICENSE
@@ -574,6 +575,7 @@ rm -rf html/.{doctrees,buildinfo}
 %license ansible_collections/t_systems_mms/icinga_director/LICENSE
 %license ansible_collections/theforeman/foreman/LICENSE
 %license ansible_collections/vyos/vyos/LICENSE
+%license ansible_collections/dellemc/openmanage/COPYING.md
 %endif
 
 %changelog
