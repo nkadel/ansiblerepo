@@ -25,7 +25,7 @@ ANSIBLEPKGS+=ansible-collection-community-kubernetes-srpm
 ANSIBLEPKGS+=ansible-collection-community-mysql-srpm
 ANSIBLEPKGS+=ansible-collection-containers-podman-srpm
 ANSIBLEPKGS+=ansible-collection-google-cloud-srpm
-# Requires ruamel, not yet portable to olde rOS
+# Requires ruamel, not yet portable to older OS
 #ANSIBLEPKGS+=ansible-collection-microsoft-sql-srpm
 ANSIBLEPKGS+=ansible-collection-netbox-netbox-srpm
 ANSIBLEPKGS+=ansible-collections-openstack-srpm
@@ -35,14 +35,14 @@ ANSIBLEPKGS+=ansible-5.x-srpm
 
 REPOS+=ansiblerepo/el/7
 REPOS+=ansiblerepo/el/8
-REPOS+=ansiblerepo/fedora/35
+REPOS+=ansiblerepo/fedora/34
 REPOS+=ansiblerepo/amz/2
 
 REPODIRS := $(patsubst %,%/x86_64/repodata,$(REPOS)) $(patsubst %,%/SRPMS/repodata,$(REPOS))
 
 CFGS+=ansiblerepo-7-x86_64.cfg
 CFGS+=ansiblerepo-8-x86_64.cfg
-CFGS+=ansiblerepo-f35-x86_64.cfg
+CFGS+=ansiblerepo-f34-x86_64.cfg
 # Amazon 2 config
 CFGS+=ansiblerepo-amz2-x86_64.cfg
 
@@ -52,7 +52,7 @@ CFGS+=epel-8-x86_64.cfg
 # Link from /etc/mock
 MOCKCFGS+=epel-7-x86_64.cfg
 MOCKCFGS+=epel-8-x86_64.cfg
-MOCKCFGS+=fedora-35-x86_64.cfg
+MOCKCFGS+=fedora-34-x86_64.cfg
 #MOCKCFGS+=amazonlinux-2-x86_64.cfg
 
 all:: install
@@ -167,10 +167,10 @@ ansiblerepo-8-x86_64.cfg: epel-8-x86_64.cfg
 	@echo 'gpgkey=https://packages.microsoft.com/keys/microsoft.asc' >> $@
 	@echo '"""' >> $@
 
-ansiblerepo-f35-x86_64.cfg: /etc/mock/fedora-35-x86_64.cfg
+ansiblerepo-f34-x86_64.cfg: /etc/mock/fedora-34-x86_64.cfg
 	@echo Generating $@ from $?
 	@cat $? > $@
-	@sed -i 's/fedora-35-x86_64/ansiblerepo-f35-x86_64/g' $@
+	@sed -i 's/fedora-34-x86_64/ansiblerepo-f34-x86_64/g' $@
 	@echo >> $@
 	@echo "Disabling 'best=' for $@"
 	@sed -i '/^best=/d' $@
@@ -179,7 +179,7 @@ ansiblerepo-f35-x86_64.cfg: /etc/mock/fedora-35-x86_64.cfg
 	@echo '[ansiblerepo]' >> $@
 	@echo 'name=ansiblerepo' >> $@
 	@echo 'enabled=1' >> $@
-	@echo 'baseurl=$(REPOBASE)/ansiblerepo/fedora/35/x86_64/' >> $@
+	@echo 'baseurl=$(REPOBASE)/ansiblerepo/fedora/34/x86_64/' >> $@
 	@echo 'failovermethod=priority' >> $@
 	@echo 'skip_if_unavailable=False' >> $@
 	@echo 'metadata_expire=1s' >> $@
