@@ -17,7 +17,7 @@ Name: ansible-collection-microsoft-sql
 Url: https://github.com/linux-system-roles/mssql
 Summary: The Ansible collection for Microsoft SQL Server management
 Version: 1.1.0
-Release: 0.2%{?dist}
+Release: 2%{?dist}
 
 #Group: Development/Libraries
 License: MIT
@@ -107,9 +107,9 @@ BuildRequires: highlight
 %endif
 
 # Requirements for galaxy_transform.py
-BuildRequires: python3
+BuildRequires: python%{python3_pkgversion}
 %if 0%{?fedora} || 0%{?rhel} >= 8
-BuildRequires: python%{python3_pkgversion}-ruamel.yaml
+BuildRequires: python3dist(ruamel.yaml)
 %else
 BuildRequires: python%{python3_pkgversion}-ruamel-yaml
 %endif
@@ -180,7 +180,7 @@ declare -A COLLECTION_ROLENAMES=(%{collection_rolenames})
 
 # Convert roles to the collection format
 for rolename in %{rolenames}; do
-    %{__python3} lsr_role2collection.py --role "$rolename" \
+    python%{python3_pkgversion} lsr_role2collection.py --role "$rolename" \
         --src-path "$rolename" \
         --src-owner linux-system-roles \
         --dest-path .collections \

@@ -102,8 +102,10 @@ BuildRequires: python%{python3_pkgversion}-cryptography
 BuildRequires: python%{python3_pkgversion}-pyvmomi
 
 # RHEL8 does not have python%%{python3_pkgversion}-paramiko or python%%{python3_pkgversion}-winrm (yet), but Fedora does
+%if 0%{?fedora}
 Recommends: python%{python3_pkgversion}-paramiko
 Recommends: python%{python3_pkgversion}-winrm
+%endif
 
 Requires: python%{python3_pkgversion}-jinja2
 # needed for json_query filter
