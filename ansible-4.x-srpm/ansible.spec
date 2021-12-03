@@ -416,6 +416,7 @@ rm -rf html/.{doctrees,buildinfo}
 %files -n %{pypi_name}-doc
 %if %{with docs}
 %doc html
+%if (0%{?rhel} && 0%{?rhel} <= 8)
 %license ansible_collections/ansible/netcommon/LICENSE
 %license ansible_collections/ansible/utils/LICENSE
 %license ansible_collections/arista/eos/LICENSE
@@ -560,6 +561,7 @@ rm -rf html/.{doctrees,buildinfo}
 %license ansible_collections/t_systems_mms/icinga_director/LICENSE
 %license ansible_collections/theforeman/foreman/LICENSE
 %license ansible_collections/vyos/vyos/LICENSE
+%endif
 %endif
 
 %changelog
