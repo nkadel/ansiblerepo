@@ -130,7 +130,8 @@ rsync -a --prune-empty-dirs ansible_collections/ \
 %endif
 
 %files
-%doc porting_guide_5.rst CHANGELOG-v5.rst COPYING README.rst
+%doc porting_guide_5.rst
+%doc CHANGELOG-v5.rst COPYING README.rst
 %license licenses
 
 %{python3_sitelib}/ansible_collections
