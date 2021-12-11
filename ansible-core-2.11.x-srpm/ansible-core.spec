@@ -14,8 +14,8 @@
 
 Name: ansible-core
 Summary: A radically simple IT automation system
-Version: 2.11.6
-Release: 0.3%{?betaver}%{?dist}
+Version: 2.11.7
+Release: 0.1%{?betaver}%{?dist}
 
 License: GPLv3+
 Source0: %pypi_source ansible-core %{version}%{?betaver}
@@ -264,6 +264,9 @@ make PYTHON=%{__python3} tests-py3
 %endif
 
 %changelog
+* Fri Dec 10 2021 Nico Kadel-Garcia <nkadel@gmail.com> - 2.11.7
+- Update to 2.11.7
+
 * Thu Dec  2 2021 Nico Kadel-Garcia
 - Add Requires for pyyaml and jinja2
 
