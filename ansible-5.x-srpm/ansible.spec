@@ -13,7 +13,7 @@
 
 Name:           %{pypi_name}
 Version:        %{pypi_version}
-Release:        0.1%{?dist}
+Release:        0.2%{?dist}
 Summary:        Radically simple IT automation
 
 License:        GPLv3+
@@ -140,7 +140,7 @@ rsync -a --prune-empty-dirs ansible_collections/ \
 %doc docs
 
 %changelog
-* Thu Dec 2 2021 Nico Kadel-Garcia - 5.0.1
+* Thu Dec 2 2021 Nico Kadel-Garcia - 5.0.1-0.2
 - Update to 5.0.1
 
 * Thu Dec 2 2021 Nico Kadel-Garcia - 4.9.0

@@ -13,7 +13,7 @@
 
 Name:           %{pypi_name}
 Version:        %{pypi_version}
-Release:        0.1%{?dist}
+Release:        0.2%{?dist}
 Summary:        Radically simple IT automation
 
 License:        GPLv3+
@@ -139,7 +139,7 @@ rsync -a --prune-empty-dirs ansible_collections/ \
 %doc docs
 
 %changelog
-* Thu Dec 2 2021 Nico Kadel-Garcia - 4.9.0
+* Thu Dec 2 2021 Nico Kadel-Garcia - 4.9.0-0.2
 - Update to 4.9.0
 - Use find more consistently to flush unwelcome files
 - Use rsync to ro put licenses and READMEs into local staging dirs to avoid path stripping
