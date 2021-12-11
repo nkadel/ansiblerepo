@@ -3,12 +3,6 @@
 %global pypi_version 4.9.0
 
 #
-# If we should enable docs building
-# Currently we cannot until we get a stack of needed packages added and a few bugs fixed
-#
-%bcond_with docs
-
-#
 # If we should enable checks
 # Currently we cannot until we get a stack of needed packages added and a few bugs fixed
 #
@@ -26,8 +20,10 @@ License:        GPLv3+
 URL:            https://ansible.com/
 Source0:        https://files.pythonhosted.org/packages/source/a/%{pypi_name}/%{pypi_name}-%{pypi_version}.tar.gz
 
+# ansible-core 2.12 requires python 3.8 or better
 BuildRequires:  ansible-core < 2.12
 BuildRequires:  ansible-core >= 2.11.6
+
 BuildRequires:  rsync
 
 BuildRequires:  python%{python3_pkgversion}-devel
@@ -42,22 +38,27 @@ Requires:       ansible-core < 2.12
 Requires:       ansible-core >= 2.11.6
 
 %description
-|PyPI version| |Docs badge| |Chat badge| |Build Status| |Code Of Conduct|
-|Mailing Lists| |License|**************Ansible is a radically simple IT
-automation system. It handles configuration management, application deployment,
-cloud provisioning, ad-hoc task execution, network automation, and multi-node
-orchestration. Ansible makes complex changes like zero-downtime rolling updates
-with load...
+Ansible is a radically simple IT automation system. It handles
+configuration management, application deployment, cloud provisioning,
+ad-hoc task execution, network automation, and multi-node
+orchestration. Ansible makes complex changes like zero-downtime
+rolling updates with load...
 
 %package -n %{pypi_name}-doc
 Summary:        ansible documentation
 %description -n %{pypi_name}-doc
 Documentation for ansible
-
+ 
 %prep
 %autosetup -n %{pypi_name}-%{pypi_version}
 # Remove bundled egg-info
 rm -rf %{pypi_name}.egg-info
+
+# Prevent build failures on ambigues python
+grep -rl '#!/usr/bin/env python$' . | grep '\.py$' | while read name; do
+    echo Disambiguationg bare '#!/usr/bin/env python' in: $name
+    sed -i "s|#!/usr/bin/env python$|#!/usr/bin/env python3|g" "$name"
+done
 
 find ansible_collections \
     -name '*.swp$' -o \
@@ -104,21 +105,23 @@ done
 %install
 %{py3_install}
 
-install -d %{buildroot}%{_pkgdocdir}
+# Pre-stage licenses and docs into local dirs, to avoud path stripping
 rsync -a --prune-empty-dirs ansible_collections/ \
+    --exclude=docs/ \
     --include=*/ \
     --include=*README* \
     --include=*readme* \
     --exclude=* \
-    %{buildroot}%{_pkgdocdir}/docs/
+    docs/
 
 rsync -a --prune-empty-dirs ansible_collections/ \
+    --exclude=licenses/ \
     --exclude=*license.py \
     --include=*/ \
     --include=*LICENSE* \
     --include=*license* \
     --exclude=* \
-    %{buildroot}%{_pkgdocdir}/licenses/
+    licenses/
 
 %if %{with checks}
 %check
@@ -127,20 +130,19 @@ rsync -a --prune-empty-dirs ansible_collections/ \
 
 %files
 %doc porting_guide_4.rst CHANGELOG-v4.rst COPYING README.rst
-%license %{_pkgdocdir}/licenses
-%exclude %{_pkgdocdir}/docs
+%license licenses
 
 %{python3_sitelib}/ansible_collections
 %{python3_sitelib}/%{pypi_name}-%{pypi_version}-py%{python3_version}.egg-info
 
 %files -n %{pypi_name}-doc
-%doc %{_pkgdocdir}/docs/
+%doc docs
 
 %changelog
 * Thu Dec 2 2021 Nico Kadel-Garcia - 4.9.0
 - Update to 4.9.0
 - Use find more consistently to flush unwelcome files
-- Use rsync to copy over multiple %%doc and %%license
+- Use rsync to ro put licenses and READMEs into local staging dirs to avoid path stripping
 
 * Sat Nov 6 2021 Nico Kadel-Garcia - 4.8.0
 - Initial package.
