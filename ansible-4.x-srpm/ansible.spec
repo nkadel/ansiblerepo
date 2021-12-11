@@ -56,7 +56,6 @@ Documentation for ansible
 
 %prep
 %autosetup -n %{pypi_name}-%{pypi_version}
-
 # Remove bundled egg-info
 rm -rf %{pypi_name}.egg-info
 
@@ -99,16 +98,6 @@ find ansible_collections -type d | grep -E "tests/unit|tests/integration|tests/u
     rm -rf "$tests"
 done
 
-#grep -rl '#!/usr/bin/env python$' . | grep '\.py$' | while read name; do
-#    echo Fixing bare '#!/usr/bin/env python' in: $name
-#    sed -i "s|#!/usr/bin/env python$|#!/usr/bin/env python3|g" "$name"
-#done
-
-#grep -rl '#!/usr/bin/python$' . | grep '\.py$' | while read name; do
-#    echo Fixing bare '#!/usr/bin/env python' in: $name
-#    sed -i "s|#!/usr/bin/python$|#!/usr/bin/python3|g" "$name"
-#done
-
 %build
 %{py3_build}
 
@@ -140,6 +129,7 @@ rsync -a --prune-empty-dirs ansible_collections/ \
 %doc porting_guide_4.rst CHANGELOG-v4.rst COPYING README.rst
 %license %{_pkgdocdir}/licenses
 %exclude %{_pkgdocdir}/docs
+
 %{python3_sitelib}/ansible_collections
 %{python3_sitelib}/%{pypi_name}-%{pypi_version}-py%{python3_version}.egg-info
 
