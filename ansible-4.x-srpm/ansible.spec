@@ -1,6 +1,6 @@
 # Created by pyp2rpm-3.3.7
 %global pypi_name ansible
-%global pypi_version 4.9.0
+%global pypi_version 4.10.0
 
 #
 # If we should enable checks
@@ -13,7 +13,7 @@
 
 Name:           %{pypi_name}
 Version:        %{pypi_version}
-Release:        0.2%{?dist}
+Release:        0.1%{?dist}
 Summary:        Radically simple IT automation
 
 License:        GPLv3+
@@ -140,6 +140,9 @@ rsync -a --prune-empty-dirs ansible_collections/ \
 %doc docs
 
 %changelog
+* Wed Dec 15 2021 Nico Kadel-Garcia - 4.10.0-0.1
+- Update to 4.10.0
+
 * Thu Dec 2 2021 Nico Kadel-Garcia - 4.9.0-0.2
 - Update to 4.9.0
 - Use find more consistently to flush unwelcome files
