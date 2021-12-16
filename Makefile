@@ -162,7 +162,7 @@ ansiblerepo-8-x86_64.cfg: epel-8-x86_64.cfg
 	@echo '[packages-microsoft-com-prod]' >> $@
 	@echo 'name=packages-microsoft-com-prod' >> $@
 	@echo 'baseurl=https://packages.microsoft.com/rhel/8/prod/' >> $@
-	@echo 'enabled=1' >> $@
+	@echo 'enabled=0' >> $@
 	@echo 'gpgcheck=1' >> $@
 	@echo 'gpgkey=https://packages.microsoft.com/keys/microsoft.asc' >> $@
 	@echo '"""' >> $@
