@@ -30,6 +30,9 @@ ANSIBLEPKGS+=ansible-collection-google-cloud-srpm
 ANSIBLEPKGS+=ansible-collection-netbox-netbox-srpm
 ANSIBLEPKGS+=ansible-collections-openstack-srpm
 
+ANSIBLEPKGS+=ansible-freeipa-srpm
+ANSIBLEPKGS+=ansible-inventory-grapher-srpm
+
 ANSIBLEPKGS+=ansible-4.x-srpm
 ANSIBLEPKGS+=ansible-5.x-srpm
 
