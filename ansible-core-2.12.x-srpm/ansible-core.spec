@@ -251,7 +251,7 @@ make PYTHON=/usr/bin/python3 tests-py3
 %endif
 
 %changelog
-* Thu Dec  7 2021 Nico Kadel-Garcia - 2.12.1-0.1
+* Thu Dec 16 2021 Nico Kadel-Garcia - 2.12.1-0.1
 - Update to 2.12.1
 
 * Thu Dec  2 2021 Nico Kadel-Garcia
