@@ -32,6 +32,8 @@ ANSIBLEPKGS+=ansible-collections-openstack-srpm
 
 ANSIBLEPKGS+=ansible-freeipa-srpm
 ANSIBLEPKGS+=ansible-inventory-grapher-srpm
+ANSIBLEPKGS+=ansible-lint-srpm
+ANSIBLEPKGS+=ansible-pcp-srpm
 
 ANSIBLEPKGS+=ansible-4.x-srpm
 ANSIBLEPKGS+=ansible-5.x-srpm
