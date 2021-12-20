@@ -30,6 +30,12 @@ ANSIBLEPKGS+=ansible-collection-google-cloud-srpm
 ANSIBLEPKGS+=ansible-collection-netbox-netbox-srpm
 ANSIBLEPKGS+=ansible-collections-openstack-srpm
 
+ANSIBLEPKGS+=ansible-freeipa-srpm
+ANSIBLEPKGS+=ansible-inventory-grapher-srpm
+# Requires pyproject-rpm-macros, not available for EL
+#ANSIBLEPKGS+=ansible-lint-srpm
+ANSIBLEPKGS+=ansible-pcp-srpm
+
 ANSIBLEPKGS+=ansible-4.x-srpm
 ANSIBLEPKGS+=ansible-5.x-srpm
 
