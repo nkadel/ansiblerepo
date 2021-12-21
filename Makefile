@@ -47,11 +47,11 @@ CFGS+=ansiblerepo-f34-x86_64.cfg
 CFGS+=ansiblerepo-amz2-x86_64.cfg
 
 # /et/cmock version lacks EPEL
-CFGS+=epel-8-x86_64.cfg
+CFGS+=centos+epel-8-x86_64.cfg
 
 # Link from /etc/mock
-MOCKCFGS+=epel-7-x86_64.cfg
-MOCKCFGS+=epel-8-x86_64.cfg
+MOCKCFGS+=centos+epel-7-x86_64.cfg
+MOCKCFGS+=centos+epel-8-x86_64.cfg
 MOCKCFGS+=fedora-34-x86_64.cfg
 #MOCKCFGS+=amazonlinux-2-x86_64.cfg
 
@@ -112,17 +112,17 @@ cfg:: cfgs
 cfgs:: $(CFGS)
 cfgs:: $(MOCKCFGS)
 
-epel-8-x86_64.cfg:: /etc/mock/epel-8-x86_64.cfg
+centos+epel-8-x86_64.cfg:: /etc/mock/centos+epel-8-x86_64.cfg
 	@echo Generating $@ from $?
 	@cat $? > $@
 	@echo >> $@
-	@echo '# epel-8 configs lack EPEL, added here' >> $@
-	@echo "include('templates/epel-8.tpl')" >> $@
+	@echo '# centos+epel-8 configs lack EPEL, added here' >> $@
+	@echo "include('templates/centos+epel-8.tpl')" >> $@
 
-ansiblerepo-7-x86_64.cfg: /etc/mock/epel-7-x86_64.cfg
+ansiblerepo-7-x86_64.cfg: /etc/mock/centos+epel-7-x86_64.cfg
 	@echo Generating $@ from $?
 	@cat $? > $@
-	@sed -i 's/epel-7-x86_64/ansiblerepo-7-x86_64/g' $@
+	@sed -i 's/centos+epel-7-x86_64/ansiblerepo-7-x86_64/g' $@
 	@echo >> $@
 	@echo "Disabling 'best=' for $@"
 	@sed -i '/^best=/d' $@
@@ -140,10 +140,10 @@ ansiblerepo-7-x86_64.cfg: /etc/mock/epel-7-x86_64.cfg
 	@echo '"""' >> $@
 
 # packages-microsoft-com-prod added for /bin/pwsh
-ansiblerepo-8-x86_64.cfg: epel-8-x86_64.cfg
+ansiblerepo-8-x86_64.cfg: centos+epel-8-x86_64.cfg
 	@echo Generating $@ from $?
 	@cat $? > $@
-	@sed -i 's/epel-8-x86_64/ansiblerepo-8-x86_64/g' $@
+	@sed -i 's/centos+epel-8-x86_64/ansiblerepo-8-x86_64/g' $@
 	@echo >> $@
 	@echo "Disabling 'best=' for $@"
 	@sed -i '/^best=/d' $@
