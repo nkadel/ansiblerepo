@@ -13,7 +13,7 @@
 
 Name:           %{pypi_name}
 Version:        %{pypi_version}
-Release:        0.1%{?dist}
+Release:        0.2%{?dist}
 Summary:        Radically simple IT automation
 
 License:        GPLv3+
@@ -48,7 +48,7 @@ rolling updates with load...
 Summary:        ansible documentation
 %description -n %{pypi_name}-doc
 Documentation for ansible
- 
+
 %prep
 %autosetup -n %{pypi_name}-%{pypi_version}
 # Remove bundled egg-info
@@ -69,8 +69,6 @@ find ansible_collections \
     -name .flake8 -o \
     -name .gitattributes -o \
     -name .github -o \
-    -name .github -o \
-    -name .gitignore -o \
     -name .gitignore -o \
     -name .gitkeep -o \
     -name .gitlab-ci.yml -o \
@@ -106,22 +104,23 @@ done
 %{py3_install}
 
 # Pre-stage licenses and docs into local dirs, to avoud path stripping
+install -d %{buildroot}%{_defaultdocdir}/%{name}-%{version}/ansible_collections/
 rsync -a --prune-empty-dirs ansible_collections/ \
     --exclude=docs/ \
     --include=*/ \
     --include=*README* \
     --include=*readme* \
     --exclude=* \
-    docs/
+    %{buildroot}%{_defaultdocdir}/%{name}-%{version}/ansible_collections/
 
+install -d %{buildroot}%{_defaultlicensedir}/%{name}-%{version}
 rsync -a --prune-empty-dirs ansible_collections/ \
-    --exclude=licenses/ \
     --exclude=*license.py \
     --include=*/ \
     --include=*LICENSE* \
     --include=*license* \
     --exclude=* \
-    licenses/
+    %{buildroot}%{_defaultlicensedir}/%{name}-%{version}/ansible_collections/
 
 %if %{with checks}
 %check
@@ -131,15 +130,19 @@ rsync -a --prune-empty-dirs ansible_collections/ \
 %files
 %doc porting_guide_4.rst CHANGELOG-v4.rst
 %doc COPYING README.rst
-%license licenses
+%exclude %{_defaultdocdir}/%{name}-%{version}/ansible_collections
+%license %{_defaultlicensedir}/%{name}-%{version}/ansible_collections
 
 %{python3_sitelib}/ansible_collections
 %{python3_sitelib}/%{pypi_name}-%{pypi_version}-py%{python3_version}.egg-info
 
 %files -n %{pypi_name}-doc
-%doc docs
+%doc %{_defaultdocdir}/%{name}-%{version}/ansible_collections
 
 %changelog
+* Wed Dec 22 2021 Nico Kadel-Garcia - 5.1.0-0.2
+- Simplify and optimize multiple licenses and docs one more step
+
 * Wed Dec 15 2021 Nico Kadel-Garcia - 4.10.0-0.1
 - Update to 4.10.0
 

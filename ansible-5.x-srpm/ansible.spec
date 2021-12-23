@@ -1,6 +1,6 @@
 # Created by pyp2rpm-3.3.7
 %global pypi_name ansible
-%global pypi_version 5.0.1
+%global pypi_version 5.1.0
 
 #
 # If we should enable checks
@@ -13,7 +13,7 @@
 
 Name:           %{pypi_name}
 Version:        %{pypi_version}
-Release:        0.3%{?dist}
+Release:        0.1%{?dist}
 Summary:        Radically simple IT automation
 
 License:        GPLv3+
@@ -70,8 +70,6 @@ find ansible_collections \
     -name .flake8 -o \
     -name .gitattributes -o \
     -name .github -o \
-    -name .github -o \
-    -name .gitignore -o \
     -name .gitignore -o \
     -name .gitkeep -o \
     -name .gitlab-ci.yml -o \
@@ -107,14 +105,16 @@ done
 %{py3_install}
 
 # Pre-stage licenses and docs into local dirs, to avoud path stripping
+install -d %{buildroot}%{_defaultdocdir}/%{name}-%{version}/ansible_collections/
 rsync -a --prune-empty-dirs ansible_collections/ \
     --exclude=docs/ \
     --include=*/ \
     --include=*README* \
     --include=*readme* \
     --exclude=* \
-    docs/
+    %{buildroot}%{_defaultdocdir}/%{name}-%{version}/ansible_collections/
 
+install -d %{buildroot}%{_defaultlicensedir}/%{name}-%{version}/ansible_collections/
 rsync -a --prune-empty-dirs ansible_collections/ \
     --exclude=licenses/ \
     --exclude=*license.py \
@@ -122,7 +122,7 @@ rsync -a --prune-empty-dirs ansible_collections/ \
     --include=*LICENSE* \
     --include=*license* \
     --exclude=* \
-    licenses/
+    %{buildroot}%{_defaultlicensedir}/%{name}-%{version}/ansible_collections/
 
 %if %{with checks}
 %check
@@ -132,19 +132,28 @@ rsync -a --prune-empty-dirs ansible_collections/ \
 %files
 %doc porting_guide_5.rst CHANGELOG-v5.rst
 %doc COPYING README.rst
-%license licenses
+%exclude %{_defaultdocdir}/%{name}-%{version}/ansible_collections
+%license %{_defaultlicensedir}/%{name}-%{version}/ansible_collections
 
 %{python3_sitelib}/ansible_collections
 %{python3_sitelib}/%{pypi_name}-%{pypi_version}-py%{python3_version}.egg-info
 
 %files -n %{pypi_name}-doc
-%doc docs
+%doc %{_defaultdocdir}/%{name}-%{version}/ansible_collections
+#%doc docs
 
 %changelog
+* Wed Dec 22 2021 Nico Kadel-Garcia - 5.1.0-0.1
+- Update to 5.1.0
+- Simplify and optimize multiple licenses and docs one more step
+
 * Thu Dec 16 2021 Nico Kadel-Garcia - 5.0.1-0.3
 - Update to 5.0.1
 
-* Thu Dec 2 2021 Nico Kadel-Garcia - 4.9.0
+* Wed Dec 15 2021 Nico Kadel-Garcia - 4.10.0-0.1
+- Update to 4.10.0
+
+* Thu Dec 2 2021 Nico Kadel-Garcia - 4.9.0-0.2
 - Update to 4.9.0
 - Use find more consistently to flush unwelcome files
 - Use rsync to ro put licenses and READMEs into local staging dirs to avoid path stripping
