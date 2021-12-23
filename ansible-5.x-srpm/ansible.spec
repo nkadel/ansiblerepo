@@ -140,7 +140,6 @@ rsync -a --prune-empty-dirs ansible_collections/ \
 
 %files -n %{pypi_name}-doc
 %doc %{_defaultdocdir}/%{name}-%{version}/ansible_collections
-#%doc docs
 
 %changelog
 * Wed Dec 22 2021 Nico Kadel-Garcia - 5.1.0-0.1
