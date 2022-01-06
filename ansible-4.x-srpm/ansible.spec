@@ -21,8 +21,8 @@ URL:            https://ansible.com/
 Source0:        https://files.pythonhosted.org/packages/source/a/%{pypi_name}/%{pypi_name}-%{pypi_version}.tar.gz
 
 # ansible-core 2.12 requires python 3.8 or better
-BuildRequires:  ansible-core < 2.12
-BuildRequires:  ansible-core >= 2.11.6
+BuildRequires:  ansible-core < 2.12.0
+BuildRequires:  ansible-core >= 2.11.7
 
 BuildRequires:  rsync
 

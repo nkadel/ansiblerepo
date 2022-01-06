@@ -7,7 +7,7 @@
 #
 # If we should enable tests by default
 #
-%bcond_with tests
+%bcond_without tests
 
 # Set this when there's a beta or rc version
 #%%global betaver rc2
