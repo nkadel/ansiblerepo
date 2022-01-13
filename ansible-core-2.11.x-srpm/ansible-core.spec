@@ -7,7 +7,11 @@
 #
 # If we should enable tests by default
 #
+%if 0%{?fedora}
 %bcond_without tests
+%else
+%bcond_with tests
+%endif
 
 # Set this when there's a beta or rc version
 #%%global betaver rc2
