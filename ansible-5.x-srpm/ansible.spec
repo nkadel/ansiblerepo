@@ -1,6 +1,6 @@
 # Created by pyp2rpm-3.3.7
 %global pypi_name ansible
-%global pypi_version 5.1.0
+%global pypi_version 5.2.0
 
 #
 # If we should enable checks
@@ -142,6 +142,9 @@ rsync -a --prune-empty-dirs ansible_collections/ \
 %doc %{_defaultdocdir}/%{name}-%{version}/ansible_collections
 
 %changelog
+* Wed Jan 12 2022 Nico Kadel-Garcia - 5.2.0-0
+- Update to 5.2.0
+
 * Wed Dec 22 2021 Nico Kadel-Garcia - 5.1.0-0.1
 - Update to 5.1.0
 - Simplify and optimize multiple licenses and docs one more step
