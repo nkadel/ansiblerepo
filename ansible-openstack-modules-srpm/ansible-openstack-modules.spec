@@ -28,6 +28,19 @@ Keystone and Nova modules missing in the official modules.
 %setup -q -c
 
 
+# Prevent build failures on ambiguouss python
+grep -rl '^#!/usr/bin/env python$' */ | \
+    while read name; do
+        echo "    Disambiguating /usr/bin/env python: $name"
+	sed -i -e 's|^#!/usr/bin/env python$|#!/usr/bin/python3|g' $name
+done
+
+grep -rl '^#!/usr/bin/python$' */ | \
+    while read name; do
+        echo "    Disambiguating /usr/bin/python: $name"
+	sed -i -e 's|^#!/usr/bin/python$|#!/usr/bin/python3|g' $name
+done
+
 %build
 
 

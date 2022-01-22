@@ -28,6 +28,19 @@ find -type f ! -executable -name '*.py' -print -exec sed -i -e '1{\@^#!.*@d}' '{
 find -type f -name '.gitignore' -print -delete
 sed -i -e 's/{{ REPLACE_VERSION }}/%{version}/' chocolatey/galaxy.yml
 
+# Prevent build failures on ambiguouss python
+grep -rl '^#!/usr/bin/env python$' */ | \
+    while read name; do
+        echo "    Disambiguating /usr/bin/env python: $name"
+	sed -i -e 's|^#!/usr/bin/env python$|#!/usr/bin/python3|g' $name
+done
+
+grep -rl '^#!/usr/bin/python$' */ | \
+    while read name; do
+        echo "    Disambiguating /usr/bin/python: $name"
+	sed -i -e 's|^#!/usr/bin/python$|#!/usr/bin/python3|g' $name
+done
+
 %build
 cd chocolatey
 %ansible_collection_build

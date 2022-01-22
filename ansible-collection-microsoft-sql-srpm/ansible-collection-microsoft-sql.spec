@@ -152,9 +152,18 @@ for rolename in %{rolenames}; do
     fi
 done
 
-# transform ambiguous #!/usr/bin/env python shebangs to python3 to stop brp-mangle-shebangs complaining
-find -type f -executable -name '*.py' -exec \
-     sed -i -r -e '1s@^(#! */usr/bin/env python)(\s|$)@#\13\2@' '{}' +
+# Prevent build failures on ambiguouss python
+grep -rl '^#!/usr/bin/env python$' */ | \
+    while read name; do
+        echo "    Disambiguating /usr/bin/env python: $name"
+	sed -i -e 's|^#!/usr/bin/env python$|#!/usr/bin/python3|g' $name
+done
+
+grep -rl '^#!/usr/bin/python$' */ | \
+    while read name; do
+        echo "    Disambiguating /usr/bin/python: $name"
+	sed -i -e 's|^#!/usr/bin/python$|#!/usr/bin/python3|g' $name
+done
 
 %build
 %if %{with html}

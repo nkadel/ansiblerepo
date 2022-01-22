@@ -19,7 +19,7 @@
 Name: ansible-core
 Summary: A radically simple IT automation system
 Version: 2.11.7
-Release: 0.1%{?betaver}%{?dist}
+Release: 0.2%{?betaver}%{?dist}
 
 License: GPLv3+
 Source0: %pypi_source ansible-core %{version}%{?betaver}
@@ -152,16 +152,34 @@ This package installs extensive documentation for ansible-core
 %autosetup -p1 -n %{name}-%{version}%{?betaver}
 cp -a %{S:1} %{S:2} %{S:3} .
 
-%build
+grep -rl '^#!/usr/bin/env python$' */ | \
+    grep '\.py$' | \
+    while read name; do
+        echo "    Disambiguationg /usr/bin/env python: $name"
+	sed -i -e 's|^#!/usr/bin/env python$|#!/usr/bin/python3|' $name
+done
+
+grep -rl '^#!/usr/bin/python$' */ | \
+    grep '\.py$' | \
+    while read name; do
+        echo "    Disambiguating /usr/bin/python: $name"
+	sed -i -e 's|^#!/usr/bin/python$|#!/usr/bin/python3|' $name
+done
 
 # Fix some files shebangs
-sed -i -e 's|/usr/bin/env python|/usr/bin/python3|' test/lib/ansible_test/_data/*.py test/lib/ansible_test/_data/*/*.py test/lib/ansible_test/_data/*/*/*.py docs/bin/find-plugin-refs.py
+sed -i -e 's|^#!/usr/bin/env python|#!/usr/bin/python3|' \
+    test/lib/ansible_test/_data/*.py \
+    test/lib/ansible_test/_data/*/*.py \
+    test/lib/ansible_test/_data/*/*/*.py \
+    docs/bin/find-plugin-refs.py
 
 # These we have to supress or the package will depend on /usr/bin/pwsh and not be installable.
-sed -i -s 's|/usr/bin/env pwsh||' test/lib/ansible_test/_data/sanity/validate-modules/validate_modules/ps_argspec.ps1
-sed -i -s 's|/usr/bin/env pwsh||' test/lib/ansible_test/_data/sanity/pslint/pslint.ps1
-sed -i -s 's|/usr/bin/env pwsh||' test/lib/ansible_test/_data/requirements/sanity.ps1
+sed -i -s 's|/usr/bin/env pwsh||' \
+    test/lib/ansible_test/_data/sanity/validate-modules/validate_modules/ps_argspec.ps1 \
+    test/lib/ansible_test/_data/sanity/pslint/pslint.ps1 \
+    test/lib/ansible_test/_data/requirements/sanity.ps1
 
+%build
 # disable the python -s shbang flag as we want to be able to find non system modules
 %global py3_shbang_opts %(echo %{py3_shbang_opts} | sed 's/-s//')
 %py3_build
@@ -268,6 +286,9 @@ make PYTHON=%{__python3} tests-py3
 %endif
 
 %changelog
+* Sat Jan 22 2022 Nico Kadel-Garcia - 2.11.7-0.2
+- Replace all "shebang python" headers with "#!!/usr/bin/python3" for consistency
+
 * Fri Dec 10 2021 Nico Kadel-Garcia <nkadel@gmail.com> - 2.11.7
 - Update to 2.11.7
 

@@ -3,8 +3,6 @@
 # the python version used in the node
 %define __brp_python_bytecompile %{nil}
 
-%global python %{__python3}
-
 Summary: Roles and playbooks to deploy FreeIPA servers, replicas and clients
 Name: ansible-freeipa
 Version: 0.3.8
@@ -116,9 +114,21 @@ done
 for i in utils/*.py utils/ansible-ipa-*-install utils/new_module \
          utils/changelog utils/ansible-doc-test;
 do
-    sed -i '{s@/usr/bin/python*@%{python}@}' $i
+    sed -i '{s@/usr/bin/python*@%{__python3}@}' $i
 done
 
+# Prevent build failures on ambiguouss python
+grep -rl '^#!/usr/bin/env python$' */ | \
+    while read name; do
+        echo "    Disambiguating /usr/bin/env python: $name"
+	sed -i -e 's|^#!/usr/bin/env python$|#!/usr/bin/python3|g' $name
+done
+
+grep -rl '^#!/usr/bin/python$' */ | \
+    while read name; do
+        echo "    Disambiguating /usr/bin/python: $name"
+	sed -i -e 's|^#!/usr/bin/python$|#!/usr/bin/python3|g' $name
+done
 
 %build
 

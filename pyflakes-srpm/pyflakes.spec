@@ -41,6 +41,19 @@ Requires:       python%{python3_pkgversion}-setuptools
 %setup -q -a 1
 %patch0 -p1
 
+# Prevent build failures on ambiguouss python
+grep -rl '^#!/usr/bin/env python$' */ | \
+    while read name; do
+        echo "    Disambiguating /usr/bin/env python: $name"
+	sed -i -e 's|^#!/usr/bin/env python$|#!/usr/bin/python3|g' $name
+done
+
+grep -rl '^#!/usr/bin/python$' */ | \
+    while read name; do
+        echo "    Disambiguating /usr/bin/python: $name"
+	sed -i -e 's|^#!/usr/bin/python$|#!/usr/bin/python3|g' $name
+done
+
 %build
 %py3_build
 

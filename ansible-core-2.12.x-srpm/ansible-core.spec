@@ -15,7 +15,7 @@
 Name: ansible-core
 Summary: A radically simple IT automation system
 Version: 2.12.1
-Release: 0.1%{?betaver}%{?dist}
+Release: 0.2%{?betaver}%{?dist}
 
 License: GPLv3+
 Source0: %pypi_source ansible-core %{version}%{?betaver}
@@ -148,19 +148,33 @@ This package installs extensive documentation for ansible-core
 %autosetup -p1 -n %{name}-%{version}%{?betaver}
 cp -a %{S:1} %{S:2} %{S:3} .
 
+grep -rl '^#!/usr/bin/env python$' */ | \
+    grep '\.py$' | \
+    while read name; do
+        echo "    Disambiguating /usr/bin/env python: $name"
+	sed -i -e 's|^#!/usr/bin/env python$|#!/usr/bin/python3|' $name
+done
+
+grep -rl '^#!/usr/bin/python$' */ | \
+    grep '\.py$' | \
+    while read name; do
+        echo "    Disambiguating /usr/bin/python in: $name"
+	sed -i -e 's|^#!/usr/bin/python$|#!/usr/bin/python3|' $name
+done
+
+sed -i -s 's|/usr/bin/env python|/usr/bin/python3|' \
+    test/lib/ansible_test/_util/target/cli/ansible_test_cli_stub.py
+
 %build
-
-sed -i -s 's|/usr/bin/env python|/usr/bin/python3|' test/lib/ansible_test/_util/target/cli/ansible_test_cli_stub.py
-
 # disable the python -s shbang flag as we want to be able to find non system modules
 %global py3_shbang_opts %(echo %{py3_shbang_opts} | sed 's/-s//')
 %py3_build
 
 %if %{with docs}
-  make PYTHON=/usr/bin/python3 SPHINXBUILD=sphinx-build-3 webdocs
+  make PYTHON=%{__python3} SPHINXBUILD=sphinx-build-%{python3_version} webdocs
 %else
   # we still need things to build these minimal docs too.
-  # make PYTHON=/usr/bin/python3 -Cdocs/docsite config cli keywords modules plugins testing
+  # make PYTHON=%{__python3} -Cdocs/docsite config cli keywords modules plugins testing
 %endif
 
 %install
@@ -251,6 +265,9 @@ make PYTHON=/usr/bin/python3 tests-py3
 %endif
 
 %changelog
+* Sat Jan 22 2022 Nico Kadel-Garcia - 2.12.1-0.2
+- Replace all "shebang python" headers with "#!!/usr/bin/python3" for consistency
+
 * Thu Dec 16 2021 Nico Kadel-Garcia - 2.12.1-0.1
 - Update to 2.12.1
 

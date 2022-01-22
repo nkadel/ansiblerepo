@@ -55,12 +55,6 @@ Documentation for ansible
 # Remove bundled egg-info
 rm -rf %{pypi_name}.egg-info
 
-# Prevent build failures on ambigues python
-grep -rl '#!/usr/bin/env python$' . | grep '\.py$' | while read name; do
-    echo Disambiguationg bare '#!/usr/bin/env python' in: $name
-    sed -i "s|#!/usr/bin/env python$|#!/usr/bin/env python3|g" "$name"
-done
-
 find ansible_collections \
     -name '*.swp$' -o \
     -name .DS_Store -o \
@@ -96,6 +90,32 @@ find ansible_collections -type d | grep -E "tests/unit|tests/integration|tests/u
     while read tests; do
     echo Flushing tests: $tests
     rm -rf "$tests"
+done
+
+# Prevent build failures on ambiguous python
+grep -rl '^#!/usr/bin/env python$' * | \
+    while read name; do
+        echo "    Disambiguating /usr/bin/env python: $name"
+	sed -i -e 's|^#!/usr/bin/env python$|#!/usr/bin/python3|g' $name
+done
+
+grep -rl '^#!/usr/bin/python$' * | \
+    while read name; do
+        echo "    Disambiguating /usr/bin/python: $name"
+	sed -i -e 's|^#!/usr/bin/python$|#!/usr/bin/python3|g' $name
+done
+
+# Prevent build failures on ambiguouss python
+grep -rl '^#!/usr/bin/env python$' */ | \
+    while read name; do
+        echo "    Disambiguating /usr/bin/env python: $name"
+	sed -i -e 's|^#!/usr/bin/env python$|#!/usr/bin/python3|g' $name
+done
+
+grep -rl '^#!/usr/bin/python$' */ | \
+    while read name; do
+        echo "    Disambiguating /usr/bin/python: $name"
+	sed -i -e 's|^#!/usr/bin/python$|#!/usr/bin/python3|g' $name
 done
 
 %build
@@ -142,6 +162,9 @@ rsync -a --prune-empty-dirs ansible_collections/ \
 %doc %{_defaultdocdir}/%{name}-%{version}/ansible_collections
 
 %changelog
+* Sat Jan 22 2022 Nico Kadel-Garcia - 4.2.0-0.1
+- Replace all "shebang python" headers with "#!!/usr/bin/python3" for consistency
+
 * Wed Jan 12 2022 Nico Kadel-Garcia - 5.2.0-0
 - Update to 5.2.0
 
