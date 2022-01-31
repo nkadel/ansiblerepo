@@ -21,12 +21,6 @@ ansible-core 2.12.x and the matching ansible-5.x now require python
 older ansible-core 2.11.x and ansible-4.x are being built in parallel
 until further notice.
 
-Local repo access
-=================
-
-Mock now allows the use of file:// based repositories in the .cfg
-file. Review the REPONAWE option in the Makefile for the options.
-
 Building ansible
 ===============
 
