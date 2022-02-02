@@ -143,6 +143,7 @@ ansiblerepo-7-x86_64.cfg: /etc/mock/centos+epel-7-x86_64.cfg
 	@echo 'metadata_expire=1s' >> $@
 	@echo 'gpgcheck=0' >> $@
 	@echo 'priority=20' >> $@
+	@echo 'best=0' >> $@
 	@echo '"""' >> $@
 
 # packages-microsoft-com-prod added for /bin/pwsh
@@ -164,6 +165,7 @@ ansiblerepo-8-x86_64.cfg: centos+epel-8-x86_64.cfg
 	@echo 'metadata_expire=1s' >> $@
 	@echo 'gpgcheck=0' >> $@
 	@echo 'priority=20' >> $@
+	@echo 'best=0' >> $@
 	@echo '' >> $@
 	@echo '[packages-microsoft-com-prod]' >> $@
 	@echo 'name=packages-microsoft-com-prod' >> $@
@@ -191,6 +193,7 @@ ansiblerepo-f35-x86_64.cfg: /etc/mock/fedora-35-x86_64.cfg
 	@echo 'metadata_expire=1s' >> $@
 	@echo 'gpgcheck=0' >> $@
 	@echo 'priority=20' >> $@
+	@echo 'best=0' >> $@
 	@echo '"""' >> $@
 
 ansiblerepo-rawhide-x86_64.cfg: /etc/mock/fedora-rawhide-x86_64.cfg
@@ -211,6 +214,7 @@ ansiblerepo-rawhide-x86_64.cfg: /etc/mock/fedora-rawhide-x86_64.cfg
 	@echo 'metadata_expire=1s' >> $@
 	@echo 'gpgcheck=0' >> $@
 	@echo 'priority=20' >> $@
+	@echo 'best=0' >> $@
 	@echo '"""' >> $@
 
 ansiblerepo-amz2-x86_64.cfg: /etc/mock/amazonlinux-2-x86_64.cfg
@@ -231,6 +235,7 @@ ansiblerepo-amz2-x86_64.cfg: /etc/mock/amazonlinux-2-x86_64.cfg
 	@echo 'metadata_expire=1s' >> $@
 	@echo 'gpgcheck=0' >> $@
 	@echo 'priority=20' >> $@
+	@echo 'best=0' >> $@
 	@echo '"""' >> $@
 
 $(MOCKCFGS)::
