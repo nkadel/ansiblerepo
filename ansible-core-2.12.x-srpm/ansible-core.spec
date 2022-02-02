@@ -34,6 +34,8 @@ Conflicts: ansible <= 2.9.99
 #
 Provides: ansible-base = 2.10.7
 Obsoletes: ansible-base < 2.10.6-1%{?dist}
+# Avoids mixed ansible release dependency wackiness
+Obsoletes: ansible-core < 2.12.0
 
 # A 2.10.3 async test uses /usr/bin/python, which we do not have by default.
 # Patch the test to use /usr/bin/python3 as we have for our build.

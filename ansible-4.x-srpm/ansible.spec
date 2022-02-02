@@ -49,6 +49,9 @@ Summary:        ansible documentation
 %description -n %{pypi_name}-doc
 Documentation for ansible
 
+BuildRequires:  ansible-core < 2.12.0
+BuildRequires:  ansible-core >= 2.11.7
+
 %prep
 %autosetup -n %{pypi_name}-%{pypi_version}
 # Remove bundled egg-info

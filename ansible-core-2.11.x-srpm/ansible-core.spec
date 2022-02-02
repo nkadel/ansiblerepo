@@ -18,8 +18,8 @@
 
 Name: ansible-core
 Summary: A radically simple IT automation system
-Version: 2.11.7
-Release: 0.2%{?betaver}%{?dist}
+Version: 2.11.8
+Release: 0%{?betaver}%{?dist}
 
 License: GPLv3+
 Source0: %pypi_source ansible-core %{version}%{?betaver}
@@ -34,11 +34,16 @@ BuildArch: noarch
 #Obsoletes: ansible <= 2.9.99
 # For now conflict with the ansible 'classic' package.
 Conflicts: ansible <= 2.9.99
+
+
 #
 # obsoletes/provides for ansible-base
 #
 Provides: ansible-base = 2.10.7
 Obsoletes: ansible-base < 2.10.6-1%{?dist}
+
+# Avoid double installation
+Conflicts: ansible-core >= 2.12.0
 
 # A 2.10.3 async test uses /usr/bin/python, which we do not have by default.
 # Patch the test to use /usr/bin/python3 as we have for our build.
@@ -137,6 +142,9 @@ This is the base part of ansible (the engine).
 Summary: Documentation for Ansible Base
 Provides: ansible-base-doc = 2.10.7
 Obsoletes: ansible-base-doc < 2.10.6-1%{?dist}
+
+# Avoid double installation
+Conflicts: ansible-core >= 2.12.0
 
 %description -n ansible-core-doc
 
@@ -286,6 +294,9 @@ make PYTHON=%{__python3} tests-py3
 %endif
 
 %changelog
+* Tue Feb 1 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 2.11.8-0
+- Update to 2.11.8
+
 * Sat Jan 22 2022 Nico Kadel-Garcia - 2.11.7-0.2
 - Replace all "shebang python" headers with "#!!/usr/bin/python3" for consistency
 

@@ -1,6 +1,6 @@
 # Created by pyp2rpm-3.3.7
 %global pypi_name ansible
-%global pypi_version 5.2.0
+%global pypi_version 5.3.0
 
 #
 # If we should enable checks
@@ -22,7 +22,7 @@ Source0:        https://files.pythonhosted.org/packages/source/a/%{pypi_name}/%{
 
 BuildRequires:  ansible-core < 2.13
 # roll back demand for 2.12, for python 3.6 compatibility
-#BuildRequires:  ansible-core >= 2.12
+#BuildRequires:  ansible-core >= 2.12.2
 BuildRequires:  ansible-core >= 2.11.6
 
 BuildRequires:  rsync
@@ -162,7 +162,10 @@ rsync -a --prune-empty-dirs ansible_collections/ \
 %doc %{_defaultdocdir}/%{name}-%{version}/ansible_collections
 
 %changelog
-* Sat Jan 22 2022 Nico Kadel-Garcia - 4.2.0-0.1
+* Tue Feb 1 2022 Nico Kadel-Garcia - 5.3.0-0
+- Update to 5.3.0
+
+* Sat Jan 22 2022 Nico Kadel-Garcia - 5.2.0-0.1
 - Replace all "shebang python" headers with "#!!/usr/bin/python3" for consistency
 
 * Wed Jan 12 2022 Nico Kadel-Garcia - 5.2.0-0
