@@ -19,7 +19,7 @@
 Name: ansible-core
 Summary: A radically simple IT automation system
 Version: 2.11.8
-Release: 0%{?betaver}%{?dist}
+Release: 0.1%{?betaver}%{?dist}
 
 License: GPLv3+
 Source0: %pypi_source ansible-core %{version}%{?betaver}
@@ -48,6 +48,9 @@ Conflicts: ansible-core >= 2.12.0
 # A 2.10.3 async test uses /usr/bin/python, which we do not have by default.
 # Patch the test to use /usr/bin/python3 as we have for our build.
 Patch1:  2.10.3-test-patch.patch
+
+# Disable python 3.6 deprecation warning to avoid log clutter
+Patch2:  2.11.8-deprecate.patch
 
 %if %{with tests}
 #
@@ -294,6 +297,9 @@ make PYTHON=%{__python3} tests-py3
 %endif
 
 %changelog
+* Sun Feb 6 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 2.11.8-0.1
+- Disable python 3.6 deprecation warnings in /etc/ansible/ansible.cfg
+
 * Tue Feb 1 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 2.11.8-0
 - Update to 2.11.8
 
