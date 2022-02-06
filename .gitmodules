@@ -1,0 +1,3 @@
+[submodule "ansible-build-data"]
+	path = ansible-build-data
+	url = https://github.com/ansible-community/ansible-build-data

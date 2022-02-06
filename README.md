@@ -1,9 +1,17 @@
 ansiblerepo
 ==========-
 
-Wrapper for SRPM building tools for ansible 4.x and ansible-core 2.12
+Wrapper for SRPM building tools for ansible 5.x and ansible-core 2.12
 using python3. CentOs 7 has a working version published via EPEL, but
 it's out of date, so this provides an RPM based upgrade path.
+
+Modules in ansible
+==================
+
+The actual list of modules in the ansible tarball is in the releaswe specific file
+of ansible-build-date, for example: 
+
+* ansible-build-data/5/ansible-5.3.0.deps
 
 Upstream renaming
 =================
