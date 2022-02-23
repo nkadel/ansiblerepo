@@ -265,7 +265,7 @@ find %{buildroot}/%{python3_sitelib} -name .travis.yml -exec rm -f {} \;
 
 %check
 %if %{with tests}
-ln -s /usr/bin/pytest-3 bin/pytest
+ln -s /usr/bin/pytest-%{python3_version} bin/pytest
 pathfix.py -i %{__python3} -p test/lib/ansible_test/_data/cli/ansible_test_cli_stub.py
 # This test needs a module not packaged in Fedora so disable it.
 #rm -f test/units/modules/cloud/cloudstack/test_cs_traffic_type.py
