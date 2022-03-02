@@ -18,8 +18,8 @@
 
 Name: ansible-core
 Summary: A radically simple IT automation system
-Version: 2.11.8
-Release: 0.1%{?betaver}%{?dist}
+Version: 2.11.9
+Release: 0%{?betaver}%{?dist}
 
 License: GPLv3+
 Source0: %pypi_source ansible-core %{version}%{?betaver}
@@ -297,6 +297,9 @@ make PYTHON=%{__python3} tests-py3
 %endif
 
 %changelog
+* Tue Mar 1 2022 Nico Kadel-Garcia - 2.11.9-0
+- Update to 2.11.9
+
 * Sun Feb 6 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 2.11.8-0.1
 - Disable python 3.6 deprecation warnings in /etc/ansible/ansible.cfg
 
