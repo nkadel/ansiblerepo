@@ -8,15 +8,15 @@ it's out of date, so this provides an RPM based upgrade path.
 Modules in ansible
 ==================
 
-The actual list of modules in the ansible tarball is in the releaswe specific file
-of ansible-build-date, for example: 
+The actual list of modules in the ansible tarball is in the release
+specific file of the ansible-build-date git repo, for example:
 
-* ansible-build-data/5/ansible-5.3.0.deps
+* https://github.com/ansible-community/ansible-build-data/blob/main/5/ansible-5.4.0.deps
 
 Upstream renaming
 =================
 
-The pypi.org maintainers decided to replace the ansible named module
+The ansible maintainers decided to replace the ansible named module
 with a bundle of dozens of ansible_collection modules, and fragment
 off the primary ansible repo package as ansible-core. This makes
 ansible require both, and makes it at least 20 times as large overall.
@@ -67,5 +67,13 @@ There is a significant security risk with enabling yum repositories
 for locally built components. Generating GPF signed packages and
 ensuring that the compneents are in this build location are securely
 and safely built is not addressed in this test setup.
+
+ansible_collections Rather Than ansible Package
+===============================================
+
+There are tools here to build an "ansible_collections" package rather
+than ansible, more consistently named and deployed than the ansible
+package itself but with precise the same ansible collections modules.
+
 
 		Nico Kadel-Garcia <nkadel@gmail.com>
