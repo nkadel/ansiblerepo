@@ -39,8 +39,8 @@ ANSIBLEPKGS+=ansible-pcp-srpm
 ANSIBLEPKGS+=ansible-4.x-srpm
 ANSIBLEPKGS+=ansible-5.x-srpm
 
-ANSIBLEPKGS+=ansible_collections-4.x-srpm
-ANSIBLEPKGS+=ansible_collections-5.x-srpm
+#ANSIBLEPKGS+=ansible_collections-4.x-srpm
+#ANSIBLEPKGS+=ansible_collections-5.x-srpm
 
 REPOS+=ansiblerepo/el/7
 REPOS+=ansiblerepo/el/8
