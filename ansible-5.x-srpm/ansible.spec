@@ -21,9 +21,10 @@ URL:            https://ansible.com/
 Source0:        https://files.pythonhosted.org/packages/source/a/%{pypi_name}/%{pypi_name}-%{pypi_version}.tar.gz
 
 BuildRequires:  ansible-core < 2.13
-# roll back demand for 2.12, for python 3.6 compatibility
-#BuildRequires:  ansible-core >= 2.12.2
-BuildRequires:  ansible-core >= 2.11.6
+# Roll back demand for 2.12, for python 3.6 compatibility
+# Use 2.11.9 to avoid accidental published Fedora conflict
+#BuildRequires:  ansible-core >= 2.12.3
+BuildRequires:  ansible-core >= 2.11.9
 
 BuildRequires:  rsync
 
@@ -162,7 +163,7 @@ rsync -a --prune-empty-dirs ansible_collections/ \
 %doc %{_defaultdocdir}/%{name}-%{version}/ansible_collections
 
 %changelog
-* Wed Mar 14 2022 Nico Kadel-Garcia - 5.5.0-0
+* Tue Mar 15 2033 Nico Kadel-Garcia - 5.4.0-0
 - Update to 5.5.0
 
 * Tue Feb 22 2022 Nico Kadel-Garcia - 5.4.0-0
