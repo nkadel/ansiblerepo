@@ -297,8 +297,8 @@ make PYTHON=%{__python3} tests-py3
 %endif
 
 %changelog
-* Tue Mar 1 2022 Nico Kadel-Garcia - 2.11.9-0
-- Update to 2.11.9
+* Tue Mar 29 2022 Nico Kadel-Garcia - 2.11.10-0
+- Update to 2.11.10
 
 * Sun Feb 6 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 2.11.8-0.1
 - Disable python 3.6 deprecation warnings in /etc/ansible/ansible.cfg
