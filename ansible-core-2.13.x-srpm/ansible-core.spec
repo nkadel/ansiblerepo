@@ -17,7 +17,7 @@
 
 Name: ansible-core
 Summary: A radically simple IT automation system
-Version: 2.12.4
+Version: 2.13.0b0
 Release: 0%{?betaver}%{?dist}
 
 License: GPLv3+
@@ -234,8 +234,6 @@ mkdir -p %{buildroot}/etc/ansible/roles/
 
 cp examples/hosts %{buildroot}/etc/ansible/
 cp examples/ansible.cfg %{buildroot}/etc/ansible/
-mkdir -p %{buildroot}/%{_mandir}/man1
-cp -v docs/man/man1/*.1 %{buildroot}/%{_mandir}/man1/
 
 install -Dpm0644 -t %{buildroot}%{_fileattrsdir} ansible.attr
 install -Dpm0644 -t %{buildroot}%{_rpmmacrodir} macros.ansible
@@ -259,10 +257,9 @@ make PYTHON=/usr/bin/python3 tests-py3
 
 %files
 %license COPYING
-%doc README.rst PKG-INFO changelogs/CHANGELOG-v2.12.rst
+%doc README.rst PKG-INFO changelogs/CHANGELOG-*.rst
 %dir %{_sysconfdir}/ansible/
 %config(noreplace) %{_sysconfdir}/ansible/*
-%{_mandir}/man1/ansible*
 %{_bindir}/ansible*
 %{_datadir}/ansible/
 %{python3_sitelib}/ansible
