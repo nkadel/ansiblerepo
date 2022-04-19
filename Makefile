@@ -14,7 +14,7 @@ ANSIBLEPKGS+=python-flake8-srpm
 ANSIBLEPKGS+=python-resolvelib-srpm
 
 ANSIBLEPKGS+=ansible-core-2.11.x-srpm
-ANSIBLEPKGS+=ansible-core-2.12.x-srpm
+ANSIBLEPKGS+=ansible-core-2.13.x-srpm
 
 ANSIBLEPKGS+=ansible-collection-ansible-netcommon-srpm
 ANSIBLEPKGS+=ansible-collection-ansible-posix-srpm
@@ -37,10 +37,10 @@ ANSIBLEPKGS+=ansible-inventory-grapher-srpm
 ANSIBLEPKGS+=ansible-pcp-srpm
 
 ANSIBLEPKGS+=ansible-4.x-srpm
-ANSIBLEPKGS+=ansible-5.x-srpm
+ANSIBLEPKGS+=ansible-6.x-srpm
 
 #ANSIBLEPKGS+=ansible_collections-4.x-srpm
-#ANSIBLEPKGS+=ansible_collections-5.x-srpm
+#ANSIBLEPKGS+=ansible_collections-6.x-srpm
 
 REPOS+=ansiblerepo/el/7
 REPOS+=ansiblerepo/el/8
@@ -95,9 +95,9 @@ python-resolvelib-srpm:: python-flake8-srpm
 python-resolvelib-srpm:: python-commentjson-srpm
 
 ansible-core-2.11.x-srpm:: python-resolvelib-srpm
-ansible-core-2.12.x-srpm:: python-resolvelib-srpm
+ansible-core-2.13.x-srpm:: python-resolvelib-srpm
 ansible-4.x-srpm:: ansible-core-2.11.x-srpm
-ansible-5.x-srpm:: ansible-core-2.12.x-srpm
+ansible-3.x-srpm:: ansible-core-2.13.x-srpm
 
 # Actually build in directories
 .PHONY: $(ANSIBLEPKGS)
