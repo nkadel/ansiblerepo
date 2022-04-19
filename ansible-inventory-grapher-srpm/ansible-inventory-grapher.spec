@@ -8,6 +8,9 @@
 %bcond_without python2
 %endif
 
+# For RHEL 'platform python' insanity: Simply put, no.
+%global __python3 %{_bindir}/python%{python3_version}
+
 Name:           %{archive_name}
 Version:        2.5.0
 #Release:        7%%{?dist}

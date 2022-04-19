@@ -12,6 +12,9 @@
 # Disable debugionfo package, the submodule generation mishandles this
 %define debug_package %{nil}
 
+# For RHEL 'platform python' insanity: Simply put, no.
+%global __python3 %{_bindir}/python%{python3_version}
+
 Name:           %{pypi_realname}
 Version:        %{pypi_version}
 Release:        0.2%{?dist}

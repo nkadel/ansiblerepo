@@ -7,6 +7,9 @@
 %global upstream_name ansible-collections-openstack
 %endif
 
+# For RHEL 'platform python' insanity: Simply put, no.
+%global __python3 %{_bindir}/python%{python3_version}
+
 Name:           ansible-collections-openstack
 Version:        1.3.0
 Release:        4%{?dist}

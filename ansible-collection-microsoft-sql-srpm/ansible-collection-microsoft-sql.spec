@@ -13,6 +13,9 @@
 %bcond_with html
 %endif
 
+# For RHEL 'platform python' insanity: Simply put, no.
+%global __python3 %{_bindir}/python%{python3_version}
+
 Name: ansible-collection-microsoft-sql
 Url: https://github.com/linux-system-roles/mssql
 Summary: The Ansible collection for Microsoft SQL Server management

@@ -1,6 +1,9 @@
 %global collection_namespace ansible
 %global collection_name utils
 
+# For RHEL 'platform python' insanity: Simply put, no.
+%global __python3 %{_bindir}/python%{python3_version}
+
 Name:           ansible-collection-%{collection_namespace}-%{collection_name}
 Version:        2.4.2
 Release:        0%{?dist}

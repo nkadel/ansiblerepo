@@ -16,6 +16,9 @@
 # Set this when there's a beta or rc version
 #%%global betaver rc2
 
+# For RHEL 'platform python' insanity: Simply put, no.
+%global __python3 %{_bindir}/python%{python3_version}
+
 Name: ansible-core
 Summary: A radically simple IT automation system
 Version: 2.11.10
@@ -112,7 +115,8 @@ BuildRequires: python%{python3_pkgversion}-pyyaml
 BuildRequires: python%{python3_pkgversion}-PyYAML
 %endif
 BuildRequires: python%{python3_pkgversion}-cryptography
-BuildRequires: python%{python3_pkgversion}-pyvmomi
+# Obsolete requirement
+#BuildRequires: python%%{python3_pkgversion}-pyvmomi
 
 # RHEL8 doesn't have python3-paramiko or python3-winrm (yet), but Fedora does
 %if 0%{?fedora}
@@ -163,26 +167,28 @@ This package installs extensive documentation for ansible-core
 %autosetup -p1 -n %{name}-%{version}%{?betaver}
 cp -a %{S:1} %{S:2} %{S:3} .
 
-grep -rl '^#!/usr/bin/env python$' */ | \
+grep -rl -e '^#!/usr/bin/env python$' -e '^#!/usr/bin/env python $' */ | \
     grep '\.py$' | \
     while read name; do
-        echo "    Disambiguationg /usr/bin/env python: $name"
-	sed -i -e 's|^#!/usr/bin/env python$|#!/usr/bin/python3|' $name
+        echo "    Disambiguating /usr/bin/env python: $name"
+	pathfix.py -i %{__python3} $name
 done
 
-grep -rl '^#!/usr/bin/python$' */ | \
+grep -rl -e '^#!/usr/bin/python$' -e '^#!/usr/bin/python $' */ | \
     grep '\.py$' | \
     while read name; do
-        echo "    Disambiguating /usr/bin/python: $name"
-	sed -i -e 's|^#!/usr/bin/python$|#!/usr/bin/python3|' $name
+        echo "    Disambiguating /usr/bin/python in: $name"
+	pathfix.py -i %{__python3} $name
 done
+if [ "%{__python3}" != "/usr/bin/python3" ]; then
+    grep -rl -e '^#!/usr/bin/python3' -e '^#!/usr/bin/python3 $' */ | \
+	grep '\.py$' | \
+	while read name; do
+            echo "    Disambiguating /usr/bin/python3 in: $name"
+	    pathfix.py -i %{__python3} $name
+	done
+fi    
 
-# Fix some files shebangs
-sed -i -e 's|^#!/usr/bin/env python|#!/usr/bin/python3|' \
-    test/lib/ansible_test/_data/*.py \
-    test/lib/ansible_test/_data/*/*.py \
-    test/lib/ansible_test/_data/*/*/*.py \
-    docs/bin/find-plugin-refs.py
 
 # These we have to supress or the package will depend on /usr/bin/pwsh and not be installable.
 sed -i -s 's|/usr/bin/env pwsh||' \

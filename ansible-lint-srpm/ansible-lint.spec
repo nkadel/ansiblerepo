@@ -1,6 +1,9 @@
 %global archive_name ansible-lint
 %global lib_name ansiblelint
 
+# For RHEL 'platform python' insanity: Simply put, no.
+%global __python3 %{_bindir}/python%{python3_version}
+
 Name:           %{archive_name}
 Epoch:          1
 Version:        5.1.2

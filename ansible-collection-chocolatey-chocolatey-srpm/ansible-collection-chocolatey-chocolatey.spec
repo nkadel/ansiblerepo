@@ -1,6 +1,9 @@
 %global collection_namespace chocolatey
 %global collection_name chocolatey
 
+# For RHEL 'platform python' insanity: Simply put, no.
+%global __python3 %{_bindir}/python%{python3_version}
+
 Name:           ansible-collection-%{collection_namespace}-%{collection_name}
 Version:        1.1.0
 Release:        0%{?dist}

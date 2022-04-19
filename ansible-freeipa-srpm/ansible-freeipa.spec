@@ -3,6 +3,9 @@
 # the python version used in the node
 %define __brp_python_bytecompile %{nil}
 
+# For RHEL 'platform python' insanity: Simply put, no.
+%global __python3 %{_bindir}/python%{python3_version}
+
 Summary: Roles and playbooks to deploy FreeIPA servers, replicas and clients
 Name: ansible-freeipa
 Version: 0.3.8

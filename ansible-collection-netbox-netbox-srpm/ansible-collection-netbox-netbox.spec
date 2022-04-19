@@ -1,6 +1,9 @@
 %global collection_namespace netbox
 %global collection_name netbox
 
+# For RHEL 'platform python' insanity: Simply put, no.
+%global __python3 %{_bindir}/python%{python3_version}
+
 Name:           ansible-collection-%{collection_namespace}-%{collection_name}
 Version:        2.0.0
 Release:        0.2%{?dist}

@@ -8,6 +8,9 @@
 %bcond_without ansible
 %endif
 
+# For RHEL 'platform python' insanity: Simply put, no.
+%global __python3 %{_bindir}/python%{python3_version}
+
 Name:             ansible-pcp
 Version:          2.2.1
 #Release:          1%%{?dist}

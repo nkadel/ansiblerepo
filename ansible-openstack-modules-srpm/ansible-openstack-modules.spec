@@ -1,6 +1,9 @@
 %global githash 79d751a
 
 
+# For RHEL 'platform python' insanity: Simply put, no.
+%global __python3 %{_bindir}/python%{python3_version}
+
 Name:		ansible-openstack-modules
 Version:	0
 Release:	20140914git%{githash}%{?dist}

@@ -12,6 +12,9 @@
 # Set this when there's a beta or rc version
 #%%global betaver rc2
 
+# For RHEL 'platform python' insanity: Simply put, no.
+%global __python3 %{_bindir}/python%{python3_version}
+
 Name: ansible-core
 Summary: A radically simple IT automation system
 Version: 2.12.4
@@ -82,6 +85,10 @@ BuildRequires: python%{python3_pkgversion}-pygments
 BuildRequires: antsibull
 %endif
 
+# Specifically require pathfix.py, since different python versions
+# call it different names
+BuildRequires: %{_bindir}/pathfix.py
+
 #
 # main buildrequires to build
 #
@@ -101,7 +108,6 @@ BuildRequires: python%{python3_pkgversion}-pyyaml
 BuildRequires: python%{python3_pkgversion}-PyYAML
 %endif
 BuildRequires: python%{python3_pkgversion}-cryptography
-BuildRequires: python%{python3_pkgversion}-pyvmomi
 
 # RHEL8 does not have python%%{python3_pkgversion}-paramiko or python%%{python3_pkgversion}-winrm (yet), but Fedora does
 %if 0%{?fedora}
@@ -150,23 +156,29 @@ This package installs extensive documentation for ansible-core
 %autosetup -p1 -n %{name}-%{version}%{?betaver}
 cp -a %{S:1} %{S:2} %{S:3} .
 
-grep -rl '^#!/usr/bin/env python$' */ | \
+grep -rl -e '^#!/usr/bin/env python$' -e '^#!/usr/bin/env python $' */ | \
     grep '\.py$' | \
     while read name; do
         echo "    Disambiguating /usr/bin/env python: $name"
-	sed -i -e 's|^#!/usr/bin/env python$|#!/usr/bin/python3|' $name
+	pathfix.py -i %{__python3} $name
 done
 
-grep -rl '^#!/usr/bin/python$' */ | \
+grep -rl -e '^#!/usr/bin/python$' -e '^#!/usr/bin/python $' */ | \
     grep '\.py$' | \
     while read name; do
         echo "    Disambiguating /usr/bin/python in: $name"
-	sed -i -e 's|^#!/usr/bin/python$|#!/usr/bin/python3|' $name
+	pathfix.py -i %{__python3} $name
 done
 
-sed -i -s 's|/usr/bin/env python|/usr/bin/python3|' \
-    test/lib/ansible_test/_util/target/cli/ansible_test_cli_stub.py
-
+if [ "%{__python3}" != "/usr/bin/python3" ]; then
+    grep -rl -e '^#!/usr/bin/python3' -e '^#!/usr/bin/python3 $' */ | \
+	grep '\.py$' | \
+	while read name; do
+            echo "    Disambiguating /usr/bin/python3 in: $name"
+	    pathfix.py -i %{__python3} $name
+	done
+fi    
+    
 %build
 # disable the python -s shbang flag as we want to be able to find non system modules
 %global py3_shbang_opts %(echo %{py3_shbang_opts} | sed 's/-s//')
