@@ -96,6 +96,10 @@ BuildRequires: python%{python3_pkgversion}-pygments
 BuildRequires: antsibull
 %endif
 
+# Specifically require pathfix.py, since different python versions
+# call it different names
+BuildRequires: %{_bindir}/pathfix.py
+
 #
 # main buildrequires to build
 #
