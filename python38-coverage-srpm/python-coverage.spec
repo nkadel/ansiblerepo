@@ -39,29 +39,17 @@ have been executed.
 
 %package -n python%{python3_pkgversion}-%{pypi_name}
 Summary:        Code coverage testing module for Python 3
-#Requires:       platform-python-%{pypi_name} = %{version}-%{release}
 
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
 # As the "coverage" executable requires the setuptools at runtime (#556290),
 # so the "python3-coverage" executable requires python3-setuptools:
-#%if 0%{?rhel} && 0%{?rhel} >= 8
-#Requires:       platform-python-setuptools
-#%else
 Requires:       python%{python3_pkgversion}-setuptools
-#%endif
 Provides:       bundled(js-jquery) = 1.11.1
 Provides:       bundled(js-jquery-debounce) = 1.1
 Provides:       bundled(js-jquery-hotkeys) = 0.8
 Provides:       bundled(js-jquery-isonscreen) = 1.2.0
 Provides:       bundled(js-jquery-tablesorter)
-
-# Require alternatives version that implements the --keep-foreign flag
-Requires(postun): alternatives >= 1.19.1-1
-# For alternatives
-Requires:       python36
-Requires(post): python36
-Requires(postun): python36
 
 %{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
 
@@ -89,25 +77,6 @@ sed -i 's/\r//g' README.rst
 pushd %{buildroot}%{_bindir}
 rm -rf coverage-3* coverage3
 mv coverage coverage-%{python3_version}
-
-# All ghost files controlled by alternatives need to exist for the files
-# section check to succeed
-touch coverage-3
-popd
-
-
-%post -n python%{python3_pkgversion}-%{pypi_name}
-alternatives --add-slave python3 %{_bindir}/python%{python3_version} \
-    %{_bindir}/coverage-3 \
-    %{_bindir}/coverage-%{python3_version}
-
-%postun -n python%{python3_pkgversion}-%{pypi_name}
-# Do this only during uninstall process (not during update)
-if [ $1 -eq 0 ]; then
-    alternatives --keep-foreign --remove-slave python3 \
-        %{_bindir}/python%{python3_version} coverage-3
-fi
-
 
 #%files -n platform-python-%{pypi_name}
 #%license LICENSE.txt NOTICE.txt
