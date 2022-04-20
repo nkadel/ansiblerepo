@@ -16,6 +16,8 @@ License: GPLv3+
 Source: https://github.com/freeipa/ansible-freeipa/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
 BuildArch: noarch
 
+BuildRequires: %{_bindir}/pathfix.py
+
 %description
 Ansible roles and playbooks to install and uninstall FreeIPA servers, replicas and clients. Also modules for group, host, topology and user management.
 
@@ -109,29 +111,36 @@ to get the needed requrements to run the tests.
 # Fix python modules and module utils:
 # - Remove shebang
 # - Remove execute flag
-for i in roles/ipa*/library/*.py roles/ipa*/module_utils/*.py plugins/*/*.py; do
-    sed -i '1{/\/usr\/bin\/python*/d;}' $i
-    chmod a-x $i
+grep -rl -e '^#!/usr/bin/env python$' -e '^#!/usr/bin/env python $' */ | \
+    grep '\.py$' | \
+    while read name; do
+        echo "    Disambiguating /usr/bin/env python: $name"
+	pathfix.py -i %{__python3} $name
 done
 
+grep -rl -e '^#!/usr/bin/python$' -e '^#!/usr/bin/python $' */ | \
+    grep '\.py$' | \
+    while read name; do
+        echo "    Disambiguating /usr/bin/python in: $name"
+	pathfix.py -i %{__python3} $name
+done
+
+if [ "%{__python3}" != "/usr/bin/python3" ]; then
+    grep -rl -e '^#!/usr/bin/python3' -e '^#!/usr/bin/python3 $' */ | \
+	grep '\.py$' | \
+	while read name; do
+            echo "    Disambiguating /usr/bin/python3 in: $name"
+	    pathfix.py -i %{__python3} $name
+	done
+fi    
+    
 for i in utils/*.py utils/ansible-ipa-*-install utils/new_module \
          utils/changelog utils/ansible-doc-test;
 do
-    sed -i '{s@/usr/bin/python*@%{__python3}@}' $i
+    pathfix.py -i %{__python3} $name $i
 done
 
-# Prevent build failures on ambiguouss python
-grep -rl '^#!/usr/bin/env python$' */ | \
-    while read name; do
-        echo "    Disambiguating /usr/bin/env python: $name"
-	sed -i -e 's|^#!/usr/bin/env python$|#!/usr/bin/python3|g' $name
-done
-
-grep -rl '^#!/usr/bin/python$' */ | \
-    while read name; do
-        echo "    Disambiguating /usr/bin/python: $name"
-	sed -i -e 's|^#!/usr/bin/python$|#!/usr/bin/python3|g' $name
-done
+find . -name '*~' | xargs rm -f
 
 %build
 
