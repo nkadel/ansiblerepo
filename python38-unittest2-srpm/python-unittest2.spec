@@ -45,11 +45,7 @@ BuildRequires:  %{_bindir}/pathfix.py
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
 BuildRequires:  python%{python3_pkgversion}-six
-%if 0%{?rhel} && 0%{?rhel} >= 8
-Requires:       platform-python-setuptools
-%else
 Requires:       python%{python3_pkgversion}-setuptools
-%endif
 Requires:       python%{python3_pkgversion}-six
 
 
