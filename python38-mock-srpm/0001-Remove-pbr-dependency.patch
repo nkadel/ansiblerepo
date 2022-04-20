@@ -1,0 +1,72 @@
+From 894204aba025609a91ad219767b88caa65d81259 Mon Sep 17 00:00:00 2001
+From: Lumir Balhar <lbalhar@redhat.com>
+Date: Wed, 20 Jun 2018 12:47:42 +0200
+Subject: [PATCH] Remove pbr dependency
+
+---
+ mock/mock.py     | 6 ++----
+ requirements.txt | 4 ----
+ setup.cfg        | 3 +++
+ setup.py         | 3 +--
+ 4 files changed, 6 insertions(+), 10 deletions(-)
+
+diff --git a/mock/mock.py b/mock/mock.py
+index c674a85..afa1105 100644
+--- a/mock/mock.py
++++ b/mock/mock.py
+@@ -66,11 +66,9 @@ from types import ModuleType
+ 
+ import six
+ from six import wraps
+-from pbr.version import VersionInfo
+ 
+-_v = VersionInfo('mock').semantic_version()
+-__version__ = _v.release_string()
+-version_info = _v.version_tuple()
++__version__ = 'VERSIONPLACEHOLDER'
++version_info = tuple(map(int, __version__.split('.'))) + ('final', 0)
+ 
+ import mock
+ 
+diff --git a/requirements.txt b/requirements.txt
+index 31bbe5d..bca9f9b 100644
+--- a/requirements.txt
++++ b/requirements.txt
+@@ -1,6 +1,2 @@
+ funcsigs>=1;python_version<"3.3"
+-# For runtime needs this is correct. For setup_requires needs, 1.2.0 is needed
+-# but setuptools can't cope with conflicts in setup_requires, so thats
+-# unversioned.
+-pbr>=0.11
+ six>=1.9
+diff --git a/setup.cfg b/setup.cfg
+index f5e0a02..3f7f263 100644
+--- a/setup.cfg
++++ b/setup.cfg
+@@ -1,5 +1,6 @@
+ [metadata]
+ name = mock
++version = VERSIONPLACEHOLDER
+ summary = Rolling backport of unittest.mock for all Pythons
+ home-page = https://github.com/testing-cabal/mock
+ description-file = README.rst
+@@ -49,3 +50,5 @@ tag_build =
+ tag_date = 0
+ tag_svn_revision = 0
+ 
++[options]
++packages = mock
+diff --git a/setup.py b/setup.py
+index 5f727ae..b80f541 100755
+--- a/setup.py
++++ b/setup.py
+@@ -2,5 +2,4 @@
+ import setuptools
+ 
+ setuptools.setup(
+-    setup_requires=['pbr>=1.3', 'setuptools>=17.1'],
+-    pbr=True)
++    setup_requires=['setuptools>=17.1'])
+-- 
+2.17.1
+
