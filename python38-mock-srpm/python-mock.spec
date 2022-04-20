@@ -52,7 +52,7 @@ needed attributes in the normal way.
 %package -n python%{python3_pkgversion}-mock
 Summary:        A Python Mocking and Patching Library for Testing
 %{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
-Requires:    python3-six >= 1.9.0
+Requires:    python%{python3_pkgversion}-six >= 1.9.0
 
 %description -n python%{python3_pkgversion}-mock
 Mock is a Python module that provides a core mock class. It removes the need
