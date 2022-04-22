@@ -1,144 +1,94 @@
-#
-# If we should enable docs building
-# Currently we cannot until we get a stack of needed packages added and a few bugs fixed
-#
-%bcond_with docs
+%global pypi_name ansible-core
+%global pypi_version 2.11.10
 
-#
-# If we should enable tests by default
-#
-%if 0%{?fedora}
-%bcond_without tests
-%else
-%bcond_with tests
-%endif
+# We need this because we are no longer noarch, since our bundled deps might
+# conceivably need to compile arch-specific things. But we currently have no
+# useful debuginfo stuff.
+%global debug_package %{nil}
 
-# Set this when there's a beta or rc version
-#%%global betaver rc2
+# Disable shebang munging for specific paths.  These files are data files.
+# ansible-core-test munges the shebangs itself.
+%global __brp_mangle_shebangs_exclude_from_file %{SOURCE1}
 
-# For RHEL 'platform python' insanity: Simply put, no.
-%global __python3 %{_bindir}/python%{python3_version}
+# NOTE(pabelanger): Don't auto add pwsh as Requires for ansible-test. We do
+# not wish to package it.
+%global __requires_exclude ^/usr/bin/pwsh$
+
+# RHEL and Fedora add -s to the shebang line.  We do *not* use -s -E -S or -I
+# with ansible because it has many optional features which users need to
+# install libraries on their own to use.  For instance, paramiko for the
+# network connection plugins or winrm to talk to windows hosts.
+# Set this to nil to remove -s
+%define py_shbang_opts %{nil}
+%define py2_shbang_opts %{nil}
+%define py3_shbang_opts %{nil}
+
+#%%define vendor_path %%{buildroot}%%{python3_sitelib}/ansible/_vendor/
+#%%define vendor_pip /usr/bin/python3.8 -m pip install --no-deps -v --no-use-pep517 --no-binary :all: -t %%{vendor_path}
+
+# These control which bundled dep versions we pin against
+#%%global packaging_version 20.4
+#%%global pyparsing_version 2.4.7
+#%%global straightplugin_version 1.4.1
 
 Name: ansible-core
-Summary: A radically simple IT automation system
-Version: 2.11.10
-Release: 0%{?betaver}%{?dist}
+Summary: SSH-based configuration management, deployment, and task execution system
+Version: %{pypi_version}
+Release: 0%{?dist}
+ExcludeArch: i686
 
+Group: Development/Libraries
 License: GPLv3+
-Source0: %pypi_source ansible-core %{version}%{?betaver}
+Source0: https://pypi.python.org/packages/source/a/ansible-core/ansible-core-%{version}.tar.gz
+Source1: ansible-test-data-files.txt
+Source2: ansible.attr
+Source3: ansible-generator
+Source4: macros.ansible
 
-Source1: ansible.attr
-Source2: ansible-generator
-Source3: macros.ansible
-Url: http://ansible.com
-BuildArch: noarch
+URL: http://ansible.com
 
-#Provides: ansible = %%{version}-%%{release}
-#Obsoletes: ansible <= 2.9.99
-# For now conflict with the ansible 'classic' package.
-Conflicts: ansible <= 2.9.99
+# We conflict old ansible, and any version of ansible-base.
+Conflicts: ansible < 2.10.0
+Conflicts: ansible-base
 
+# ... and provide 'ansible' so that old packages still work without updated
+# spec files.
+# Provides: ansible
 
-#
-# obsoletes/provides for ansible-base
-#
-Provides: ansible-base = 2.10.7
-Obsoletes: ansible-base < 2.10.6-1%{?dist}
+# Bundled provides that are sprinkled throughout the codebase.
+Provides: bundled(python-backports-ssl_match_hostname) = 3.7.0.1
+Provides: bundled(python-distro) = 1.5.0
+Provides: bundled(python-selectors2) = 1.1.1
+Provides: bundled(python-six) = 1.13.0
 
-# Avoid double installation
-Conflicts: ansible-core >= 2.12.0
-
-# A 2.10.3 async test uses /usr/bin/python, which we do not have by default.
-# Patch the test to use /usr/bin/python3 as we have for our build.
-Patch1:  2.10.3-test-patch.patch
-
-# Disable python 3.6 deprecation warning to avoid log clutter
-Patch2:  2.11.8-deprecate.patch
-
-%if %{with tests}
-#
-# For tests
-#
-# These two exist on both fedora and rhel8
-#
-BuildRequires: make
-BuildRequires: git-core
-BuildRequires: python%{python3_pkgversion}-packaging
-BuildRequires: python%{python3_pkgversion}-pexpect
-BuildRequires: openssl
-BuildRequires: python%{python3_pkgversion}-systemd
-#
-# These only exist on Fedora. RHEL8 will just skip tests that need them.
-#
-%if 0%{?fedora}
-BuildRequires: python%{python3_pkgversion}-paramiko
-BuildRequires: python%{python3_pkgversion}-winrm
-
-BuildRequires: python%{python3_pkgversion}-crypto
-BuildRequires: python%{python3_pkgversion}-pbkdf2
-BuildRequires: python%{python3_pkgversion}-httmock
-BuildRequires: python%{python3_pkgversion}-gitlab
-BuildRequires: python%{python3_pkgversion}-boto3
-BuildRequires: python%{python3_pkgversion}-botocore
-BuildRequires: python%{python3_pkgversion}-coverage
-BuildRequires: python%{python3_pkgversion}-passlib
-%endif
-%endif
-%if %{with docs}
-BuildRequires: make
-BuildRequires: python%{python3_pkgversion}-sphinx
-BuildRequires: python%{python3_pkgversion}-sphinx-theme-alabaster
-BuildRequires: python%{python3_pkgversion}-sphinx-notfound-page
-BuildRequires: asciidoc
-BuildRequires: python%{python3_pkgversion}-straight-plugin
-BuildRequires: python%{python3_pkgversion}-rstcheck
-BuildRequires: python%{python3_pkgversion}-pygments
-BuildRequires: antsibull
-%endif
-
-# Specifically require pathfix.py, since different python versions
-# call it different names
-BuildRequires: %{_bindir}/pathfix.py
-
-#
-# main buildrequires to build
-#
-BuildRequires: python%{python3_pkgversion}-devel
-BuildRequires: python%{python3_pkgversion}-setuptools
-BuildRequires: python%{python3_pkgversion}-six
-BuildRequires: python%{python3_pkgversion}-nose
-BuildRequires: python%{python3_pkgversion}-pytest
-BuildRequires: python%{python3_pkgversion}-pytest-xdist
-BuildRequires: python%{python3_pkgversion}-pytest-mock
-BuildRequires: python%{python3_pkgversion}-requests
-BuildRequires: python%{python3_pkgversion}-mock
-BuildRequires: python%{python3_pkgversion}-jinja2
-%if 0%{?fedora}
-BuildRequires: python%{python3_pkgversion}-pyyaml
-%else
 BuildRequires: python%{python3_pkgversion}-PyYAML
-%endif
-BuildRequires: python%{python3_pkgversion}-cryptography
-# Obsolete requirement
-#BuildRequires: python%%{python3_pkgversion}-pyvmomi
+BuildRequires: python%{python3_pkgversion}-devel
+# BuildRequires: python%%{python3_pkgversion}-docutils
+BuildRequires: python%{python3_pkgversion}-jinja2
+BuildRequires: python%{python3_pkgversion}-pip
+BuildRequires: python%{python3_pkgversion}-packaging
+BuildRequires: python%{python3_pkgversion}-pyparsing
+BuildRequires: python%{python3_pkgversion}-setuptools
+BuildRequires: python%{python3_pkgversion}-straight-plugin
+BuildRequires: python%{python3_pkgversion}-wheel
 
-# RHEL8 doesn't have python3-paramiko or python3-winrm (yet), but Fedora does
-%if 0%{?fedora}
-Recommends: python%{python3_pkgversion}-paramiko
-Recommends: python%{python3_pkgversion}-winrm
-%endif
-
-Requires: python%{python3_pkgversion}-jinja2
-# needed for json_query filter
-Requires: python%{python3_pkgversion}-jmespath
-# needed for galaxy
-Requires: python%{python3_pkgversion}-resolvelib
-
-%if 0%{?fedora}
-Requires: python%{python3_pkgversion}-pyyaml
+# Because Red Hat cannot keep python3 names consistent
+%if 0%{?el7}
+BuildRequires: python3-resolvelib
+BuildRequires: python3-rpm-macros
 %else
-Requires: python%{python3_pkgversion}-PyYAML
+BuildRequires: python%{python3_pkgversion}-resolvelib
+BuildRequires: python%{python3_pkgversion}-rpm-macros
 %endif
+
+Requires: git
+Requires: python%{python3_pkgversion}
+Requires: python%{python3_pkgversion}-jinja2
+Requires: python%{python3_pkgversion}-PyYAML
+Requires: python%{python3_pkgversion}-cryptography
+Requires: python%{python3_pkgversion}-resolvelib
+Requires: python%{python3_pkgversion}-six
+Requires: sshpass
 
 %description
 Ansible is a radically simple model-driven configuration management,
@@ -147,78 +97,44 @@ over SSH and does not require any software or daemons to be installed
 on remote nodes. Extension modules can be written in any language and
 are transferred to managed machines automatically.
 
-This is the base part of ansible (the engine).
+%package -n ansible-test
+Summary: Tool for testing ansible plugin and module code
+Requires: %{name} = %{version}-%{release}
 
-%package -n ansible-core-doc
-Summary: Documentation for Ansible Base
-Provides: ansible-base-doc = 2.10.7
-Obsoletes: ansible-base-doc < 2.10.6-1%{?dist}
-
-# Avoid double installation
-Conflicts: ansible-core >= 2.12.0
-
-%description -n ansible-core-doc
-
+%description -n ansible-test
 Ansible is a radically simple model-driven configuration management,
 multi-node deployment, and remote task execution system. Ansible works
 over SSH and does not require any software or daemons to be installed
 on remote nodes. Extension modules can be written in any language and
 are transferred to managed machines automatically.
 
-This package installs extensive documentation for ansible-core
+This package installs the ansible-test command for testing modules and plugins
+developed for ansible.
 
 %prep
-%autosetup -p1 -n %{name}-%{version}%{?betaver}
-cp -a %{S:1} %{S:2} %{S:3} .
+#%%autosetup -q -n %{pypi_name}-%{version}
+%autosetup -n %{pypi_name}-%{version}
+cp -a %{S:2} %{S:3} %{S:4} .
 
-grep -rl -e '^#!/usr/bin/env python$' -e '^#!/usr/bin/env python $' */ | \
-    grep '\.py$' | \
-    while read name; do
-        echo "    Disambiguating /usr/bin/env python: $name"
-	pathfix.py -i %{__python3} $name
-done
-
-grep -rl -e '^#!/usr/bin/python$' -e '^#!/usr/bin/python $' */ | \
-    grep '\.py$' | \
-    while read name; do
-        echo "    Disambiguating /usr/bin/python in: $name"
-	pathfix.py -i %{__python3} $name
-done
-if [ "%{__python3}" != "/usr/bin/python3" ]; then
-    grep -rl -e '^#!/usr/bin/python3' -e '^#!/usr/bin/python3 $' */ | \
-	grep '\.py$' | \
-	while read name; do
-            echo "    Disambiguating /usr/bin/python3 in: $name"
-	    pathfix.py -i %{__python3} $name
-	done
-fi    
-
-
-# These we have to supress or the package will depend on /usr/bin/pwsh and not be installable.
-sed -i -s 's|/usr/bin/env pwsh||' \
-    test/lib/ansible_test/_data/sanity/validate-modules/validate_modules/ps_argspec.ps1 \
-    test/lib/ansible_test/_data/sanity/pslint/pslint.ps1 \
-    test/lib/ansible_test/_data/requirements/sanity.ps1
-
-%build
-# disable the python -s shbang flag as we want to be able to find non system modules
-%global py3_shbang_opts %(echo %{py3_shbang_opts} | sed 's/-s//')
-%py3_build
-
-%if %{with docs}
-  make PYTHON=%{__python3} SPHINXBUILD=sphinx-build-%{python3_version} webdocs
+# Fix all Python shebangs recursively in ansible-test
+# -p preserves timestamps
+# -n prevents creating ~backup files
+# -i specifies the interpreter for the shebang
+%if 0%{?el7}
+pathfix.py -pni "%{__python3} %{py3_shbang_opts}" test/lib/ansible_test
 %else
-  # we still need things to build these minimal docs too.
-  # make PYTHON=%{__python3} -Cdocs/docsite config cli keywords modules plugins testing
+pathfix%{python3_version}.py -pni "%{__python3} %{py3_shbang_opts}" test/lib/ansible_test
 %endif
 
+%build
+%{__python3} setup.py build
+
 %install
-%py3_install
+%{__python3} setup.py install --root %{buildroot}
 
 # Create system directories that Ansible defines as default locations in
 # ansible/config/base.yml
 DATADIR_LOCATIONS='%{_datadir}/ansible/collections
-%{_datadir}/ansible/collections/ansible_collections
 %{_datadir}/ansible/plugins/doc_fragments
 %{_datadir}/ansible/plugins/action
 %{_datadir}/ansible/plugins/become
@@ -239,150 +155,124 @@ DATADIR_LOCATIONS='%{_datadir}/ansible/collections
 %{_datadir}/ansible/plugins/test
 %{_datadir}/ansible/plugins/vars'
 
-UPSTREAM_DATADIR_LOCATIONS=$(grep -ri default lib/ansible/config/base.yml| tr ':' '\n' | grep '/usr/share/ansible')
+UPSTREAM_DATADIR_LOCATIONS=$(grep -ri default lib/ansible/config/base.yml | tr ':' '\n' | grep '/usr/share/ansible')
 
 if [ "$SYSTEM_LOCATIONS" != "$UPSTREAM_SYSTEM_LOCATIONS" ] ; then
-  echo "The upstream Ansible datadir locations have changed.  Spec file needs to be updated"
-  exit 1
+	echo "The upstream Ansible datadir locations have changed.  Spec file needs to be updated"
+	exit 1
 fi
 
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/ansible/plugins/
+mkdir -p %{buildroot}%{_datadir}/ansible/plugins/
 for location in $DATADIR_LOCATIONS ; do
-	mkdir $RPM_BUILD_ROOT"$location"
+	mkdir %{buildroot}"$location"
 done
-mkdir -p $RPM_BUILD_ROOT/etc/ansible/
-mkdir -p $RPM_BUILD_ROOT/etc/ansible/roles/
+mkdir -p %{buildroot}%{_sysconfdir}/ansible/
+mkdir -p %{buildroot}%{_sysconfdir}/ansible/roles/
 
-cp examples/hosts $RPM_BUILD_ROOT/etc/ansible/
-cp examples/ansible.cfg $RPM_BUILD_ROOT/etc/ansible/
-mkdir -p $RPM_BUILD_ROOT/%{_mandir}/man1
-cp -v docs/man/man1/*.1 $RPM_BUILD_ROOT/%{_mandir}/man1/
+cp examples/hosts %{buildroot}%{_sysconfdir}/ansible/
+cp examples/ansible.cfg %{buildroot}%{_sysconfdir}/ansible/
 
-# RHEL does generate subdirs automatically
-%if 0%{?rhel}
-install -d %{buildroot}%{_fileattrsdir}
-install -d %{buildroot}%{_rpmmacrodir}
-install -d %{buildroot}%{_rpmconfigdir}
-%endif
+# RHEL does not generate subdirs automatically
+install -d -m755 %{buildroot}%{_fileattrsdir}
+install -d -m755 %{buildroot}%{_rpmmacrodir}
+install -d -m755 %{buildroot}%{_rpmconfigdir}
 
 install -Dpm0644 -t %{buildroot}%{_fileattrsdir} ansible.attr
 install -Dpm0644 -t %{buildroot}%{_rpmmacrodir} macros.ansible
 install -Dpm0755 -t %{buildroot}%{_rpmconfigdir} ansible-generator
 
-# no need to ship zero length files
-find %{buildroot}/%{python3_sitelib} -name .git_keep -exec rm -f {} \;
-find %{buildroot}/%{python3_sitelib} -name .travis.yml -exec rm -f {} \;
+ls -l %{buildroot}%{_fileattrsdir}
+ls -l %{buildroot}%{_rpmmacrodir}
+ls -l %{buildroot}%{_rpmconfigdir}
 
-%check
-%if %{with tests}
-ln -s /usr/bin/pytest-%{python3_version} bin/pytest
-pathfix.py -i %{__python3} -p test/lib/ansible_test/_data/cli/ansible_test_cli_stub.py
-# This test needs a module not packaged in Fedora so disable it.
-#rm -f test/units/modules/cloud/cloudstack/test_cs_traffic_type.py
-# These tests are failing with pytest 6
-rm -f test/units/galaxy/test_collection_install.py
-rm -f test/units/module_utils/urls/test_prepare_multipart.py
-make PYTHON=%{__python3} tests-py3
-%endif
+
+mkdir -p %{buildroot}/%{_mandir}/man1/
+## Build man pages
+#
+#mkdir /tmp/_vendor
+#
+## Remove plugins not needed, they bring in more dependencies
+#find hacking/build_library/build_ansible/command_plugins ! -name 'generate_man.py' -type f -exec rm -f {} +
+#
+#PYTHON=python3.8 PYTHONPATH=%{vendor_path}:/tmp/_vendor make docs
+#cp -v docs/man/man1/*.1 %%{buildroot}/%%{_mandir}/man1/
+#
+#cp -pr docs/docsite/rst .
+cp -p lib/ansible_core.egg-info/PKG-INFO .
 
 %files
-%license COPYING
-%doc README.rst PKG-INFO changelogs/CHANGELOG-v2.11.rst
-%dir %{_sysconfdir}/ansible/
-%config(noreplace) %{_sysconfdir}/ansible/*
-%{_mandir}/man1/ansible*
+%defattr(-,root,root)
 %{_bindir}/ansible*
+%exclude %{_bindir}/ansible-test
+%config(noreplace) %{_sysconfdir}/ansible/
+%doc README.rst PKG-INFO COPYING
+%doc changelogs/CHANGELOG-v2.*.rst
+# %%doc %%{_mandir}/man1/ansible*
 %{_datadir}/ansible/
-%{python3_sitelib}/ansible
-%{python3_sitelib}/ansible_test
-%{python3_sitelib}/*egg-info
+%{python3_sitelib}/ansible*
+%exclude %{python3_sitelib}/ansible_test
 %{_fileattrsdir}/ansible.attr
 %{_rpmmacrodir}/macros.ansible
 %{_rpmconfigdir}/ansible-generator
 
-%files -n ansible-core-doc
-%doc docs/docsite/rst
-%if %{with docs}
-%doc docs/docsite/_build/html
-%endif
+
+%files -n ansible-test
+%{_bindir}/ansible-test
+%{python3_sitelib}/ansible_test
 
 %changelog
-* Tue Mar 29 2022 Nico Kadel-Garcia - 2.11.10-0
-- Update to 2.11.10
+* Mon Mar 14 2022 Dimitri Savineau <dsavinea@redhat.com> - 2.12.3-1
+- ansible-core 2.12.3 release
+- re-enable changelog and manpages
 
-* Sun Feb 6 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 2.11.8-0.1
-- Disable python 3.6 deprecation warnings in /etc/ansible/ansible.cfg
+* Mon Mar 07 2022 Dimitri Savineau <dsavinea@redhat.com> - 2.12.2-3
+- replace Obsolete to Conflicts
 
-* Tue Feb 1 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 2.11.8-0
-- Update to 2.11.8
+* Wed Feb 02 2022 Dimitri Savineau <dsavinea@redhat.com> - 2.12.2-2
+- fix ansible tarball setup
 
-* Sat Jan 22 2022 Nico Kadel-Garcia - 2.11.7-0.2
-- Replace all "shebang python" headers with "#!!/usr/bin/python3" for consistency
+* Wed Feb 02 2022 Dimitri Savineau <dsavinea@redhat.com> - 2.12.2-1
+- ansible-core 2.12.2 release
+- add gating and test files
 
-* Fri Dec 10 2021 Nico Kadel-Garcia <nkadel@gmail.com> - 2.11.7
-- Update to 2.11.7
+* Wed Jan 19 2022 Dimitri Savineau <dsavinea@redhat.com> - 2.12.1-2
+- Remove Provides on ansible
 
-* Thu Dec  2 2021 Nico Kadel-Garcia
-- Add Requires for pyyaml and jinja2
+* Thu Dec 16 2021 Yanis Guenane <yguenane@redhat.com> - 2.12.1-1
+- ansible-core 2.12.1-1
 
-* Sat Nov 6 2021 Nico Kadel-Garcia <nkadel@gmail.com> - 2.11.6
-- Update ansible-generate to demand ansible-core, not ansible-base
+* Wed Jul 21 2021 Paul Belanger <pabelanger@redhat.com> - 2.11.3-2
+- Add git dependency for ansible-galaxy CLI command.
 
-* Thu Oct 14 2021 Maxwell G <gotmax@e.email> - 2.11.6-1
-- Update to 2.11.6.
+* Tue Jul 20 2021 Yanis Guenane <yguenane@redhat.com> - 2.11.3-1
+- ansible-core 2.11.3-1
 
-* Tue Sep 14 2021 Kevin Fenzi <kevin@scrye.com> - 2.11.5-1
-- Update to 2.11.5. Fixes rhbz#2002393
+* Fri Jul 02 2021 Satoe Imaishi <simaishi@redhat.com> - 2.11.2-2
+- Add man pages
 
-* Thu Aug 19 2021 Kevin Fenzi <kevin@scrye.com> - 2.11.4-1
-- Update to 2.11.4. Fixes rhbz#1994107
+* Tue Jun 29 2021 Paul Belanger <pabelanger@redhat.com> - 2.11.2-1
+- ansible-core 2.11.2 released.
+- Drop bundled version of resolvelib in favor of
+  python38-resolvelib.
 
-* Sun Jul 25 2021 Kevin Fenzi <kevin@scrye.com> - 2.11.3-1
-- Update to 2.11.3. Fixes rhbz#1983836
+* Wed Mar 31 2021 Rick Elrod <relrod@redhat.com> - 2.11.0b4-1
+- ansible-core 2.11.0 beta 4
 
-* Wed Jul 21 2021 Fedora Release Engineering <releng@fedoraproject.org> - 2.11.2-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
+* Thu Mar 18 2021 Rick Elrod <relrod@redhat.com> - 2.11.0b2-3
+- Try adding a Provides for old ansible.
 
-* Tue Jun 22 2021 Kevin Fenzi <kevin@scrye.com> - 2.11.2-1
-- Update to 2.11.2. Fixed rhbz#1974593
+* Thu Mar 18 2021 Rick Elrod <relrod@redhat.com> - 2.11.0b2-2
+- Try Obsoletes instead of Conflicts.
 
-* Fri Jun 04 2021 Python Maint <python-maint@redhat.com> - 2.11.1-2
-- Rebuilt for Python 3.10
+* Thu Mar 18 2021 Rick Elrod <relrod@redhat.com> - 2.11.0b2-1
+- ansible-core 2.11.0 beta 2
+- Conflict with old ansible and ansible-base.
 
-* Mon May 24 2021 Kevin Fenzi <kevin@scrye.com> - 2.11.1-1
-- Update to 2.11.1. Fixes rhbz#1964172
+* Thu Mar 11 2021 Rick Elrod <relrod@redhat.com> - 2.11.0b1-1
+- ansible-core 2.11.0 beta 1
 
-* Tue Apr 27 2021 Kevin Fenzi <kevin@scrye.com> - 2.11.0-1
-- Update to 2.11.0 final.
+* Mon Nov 30 2020 Rick Elrod <relrod@redhat.com> - 2.11.0-1
+- ansible-core, beta
 
-* Sat Apr 24 2021 Kevin Fenzi <kevin@scrye.com> - 2.11.0-0.3.rc2
-- Update to 2.11.0rc2.
-
-* Sat Apr 03 2021 Kevin Fenzi <kevin@scrye.com> - 2.11.0-0.1.b4
-- Rename to ansible-base, update to b4 beta version.
-
-* Sat Feb 20 2021 Kevin Fenzi <kevin@scrye.com> - 2.10.6-1
-- Update to 2.10.6.
-- Fixes CVE-2021-20228
-
-* Tue Jan 26 2021 Fedora Release Engineering <releng@fedoraproject.org> - 2.10.5-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
-
-* Sun Jan 24 2021 Kevin Fenzi <kevin@scrye.com> - 2.10.5-1
-- Update to 2.10.5.
-
-* Sat Dec 19 2020 Kevin Fenzi <kevin@scrye.com> - 2.10.4-1
-- Update to 2.10.4
-
-* Sat Nov 07 2020 Kevin Fenzi <kevin@scrye.com> - 2.10.3-2
-- Various review fixes
-
-* Tue Nov 03 2020 Kevin Fenzi <kevin@scrye.com> - 2.10.3-1
-- Update to 2.10.3
-
-* Sat Oct 10 2020 Kevin Fenzi <kevin@scrye.com> - 2.10.2-1
-- Update to 2.10.2
-
-* Sat Sep 26 2020 Kevin Fenzi <kevin@scrye.com> - 2.10.1-1
-- Initial version for review.
-
+* Wed Jun 10 2020 Rick Elrod <relrod@redhat.com> - 2.10.0-1
+- ansible-base, beta
