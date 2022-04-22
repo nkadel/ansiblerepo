@@ -31,10 +31,7 @@
 %define py2_shbang_opts %{nil}
 %define py3_shbang_opts %{nil}
 
-#%%define vendor_path %%{buildroot}%%{python3_sitelib}/ansible/_vendor/
-#%%define vendor_pip /usr/bin/python3.8 -m pip install --no-deps -v --no-use-pep517 --no-binary :all: -t %%{vendor_path}
-
-# These control which bundled dep versions we pin against
+# These used to report which bundled dep versions we pinned against internally
 #%%global packaging_version 20.4
 #%%global pyparsing_version 2.4.7
 #%%global straightplugin_version 1.4.1
@@ -69,13 +66,13 @@ Provides: bundled(python-distro) = 1.5.0
 Provides: bundled(python-selectors2) = 1.1.1
 Provides: bundled(python-six) = 1.13.0
 
+BuildRequires: python%{python3_pkgversion}-PyYAML
 BuildRequires: python%{python3_pkgversion}-devel
 # BuildRequires: python%%{python3_pkgversion}-docutils
 BuildRequires: python%{python3_pkgversion}-jinja2
 BuildRequires: python%{python3_pkgversion}-pip
 BuildRequires: python%{python3_pkgversion}-packaging
 BuildRequires: python%{python3_pkgversion}-pyparsing
-BuildRequires: python%{python3_pkgversion}-pyyaml
 BuildRequires: python%{python3_pkgversion}-resolvelib
 BuildRequires: python%{python3_pkgversion}-rpm-macros
 BuildRequires: python%{python3_pkgversion}-setuptools
@@ -207,6 +204,9 @@ cp -p lib/ansible_core.egg-info/PKG-INFO .
 %{python3_sitelib}/ansible_test
 
 %changelog
+* Fri Apr 22 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 2.13.0b0-0
+- Update to 2.13.0b0
+
 * Mon Mar 14 2022 Dimitri Savineau <dsavinea@redhat.com> - 2.12.3-1
 - ansible-core 2.12.3 release
 - re-enable changelog and manpages
