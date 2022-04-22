@@ -8,7 +8,7 @@
 
 Name:           python-straight-plugin
 Version:        1.5.0
-#Release:        10%{?dist}
+#Release:        10%%{?dist}
 Release:        0.10%{?dist}
 Summary:        Python plugin loader
 
@@ -16,7 +16,7 @@ License:        BSD
 URL:            https://github.com/ironfroggy/straight.plugin/
 
 Source0:        https://files.pythonhosted.org/packages/48/89/34ae6a87784d0b607af61c84a52c313c598f1d86ce5c1e9eb6da038fee5f/straight.plugin-%{version}.tar.gz
-#Source0:	%{pypi_source}
+#Source0:	%%{pypi_source}
 
 
 BuildArch:      noarch
