@@ -11,8 +11,8 @@
 # Disable debugionfo package, the submodule generation mishandles this
 %define debug_package %{nil}
 
-# For RHEL 'platform python' insanity: Simply put, no.
-%global __python3 %{_bindir}/python%{python3_version}
+# Disable '#!/usr/bin/python' and '#!/usr/bin/env python' complaints
+%global __brp_mangle_shebangs /usr/bin/true
 
 Name:           %{pypi_name}
 Version:        %{pypi_version}
@@ -95,19 +95,6 @@ find ansible_collections -type d | grep -E "tests/unit|tests/integration|tests/u
     while read tests; do
     echo Flushing tests: $tests
     rm -rf "$tests"
-done
-
-# Prevent build failures on ambiguouss python
-grep -rl '^#!/usr/bin/env python$' */ | \
-    while read name; do
-        echo "    Disambiguating /usr/bin/env python: $name"
-	sed -i -e 's|^#!/usr/bin/env python$|#!/usr/bin/python3|g' $name
-done
-
-grep -rl '^#!/usr/bin/python$' */ | \
-    while read name; do
-        echo "    Disambiguating /usr/bin/python: $name"
-	sed -i -e 's|^#!/usr/bin/python$|#!/usr/bin/python3|g' $name
 done
 
 %build

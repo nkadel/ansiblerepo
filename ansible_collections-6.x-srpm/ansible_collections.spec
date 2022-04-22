@@ -4,6 +4,14 @@
 %global pypi_version 5.6.0
 
 #
+# Force python38 for RHEL 8, which has python 3.6 by default
+%if 0%{?el8}
+%global python3_version 3.8
+%global python3_pkgversion 38
+# For RHEL 'platform python' insanity: Simply put, no.
+%global __python3 %{_bindir}/python%{python3_version}
+%endif
+
 # If we should enable checks
 # Currently we cannot until we get a stack of needed packages added and a few bugs fixed
 #
@@ -12,8 +20,8 @@
 # Disable debugionfo package, the submodule generation mishandles this
 %define debug_package %{nil}
 
-# For RHEL 'platform python' insanity: Simply put, no.
-%global __python3 %{_bindir}/python%{python3_version}
+# Disable '#!/usr/bin/python' and '#!/usr/bin/env python' complaints
+%global __brp_mangle_shebangs /usr/bin/true
 
 Name:           %{pypi_realname}
 Version:        %{pypi_version}
@@ -31,6 +39,10 @@ BuildRequires:  ansible-core < 2.13
 BuildRequires:  ansible-core >= 2.11.9
 
 BuildRequires:  rsync
+
+%if 0%{?el8}
+BuildRequires:  python%{python3_pkgversion}-rpm-macros
+%endif
 
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
@@ -97,19 +109,6 @@ find ansible_collections -type d | grep -E "tests/unit|tests/integration|tests/u
     while read tests; do
     echo Flushing tests: $tests
     rm -rf "$tests"
-done
-
-# Prevent build failures on ambiguous python
-grep -rl '^#!/usr/bin/env python$' * | \
-    while read name; do
-        echo "    Disambiguating /usr/bin/env python: $name"
-	sed -i -e 's|^#!/usr/bin/env python$|#!/usr/bin/python3|g' $name
-done
-
-grep -rl '^#!/usr/bin/python$' * | \
-    while read name; do
-        echo "    Disambiguating /usr/bin/python: $name"
-	sed -i -e 's|^#!/usr/bin/python$|#!/usr/bin/python3|g' $name
 done
 
 # Prevent build failures on ambiguouss python
