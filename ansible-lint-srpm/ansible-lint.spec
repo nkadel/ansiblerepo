@@ -1,8 +1,13 @@
 %global archive_name ansible-lint
 %global lib_name ansiblelint
 
+# Force python38 for RHEL 8, which has python 3.6 by default
+%if 0%{?el8}
+%global python3_version 3.8
+%global python3_pkgversion 38
 # For RHEL 'platform python' insanity: Simply put, no.
 %global __python3 %{_bindir}/python%{python3_version}
+%endif
 
 Name:           %{archive_name}
 Epoch:          1
@@ -16,18 +21,24 @@ URL:            https://github.com/willthames/ansible-lint
 Source0:        https://github.com/willthames/%{archive_name}/archive/v%{version}.tar.gz
 
 BuildArch:      noarch
+
+%if 0%{?el8}
+BuildRequires:  python%{python3_pkgversion}-rpm-macros
+%endif
+
+BuildRequires:  %{_bindir}/pathfix.py
 BuildRequires:	pyproject-rpm-macros
 
 %description
 Checks playbooks for practices and behavior that could potentially be improved.
 
-%package -n python3-%{archive_name}
+%package -n python%{python3_pkgversion}-%{archive_name}
 Summary:        %{summary}
-%{?python_provide:%python_provide python3-%{archive_name}}
+%{?python_provide:%python_provide python%{python3_pkgversion}-%{archive_name}}
 Obsoletes:      python2-%{archive_name} < 3.4.23-6
 Provides:       %{archive_name} = %{version}-%{release}
 
-%description  -n python3-%{archive_name}
+%description  -n python%{python3_pkgversion}-%{archive_name}
 Python3 module for ansible-lint.
 
 %prep
@@ -35,19 +46,6 @@ Python3 module for ansible-lint.
 
 %generate_buildrequires
 %pyproject_buildrequires
-
-# Prevent build failures on ambiguouss python
-grep -rl '^#!/usr/bin/env python$' */ | \
-    while read name; do
-        echo "    Disambiguating /usr/bin/env python: $name"
-	sed -i -e 's|^#!/usr/bin/env python$|#!/usr/bin/python3|g' $name
-done
-
-grep -rl '^#!/usr/bin/python$' */ | \
-    while read name; do
-        echo "    Disambiguating /usr/bin/python: $name"
-	sed -i -e 's|^#!/usr/bin/python$|#!/usr/bin/python3|g' $name
-done
 
 %build
 %pyproject_wheel
@@ -59,7 +57,7 @@ done
 #   ansible-lint-3 => Python 3 (to avoid breaking anyone's scripts)
 ln -sr %{buildroot}%{_bindir}/%{name}{,-3}
 
-%files -n python3-%{archive_name}
+%files -n python%{python3_pkgversion}-%{archive_name}
 %doc README.rst examples
 %license LICENSE
 %{_bindir}/%{name}
