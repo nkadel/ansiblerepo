@@ -1,5 +1,5 @@
 %global pypi_name ansible-core
-%global pypi_version 2.12.4
+%global pypi_version 2.12.5
 
 # Force python38 for RHEL 8, which has python 3.6 by default
 %if 0%{?el8}
@@ -39,7 +39,7 @@
 Name: ansible-core
 Summary: SSH-based configuration management, deployment, and task execution system
 Version: %{pypi_version}
-Release: 0%{?dist}
+Release: 0.1%{?dist}
 ExcludeArch: i686
 
 Group: Development/Libraries
@@ -66,6 +66,7 @@ Provides: bundled(python-distro) = 1.5.0
 Provides: bundled(python-selectors2) = 1.1.1
 Provides: bundled(python-six) = 1.13.0
 
+#BuildRequires: python%{python3_pkgversion}-Pallets-Sphinx-Themes
 BuildRequires: python%{python3_pkgversion}-PyYAML
 BuildRequires: python%{python3_pkgversion}-devel
 # BuildRequires: python%%{python3_pkgversion}-docutils
@@ -76,7 +77,7 @@ BuildRequires: python%{python3_pkgversion}-pyparsing
 BuildRequires: python%{python3_pkgversion}-resolvelib
 BuildRequires: python%{python3_pkgversion}-rpm-macros
 BuildRequires: python%{python3_pkgversion}-setuptools
-BuildRequires: python%{python3_pkgversion}-straight-plugin
+#BuildRequires: python%{python3_pkgversion}-straight-plugin
 BuildRequires: python%{python3_pkgversion}-wheel
 
 Requires: git
@@ -112,6 +113,9 @@ developed for ansible.
 %prep
 %setup -q -n %{pypi_name}-%{version}
 cp -a %{S:2} %{S:3} %{S:4} .
+
+# Discard Jinja2 3.0.0 requirement
+sed -i 's/^jinja2 .*/jinja2/g' requirements.txt
 
 # Fix all Python shebangs recursively in ansible-test
 # -p preserves timestamps
@@ -178,8 +182,8 @@ mkdir -p %{buildroot}/%{_mandir}/man1/
 #find hacking/build_library/build_ansible/command_plugins ! -name 'generate_man.py' -type f -exec rm -f {} +
 #
 #PYTHON=python3.8 PYTHONPATH=%{vendor_path}:/tmp/_vendor make docs
-#cp -v docs/man/man1/*.1 %%{buildroot}/%%{_mandir}/man1/
-#
+cp -v docs/man/man1/*.1 %{buildroot}/%{_mandir}/man1/
+
 #cp -pr docs/docsite/rst .
 cp -p lib/ansible_core.egg-info/PKG-INFO .
 
@@ -190,7 +194,7 @@ cp -p lib/ansible_core.egg-info/PKG-INFO .
 %config(noreplace) %{_sysconfdir}/ansible/
 %doc README.rst PKG-INFO COPYING
 %doc changelogs/CHANGELOG-v2.*.rst
-# %%doc %%{_mandir}/man1/ansible*
+%doc %{_mandir}/man1/ansible*
 %{_datadir}/ansible/
 %{python3_sitelib}/ansible*
 %exclude %{python3_sitelib}/ansible_test
@@ -206,6 +210,7 @@ cp -p lib/ansible_core.egg-info/PKG-INFO .
 %changelog
 * Fri Apr 22 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 2.13.0b0-0
 - Update to 2.13.0b0
+- Discard jinja2 >= 3.0.0 requirement
 
 * Mon Mar 14 2022 Dimitri Savineau <dsavinea@redhat.com> - 2.12.3-1
 - ansible-core 2.12.3 release
