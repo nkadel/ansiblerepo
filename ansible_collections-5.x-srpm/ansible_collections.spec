@@ -1,7 +1,7 @@
 # Created by pyp2rpm-3.3.7
 %global pypi_name ansible
 %global pypi_realname ansible_collections
-%global pypi_version 5.6.0
+%global pypi_version 5.7.0
 
 #
 # Force python38 for RHEL 8, which has python 3.6 by default
@@ -169,6 +169,9 @@ rsync -a --prune-empty-dirs ansible_collections/ \
 %doc %{_defaultdocdir}/%{name}-%{version}/ansible_collections
 
 %changelog
+* Thu Apr 28 2022 Nico Kadel-Garcia - 5.7.0-0
+- Update to 5.7.0
+
 * Wed Apr 6 2022 Nico Kadel-Garcia - 5.6.0-0
 - Update to 5.6.0
 

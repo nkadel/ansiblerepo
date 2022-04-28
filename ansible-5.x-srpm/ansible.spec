@@ -1,6 +1,6 @@
 # Created by pyp2rpm-3.3.7
 %global pypi_name ansible
-%global pypi_version 5.6.0
+%global pypi_version 5.7.0
 
 # Force python38 for RHEL 8, which has python 3.6 by default
 %if 0%{?el8}
@@ -34,7 +34,7 @@ Source0:        https://files.pythonhosted.org/packages/source/a/%{pypi_name}/%{
 BuildRequires:  ansible-core < 2.13
 # Roll back demand for 2.12, for python 3.6 compatibility
 # Use 2.11.9 to avoid accidental published Fedora conflict
-#BuildRequires:  ansible-core >= 2.12.3
+#BuildRequires:  ansible-core >= 2.12.4
 BuildRequires:  ansible-core >= 2.11.9
 
 BuildRequires:  rsync
@@ -50,7 +50,7 @@ BuildRequires:  python%{python3_pkgversion}-setuptools
 #BuildRequires:  python%%{python3_pkgversion}-sphinx
 #BuildRequires:  python%%{python3_pkgversion}-sphinx_rtd_theme
 
-Requires:       ansible-core < 2.14
+Requires:       ansible-core < 2.13
 Requires:       ansible-core >= 2.11.6
 
 %description
@@ -139,7 +139,7 @@ rsync -a --prune-empty-dirs ansible_collections/ \
 %endif
 
 %files
-%doc porting_guide_5.rst CHANGELOG-v5.rst
+%doc porting_guide_*.rst CHANGELOG-*.rst
 %doc COPYING README.rst
 %exclude %{_defaultdocdir}/%{name}-%{version}/ansible_collections
 %license %{_defaultlicensedir}/%{name}-%{version}/ansible_collections
@@ -151,6 +151,9 @@ rsync -a --prune-empty-dirs ansible_collections/ \
 %doc %{_defaultdocdir}/%{name}-%{version}/ansible_collections
 
 %changelog
+* Thu Apr 28 2022 Nico Kadel-Garcia - 5.7.0-0
+- Update to 5.7.0
+
 * Wed Apr 6 2022 Nico Kadel-Garcia - 5.6.0-0
 - Update to 5.6.0
 
