@@ -74,6 +74,9 @@ Documentation for ansible
 # Remove bundled egg-info
 rm -rf %{pypi_name}.egg-info
 
+# Fix broken syntax in fortinet tool
+sed -i 's/filtered_data =$/filtered_data = \\/g' ansible_collections/fortinet/fortios/plugins/modules/*.py
+
 find ansible_collections \
     -name '*.swp$' -o \
     -name .DS_Store -o \
@@ -109,19 +112,6 @@ find ansible_collections -type d | grep -E "tests/unit|tests/integration|tests/u
     while read tests; do
     echo Flushing tests: $tests
     rm -rf "$tests"
-done
-
-# Prevent build failures on ambiguouss python
-grep -rl '^#!/usr/bin/env python$' */ | \
-    while read name; do
-        echo "    Disambiguating /usr/bin/env python: $name"
-	sed -i -e 's|^#!/usr/bin/env python$|#!/usr/bin/python3|g' $name
-done
-
-grep -rl '^#!/usr/bin/python$' */ | \
-    while read name; do
-        echo "    Disambiguating /usr/bin/python: $name"
-	sed -i -e 's|^#!/usr/bin/python$|#!/usr/bin/python3|g' $name
 done
 
 %build
@@ -171,6 +161,7 @@ rsync -a --prune-empty-dirs ansible_collections/ \
 %changelog
 * Thu Apr 28 2022 Nico Kadel-Garcia - 5.7.0-0
 - Update to 5.7.0
+- Repair "data_package -" syntax error in fortios modules
 
 * Wed Apr 6 2022 Nico Kadel-Garcia - 5.6.0-0
 - Update to 5.6.0

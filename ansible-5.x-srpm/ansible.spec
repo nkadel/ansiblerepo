@@ -70,6 +70,9 @@ Documentation for ansible
 # Remove bundled egg-info
 rm -rf %{pypi_name}.egg-info
 
+# Fix broken syntax in fortinet tool
+sed -i 's/filtered_data =$/filtered_data = \\/g' ansible_collections/fortinet/fortios/plugins/modules/*.py
+
 find ansible_collections \
     -name '*.swp$' -o \
     -name .DS_Store -o \
@@ -153,6 +156,7 @@ rsync -a --prune-empty-dirs ansible_collections/ \
 %changelog
 * Thu Apr 28 2022 Nico Kadel-Garcia - 5.7.0-0
 - Update to 5.7.0
+- Repair "data_package -" syntax error in fortios modules
 
 * Wed Apr 6 2022 Nico Kadel-Garcia - 5.6.0-0
 - Update to 5.6.0
