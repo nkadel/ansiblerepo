@@ -5,17 +5,42 @@
 #REOBASEE=http://localhost
 REPOBASE=file://$(PWD)
 
-ANSIBLEPKGS+=python-lark-parser-srpm
-ANSIBLEPKGS+=python-commentjson-srpm
+ANSIBLEPKGS+=python38-straight-plugin-srpm
+ANSIBLEPKGS+=ansible-core-2.12.x-srpm
 
-ANSIBLEPKGS+=python-entrypoints-srpm
-ANSIBLEPKGS+=pyflakes-srpm
-ANSIBLEPKGS+=python-flake8-srpm
 ANSIBLEPKGS+=python-resolvelib-srpm
-
 ANSIBLEPKGS+=ansible-core-2.11.x-srpm
-ANSIBLEPKGS+=ansible-core-2.13.x-srpm
 
+ANSIBLEPKGS+=ansible-4.x-srpm
+ANSIBLEPKGS+=ansible-5.x-srpm
+
+#ANSIBLEPKGS+=ansible_collections-4.x-srpm
+#ANSIBLEPKGS+=ansible_collections-5.x-srpm
+
+## Do not require ansiblerepo
+ANSIBLEPKGS+=ansible-freeipa-srpm
+ANSIBLEPKGS+=pyflakes-srpm
+ANSIBLEPKGS+=python-entrypoints-srpm
+ANSIBLEPKGS+=python-lark-parser-srpm
+
+## python38, do not require ansiblerepo
+ANSIBLEPKGS+=python38-pbr-srpm
+#ANSIBLEPKGS+=python38-coverage-srpm
+#ANSIBLEPKGS+=python38-setuptools_scm-srpm
+#ANSIBLEPKGS+=python38-unittest2-srpm
+
+# Requires python38-pbr
+ANSIBLEPKGS+=ansible-collections-openstack-srpm
+
+# Requires pyproject-rpm-macros, not available for EL
+ANSIBLEPKGS+=ansible-lint-srpm
+
+#ANSIBLEPKGS+=python-commentjson-srpm
+#ANSIBLEPKGS+=python-flake8-srpm
+#
+#ANSIBLEPKGS+=python38-pytest-forked-srpm
+#ANSIBLEPKGS+=python38-pytest-xdist-srpm
+#
 ANSIBLEPKGS+=ansible-collection-ansible-netcommon-srpm
 ANSIBLEPKGS+=ansible-collection-ansible-posix-srpm
 ANSIBLEPKGS+=ansible-collection-ansible-utils-srpm
@@ -25,22 +50,15 @@ ANSIBLEPKGS+=ansible-collection-community-kubernetes-srpm
 ANSIBLEPKGS+=ansible-collection-community-mysql-srpm
 ANSIBLEPKGS+=ansible-collection-containers-podman-srpm
 ANSIBLEPKGS+=ansible-collection-google-cloud-srpm
+
 # Requires ruamel, not yet portable to older OS
 #ANSIBLEPKGS+=ansible-collection-microsoft-sql-srpm
 ANSIBLEPKGS+=ansible-collection-netbox-netbox-srpm
-ANSIBLEPKGS+=ansible-collections-openstack-srpm
-
-ANSIBLEPKGS+=ansible-freeipa-srpm
-ANSIBLEPKGS+=ansible-inventory-grapher-srpm
-# Requires pyproject-rpm-macros, not available for EL
-#ANSIBLEPKGS+=ansible-lint-srpm
+#
 ANSIBLEPKGS+=ansible-pcp-srpm
-
-ANSIBLEPKGS+=ansible-4.x-srpm
-ANSIBLEPKGS+=ansible-6.x-srpm
-
-#ANSIBLEPKGS+=ansible_collections-4.x-srpm
-#ANSIBLEPKGS+=ansible_collections-6.x-srpm
+#
+# Has built-in ansible bundle reuirement
+ANSIBLEPKGS+=ansible-inventory-grapher-srpm
 
 REPOS+=ansiblerepo/el/7
 REPOS+=ansiblerepo/el/8
@@ -53,14 +71,13 @@ CFGS+=ansiblerepo-7-x86_64.cfg
 CFGS+=ansiblerepo-8-x86_64.cfg
 CFGS+=ansiblerepo-f35-x86_64.cfg
 # Amazon 2 config
-CFGS+=ansiblerepo-amz2-x86_64.cfg
+#CFGS+=ansiblerepo-amz2-x86_64.cfg
 
-# /et/cmock version lacks EPEL
+# /etc/mock version lacks EPEL
 CFGS+=centos-stream+epel-8-x86_64.cfg
 
 # Link from /etc/mock
 MOCKCFGS+=centos+epel-7-x86_64.cfg
-MOCKCFGS+=centos-stream+epel-8-x86_64.cfg
 MOCKCFGS+=fedora-35-x86_64.cfg
 #MOCKCFGS+=amazonlinux-2-x86_64.cfg
 
@@ -121,12 +138,13 @@ cfg:: cfgs
 cfgs:: $(CFGS)
 cfgs:: $(MOCKCFGS)
 
-centos-stream+epel-8-x86_64.cfg:: /etc/mock/centos-stream+epel-8-x86_64.cfg
+
+centos-stream+epel-8-x86_64.cfg: /etc/mock/centos-stream+epel-8-x86_64.cfg
 	@echo Generating $@ from $?
 	@cat $? > $@
-	@echo >> $@
-	@echo '# centos-stream+epel-8 configs lack EPEL, added here' >> $@
-	@echo "include('templates/centos-stream+epel-8.tpl')" >> $@
+	@echo "Activating python38 mdules for $@"
+	@echo "# Enable python38 modules" >> $@
+	@echo "config_opts['module_enable'] = ['python38','python38-devel']" >> $@
 
 ansiblerepo-7-x86_64.cfg: /etc/mock/centos+epel-7-x86_64.cfg
 	@echo Generating $@ from $?
@@ -141,11 +159,9 @@ ansiblerepo-7-x86_64.cfg: /etc/mock/centos+epel-7-x86_64.cfg
 	@echo 'name=ansiblerepo' >> $@
 	@echo 'enabled=1' >> $@
 	@echo 'baseurl=$(REPOBASE)/ansiblerepo/el/7/x86_64/' >> $@
-	@echo 'failovermethod=priority' >> $@
 	@echo 'skip_if_unavailable=False' >> $@
 	@echo 'metadata_expire=1s' >> $@
 	@echo 'gpgcheck=0' >> $@
-	@echo 'priority=20' >> $@
 	@echo 'best=0' >> $@
 	@echo '"""' >> $@
 
@@ -163,11 +179,9 @@ ansiblerepo-8-x86_64.cfg: centos-stream+epel-8-x86_64.cfg
 	@echo 'name=ansiblerepo' >> $@
 	@echo 'enabled=1' >> $@
 	@echo 'baseurl=$(REPOBASE)/ansiblerepo/el/8/x86_64/' >> $@
-	@echo 'failovermethod=priority' >> $@
 	@echo 'skip_if_unavailable=False' >> $@
 	@echo 'metadata_expire=1s' >> $@
 	@echo 'gpgcheck=0' >> $@
-	@echo 'priority=20' >> $@
 	@echo 'best=0' >> $@
 	@echo '' >> $@
 	@echo '[packages-microsoft-com-prod]' >> $@
@@ -191,11 +205,9 @@ ansiblerepo-f35-x86_64.cfg: /etc/mock/fedora-35-x86_64.cfg
 	@echo 'name=ansiblerepo' >> $@
 	@echo 'enabled=1' >> $@
 	@echo 'baseurl=$(REPOBASE)/ansiblerepo/fedora/35/x86_64/' >> $@
-	@echo 'failovermethod=priority' >> $@
 	@echo 'skip_if_unavailable=False' >> $@
 	@echo 'metadata_expire=1s' >> $@
 	@echo 'gpgcheck=0' >> $@
-	@echo 'priority=20' >> $@
 	@echo 'best=0' >> $@
 	@echo '"""' >> $@
 
@@ -212,11 +224,9 @@ ansiblerepo-rawhide-x86_64.cfg: /etc/mock/fedora-rawhide-x86_64.cfg
 	@echo 'name=ansiblerepo' >> $@
 	@echo 'enabled=1' >> $@
 	@echo 'baseurl=$(REPOBASE)/ansiblerepo/fedora/rawhide/x86_64/' >> $@
-	@echo 'failovermethod=priority' >> $@
 	@echo 'skip_if_unavailable=False' >> $@
 	@echo 'metadata_expire=1s' >> $@
 	@echo 'gpgcheck=0' >> $@
-	@echo 'priority=20' >> $@
 	@echo 'best=0' >> $@
 	@echo '"""' >> $@
 
@@ -233,11 +243,9 @@ ansiblerepo-amz2-x86_64.cfg: /etc/mock/amazonlinux-2-x86_64.cfg
 	@echo 'name=ansiblerepo' >> $@
 	@echo 'enabled=1' >> $@
 	@echo 'baseurl=$(REPOBASE)/ansiblerepo/amz/2/x86_64/' >> $@
-	@echo 'failovermethod=priority' >> $@
 	@echo 'skip_if_unavailable=False' >> $@
 	@echo 'metadata_expire=1s' >> $@
 	@echo 'gpgcheck=0' >> $@
-	@echo 'priority=20' >> $@
 	@echo 'best=0' >> $@
 	@echo '"""' >> $@
 
