@@ -5,6 +5,8 @@
 %if 0%{?el8}
 %global python3_version 3.8
 %global python3_pkgversion 38
+# For RHEL 'platform python' insanity: Simply put, no.
+%global __python3 %{_bindir}/python%{python3_version}
 %endif
 
 Name:           python-%{pypi_name}
@@ -17,13 +19,13 @@ URL:            https://github.com/sarugaku/resolvelib
 Source0:        %{pypi_source}
 BuildArch:      noarch
 
-BuildRequires:  %{_bindir}/pathfix.py
-BuildRequires:  python%{python3_pkgversion}-devel
-BuildRequires:  python%{python3_pkgversion}-setuptools
-
 %if 0%{?el8}
 BuildRequires:  python%{python3_pkgversion}-rpm-macros
+BuildRequires:  %{_bindir}/pathfix.py
 %endif
+
+BuildRequires:  python%{python3_pkgversion}-devel
+BuildRequires:  python%{python3_pkgversion}-setuptools
 
 %description
 ResolveLib at the highest level provides a Resolver class that

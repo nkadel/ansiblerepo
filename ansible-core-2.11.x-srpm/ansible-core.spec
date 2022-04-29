@@ -1,5 +1,5 @@
 %global pypi_name ansible-core
-%global pypi_version 2.11.10
+%global pypi_version 2.11.11
 
 # We need this because we are no longer noarch, since our bundled deps might
 # conceivably need to compile arch-specific things. But we currently have no

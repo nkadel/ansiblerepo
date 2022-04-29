@@ -1,3 +1,11 @@
+# Force python38 for RHEL 8, which has python 3.6 by default
+%if 0%{?el8}
+%global python3_version 3.8
+%global python3_pkgversion 38
+# For RHEL 'platform python' insanity: Simply put, no.
+%global __python3 %{_bindir}/python%{python3_version}
+%endif
+
 %{?python_enable_dependency_generator}
 Name:           pyflakes
 # WARNING: When updating pyflakes, check not to break flake8!
@@ -29,6 +37,12 @@ check on style.
 
 %package -n python%{python3_pkgversion}-%{name}
 Summary:        %{summary}
+
+%if 0%{?el8}
+BuildRequires:  python%{python3_pkgversion}-rpm-macros
+BuildRequires:  %{_bindir}/pathfix.py
+%endif
+
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
 Requires:       python%{python3_pkgversion}-setuptools
@@ -41,18 +55,29 @@ Requires:       python%{python3_pkgversion}-setuptools
 %setup -q -a 1
 %patch0 -p1
 
-# Prevent build failures on ambiguouss python
-grep -rl '^#!/usr/bin/env python$' */ | \
+# Prevent build failures on ambiguous python
+grep -rl -e '^#!/usr/bin/env python$' -e '^#!/usr/bin/env python $' */ | \
+    grep '\.py$' | \
     while read name; do
         echo "    Disambiguating /usr/bin/env python: $name"
-	sed -i -e 's|^#!/usr/bin/env python$|#!/usr/bin/python3|g' $name
+	pathfix.py -i %{__python3} $name
 done
 
-grep -rl '^#!/usr/bin/python$' */ | \
+grep -rl -e '^#!/usr/bin/python$' -e '^#!/usr/bin/python $' */ | \
+    grep '\.py$' | \
     while read name; do
-        echo "    Disambiguating /usr/bin/python: $name"
-	sed -i -e 's|^#!/usr/bin/python$|#!/usr/bin/python3|g' $name
+        echo "    Disambiguating /usr/bin/python in: $name"
+	pathfix.py -i %{__python3} $name
 done
+
+if [ "%{__python3}" != "/usr/bin/python3" ]; then
+    grep -rl -e '^#!/usr/bin/python3$' -e '^#!/usr/bin/python3 $' */ | \
+	grep '\.py$' | \
+	while read name; do
+            echo "    Disambiguating /usr/bin/python3 in: $name"
+	    pathfix.py -i %{__python3} $name
+	done
+fi
 
 %build
 %py3_build

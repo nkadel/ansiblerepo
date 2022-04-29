@@ -1,1 +1,1 @@
-../Makefile.ansible
+../Makefile.epel

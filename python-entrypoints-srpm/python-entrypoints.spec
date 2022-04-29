@@ -4,6 +4,14 @@
 
 %global python3_wheelname %{srcname}-%{version}-py2.py3-none-any.whl
 
+# Force python38 for RHEL 8, which has python 3.6 by default
+%if 0%{?el8}
+%global python3_version 3.8
+%global python3_pkgversion 38
+# For RHEL 'platform python' insanity: Simply put, no.
+%global __python3 %{_bindir}/python%{python3_version}
+%endif
+
 Name:		python-%{srcname}
 
 # WARNING: Check if an update does not break flake8!
@@ -20,8 +28,13 @@ License:	MIT
 
 URL:		https://entrypoints.readthedocs.io/
 Source0:	https://github.com/takluyver/%{srcname}/archive/%{version}/%{srcname}-%{version}.tar.gz
-
 BuildArch:	noarch
+
+%if 0%{?el8}
+BuildRequires:  python%{python3_pkgversion}-rpm-macros
+BuildRequires:  %{_bindir}/pathfix.py
+%endif
+
 BuildRequires:	python%{python3_pkgversion}-devel
 BuildRequires:	python%{python3_pkgversion}-pip
 BuildRequires:	python%{python3_pkgversion}-flit
@@ -54,19 +67,29 @@ Documentation files for python-entrypoints
 %prep
 %autosetup -n %{srcname}-%{version}
 
-
-# Prevent build failures on ambiguouss python
-grep -rl '^#!/usr/bin/env python$' */ | \
+# Prevent build failures on ambiguous python
+grep -rl -e '^#!/usr/bin/env python$' -e '^#!/usr/bin/env python $' */ | \
+    grep '\.py$' | \
     while read name; do
         echo "    Disambiguating /usr/bin/env python: $name"
-	sed -i -e 's|^#!/usr/bin/env python$|#!/usr/bin/python3|g' $name
+	pathfix.py -i %{__python3} $name
 done
 
-grep -rl '^#!/usr/bin/python$' */ | \
+grep -rl -e '^#!/usr/bin/python$' -e '^#!/usr/bin/python $' */ | \
+    grep '\.py$' | \
     while read name; do
-        echo "    Disambiguating /usr/bin/python: $name"
-	sed -i -e 's|^#!/usr/bin/python$|#!/usr/bin/python3|g' $name
+        echo "    Disambiguating /usr/bin/python in: $name"
+	pathfix.py -i %{__python3} $name
 done
+
+if [ "%{__python3}" != "/usr/bin/python3" ]; then
+    grep -rl -e '^#!/usr/bin/python3$' -e '^#!/usr/bin/python3 $' */ | \
+	grep '\.py$' | \
+	while read name; do
+            echo "    Disambiguating /usr/bin/python3 in: $name"
+	    pathfix.py -i %{__python3} $name
+	done
+fi
 
 %build
 XDG_CACHE_HOME=$PWD/.cache FLIT_NO_NETWORK=1 flit build --format wheel

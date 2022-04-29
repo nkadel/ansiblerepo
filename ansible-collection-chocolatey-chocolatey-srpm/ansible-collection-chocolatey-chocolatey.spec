@@ -1,8 +1,13 @@
 %global collection_namespace chocolatey
 %global collection_name chocolatey
 
+# Force python38 for RHEL 8, which has python 3.6 by default
+%if 0%{?el8}
+%global python3_version 3.8
+%global python3_pkgversion 38
 # For RHEL 'platform python' insanity: Simply put, no.
 %global __python3 %{_bindir}/python%{python3_version}
+%endif
 
 Name:           ansible-collection-%{collection_namespace}-%{collection_name}
 Version:        1.1.0
@@ -14,6 +19,12 @@ URL:            %{ansible_collection_url}
 Source:         https://github.com/chocolatey/chocolatey-ansible/archive/v%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires:  ansible-core >= 2.9.10
+
+%if 0%{?el8}
+BuildRequires:  python%{python3_pkgversion}-rpm-macros
+BuildRequires:  %{_bindir}/pathfix.py
+%endif
+
 # Manually added
 BuildRequires:  python%{python3_pkgversion}-jinja2
 BuildRequires:  python%{python3_pkgversion}-yaml
@@ -31,18 +42,29 @@ find -type f ! -executable -name '*.py' -print -exec sed -i -e '1{\@^#!.*@d}' '{
 find -type f -name '.gitignore' -print -delete
 sed -i -e 's/{{ REPLACE_VERSION }}/%{version}/' chocolatey/galaxy.yml
 
-# Prevent build failures on ambiguouss python
-grep -rl '^#!/usr/bin/env python$' */ | \
+# Prevent build failures on ambiguous python
+grep -rl -e '^#!/usr/bin/env python$' -e '^#!/usr/bin/env python $' */ | \
+    grep '\.py$' | \
     while read name; do
         echo "    Disambiguating /usr/bin/env python: $name"
-	sed -i -e 's|^#!/usr/bin/env python$|#!/usr/bin/python3|g' $name
+	pathfix.py -i %{__python3} $name
 done
 
-grep -rl '^#!/usr/bin/python$' */ | \
+grep -rl -e '^#!/usr/bin/python$' -e '^#!/usr/bin/python $' */ | \
+    grep '\.py$' | \
     while read name; do
-        echo "    Disambiguating /usr/bin/python: $name"
-	sed -i -e 's|^#!/usr/bin/python$|#!/usr/bin/python3|g' $name
+        echo "    Disambiguating /usr/bin/python in: $name"
+	pathfix.py -i %{__python3} $name
 done
+
+if [ "%{__python3}" != "/usr/bin/python3" ]; then
+    grep -rl -e '^#!/usr/bin/python3' -e '^#!/usr/bin/python3 $' */ | \
+	grep '\.py$' | \
+	while read name; do
+            echo "    Disambiguating /usr/bin/python3 in: $name"
+	    pathfix.py -i %{__python3} $name
+	done
+fi
 
 %build
 cd chocolatey

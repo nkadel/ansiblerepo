@@ -1,15 +1,19 @@
 %global archive_name ansible-inventory-grapher
 %global lib_name ansibleinventorygrapher
 
-%if 0%{?fedora} >= 29 || 0%{?rhel} >= 8
-# Ansible stopped shipping Python 2 modules in Fedora 29+
-%bcond_with python2
-%else
-%bcond_without python2
-%endif
-
+# Force python38 for RHEL 8, which has python 3.6 by default
+%if 0%{?el8}
+%global python3_version 3.8
+%global python3_pkgversion 38
 # For RHEL 'platform python' insanity: Simply put, no.
 %global __python3 %{_bindir}/python%{python3_version}
+%endif
+
+#
+# If we should enable checks
+# pip install in mock fails
+#
+%bcond_with checks
 
 Name:           %{archive_name}
 Version:        2.5.0
@@ -28,33 +32,25 @@ ansible-inventory-grapher creates a dot file suitable for use by graphviz.\
 
 %description %_description
 
-%if %{with python2}
-%package -n python2-%{archive_name}
+%package -n python%{python3_pkgversion}-%{archive_name}
 Summary:        %summary
-BuildRequires:  python2-devel
-BuildRequires:  python2-setuptools
-BuildRequires:  ansible
-Requires:       ansible
-%{?python_provide:%python_provide python2-%{archive_name}}
-Provides:       %{archive_name} = %{version}-%{release}
-Obsoletes:      %{archive_name} < 2.4.4-2
 
-%description  -n python2-%{archive_name} %_description
+%if 0%{?el8}
+BuildRequires:  python38-rpm-macros
+BuildRequires:  %{_bindir}/pathfix.py
 %endif
 
-%package -n python3-%{archive_name}
-Summary:        %summary
-BuildRequires:  python3-devel
-BuildRequires:  python3-setuptools
-BuildRequires:  ansible-python3
-Requires:       ansible-python3
-%{?python_provide:%python_provide python3-%{archive_name}}
-%if ! %{with python2}
-Provides:       %{archive_name} = %{version}-%{release}
-Obsoletes:      %{archive_name} < 2.4.5-4
-%endif
+BuildRequires:  python%{python3_pkgversion}
+BuildRequires:  python%{python3_pkgversion}-devel
+BuildRequires:  python%{python3_pkgversion}-pip
+BuildRequires:  python%{python3_pkgversion}-setuptools
+BuildRequires:  python%{python3_pkgversion}-wheel
+# Get ansible after the split with ansible-core
+BuildRequires:  ansible > 2.9
+Requires:       ansible > 2.9
+%{?python_provide:%python_provide python%{python3_pkgversion}-%{archive_name}}
 
-%description  -n python3-%{archive_name} %_description
+%description  -n python%{python3_pkgversion}-%{archive_name} %_description
 
 %prep
 %autosetup -n %{archive_name}-%{version}
@@ -73,43 +69,22 @@ grep -rl '^#!/usr/bin/python$' */ | \
 done
 
 %build
-%if %{with python2}
-%py2_build
-%endif
 %py3_build
 
 %install
 %py3_install
 
-%if %{with python2}
-mv %{buildroot}%{_bindir}/%{name} %{buildroot}%{_bindir}/%{name}-3
-%py2_install
-%else
 ln -s %{_bindir}/%{name} %{buildroot}%{_bindir}/%{name}-3
-%endif
 
-
+%if %{with checks}
 %check
-%if %{with python2}
-%{__python2} setup.py test
-%endif
 %{__python3} setup.py test
+%endif
 
-%if %{with python2}
-%files -n python2-%{archive_name}
+%files -n python%{python3_pkgversion}-%{archive_name}
 %doc README.md
 %license LICENSE.txt
 %{_bindir}/%{name}
-%{python2_sitelib}/%{lib_name}
-%{python2_sitelib}/ansible_inventory_grapher-%{version}-py2.*.egg-info
-%endif
-
-%files -n python3-%{archive_name}
-%doc README.md
-%license LICENSE.txt
-%if ! %{with python2}
-%{_bindir}/%{name}
-%endif
 %{_bindir}/%{name}-3
 %{python3_sitelib}/%{lib_name}
 %{python3_sitelib}/ansible_inventory_grapher-%{version}-py3.*.egg-info

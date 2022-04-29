@@ -1,14 +1,7 @@
-%if 0%{?fedora} || 0%{?rhel} > 6
-# keeping python3 subpackage as stdlib mock lives in a different namespace
-# Some people may have not fixed their imports
-%global with_python3 1
-%endif
-
-# Not yet in Fedora buildroot
-%{!?python3_pkgversion:%global python3_pkgversion 3}
-
 %global pypi_name mock
 %global pypi_version 2.0.0
+
+%global with_python3 1
 
 # Force python38 for RHEL 8, which has python 3.6 by default
 %if 0%{?el8}
@@ -32,9 +25,9 @@ BuildArch:      noarch
 
 %if 0%{?el8}
 BuildRequires:  python%{python3_pkgversion}-rpm-macros
+BuildRequires: %{_bindir}/pathfix.py
 %endif
 
-BuildRequires: %{_bindir}/pathfix.py
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
 # For tests
@@ -67,6 +60,7 @@ needed attributes in the normal way.
 %patch0 -p1
 sed -i "s|VERSIONPLACEHOLDER|%{version}|" setup.cfg mock/mock.py
 
+# Prevent build failures on ambiguous python
 grep -rl -e '^#!/usr/bin/env python$' -e '^#!/usr/bin/env python $' */ | \
     grep '\.py$' | \
     while read name; do
@@ -82,14 +76,14 @@ grep -rl -e '^#!/usr/bin/python$' -e '^#!/usr/bin/python $' */ | \
 done
 
 if [ "%{__python3}" != "/usr/bin/python3" ]; then
-    grep -rl -e '^#!/usr/bin/python3' -e '^#!/usr/bin/python3 $' */ | \
+    grep -rl -e '^#!/usr/bin/python3$' -e '^#!/usr/bin/python3 $' */ | \
 	grep '\.py$' | \
 	while read name; do
             echo "    Disambiguating /usr/bin/python3 in: $name"
 	    pathfix.py -i %{__python3} $name
 	done
-fi    
-    
+fi
+
 %build
 %{py3_build}
 

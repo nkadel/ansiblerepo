@@ -1,8 +1,13 @@
 %global collection_namespace ansible
 %global collection_name posix
 
+# Force python38 for RHEL 8, which has python 3.6 by default
+%if 0%{?el8}
+%global python3_version 3.8
+%global python3_pkgversion 38
 # For RHEL 'platform python' insanity: Simply put, no.
 %global __python3 %{_bindir}/python%{python3_version}
+%endif
 
 Name:           ansible-collection-%{collection_namespace}-%{collection_name}
 Version:        1.3.0
@@ -15,6 +20,12 @@ URL:            %{ansible_collection_url}
 Source:         https://github.com/ansible-collections/ansible.posix/archive/%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires:  ansible-core >= 2.11.0
+
+%if 0%{?el8}
+BuildRequires:  python%{python3_pkgversion}-rpm-macros
+BuildRequires:  %{_bindir}/pathfix.py
+%endif
+
 # Manually added
 BuildRequires:  python%{python3_pkgversion}-jinja2
 BuildRequires:  python%{python3_pkgversion}-yaml
@@ -31,18 +42,28 @@ rm -vr .azure-pipelines
 find -type f ! -executable -name '*.py' -print -exec sed -i -e '1{\@^#!.*@d}' '{}' +
 find -type f -name '.gitignore' -print -delete
 
-# Prevent build failures on ambiguouss python
-grep -rl '^#!/usr/bin/env python$' */ | \
+grep -rl -e '^#!/usr/bin/env python$' -e '^#!/usr/bin/env python $' */ | \
+    grep '\.py$' | \
     while read name; do
         echo "    Disambiguating /usr/bin/env python: $name"
-	sed -i -e 's|^#!/usr/bin/env python$|#!/usr/bin/python3|g' $name
+	pathfix.py -i %{__python3} $name
 done
 
-grep -rl '^#!/usr/bin/python$' */ | \
+grep -rl -e '^#!/usr/bin/python$' -e '^#!/usr/bin/python $' */ | \
+    grep '\.py$' | \
     while read name; do
-        echo "    Disambiguating /usr/bin/python: $name"
-	sed -i -e 's|^#!/usr/bin/python$|#!/usr/bin/python3|g' $name
+        echo "    Disambiguating /usr/bin/python in: $name"
+	pathfix.py -i %{__python3} $name
 done
+
+if [ "%{__python3}" != "/usr/bin/python3" ]; then
+    grep -rl -e '^#!/usr/bin/python3' -e '^#!/usr/bin/python3 $' */ | \
+	grep '\.py$' | \
+	while read name; do
+            echo "    Disambiguating /usr/bin/python3 in: $name"
+	    pathfix.py -i %{__python3} $name
+	done
+fi
 
 %build
 %ansible_collection_build
@@ -57,7 +78,7 @@ done
 
 %changelog
 * Thu Oct 14 2021 Sagi Shnaidman <sshnaidm@redhat.com> - 1.3.0-2
-- Use ansible or ansible-core as BuildRequires 
+- Use ansible or ansible-core as BuildRequires
 
 * Mon Sep 06 2021 Kevin Fenzi <kevin@scrye.com> - 1.3.0-1
 - Update to 1.3.0. Fixes rhbz#1992970
