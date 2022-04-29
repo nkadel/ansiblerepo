@@ -8,7 +8,7 @@ LANG=C
 # Requires compat-nettle32
 #MOCKS+=centos+epel-7-x86_64
 #MOCKS+=centos-stream+epel-8-x86_64
-MOCKS+=fedora-35-x86_64.cfg
+MOCKS+=fedora-35-x86_64
 
 MOCKCFGS+=$(MOCKS)
 #MOCKCFGS+=ansiblerepo-7-x86_64
