@@ -1,6 +1,6 @@
 # Created by pyp2rpm-3.3.7
 %global pypi_name ansible
-%global pypi_version 5.7.0
+%global pypi_version 5.7.1
 
 # Force python38 for RHEL 8, which has python 3.6 by default
 %if 0%{?el8}
@@ -69,9 +69,6 @@ Documentation for ansible
 %autosetup -n %{pypi_name}-%{pypi_version}
 # Remove bundled egg-info
 rm -rf %{pypi_name}.egg-info
-
-# Fix broken syntax in fortinet tool
-sed -i 's/filtered_data =$/filtered_data = \\/g' ansible_collections/fortinet/fortios/plugins/modules/*.py
 
 find ansible_collections \
     -name '*.swp$' -o \
@@ -154,6 +151,10 @@ rsync -a --prune-empty-dirs ansible_collections/ \
 %doc %{_defaultdocdir}/%{name}-%{version}/ansible_collections
 
 %changelog
+* Wed May 4 2022 Nico Kadel-Garcia - 5.7.1-0
+- Update to 5.7.1
+- Discard "data_package" repair
+
 * Thu Apr 28 2022 Nico Kadel-Garcia - 5.7.0-0
 - Update to 5.7.0
 - Repair "data_package -" syntax error in fortios modules

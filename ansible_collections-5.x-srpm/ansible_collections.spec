@@ -1,9 +1,8 @@
 # Created by pyp2rpm-3.3.7
 %global pypi_name ansible
 %global pypi_realname ansible_collections
-%global pypi_version 5.7.0
+%global pypi_version 5.7.1
 
-#
 # Force python38 for RHEL 8, which has python 3.6 by default
 %if 0%{?el8}
 %global python3_version 3.8
@@ -12,6 +11,7 @@
 %global __python3 %{_bindir}/python%{python3_version}
 %endif
 
+#
 # If we should enable checks
 # Currently we cannot until we get a stack of needed packages added and a few bugs fixed
 #
@@ -23,6 +23,7 @@
 # Disable '#!/usr/bin/python' and '#!/usr/bin/env python' complaints
 %global __brp_mangle_shebangs /usr/bin/true
 
+#Name:           %%{pypi_name}
 Name:           %{pypi_realname}
 Version:        %{pypi_version}
 Release:        0.1%{?dist}
@@ -35,7 +36,7 @@ Source0:        https://files.pythonhosted.org/packages/source/a/%{pypi_name}/%{
 BuildRequires:  ansible-core < 2.13
 # Roll back demand for 2.12, for python 3.6 compatibility
 # Use 2.11.9 to avoid accidental published Fedora conflict
-#BuildRequires:  ansible-core >= 2.12.3
+#BuildRequires:  ansible-core >= 2.12.4
 BuildRequires:  ansible-core >= 2.11.9
 
 BuildRequires:  rsync
@@ -44,13 +45,12 @@ BuildRequires:  rsync
 BuildRequires:  python%{python3_pkgversion}-rpm-macros
 %endif
 
-BuildRequires:  python%{python3_pkgversion}-devel
-BuildRequires:  python%{python3_pkgversion}-setuptools
-BuildRequires:  python%{python3_pkgversion}-sphinx
-# manually added
 BuildRequires:  python%{python3_pkgversion}-cryptography
+BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-resolvelib
-BuildRequires:  python%{python3_pkgversion}-sphinx_rtd_theme
+BuildRequires:  python%{python3_pkgversion}-setuptools
+#BuildRequires:  python%%{python3_pkgversion}-sphinx
+#BuildRequires:  python%%{python3_pkgversion}-sphinx_rtd_theme
 
 Requires:       ansible-core < 2.13
 Requires:       ansible-core >= 2.11.6
@@ -63,19 +63,16 @@ orchestration. Ansible makes complex changes like zero-downtime
 rolling updates with load...
 
 #%%package -n %%{pypi_name}-doc
-%package -n %{name}-doc
+%package -n %{pypi_realname}-doc
 Summary:        ansible documentation
 #%%description -n %%{pypi_name}-doc
-%description -n %{name}-doc
+%description -n %{pypi_realname}-doc
 Documentation for ansible
 
 %prep
 %autosetup -n %{pypi_name}-%{pypi_version}
 # Remove bundled egg-info
 rm -rf %{pypi_name}.egg-info
-
-# Fix broken syntax in fortinet tool
-sed -i 's/filtered_data =$/filtered_data = \\/g' ansible_collections/fortinet/fortios/plugins/modules/*.py
 
 find ansible_collections \
     -name '*.swp$' -o \
@@ -121,16 +118,16 @@ done
 %{py3_install}
 
 # Pre-stage licenses and docs into local dirs, to avoud path stripping
-install -d %{buildroot}%{_defaultdocdir}/%{name}-%{version}/ansible_collections/
+install -d %{buildroot}%{_defaultdocdir}/%{pypi_realname}-%{version}/ansible_collections/
 rsync -a --prune-empty-dirs ansible_collections/ \
     --exclude=docs/ \
     --include=*/ \
     --include=*README* \
     --include=*readme* \
     --exclude=* \
-    %{buildroot}%{_defaultdocdir}/%{name}-%{version}/ansible_collections/
+    %{buildroot}%{_defaultdocdir}/%{pypi_realname}-%{version}/ansible_collections/
 
-install -d %{buildroot}%{_defaultlicensedir}/%{name}-%{version}/ansible_collections/
+install -d %{buildroot}%{_defaultlicensedir}/%{pypi_realname}-%{version}/ansible_collections/
 rsync -a --prune-empty-dirs ansible_collections/ \
     --exclude=licenses/ \
     --exclude=*license.py \
@@ -138,7 +135,7 @@ rsync -a --prune-empty-dirs ansible_collections/ \
     --include=*LICENSE* \
     --include=*license* \
     --exclude=* \
-    %{buildroot}%{_defaultlicensedir}/%{name}-%{version}/ansible_collections/
+    %{buildroot}%{_defaultlicensedir}/%{pypi_realname}-%{version}/ansible_collections/
 
 %if %{with checks}
 %check
@@ -146,19 +143,23 @@ rsync -a --prune-empty-dirs ansible_collections/ \
 %endif
 
 %files
-%doc porting_guide_5.rst CHANGELOG-v5.rst
+%doc porting_guide_*.rst CHANGELOG-*.rst
 %doc COPYING README.rst
-%exclude %{_defaultdocdir}/%{name}-%{version}/ansible_collections
-%license %{_defaultlicensedir}/%{name}-%{version}/ansible_collections
+%exclude %{_defaultdocdir}/%{pypi_realname}-%{version}/ansible_collections
+%license %{_defaultlicensedir}/%{pypi_realname}-%{version}/ansible_collections
 
 %{python3_sitelib}/ansible_collections
 %{python3_sitelib}/%{pypi_name}-%{pypi_version}-py%{python3_version}.egg-info
 
 #%%files -n %%{pypi_name}-doc
-%files -n %{name}-doc
-%doc %{_defaultdocdir}/%{name}-%{version}/ansible_collections
+%files -n %{pypi_realname}-doc
+%doc %{_defaultdocdir}/%{pypi_realname}-%{version}/ansible_collections
 
 %changelog
+* Wed May 4 2022 Nico Kadel-Garcia - 5.7.1-0
+- Update to 5.7.1
+- Discard "data_package" repair
+
 * Thu Apr 28 2022 Nico Kadel-Garcia - 5.7.0-0
 - Update to 5.7.0
 - Repair "data_package -" syntax error in fortios modules
@@ -166,7 +167,7 @@ rsync -a --prune-empty-dirs ansible_collections/ \
 * Wed Apr 6 2022 Nico Kadel-Garcia - 5.6.0-0
 - Update to 5.6.0
 
-* Tue Mar 15 2022 Nico Kadel-Garcia - 5.4.0-0
+* Tue Mar 15 2022 Nico Kadel-Garcia - 5.5.0-0
 - Update to 5.5.0
 
 * Tue Feb 22 2022 Nico Kadel-Garcia - 5.4.0-0
