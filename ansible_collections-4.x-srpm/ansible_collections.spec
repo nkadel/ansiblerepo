@@ -3,14 +3,6 @@
 %global pypi_realname ansible_collections
 %global pypi_version 4.10.0
 
-# Force python38 for RHEL 8, which has python 3.6 by default
-%if 0%{?el8}
-%global python3_version 3.8
-%global python3_pkgversion 38
-# For RHEL 'platform python' insanity: Simply put, no.
-%global __python3 %{_bindir}/python%{python3_version}
-%endif
-
 #
 # If we should enable checks
 # Currently we cannot until we get a stack of needed packages added and a few bugs fixed
@@ -20,12 +12,10 @@
 # Disable debugionfo package, the submodule generation mishandles this
 %define debug_package %{nil}
 
-# For RHEL 'platform python' insanity: Simply put, no.
-%global __python3 %{_bindir}/python%{python3_version}
-
 # Disable '#!/usr/bin/python' and '#!/usr/bin/env python' complaints
 %global __brp_mangle_shebangs /usr/bin/true
 
+#Name:           %%{pypi_name}
 Name:           %{pypi_realname}
 Version:        %{pypi_version}
 Release:        0.2%{?dist}
@@ -40,11 +30,6 @@ BuildRequires:  ansible-core < 2.12.0
 BuildRequires:  ansible-core >= 2.11.7
 
 BuildRequires:  rsync
-
-%if 0%{?el8}
-BuildRequires:  python%{python3_pkgversion}-rpm-macros
-BuildRequires:  %{_bindir}/pathfix.py
-%endif
 
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
@@ -65,10 +50,10 @@ orchestration. Ansible makes complex changes like zero-downtime
 rolling updates with load...
 
 #%%package -n %%{pypi_name}-doc
-%package -n %{name}-doc
+%package -n %{pypi_realname}-doc
 Summary:        ansible documentation
 #%%description -n %%{pypi_name}-doc
-%description -n %{name}-doc
+%description -n %{pypi_realname}-doc
 Documentation for ansible
 
 BuildRequires:  ansible-core < 2.12.0
@@ -116,30 +101,6 @@ find ansible_collections -type d | grep -E "tests/unit|tests/integration|tests/u
     rm -rf "$tests"
 done
 
-# Prevent build failures on ambiguous python
-grep -rl -e '^#!/usr/bin/env python$' -e '^#!/usr/bin/env python $' */ | \
-    grep '\.py$' | \
-    while read name; do
-        echo "    Disambiguating /usr/bin/env python: $name"
-	pathfix.py -i %{__python3} $name
-done
-
-grep -rl -e '^#!/usr/bin/python$' -e '^#!/usr/bin/python $' */ | \
-    grep '\.py$' | \
-    while read name; do
-        echo "    Disambiguating /usr/bin/python in: $name"
-	pathfix.py -i %{__python3} $name
-done
-
-if [ "%{__python3}" != "/usr/bin/python3" ]; then
-    grep -rl -e '^#!/usr/bin/python3' -e '^#!/usr/bin/python3 $' */ | \
-	grep '\.py$' | \
-	while read name; do
-            echo "    Disambiguating /usr/bin/python3 in: $name"
-	    pathfix.py -i %{__python3} $name
-	done
-fi
-
 %build
 %{py3_build}
 
@@ -147,23 +108,23 @@ fi
 %{py3_install}
 
 # Pre-stage licenses and docs into local dirs, to avoud path stripping
-install -d %{buildroot}%{_defaultdocdir}/%{name}-%{version}/ansible_collections/
+install -d %{buildroot}%{_defaultdocdir}/%{pypi_realname}-%{version}/ansible_collections/
 rsync -a --prune-empty-dirs ansible_collections/ \
     --exclude=docs/ \
     --include=*/ \
     --include=*README* \
     --include=*readme* \
     --exclude=* \
-    %{buildroot}%{_defaultdocdir}/%{name}-%{version}/ansible_collections/
+    %{buildroot}%{_defaultdocdir}/%{pypi_realname}-%{version}/ansible_collections/
 
-install -d %{buildroot}%{_defaultlicensedir}/%{name}-%{version}
+install -d %{buildroot}%{_defaultlicensedir}/%{pypi_realname}-%{version}
 rsync -a --prune-empty-dirs ansible_collections/ \
     --exclude=*license.py \
     --include=*/ \
     --include=*LICENSE* \
     --include=*license* \
     --exclude=* \
-    %{buildroot}%{_defaultlicensedir}/%{name}-%{version}/ansible_collections/
+    %{buildroot}%{_defaultlicensedir}/%{pypi_realname}-%{version}/ansible_collections/
 
 %if %{with checks}
 %check
@@ -171,17 +132,17 @@ rsync -a --prune-empty-dirs ansible_collections/ \
 %endif
 
 %files
-%doc porting_guide_4.rst CHANGELOG-v4.rst
+%doc porting_guide_*.rst CHANGELOG-*.rst
 %doc COPYING README.rst
-%exclude %{_defaultdocdir}/%{name}-%{version}/ansible_collections
-%license %{_defaultlicensedir}/%{name}-%{version}/ansible_collections
+%exclude %{_defaultdocdir}/%{pypi_realname}-%{version}/ansible_collections
+%license %{_defaultlicensedir}/%{pypi_realname}-%{version}/ansible_collections
 
 %{python3_sitelib}/ansible_collections
 %{python3_sitelib}/%{pypi_name}-%{pypi_version}-py%{python3_version}.egg-info
 
 #%%files -n %%{pypi_name}-doc
-%files -n %{name}-doc
-%doc %{_defaultdocdir}/%{name}-%{version}/ansible_collections
+%files -n %{pypi_realname}-doc
+%doc %{_defaultdocdir}/%{pypi_realname}-%{version}/ansible_collections
 
 %changelog
 * Sat Jan 22 2022 Nico Kadel-Garcia - 4.10.0-0.3
