@@ -128,7 +128,7 @@ rsync -a --prune-empty-dirs ansible_collections/ \
 %endif
 
 %files
-%doc porting_guide_4.rst CHANGELOG-v4.rst
+%doc porting_guide_*.rst CHANGELOG-*.rst
 %doc COPYING README.rst
 %exclude %{_defaultdocdir}/%{name}-%{version}/ansible_collections
 %license %{_defaultlicensedir}/%{name}-%{version}/ansible_collections
