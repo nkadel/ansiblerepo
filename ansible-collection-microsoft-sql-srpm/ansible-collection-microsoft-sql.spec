@@ -24,8 +24,8 @@
 Name: ansible-collection-microsoft-sql
 Url: https://github.com/linux-system-roles/mssql
 Summary: The Ansible collection for Microsoft SQL Server management
-Version: 1.1.0
-Release: 2%{?dist}
+Version: 1.1.1
+Release: 0.2%{?dist}
 
 #Group: Development/Libraries
 License: MIT
@@ -96,12 +96,15 @@ BuildRequires:  %{_bindir}/pathfix.py
 %%global collection_rolenames %%{?collection_rolenames} [%{rolename%{1}}]="%{collection_rolename%{1}}"
 }
 
-%defcommit 1 78ea547ef9e23e20015794a1e48c7d6d21229293
+#%%defcommit 1 78ea547ef9e23e20015794a1e48c7d6d21229293
+%defcommit 1 7f260427dec4813c203ca8bf34de8d1739644cea
 %global rolename1 mssql
+
 %global target_rolename1 sql-server
 %global collection_rolename1 server
 
-%global mainid cdc706f14614ef5e80bbce8db10beb369e889df9
+#%%global mainid cdc706f14614ef5e80bbce8db10beb369e889df9
+%global mainid 47490b19c5b7e517e92fdf1a2a72d8eee736d0b3
 Source: %{parenturl}/auto-maintenance/archive/%{mainid}/auto-maintenance-%{mainid}.tar.gz
 Source1: %{archiveurl1}
 
