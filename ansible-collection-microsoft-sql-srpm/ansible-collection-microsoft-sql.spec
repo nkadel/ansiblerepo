@@ -164,30 +164,6 @@ for rolename in %{rolenames}; do
     fi
 done
 
-# Prevent build failures on ambiguous python
-grep -rl -e '^#!/usr/bin/env python$' -e '^#!/usr/bin/env python $' */ | \
-    grep '\.py$' | \
-    while read name; do
-        echo "    Disambiguating /usr/bin/env python: $name"
-	pathfix.py -i %{__python3} $name
-done
-
-grep -rl -e '^#!/usr/bin/python$' -e '^#!/usr/bin/python $' */ | \
-    grep '\.py$' | \
-    while read name; do
-        echo "    Disambiguating /usr/bin/python in: $name"
-	pathfix.py -i %{__python3} $name
-done
-
-if [ "%{__python3}" != "/usr/bin/python3" ]; then
-    grep -rl -e '^#!/usr/bin/python3' -e '^#!/usr/bin/python3 $' */ | \
-	grep '\.py$' | \
-	while read name; do
-            echo "    Disambiguating /usr/bin/python3 in: $name"
-	    pathfix.py -i %{__python3} $name
-	done
-fi
-
 %build
 %if %{with html}
 # Convert README.md to README.html in the source roles
