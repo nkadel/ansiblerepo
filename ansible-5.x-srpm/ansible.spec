@@ -1,6 +1,6 @@
 # Created by pyp2rpm-3.3.7
 %global pypi_name ansible
-%global pypi_version 5.7.1
+%global pypi_version 6.0.0a2
 
 # Force python38 for RHEL 8, which has python 3.6 by default
 %if 0%{?el8}

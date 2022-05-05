@@ -21,9 +21,6 @@
 %bcond_with html
 %endif
 
-# For RHEL 'platform python' insanity: Simply put, no.
-%global __python3 %{_bindir}/python%{python3_version}
-
 Name: ansible-collection-microsoft-sql
 Url: https://github.com/linux-system-roles/mssql
 Summary: The Ansible collection for Microsoft SQL Server management
@@ -54,6 +51,9 @@ License: MIT
 %define ansible_collection_files %{_datadir}/ansible/collections/ansible_collections/%{collection_namespace}/
 %endif
 %endif
+
+BuildRequires: python%{python3_pkgversion}
+BuildRequires: python%{python3_pkgversion}-devel
 
 %if %{with ansible}
 BuildRequires: ansible-core >= 2.9.10
@@ -119,8 +119,8 @@ BuildRequires: highlight
 %endif
 
 # Requirements for galaxy_transform.py
-BuildRequires: python%{python3_pkgversion}
-%if 0%{?fedora} || 0%{?rhel} >= 8
+BuildRequires: python%{python3_pkgversion}-rpm-macros
+%if 0%{?fedora}
 BuildRequires: python3dist(ruamel.yaml)
 %else
 BuildRequires: python%{python3_pkgversion}-ruamel-yaml
@@ -212,7 +212,7 @@ declare -A COLLECTION_ROLENAMES=(%{collection_rolenames})
 
 # Convert roles to the collection format
 for rolename in %{rolenames}; do
-    python%{python3_pkgversion} lsr_role2collection.py --role "$rolename" \
+    python%{python3_version} lsr_role2collection.py --role "$rolename" \
         --src-path "$rolename" \
         --src-owner linux-system-roles \
         --dest-path .collections \

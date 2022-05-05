@@ -23,11 +23,18 @@ ANSIBLEPKGS+=pyflakes-srpm
 ANSIBLEPKGS+=python-entrypoints-srpm
 ANSIBLEPKGS+=python-lark-parser-srpm
 
-## python38, do not require ansiblerepo
+## python38
+ANSIBLEPKGS+=python38-mock-srpm
 ANSIBLEPKGS+=python38-pbr-srpm
+
+ANSIBLEPKGS+=python38-ruamel-yaml-clib-srpm
+ANSIBLEPKGS+=python38-ruamel-yaml-srpm
+
 #ANSIBLEPKGS+=python38-coverage-srpm
 #ANSIBLEPKGS+=python38-setuptools_scm-srpm
 #ANSIBLEPKGS+=python38-unittest2-srpm
+
+
 
 # Requires python38-pbr
 ANSIBLEPKGS+=ansible-collections-openstack-srpm
@@ -52,7 +59,7 @@ ANSIBLEPKGS+=ansible-collection-containers-podman-srpm
 ANSIBLEPKGS+=ansible-collection-google-cloud-srpm
 
 # Requires ruamel, not yet portable to older OS
-#ANSIBLEPKGS+=ansible-collection-microsoft-sql-srpm
+ANSIBLEPKGS+=ansible-collection-microsoft-sql-srpm
 ANSIBLEPKGS+=ansible-collection-netbox-netbox-srpm
 #
 ANSIBLEPKGS+=ansible-pcp-srpm
