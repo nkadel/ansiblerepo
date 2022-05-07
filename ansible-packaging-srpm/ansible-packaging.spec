@@ -35,9 +35,13 @@ cp -a %{sources} .
 # Nothing to build
 
 %install
-install -Dpm0644 -t %{buildroot}%{_fileattrsdir} ansible.attr
-install -Dpm0644 -t %{buildroot}%{_rpmmacrodir} macros.ansible
-install -Dpm0755 -t %{buildroot}%{_rpmconfigdir} ansible-generator
+install --d -m 755 %{buildroot}%{_fileattrsdir}
+install --d -m 755 %{buildroot}%{_rpmmacrodir}
+install --d -m 755 %{buildroot}%{_rpmconfigdir}
+
+install -m644 ansible.attr %{buildroot}%{_fileattrsdir}
+install -m644 macros.ansible %{buildroot}%{_rpmmacrodir}
+install -m755 ansible-generator %{buildroot}%{_rpmconfigdir}
 
 %files
 %license COPYING
