@@ -1,0 +1,3 @@
+%__ansible_provides %{_rpmconfigdir}/ansible-generator --provides
+%__ansible_requires %{_rpmconfigdir}/ansible-generator --requires
+%__ansible_path ^%{_datadir}/ansible/collections/ansible_collections/[^/]+/[^/]+/MANIFEST.json$
