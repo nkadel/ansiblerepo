@@ -11,15 +11,17 @@ Source1:        ansible.attr
 Source2:        macros.ansible
 Source3:        COPYING
 
-Requires:       ansible-core
+# Packages which ormerly required ansible-core now require ansible-packagingg
+# Add Requires ansible-packaging to ansible-core instead
+#Requires:       ansible-core
 
-# Much better name of package
-Provides:      ansible-rpm-macros = %{version}
+# More logical name this rpm
+Provides:       ansible-rpm-macros = %{version}-%{release}
 
 # Conflict with anything providing its own copies of these files
-%if ! (0%{?rhel} >= 8)
-Conflicts:      ansible-core < 2.12.1-3
-%endif
+#Conflicts:      ansible-core < 2.12.1-3
+Conflicts:      ansible-core < 2.11.0
+Conflicts:      ansible-base < 2.11.0
 Conflicts:      ansible <= 2.9.99
 
 BuildArch:      noarch
@@ -35,13 +37,9 @@ cp -a %{sources} .
 # Nothing to build
 
 %install
-install --d -m 755 %{buildroot}%{_fileattrsdir}
-install --d -m 755 %{buildroot}%{_rpmmacrodir}
-install --d -m 755 %{buildroot}%{_rpmconfigdir}
-
-install -m644 ansible.attr %{buildroot}%{_fileattrsdir}
-install -m644 macros.ansible %{buildroot}%{_rpmmacrodir}
-install -m755 ansible-generator %{buildroot}%{_rpmconfigdir}
+install -Dpm0644 -t %{buildroot}%{_fileattrsdir} ansible.attr
+install -Dpm0644 -t %{buildroot}%{_rpmmacrodir} macros.ansible
+install -Dpm0755 -t %{buildroot}%{_rpmconfigdir} ansible-generator
 
 %files
 %license COPYING
@@ -50,6 +48,9 @@ install -m755 ansible-generator %{buildroot}%{_rpmconfigdir}
 %{_rpmconfigdir}/ansible-generator
 
 %changelog
+* Sun May 8 2022 Nico Kadel-Garcia <nkadel@gmai.com> - 1-0.3
+- Permit RHEL 7 installation with ansible-core 2.11
+
 * Mon Jan 31 2022 Neal Gompa <ngompa@fedoraproject.org> - 1-3
 - Drop vestigial support for the legacy ansible package
 - Make compatibile with RHEL 8.6+
