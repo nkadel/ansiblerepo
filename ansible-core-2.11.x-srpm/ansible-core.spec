@@ -26,24 +26,16 @@
 #%%define vendor_path %%{buildroot}%%{python3_sitelib}/ansible/_vendor/
 #%%define vendor_pip /usr/bin/python3.8 -m pip install --no-deps -v --no-use-pep517 --no-binary :all: -t %%{vendor_path}
 
-# These control which bundled dep versions we pin against
-#%%global packaging_version 20.4
-#%%global pyparsing_version 2.4.7
-#%%global straightplugin_version 1.4.1
-
 Name: ansible-core
 Summary: SSH-based configuration management, deployment, and task execution system
 Version: %{pypi_version}
-Release: 0%{?dist}
+Release: 0.1%{?dist}
 ExcludeArch: i686
 
 Group: Development/Libraries
 License: GPLv3+
 Source0: https://pypi.python.org/packages/source/a/ansible-core/ansible-core-%{version}.tar.gz
 Source1: ansible-test-data-files.txt
-Source2: ansible.attr
-Source3: ansible-generator
-Source4: macros.ansible
 
 URL: http://ansible.com
 
@@ -69,7 +61,6 @@ BuildRequires: python%{python3_pkgversion}-pip
 BuildRequires: python%{python3_pkgversion}-packaging
 BuildRequires: python%{python3_pkgversion}-pyparsing
 BuildRequires: python%{python3_pkgversion}-setuptools
-BuildRequires: python%{python3_pkgversion}-straight-plugin
 BuildRequires: python%{python3_pkgversion}-wheel
 
 # Because Red Hat cannot keep python3 names consistent
@@ -114,7 +105,6 @@ developed for ansible.
 %prep
 #%%autosetup -q -n %{pypi_name}-%{version}
 %autosetup -n %{pypi_name}-%{version}
-cp -a %{S:2} %{S:3} %{S:4} .
 
 # Fix all Python shebangs recursively in ansible-test
 # -p preserves timestamps
@@ -172,21 +162,7 @@ mkdir -p %{buildroot}%{_sysconfdir}/ansible/roles/
 cp examples/hosts %{buildroot}%{_sysconfdir}/ansible/
 cp examples/ansible.cfg %{buildroot}%{_sysconfdir}/ansible/
 
-# RHEL does not generate subdirs automatically
-install -d -m755 %{buildroot}%{_fileattrsdir}
-install -d -m755 %{buildroot}%{_rpmmacrodir}
-install -d -m755 %{buildroot}%{_rpmconfigdir}
-
-install -Dpm0644 -t %{buildroot}%{_fileattrsdir} ansible.attr
-install -Dpm0644 -t %{buildroot}%{_rpmmacrodir} macros.ansible
-install -Dpm0755 -t %{buildroot}%{_rpmconfigdir} ansible-generator
-
-ls -l %{buildroot}%{_fileattrsdir}
-ls -l %{buildroot}%{_rpmmacrodir}
-ls -l %{buildroot}%{_rpmconfigdir}
-
-
-mkdir -p %{buildroot}/%{_mandir}/man1/
+#mkdir -p %{buildroot}/%{_mandir}/man1/
 ## Build man pages
 #
 #mkdir /tmp/_vendor
@@ -211,16 +187,15 @@ cp -p lib/ansible_core.egg-info/PKG-INFO .
 %{_datadir}/ansible/
 %{python3_sitelib}/ansible*
 %exclude %{python3_sitelib}/ansible_test
-%{_fileattrsdir}/ansible.attr
-%{_rpmmacrodir}/macros.ansible
-%{_rpmconfigdir}/ansible-generator
-
 
 %files -n ansible-test
 %{_bindir}/ansible-test
 %{python3_sitelib}/ansible_test
 
 %changelog
+* Sat May 7 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 2.11.11-0.1
+- Backport 2.12 configs to 2.11
+
 * Mon Mar 14 2022 Dimitri Savineau <dsavinea@redhat.com> - 2.12.3-1
 - ansible-core 2.12.3 release
 - re-enable changelog and manpages
