@@ -1,11 +1,11 @@
+%bcond_without ansible
+
 %if 0%{?rhel}
 %global collection_namespace redhat
 %global collection_name rhel_metrics
-%bcond_with ansible
 %else
 %global collection_namespace performancecopilot
 %global collection_name metrics
-%bcond_without ansible
 %endif
 
 # Force python38 for RHEL 8, which has python 3.6 by default
@@ -25,10 +25,9 @@ License:          MIT
 URL:              %{ansible_collection_url}
 Source:           https://github.com/performancecopilot/ansible-pcp/archive/v%{version}/%{name}-%{version}.tar.gz
 
-%if %{with ansible}
-BuildRequires:    ansible-core >= 2.9.10
-BuildRequires:    python3-ansible-lint
-%endif
+#BuildRequires:    ansible-core >= 2.9.10
+BuildRequires:    ansible-packaging
+BuildRequires:    python%{python3_pkgversion}-ansible-lint
 BuildArch:        noarch
 
 %description
@@ -84,14 +83,6 @@ find . -name \*.yml -o -name \*.md | while read file; do
     $file
 done
 
-%if %{without ansible}
-%define ansible_collection_files %{_datadir}/ansible/collections/ansible_collections/%{collection_namespace}
-# Empty command. We don't have ansible-galaxy.
-%define ansible_collection_build() tar -cf %{_tmppath}/%{collection_namespace}-%{collection_name}-%{version}.tar.gz .
-# Simply copy everything instead of galaxy-installing the built artifact.
-%define ansible_collection_install() mkdir -p %{buildroot}%{ansible_collection_files}/%{collection_name}; (cd %{buildroot}%{ansible_collection_files}/%{collection_name}; tar -xf %{_tmppath}/%{collection_namespace}-%{collection_name}-%{version}.tar.gz)
-%endif
-
 # Prevent build failures on ambiguouss python
 grep -rl '^#!/usr/bin/env python$' */ | \
     while read name; do
@@ -114,9 +105,7 @@ done
 %check
 mv yamllint.yml .yamllint.yml
 mv yamllint_defaults.yml .yamllint_defaults.yml
-%if %{with ansible}
 ansible-lint `find roles -name \*.yml`
-%endif
 
 %files
 %doc README.md
