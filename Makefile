@@ -5,6 +5,9 @@
 #REOBASEE=http://localhost
 REPOBASE=file://$(PWD)
 
+ANSIBLEPKGS+=ansible-packaging-srpm
+ANSIBLEPKGS+=pyproject-rpm-macros-srpm
+
 ANSIBLEPKGS+=python38-straight-plugin-srpm
 ANSIBLEPKGS+=ansible-core-2.12.x-srpm
 
@@ -25,16 +28,15 @@ ANSIBLEPKGS+=python-lark-parser-srpm
 
 ## python38
 ANSIBLEPKGS+=python38-mock-srpm
+ANSIBLEPKGS+=python38-coverage-srpm
+ANSIBLEPKGS+=python38-nose-srpm
 ANSIBLEPKGS+=python38-pbr-srpm
 
 ANSIBLEPKGS+=python38-ruamel-yaml-clib-srpm
 ANSIBLEPKGS+=python38-ruamel-yaml-srpm
 
-#ANSIBLEPKGS+=python38-coverage-srpm
 #ANSIBLEPKGS+=python38-setuptools_scm-srpm
 #ANSIBLEPKGS+=python38-unittest2-srpm
-
-
 
 # Requires python38-pbr
 ANSIBLEPKGS+=ansible-collections-openstack-srpm
