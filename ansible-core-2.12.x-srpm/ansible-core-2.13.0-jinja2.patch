@@ -1,0 +1,27 @@
+diff -ur ansible-core-2.13.0rc1.orig/lib/ansible_core.egg-info/requires.txt ansible-core-2.13.0rc1/lib/ansible_core.egg-info/requires.txt
+--- ansible-core-2.13.0rc1.orig/lib/ansible_core.egg-info/requires.txt	2022-05-02 10:46:54.000000000 -0400
++++ ansible-core-2.13.0rc1/lib/ansible_core.egg-info/requires.txt	2022-05-07 05:48:04.421924081 -0400
+@@ -1,4 +1,6 @@
+-jinja2>=3.0.0
++# Causes RHEL issues
++#jinja2>=3.0.0
++jinja2
+ PyYAML
+ cryptography
+ packaging
+diff -ur ansible-core-2.13.0rc1.orig/requirements.txt ansible-core-2.13.0rc1/requirements.txt
+--- ansible-core-2.13.0rc1.orig/requirements.txt	2022-05-02 10:45:40.000000000 -0400
++++ ansible-core-2.13.0rc1/requirements.txt	2022-05-07 05:47:08.092746577 -0400
+@@ -3,7 +3,11 @@
+ # packages.  Thus, this should be the loosest set possible (only required
+ # packages, not optional ones, and with the widest range of versions that could
+ # be suitable)
+-jinja2 >= 3.0.0
++#
++# Cauuses RHEL compilaiton issues
++#jinja2 >= 3.0.0
++jinja2
++
+ PyYAML
+ cryptography
+ packaging

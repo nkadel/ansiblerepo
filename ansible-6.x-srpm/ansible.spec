@@ -31,10 +31,10 @@ License:        GPLv3+
 URL:            https://ansible.com/
 Source0:        https://files.pythonhosted.org/packages/source/a/%{pypi_name}/%{pypi_name}-%{pypi_version}.tar.gz
 
-BuildRequires:  ansible-core < 2.13
-# Roll back demand for 2.12, for python 3.6 compatibility
+BuildRequires:  ansible-core < 2.14
+# Roll back demand for 2.13, for python 3.6 compatibility
 # Use 2.11.9 to avoid accidental published Fedora conflict
-#BuildRequires:  ansible-core >= 2.12.4
+#BuildRequires:  ansible-core >= 2.13.0
 BuildRequires:  ansible-core >= 2.11.9
 
 BuildRequires:  rsync

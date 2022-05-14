@@ -9,16 +9,18 @@ ANSIBLEPKGS+=ansible-packaging-srpm
 ANSIBLEPKGS+=pyproject-rpm-macros-srpm
 
 ANSIBLEPKGS+=python38-straight-plugin-srpm
-ANSIBLEPKGS+=ansible-core-2.12.x-srpm
+ANSIBLEPKGS+=ansible-core-2.13.x-srpm
 
 ANSIBLEPKGS+=python-resolvelib-srpm
 ANSIBLEPKGS+=ansible-core-2.11.x-srpm
 
 ANSIBLEPKGS+=ansible-4.x-srpm
-ANSIBLEPKGS+=ansible-5.x-srpm
+
+ANSIBLEPKGS+=python38-jmespath-srpm
+ANSIBLEPKGS+=ansible-6.x-srpm
 
 #ANSIBLEPKGS+=ansible_collections-4.x-srpm
-#ANSIBLEPKGS+=ansible_collections-5.x-srpm
+#ANSIBLEPKGS+=ansible_collections-6.x-srpm
 
 ## Do not require ansiblerepo
 ANSIBLEPKGS+=ansible-freeipa-srpm
