@@ -46,8 +46,10 @@ BuildRequires:  python%{python3_pkgversion}-pip
 BuildRequires:  python%{python3_pkgversion}-setuptools
 BuildRequires:  python%{python3_pkgversion}-wheel
 # Get ansible after the split with ansible-core
-BuildRequires:  ansible > 2.9
-Requires:       ansible > 2.9
+#BuildRequires:  ansible > 2.9
+#Requires:       ansible > 2.9
+BuildRequires:  ansible-core > 2.9
+Requires:       ansible-core > 2.9
 %{?python_provide:%python_provide python%{python3_pkgversion}-%{archive_name}}
 
 %description  -n python%{python3_pkgversion}-%{archive_name} %_description
