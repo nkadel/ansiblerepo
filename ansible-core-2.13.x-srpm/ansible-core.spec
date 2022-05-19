@@ -24,7 +24,7 @@ Name: ansible-core
 Summary: A radically simple IT automation system
 #Version: 2.12.4
 Version: 2.13.0
-Release: 0.1%{?betaver}%{?dist}
+Release: 0.2%{?betaver}%{?dist}
 
 License: GPLv3+
 Source0: %pypi_source ansible-core %{version}%{?betaver}
@@ -208,8 +208,6 @@ mkdir -p %{buildroot}/etc/ansible/roles/
 
 cp examples/hosts %{buildroot}/etc/ansible/
 cp examples/ansible.cfg %{buildroot}/etc/ansible/
-#mkdir -p %{buildroot}/%{_mandir}/man1
-#cp -v docs/man/man1/*.1 %{buildroot}/%{_mandir}/man1/
 
 # no need to ship zero length files
 find %{buildroot}/%{python3_sitelib} -name .git_keep -exec rm -f {} \;
@@ -235,7 +233,6 @@ make PYTHON=%{__python3} tests-py3
 %doc README.rst PKG-INFO changelogs/CHANGELOG-*.rst
 %dir %{_sysconfdir}/ansible/
 %config(noreplace) %{_sysconfdir}/ansible/*
-#%{_mandir}/man1/ansible*
 %{_bindir}/ansible*
 %{_datadir}/ansible/
 %{python3_sitelib}/ansible
