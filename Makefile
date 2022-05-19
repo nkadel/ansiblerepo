@@ -29,6 +29,7 @@ ANSIBLEPKGS+=python-entrypoints-srpm
 ANSIBLEPKGS+=python-lark-parser-srpm
 
 ## python38
+ANSIBLEPKGS+=python38-unittest2-srpm
 ANSIBLEPKGS+=python38-mock-srpm
 ANSIBLEPKGS+=python38-coverage-srpm
 ANSIBLEPKGS+=python38-nose-srpm
@@ -44,7 +45,7 @@ ANSIBLEPKGS+=python38-ruamel-yaml-srpm
 ANSIBLEPKGS+=ansible-collections-openstack-srpm
 
 # Requires pyproject-rpm-macros, not available for EL
-ANSIBLEPKGS+=ansible-lint-srpm
+#ANSIBLEPKGS+=ansible-lint-srpm
 
 #ANSIBLEPKGS+=python-commentjson-srpm
 #ANSIBLEPKGS+=python-flake8-srpm
