@@ -1,4 +1,6 @@
 # Created by pyp2rpm-3.3.7
+# tarball is named ansible at pypi.org, real modules go in ansible_collections
+# due to very confusing upsream renaming
 %global pypi_name ansible
 %global pypi_realname ansible_collections
 %global pypi_version 6.0.0a2
@@ -33,10 +35,10 @@ License:        GPLv3+
 URL:            https://ansible.com/
 Source0:        https://files.pythonhosted.org/packages/source/a/%{pypi_name}/%{pypi_name}-%{pypi_version}.tar.gz
 
-BuildRequires:  ansible-core < 2.13
-# Roll back demand for 2.12, for python 3.6 compatibility
+BuildRequires:  ansible-core < 2.14
+# Roll back demand for 2.13, for python 3.6 compatibility
 # Use 2.11.9 to avoid accidental published Fedora conflict
-#BuildRequires:  ansible-core >= 2.12.4
+#BuildRequires:  ansible-core >= 2.13.0
 BuildRequires:  ansible-core >= 2.11.9
 
 BuildRequires:  rsync
@@ -74,7 +76,7 @@ Documentation for ansible
 # Remove bundled egg-info
 rm -rf %{pypi_name}.egg-info
 
-find ansible_collections \
+find %{pypi_realname} \
     -name '*.swp$' -o \
     -name .DS_Store -o \
     -name .ansible-lint -o \
@@ -105,7 +107,7 @@ find ansible_collections \
     rm -rf "$hidden"
 done
 
-find ansible_collections -type d | grep -E "tests/unit|tests/integration|tests/utils|tests/sanity|tests/runner|tests/regression" | \
+find %{pypi_realname} -type d | grep -E "tests/unit|tests/integration|tests/utils|tests/sanity|tests/runner|tests/regression" | \
     while read tests; do
     echo Flushing tests: $tests
     rm -rf "$tests"
@@ -118,24 +120,24 @@ done
 %{py3_install}
 
 # Pre-stage licenses and docs into local dirs, to avoud path stripping
-install -d %{buildroot}%{_defaultdocdir}/%{pypi_realname}-%{version}/ansible_collections/
-rsync -a --prune-empty-dirs ansible_collections/ \
+install -d %{buildroot}%{_defaultdocdir}/%{pypi_realname}-%{version}/%{pypi_realname}/
+rsync -a --prune-empty-dirs %{pypi_realname}/ \
     --exclude=docs/ \
     --include=*/ \
     --include=*README* \
     --include=*readme* \
     --exclude=* \
-    %{buildroot}%{_defaultdocdir}/%{pypi_realname}-%{version}/ansible_collections/
+    %{buildroot}%{_defaultdocdir}/%{pypi_realname}-%{version}/%{pypi_realname}/
 
-install -d %{buildroot}%{_defaultlicensedir}/%{pypi_realname}-%{version}/ansible_collections/
-rsync -a --prune-empty-dirs ansible_collections/ \
+install -d %{buildroot}%{_defaultlicensedir}/%{pypi_realname}-%{version}/%{pypi_realname}/
+rsync -a --prune-empty-dirs %{pypi_realname}/ \
     --exclude=licenses/ \
     --exclude=*license.py \
     --include=*/ \
     --include=*LICENSE* \
     --include=*license* \
     --exclude=* \
-    %{buildroot}%{_defaultlicensedir}/%{pypi_realname}-%{version}/ansible_collections/
+    %{buildroot}%{_defaultlicensedir}/%{pypi_realname}-%{version}/%{pypi_realname}/
 
 %if %{with checks}
 %check
@@ -145,17 +147,20 @@ rsync -a --prune-empty-dirs ansible_collections/ \
 %files
 %doc porting_guide_*.rst CHANGELOG-*.rst
 %doc COPYING README.rst
-%exclude %{_defaultdocdir}/%{pypi_realname}-%{version}/ansible_collections
-%license %{_defaultlicensedir}/%{pypi_realname}-%{version}/ansible_collections
+%exclude %{_defaultdocdir}/%{pypi_realname}-%{version}/%{pypi_realname}
+%license %{_defaultlicensedir}/%{pypi_realname}-%{version}/%{pypi_realname}
 
-%{python3_sitelib}/ansible_collections
+%{python3_sitelib}/%{pypi_realname}
 %{python3_sitelib}/%{pypi_name}-%{pypi_version}-py%{python3_version}.egg-info
 
 #%%files -n %%{pypi_name}-doc
 %files -n %{pypi_realname}-doc
-%doc %{_defaultdocdir}/%{pypi_realname}-%{version}/ansible_collections
+%doc %{_defaultdocdir}/%{pypi_realname}-%{version}/%{pypi_realname}
 
 %changelog
+* Mon May 16 2022 Nico Kadel-Garcia - 6.0.0a2-0
+- Update to slpha 6.0.0a2, with ansible-core dependency updates
+
 * Wed May 4 2022 Nico Kadel-Garcia - 5.7.1-0
 - Update to 5.7.1
 - Discard "data_package" repair
