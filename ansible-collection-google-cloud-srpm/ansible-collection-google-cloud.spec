@@ -19,6 +19,7 @@ License:        GPLv2+ and MIT
 URL:            %{ansible_collection_url}
 Source:         https://github.com/ansible-collections/google.cloud/archive/v%{version}/%{name}-%{version}.tar.gz
 
+BuildRequires:  ansible-packaging
 BuildRequires:  ansible-core
 
 %if 0%{?el8}

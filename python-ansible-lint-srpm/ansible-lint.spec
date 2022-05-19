@@ -21,7 +21,8 @@ URL:            https://github.com/ansible/ansible-lint
 Source0:        https://github.com/ansible/%{archive_name}/archive/v%{version}.tar.gz
 
 BuildArch:      noarch
-BuildRequires:	pyproject-rpm-macros
+#BuildRequires:	pyproject-rpm-macros
+BuildRequires:	ansible-packaging
 
 %description
 Checks playbooks for practices and behavior that could potentially be improved.
@@ -133,16 +134,16 @@ ln -sr %{buildroot}%{_bindir}/%{name}{,-3}
 * Tue Jan 26 2021 Fedora Release Engineering <releng@fedoraproject.org> - 1:4.3.7-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
 
-* Thu Nov  5 09:45:28 IST 2020 Parag Nemade <pnemade AT redhat DOT com> - 1:4.3.7-1
+* Thu Nov  5 2020 Parag Nemade <pnemade AT redhat DOT com> - 1:4.3.7-1
 - Update to 4.3.7 version (#1894320)
 
-* Sun Nov  1 08:13:14 IST 2020 Parag Nemade <pnemade AT redhat DOT com> - 1:4.3.6-1
+* Sun Nov  1 2020 Parag Nemade <pnemade AT redhat DOT com> - 1:4.3.6-1
 - Update to 4.3.6 version (#1893489)
 
-* Sat Sep 19 11:10:37 IST 2020 Parag Nemade <pnemade AT redhat DOT com> - 1:4.3.5-1
+* Sat Sep 19 2020 Parag Nemade <pnemade AT redhat DOT com> - 1:4.3.5-1
 - Update to 4.3.5 version (#1880470)
 
-* Wed Sep  2 07:01:22 IST 2020 Parag Nemade <pnemade AT redhat DOT com> - 1:4.3.4-1
+* Wed Sep  2 2020 Parag Nemade <pnemade AT redhat DOT com> - 1:4.3.4-1
 - Update to 4.3.4 version (#1874590)
 
 * Fri Aug 28 2020 Parag Nemade <pnemade AT redhat DOT com> - 1:4.3.3-1

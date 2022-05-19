@@ -18,6 +18,7 @@ License:        GPLv3+
 URL:            %{ansible_collection_url}
 Source:         https://github.com/ansible-collections/community.mysql/archive/%{version}/%{name}-%{version}.tar.gz
 
+BuildRequires:  ansible-packaging
 BuildRequires:  ansible-core >= 2.10.0
 
 

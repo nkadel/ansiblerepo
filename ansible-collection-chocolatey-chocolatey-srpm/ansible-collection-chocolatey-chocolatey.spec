@@ -18,6 +18,7 @@ License:        GPLv3+
 URL:            %{ansible_collection_url}
 Source:         https://github.com/chocolatey/chocolatey-ansible/archive/v%{version}/%{name}-%{version}.tar.gz
 
+BuildRequires:  ansible-packaging
 BuildRequires:  ansible-core >= 2.9.10
 
 %if 0%{?el8}

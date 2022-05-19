@@ -27,7 +27,8 @@ BuildRequires:  python%{python3_pkgversion}-rpm-macros
 %endif
 
 BuildRequires:  %{_bindir}/pathfix.py
-BuildRequires:	pyproject-rpm-macros
+#BuildRequires:	ansible-packaging
+
 
 %description
 Checks playbooks for practices and behavior that could potentially be improved.

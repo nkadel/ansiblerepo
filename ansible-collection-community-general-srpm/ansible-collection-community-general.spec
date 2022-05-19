@@ -23,6 +23,7 @@ URL:            %{ansible_collection_url}
 Source:         https://github.com/ansible-collections/community.general/archive/%{version}/%{name}-%{version}.tar.gz
 BuildArch:      noarch
 
+BuildRequires:  ansible-packaging
 BuildRequires:  ansible-core >= 2.11.0
 
 %if 0%{?el8}

@@ -26,6 +26,7 @@ BuildArch:      noarch
 
 BuildRequires:  git
 
+BuildRequires:  ansible-packaging
 Requires:       ansible-core >= 2.8.0
 
 %if 0%{?el8}

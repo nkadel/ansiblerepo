@@ -18,6 +18,7 @@ License:        GPLv3+
 URL:            %{ansible_collection_url}
 Source:         https://github.com/ansible-collections/community.kubernetes/archive/%{version}/%{name}-%{version}.tar.gz
 
+BuildRequires:  ansible-packaging
 BuildRequires:  ansible-core
 
 %if 0%{?el8}

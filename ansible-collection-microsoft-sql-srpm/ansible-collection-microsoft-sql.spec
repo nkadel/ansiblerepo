@@ -52,6 +52,7 @@ License: MIT
 %endif
 %endif
 
+BuildRequires: ansible-packaging
 BuildRequires: python%{python3_pkgversion}
 BuildRequires: python%{python3_pkgversion}-devel
 

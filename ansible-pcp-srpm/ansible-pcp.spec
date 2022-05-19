@@ -27,7 +27,8 @@ Source:           https://github.com/performancecopilot/ansible-pcp/archive/v%{v
 
 #BuildRequires:    ansible-core >= 2.9.10
 BuildRequires:    ansible-packaging
-BuildRequires:    python%{python3_pkgversion}-ansible-lint
+#BuildRequires:    python%{python3_pkgversion}-ansible-lint
+BuildRequires:    ansible-lint
 BuildArch:        noarch
 
 %description

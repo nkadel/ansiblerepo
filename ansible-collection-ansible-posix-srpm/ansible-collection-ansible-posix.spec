@@ -11,7 +11,7 @@
 
 Name:           ansible-collection-%{collection_namespace}-%{collection_name}
 Version:        1.3.0
-Release:        0.2%{?dist}
+Release:        0.3%{?dist}
 Summary:        Ansible Collection targeting POSIX and POSIX-ish platforms
 
 # plugins/module_utils/mount.py: Python Software Foundation License version 2
@@ -19,6 +19,7 @@ License:        GPLv3+ and Python
 URL:            %{ansible_collection_url}
 Source:         https://github.com/ansible-collections/ansible.posix/archive/%{version}/%{name}-%{version}.tar.gz
 
+BuildRequires:  ansible-packaging
 BuildRequires:  ansible-core >= 2.11.0
 
 %if 0%{?el8}
