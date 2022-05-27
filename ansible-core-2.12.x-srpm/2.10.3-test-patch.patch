@@ -1,0 +1,17 @@
+diff --color -Nur ansible-base-2.10.3.orig/test/units/modules/test_async_wrapper.py ansible-base-2.10.3/test/units/modules/test_async_wrapper.py
+--- ansible-base-2.10.3.orig/test/units/modules/test_async_wrapper.py	2020-11-02 14:26:08.000000000 -0800
++++ ansible-base-2.10.3/test/units/modules/test_async_wrapper.py	2020-11-03 13:07:42.556005427 -0800
+@@ -22,11 +22,11 @@
+     def test_run_module(self, monkeypatch):
+ 
+         def mock_get_interpreter(module_path):
+-            return ['/usr/bin/python']
++            return ['/usr/bin/python3']
+ 
+         module_result = {'rc': 0}
+         module_lines = [
+-            '#!/usr/bin/python',
++            '#!/usr/bin/python3',
+             'import sys',
+             'sys.stderr.write("stderr stuff")',
+             "print('%s')" % json.dumps(module_result)
