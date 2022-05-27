@@ -1,5 +1,5 @@
 %global pypi_name ansible-core
-%global pypi_version 2.11.11
+%global pypi_version 2.11.12
 
 # We need this because we are no longer noarch, since our bundled deps might
 # conceivably need to compile arch-specific things. But we currently have no
@@ -193,6 +193,9 @@ cp -p lib/ansible_core.egg-info/PKG-INFO .
 %{python3_sitelib}/ansible_test
 
 %changelog
+* Fri May 27 2022 Nico Kadel-Garcia - 2.11.12-0.1
+- Update to 2.11.12-0.1
+
 * Sat May 7 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 2.11.11-0.1
 - Backport 2.12 configs to 2.11
 
