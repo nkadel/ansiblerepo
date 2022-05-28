@@ -3,7 +3,7 @@
 # due to very confusing upsream renaming
 %global pypi_name ansible
 %global pypi_realname ansible_collections
-%global pypi_version 6.0.0a2
+%global pypi_version 6.0.0b1
 
 # Force python38 for RHEL 8, which has python 3.6 by default
 %if 0%{?el8}
@@ -34,11 +34,11 @@ License:        GPLv3+
 URL:            https://ansible.com/
 Source0:        https://files.pythonhosted.org/packages/source/a/%{pypi_name}/%{pypi_name}-%{pypi_version}.tar.gz
 
-BuildRequires:  ansible-core < 2.14
+BuildRequires:  ansible-core < 2.14.0
 # Roll back demand for 2.13, for python 3.6 compatibility
 # Use 2.11.9 to avoid accidental published Fedora conflict
 #BuildRequires:  ansible-core >= 2.13.0
-BuildRequires:  ansible-core >= 2.11.9
+BuildRequires:  ansible-core >= 2.13.0
 
 BuildRequires:  rsync
 
@@ -53,7 +53,7 @@ BuildRequires:  python%{python3_pkgversion}-setuptools
 #BuildRequires:  python%%{python3_pkgversion}-sphinx
 #BuildRequires:  python%%{python3_pkgversion}-sphinx_rtd_theme
 
-Requires:       ansible-core < 2.13
+Requires:       ansible-core < 2.14
 Requires:       ansible-core >= 2.11.6
 
 %description
@@ -154,8 +154,11 @@ rsync -a --prune-empty-dirs %{pypi_realname}/ \
 %doc %{_defaultdocdir}/%{name}-%{version}/%{pypi_realname}
 
 %changelog
+* Fri May 27 2022 Nico Kadel-Garcia - 6.0.0b1-0
+- Update to beta 6.0.0b1
+
 * Mon May 16 2022 Nico Kadel-Garcia - 6.0.0a2-0
-- Update to slpha 6.0.0a2, with ansible-core dependency updates
+- Update to alpha 6.0.0a2, with ansible-core dependency updates
 
 * Wed May 4 2022 Nico Kadel-Garcia - 5.7.1-0
 - Update to 5.7.1
