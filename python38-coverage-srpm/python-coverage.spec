@@ -10,7 +10,7 @@
 Name:           python-coverage
 Summary:        Code coverage testing module for Python
 Version:        4.5.1
-#Release:        9%{?prever}%{?dist}
+#Release:        9%{?prever}%%{?dist}
 Release:        0.9%{?prever}%{?dist}
 # jquery(MIT):
 #  coverage/htmlfiles/jquery.min.js

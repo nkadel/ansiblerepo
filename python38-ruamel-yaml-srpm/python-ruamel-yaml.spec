@@ -13,7 +13,7 @@
 
 Name:           python-%{pname}
 Version:        0.16.6
-#Release:        8%{?dist}
+#Release:        8%%{?dist}
 Release:        0.8%{?dist}
 Summary:        YAML 1.2 loader/dumper package for Python
 

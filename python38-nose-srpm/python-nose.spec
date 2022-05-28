@@ -38,7 +38,7 @@ output capture and more.\
 
 Name:           python-%{pypi_name}
 Version:        %{pypi_version}
-#Release:        31%{?dist}
+#Release:        31%%{?dist}
 Release:        0.31%{?dist}
 BuildArch:      noarch
 

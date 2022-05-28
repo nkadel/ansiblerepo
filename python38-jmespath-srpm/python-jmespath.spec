@@ -10,7 +10,7 @@
 
 Name:           python-%{pypi_name}
 Version:        0.9.0
-#Release:        11%{?dist}
+#Release:        11%%{?dist}
 Release:        0.11%{?dist}
 Summary:        JSON Matching Expressions
 
