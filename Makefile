@@ -8,6 +8,8 @@ REPOBASE=file://$(PWD)
 ANSIBLEPKGS+=ansible-packaging-srpm
 ANSIBLEPKGS+=pyproject-rpm-macros-srpm
 
+ANSIBLEPKGS+=python38-unittest2-srpm
+ANSIBLEPKGS+=python38-mock-srpm
 ANSIBLEPKGS+=python38-straight-plugin-srpm
 ANSIBLEPKGS+=ansible-core-2.13.x-srpm
 
@@ -29,8 +31,6 @@ ANSIBLEPKGS+=python-entrypoints-srpm
 ANSIBLEPKGS+=python-lark-parser-srpm
 
 ## python38
-ANSIBLEPKGS+=python38-unittest2-srpm
-ANSIBLEPKGS+=python38-mock-srpm
 ANSIBLEPKGS+=python38-coverage-srpm
 ANSIBLEPKGS+=python38-nose-srpm
 ANSIBLEPKGS+=python38-pbr-srpm
@@ -74,6 +74,7 @@ ANSIBLEPKGS+=ansible-inventory-grapher-srpm
 
 REPOS+=ansiblerepo/el/7
 REPOS+=ansiblerepo/el/8
+REPOS+=ansiblerepo/el/9
 REPOS+=ansiblerepo/fedora/35
 REPOS+=ansiblerepo/amz/2
 
@@ -81,15 +82,17 @@ REPODIRS := $(patsubst %,%/x86_64/repodata,$(REPOS)) $(patsubst %,%/SRPMS/repoda
 
 CFGS+=ansiblerepo-7-x86_64.cfg
 CFGS+=ansiblerepo-8-x86_64.cfg
+CFGS+=ansiblerepo-9-x86_64.cfg
 CFGS+=ansiblerepo-f35-x86_64.cfg
 # Amazon 2 config
 #CFGS+=ansiblerepo-amz2-x86_64.cfg
 
-# /etc/mock version lacks EPEL
+# /etc/mock version lacks python38 modules
 CFGS+=centos-stream+epel-8-x86_64.cfg
 
 # Link from /etc/mock
 MOCKCFGS+=centos+epel-7-x86_64.cfg
+MOCKCFGS+=centos-stream+epel-9-x86_64.cfg
 MOCKCFGS+=fedora-35-x86_64.cfg
 #MOCKCFGS+=amazonlinux-2-x86_64.cfg
 
@@ -199,6 +202,33 @@ ansiblerepo-8-x86_64.cfg: centos-stream+epel-8-x86_64.cfg
 	@echo '[packages-microsoft-com-prod]' >> $@
 	@echo 'name=packages-microsoft-com-prod' >> $@
 	@echo 'baseurl=https://packages.microsoft.com/rhel/8/prod/' >> $@
+	@echo 'enabled=0' >> $@
+	@echo 'gpgcheck=1' >> $@
+	@echo 'gpgkey=https://packages.microsoft.com/keys/microsoft.asc' >> $@
+	@echo '"""' >> $@
+
+# packages-microsoft-com-prod added for /bin/pwsh
+ansiblerepo-9-x86_64.cfg: centos-stream+epel-9-x86_64.cfg
+	@echo Generating $@ from $?
+	@cat $? > $@
+	@sed -i 's/centos-stream+epel-9-x86_64/ansiblerepo-9-x86_64/g' $@
+	@echo >> $@
+	@echo "Disabling 'best=' for $@"
+	@sed -i '/^best=/d' $@
+	@echo "best=0" >> $@
+	@echo "config_opts['dnf.conf'] += \"\"\"" >> $@
+	@echo '[ansiblerepo]' >> $@
+	@echo 'name=ansiblerepo' >> $@
+	@echo 'enabled=1' >> $@
+	@echo 'baseurl=$(REPOBASE)/ansiblerepo/el/9/x86_64/' >> $@
+	@echo 'skip_if_unavailable=False' >> $@
+	@echo 'metadata_expire=1s' >> $@
+	@echo 'gpgcheck=0' >> $@
+	@echo 'best=0' >> $@
+	@echo '' >> $@
+	@echo '[packages-microsoft-com-prod]' >> $@
+	@echo 'name=packages-microsoft-com-prod' >> $@
+	@echo 'baseurl=https://packages.microsoft.com/rhel/9/prod/' >> $@
 	@echo 'enabled=0' >> $@
 	@echo 'gpgcheck=1' >> $@
 	@echo 'gpgkey=https://packages.microsoft.com/keys/microsoft.asc' >> $@
