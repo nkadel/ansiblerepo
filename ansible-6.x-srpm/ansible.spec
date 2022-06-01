@@ -3,7 +3,7 @@
 # due to very confusing upsream renaming
 %global pypi_name ansible
 %global pypi_realname ansible_collections
-%global pypi_version 6.0.0b1
+%global pypi_version 6.0.0b2
 
 # Force python38 for RHEL 8, which has python 3.6 by default
 %if 0%{?el8}
@@ -154,6 +154,9 @@ rsync -a --prune-empty-dirs %{pypi_realname}/ \
 %doc %{_defaultdocdir}/%{name}-%{version}/%{pypi_realname}
 
 %changelog
+* Wed Jun 1  2022 Nico Kadel-Garcia - 6.0.0b2-0
+- Update to beta 6.0.0b2
+
 * Fri May 27 2022 Nico Kadel-Garcia - 6.0.0b1-0
 - Update to beta 6.0.0b1
 
