@@ -1,1 +1,1 @@
-../Makefile.ansible8-f36
+../Makefile.f36

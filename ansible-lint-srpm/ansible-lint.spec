@@ -1,17 +1,9 @@
 %global archive_name ansible-lint
 %global lib_name ansiblelint
 
-# Force python38 for RHEL 8, which has python 3.6 by default
-%if 0%{?el8}
-%global python3_version 3.8
-%global python3_pkgversion 38
-# For RHEL 'platform python' insanity: Simply put, no.
-%global __python3 %{_bindir}/python%{python3_version}
-%endif
-
 Name:           %{archive_name}
 Epoch:          1
-Version:        5.1.2
+Version:        5.3.2
 #Release:        2%%{?dist}
 Release:        0.2%{?dist}
 Summary:        Best practices checker for Ansible
@@ -21,14 +13,7 @@ URL:            https://github.com/willthames/ansible-lint
 Source0:        https://github.com/willthames/%{archive_name}/archive/v%{version}.tar.gz
 
 BuildArch:      noarch
-
-%if 0%{?el8}
-BuildRequires:  python%{python3_pkgversion}-rpm-macros
-%endif
-
-BuildRequires:  %{_bindir}/pathfix.py
-#BuildRequires:	ansible-packaging
-
+BuildRequires:	pyproject-rpm-macros
 
 %description
 Checks playbooks for practices and behavior that could potentially be improved.
@@ -67,6 +52,27 @@ ln -sr %{buildroot}%{_bindir}/%{name}{,-3}
 %{python3_sitelib}/ansible_lint-%{version}.dist-info/
 
 %changelog
+* Wed Jan 19 2022 Fedora Release Engineering <releng@fedoraproject.org> - 1:5.3.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
+
+* Fri Jan 14 2022 Parag Nemade <pnemade AT redhat DOT com> - 1:5.3.2-1
+- Update to 5.3.2 version (#2039168)
+
+* Mon Dec 13 2021 Parag Nemade <pnemade AT redhat DOT com> - 1:5.3.1-1
+- Update to 5.3.1 version (#2030304)
+
+* Mon Dec 06 2021 Parag Nemade <pnemade AT redhat DOT com> - 1:5.3.0-1
+- Update to 5.3.0 version (#2028259)
+
+* Wed Oct 20 2021 Parag Nemade <pnemade AT redhat DOT com> - 1:5.2.1-1
+- Update to 5.2.1 version (#2015831)
+
+* Fri Oct 01 2021 Parag Nemade <pnemade AT redhat DOT com> - 1:5.2.0-1
+- Update to 5.2.0 version (#2009767)
+
+* Thu Sep 02 2021 Parag Nemade <pnemade AT redhat DOT com> - 1:5.1.3-1
+- Update to 5.1.3 version (#1999888)
+
 * Wed Jul 21 2021 Fedora Release Engineering <releng@fedoraproject.org> - 1:5.1.2-2
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
 

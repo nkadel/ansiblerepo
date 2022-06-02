@@ -67,6 +67,7 @@ ANSIBLEPKGS+=ansible-collection-google-cloud-srpm
 ANSIBLEPKGS+=ansible-collection-microsoft-sql-srpm
 ANSIBLEPKGS+=ansible-collection-netbox-netbox-srpm
 #
+ANSIBLEPKGS+=ansible-lint-srpm
 ANSIBLEPKGS+=ansible-pcp-srpm
 #
 # Has built-in ansible bundle reuirement
