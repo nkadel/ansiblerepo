@@ -19,9 +19,11 @@ ANSIBLEPKGS+=ansible-core-2.11.x-srpm
 ANSIBLEPKGS+=ansible-4.x-srpm
 
 ANSIBLEPKGS+=python38-jmespath-srpm
+#ANSIBLEPKGS+=ansible-54.x-srpm
 ANSIBLEPKGS+=ansible-6.x-srpm
 
 #ANSIBLEPKGS+=ansible_collections-4.x-srpm
+##ANSIBLEPKGS+=ansible_collections-5.x-srpm
 #ANSIBLEPKGS+=ansible_collections-6.x-srpm
 
 ## Do not require ansiblerepo
@@ -130,7 +132,8 @@ python-resolvelib-srpm:: python-commentjson-srpm
 ansible-core-2.11.x-srpm:: python-resolvelib-srpm
 ansible-core-2.13.x-srpm:: python-resolvelib-srpm
 ansible-4.x-srpm:: ansible-core-2.11.x-srpm
-ansible-3.x-srpm:: ansible-core-2.13.x-srpm
+ansible-5.x-srpm:: ansible-core-2.12.x-srpm
+ansible-6.x-srpm:: ansible-core-2.13.x-srpm
 
 # Actually build in directories
 .PHONY: $(ANSIBLEPKGS)
