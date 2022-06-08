@@ -152,6 +152,7 @@ rsync -a --prune-empty-dirs %{pypi_realname}/ \
 
 %{python3_sitelib}/%{pypi_realname}
 %{python3_sitelib}/%{pypi_name}-%{pypi_version}-py%{python3_version}.egg-info
+%{_bindir}/ansible-community
 
 #%%files -n %%{pypi_name}-doc
 %files -n %{pypi_realname}-doc
@@ -160,6 +161,7 @@ rsync -a --prune-empty-dirs %{pypi_realname}/ \
 %changelog
 * Tue Jun 7 2022 Nico Kadel-Garcia - 6.0.0rc1-0
 - Update to 6.0.0rc1
+- Add __bindir/ansible-community
 
 * Wed Jun 1  2022 Nico Kadel-Garcia - 6.0.0b2-0
 - Update to beta 6.0.0b2

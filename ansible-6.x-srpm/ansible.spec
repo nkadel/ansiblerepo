@@ -38,7 +38,7 @@ BuildRequires:  ansible-core < 2.14.0
 # Roll back demand for 2.13, for python 3.6 compatibility
 # Use 2.11.9 to avoid accidental published Fedora conflict
 #BuildRequires:  ansible-core >= 2.13.0
-BuildRequires:  ansible-core >= 2.13.0
+BuildRequires:  ansible-core >= 2.11.9
 
 BuildRequires:  rsync
 
@@ -149,6 +149,7 @@ rsync -a --prune-empty-dirs %{pypi_realname}/ \
 
 %{python3_sitelib}/%{pypi_realname}
 %{python3_sitelib}/%{pypi_name}-%{pypi_version}-py%{python3_version}.egg-info
+%{_bindir}/ansible-community
 
 %files -n %{pypi_name}-doc
 %doc %{_defaultdocdir}/%{name}-%{version}/%{pypi_realname}
@@ -156,6 +157,7 @@ rsync -a --prune-empty-dirs %{pypi_realname}/ \
 %changelog
 * Tue Jun 7 2022 Nico Kadel-Garcia - 6.0.0rc1-0
 - Update to 6.0.0rc1
+- Add __bindir/ansible-community
 
 * Wed Jun 1  2022 Nico Kadel-Garcia - 6.0.0b2-0
 - Update to beta 6.0.0b2
