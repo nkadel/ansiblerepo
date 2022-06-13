@@ -10,7 +10,6 @@ LANG=C
 MOCKS+=centos-stream+epel-8-x86_64
 MOCKS+=centos-stream+epel-9-x86_64
 
-MOCKCFGS+=$(MOCKS)
 #MOCKCFGS+=ansiblerepo-7-x86_64
 MOCKCFGS+=ansiblerepo-8-x86_64
 MOCKCFGS+=ansiblerepo-9-x86_64
