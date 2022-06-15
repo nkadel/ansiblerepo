@@ -32,8 +32,8 @@ Source0: %pypi_source ansible-core %{version}%{?betaver}
 Url: https://ansible.com
 BuildArch: noarch
 
-# Require packaging macros
-Requires: ansible-packaging
+# This makes the transition seamless for other packages
+Requires: (ansible-packaging if rpm-build)
 
 #Provides: ansible = %%{version}-%%{release}
 # For now conflict with the ansible 'classic' package.

@@ -10,21 +10,28 @@
 # If we should enable docs building
 # Currently we cannot until we get a stack of needed packages added and a few bugs fixed
 #
+%if 0%{?rhel}
 %bcond_with docs
+%else
+%bcond_without docs
+%endif
 
 #
 # If we should enable tests by default
 #
+%if 0%{?rhel}
 %bcond_with tests
+%else
+%bcond_without tests
+%endif
 
 # Set this when there's a beta or rc version
-%global betaver %{nil}
+%global betaver rc1
 
 Name: ansible-core
 Summary: A radically simple IT automation system
-#Version: 2.12.4
-Version: 2.13.0
-Release: 0.2%{?betaver}%{?dist}
+Version: 2.13.1
+Release: 0.1%{?betaver}%{?dist}
 
 License: GPLv3+
 Source0: %pypi_source ansible-core %{version}%{?betaver}
@@ -33,8 +40,8 @@ Source0: %pypi_source ansible-core %{version}%{?betaver}
 Url: https://ansible.com
 BuildArch: noarch
 
-# Require packaging macros
-Requires: ansible-packaging
+# This makes the transition seamless for other packages
+Requires: (ansible-packaging if rpm-build)
 
 #Provides: ansible = %%{version}-%%{release}
 # For now conflict with the ansible 'classic' package.
@@ -49,7 +56,7 @@ Obsoletes: ansible-base < 2.11.0
 Patch1:  2.10.3-test-patch.patch
 
 # Disable jinja2 > 3.0.0 requirement
-Patch2:   ansible-core-2.13.0-jinja2.patch
+Patch2:   ansible-core-2.13.1-jinja2.patch
 
 %if %{with tests}
 #
@@ -105,7 +112,7 @@ BuildRequires: python%{python3_pkgversion}-six
 BuildRequires: python%{python3_pkgversion}-requests
 BuildRequires: python%{python3_pkgversion}-mock
 BuildRequires: python%{python3_pkgversion}-jinja2
-BuildRequires: python%{python3_pkgversion}-pyyaml
+BuildRequires: python%{python3_pkgversion}-pyyaml >= 5.1
 BuildRequires: python%{python3_pkgversion}-cryptography
 
 %if %{with tests}
@@ -246,6 +253,10 @@ make PYTHON=%{__python3} tests-py3
 %endif
 
 %changelog
+* Wed Jun 15 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 2.13.1rc1
+- Update to 2.13.1rc1
+- Disable jinja2 requirement and doc building
+
 * Sat Apr 02 2022 Maxwell G <gotmax@e.email> - 2.12.4-1
 - Update to 2.12.4. Fixes rhbz#2069384.
 

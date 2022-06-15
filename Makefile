@@ -10,6 +10,13 @@ REPOBASE=file://$(PWD)
 
 ANSIBLEPKGS+=pyproject-rpm-macros-srpm
 
+# Build testing requirements
+ANSIBLEPKGS+=python38-asyncio-pool-sprm
+ANSIBLEPKGS+=antsibull-core-srpm
+ANSIBLEPKGS+=antsibull-default-srpm
+ANSIBLEPKGS+=antsibull-docs-srpm
+ANSIBLEPKGS+=antsibull-srpm
+
 ANSIBLEPKGS+=python38-unittest2-srpm
 ANSIBLEPKGS+=python38-mock-srpm
 ANSIBLEPKGS+=python38-straight-plugin-srpm

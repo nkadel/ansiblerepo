@@ -1,8 +1,9 @@
 *.cfg
 *.out
 *.repo
+*.rpm
 *[0-9]
 *\#*
 *~
-rpmbuild
 ansiblerepo
+rpmbuild
