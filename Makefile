@@ -5,7 +5,9 @@
 #REOBASEE=http://localhost
 REPOBASE=file://$(PWD)
 
-ANSIBLEPKGS+=ansible-packaging-srpm
+# Now included in base RHEL and Fedora
+#ANSIBLEPKGS+=ansible-packaging-srpm
+
 ANSIBLEPKGS+=pyproject-rpm-macros-srpm
 
 ANSIBLEPKGS+=python38-unittest2-srpm
