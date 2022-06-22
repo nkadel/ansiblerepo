@@ -26,7 +26,7 @@
 %endif
 
 # Set this when there's a beta or rc version
-%global betaver rc1
+%global betaver %{nil}
 
 Name: ansible-core
 Summary: A radically simple IT automation system
