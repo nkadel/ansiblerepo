@@ -10,11 +10,7 @@
 # If we should enable docs building
 # Currently we cannot until we get a stack of needed packages added and a few bugs fixed
 #
-%if 0%{?rhel}
 %bcond_with docs
-%else
-%bcond_without docs
-%endif
 
 #
 # If we should enable tests by default
@@ -55,8 +51,11 @@ Obsoletes: ansible-base < 2.11.0
 # Patch the test to use /usr/bin/python3 as we have for our build.
 Patch1:  2.10.3-test-patch.patch
 
+# Use $(PYTHON) more consistently in Makefiles
+Patch2: ansible-core-2.13.1-python3.patch
+
 # Disable jinja2 > 3.0.0 requirement
-Patch2:   ansible-core-2.13.1-jinja2.patch
+Patch3:   ansible-core-2.13.1-jinja2.patch
 
 %if %{with tests}
 #
@@ -100,7 +99,7 @@ BuildRequires: asciidoc
 BuildRequires: python%{python3_pkgversion}-straight-plugin
 BuildRequires: python%{python3_pkgversion}-rstcheck
 BuildRequires: python%{python3_pkgversion}-pygments
-BuildRequires: antsibull
+#BuildRequires: antsibull
 %endif
 
 #
@@ -120,6 +119,9 @@ BuildRequires: python%{python3_pkgversion}-pytest
 BuildRequires: python%{python3_pkgversion}-pytest-xdist
 BuildRequires: python%{python3_pkgversion}-pytest-mock
 BuildRequires: python%{python3_pkgversion}-pyvmomi
+
+# Some tests have awkward "#!/usr/bin/env python"
+BuildRequires: /usr/bin/python
 %endif
 
 # RHEL8 doesn't have python3-paramiko or python3-winrm (yet), but Fedora does
@@ -159,14 +161,15 @@ This package installs extensive documentation for ansible-core
 %autosetup -p1 -n %{name}-%{version}%{?betaver}
 
 %build
-sed -i -s 's|/usr/bin/env python|/usr/bin/python3|' test/lib/ansible_test/_util/target/cli/ansible_test_cli_stub.py
+sed -i -s 's|/usr/bin/env python$|%{__python3} |' test/lib/ansible_test/_util/target/cli/ansible_test_cli_stub.py
+sed -i -s 's|/usr/bin/env python$|%{__python3} |' hacking/build-ansible.py
 
 # disable the python -s shbang flag as we want to be able to find non system modules
 %global py3_shbang_opts %(echo %{py3_shbang_opts} | sed 's/-s//')
 %py3_build
 
 %if %{with docs}
-  make PYTHON=%{__python3} SPHINXBUILD=sphinx-build-3 webdocs
+  make PYTHON=%{__python3} SPHINXBUILD=sphinx-build-3 -Cdocs/docsite webdocs
 %else
   # we still need things to build these minimal docs too.
   # make PYTHON=%{__python3} -Cdocs/docsite config cli keywords modules plugins testing
