@@ -10,7 +10,11 @@
 # If we should enable docs building
 # Currently we cannot until we get a stack of needed packages added and a few bugs fixed
 #
+#%%if 0%%{?rhel}
 %bcond_with docs
+#%%else
+#%%bcond_without docs
+#%%endif
 
 #
 # If we should enable tests by default
