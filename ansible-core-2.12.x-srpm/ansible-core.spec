@@ -22,8 +22,8 @@
 
 Name: ansible-core
 Summary: A radically simple IT automation system
-Version: 2.12.6
-Release: 0.2%{?betaver}%{?dist}
+Version: 2.12.7
+Release: 0.1%{?betaver}%{?dist}
 
 License: GPLv3+
 Source0: %pypi_source ansible-core %{version}%{?betaver}
@@ -148,7 +148,8 @@ This package installs extensive documentation for ansible-core
 %autosetup -p1 -n %{name}-%{version}%{?betaver}
 
 %build
-sed -i -s 's|/usr/bin/env python|/usr/bin/python3|' test/lib/ansible_test/_util/target/cli/ansible_test_cli_stub.py
+sed -i -s 's|/usr/bin/env python$|/usr/bin/python3|' test/lib/ansible_test/_util/target/cli/ansible_test_cli_stub.py
+sed -i -s 's|/usr/bin/env python$|%{__python3} |' hacking/build-ansible.py
 
 # disable the python -s shbang flag as we want to be able to find non system modules
 %global py3_shbang_opts %(echo %{py3_shbang_opts} | sed 's/-s//')
@@ -158,7 +159,7 @@ sed -i -s 's|/usr/bin/env python|/usr/bin/python3|' test/lib/ansible_test/_util/
   make PYTHON=%{__python3} SPHINXBUILD=sphinx-build-3 webdocs
 %else
   # we still need things to build these minimal docs too.
-  # make PYTHON=%{__python3} -Cdocs/docsite config cli keywords modules plugins testing
+  #make PYTHON=%{__python3} -Cdocs/docsite config cli keywords modules plugins testing
 %endif
 
 %install
@@ -242,6 +243,9 @@ make PYTHON=%{__python3} tests-py3
 %endif
 
 %changelog
+* Tue Jun 28 2022 Nico Kadel-Garcia <nkadel@ambil.com> - 2.12.7-0.1
+- Update to 2.12.7
+
 * Mon May 23 2022 Nico Kadel-Garcia <nkadel@ambil.com> - 2.12.6-0
 - Update to 2.12.6
 
