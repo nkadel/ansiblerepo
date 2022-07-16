@@ -48,10 +48,11 @@ rm -rf %{pypi_name}.egg-info
 
 %build
 %{__python3} setup.py build
-# generate html docs
-PYTHONPATH=${PWD} sphinx-build sites/docs html
-# remove the sphinx-build leftovers
-rm -rf html/.{doctrees,buildinfo}
+
+## generate html docs
+#PYTHONPATH=${PWD} sphinx-build sites/docs html
+## remove the sphinx-build leftovers
+#rm -rf html/.{doctrees,buildinfo}
 
 %install
 # Must do the default python version install last because
@@ -65,7 +66,7 @@ rm -rf %{buildroot}%{_bindir}/*
 %{python3_sitelib}/%{pypi_name}-%{pypi_version}-py%{python3_version}.egg-info
 
 %files -n python-%{pypi_name}-doc
-%doc html
+#%doc html
 %license LICENSE
 
 %changelog
