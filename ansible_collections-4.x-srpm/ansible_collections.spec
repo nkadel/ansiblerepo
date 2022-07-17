@@ -33,6 +33,7 @@ BuildRequires:  ansible-core >= 2.11.7
 
 BuildRequires:  rsync
 
+BuildRequires:  python%{python3_pkgversion}
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
 BuildRequires:  python%{python3_pkgversion}-sphinx
