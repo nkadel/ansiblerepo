@@ -46,6 +46,7 @@ BuildRequires:  rsync
 BuildRequires:  python%{python3_pkgversion}-rpm-macros
 %endif
 
+BuildRequires:  python%{python3_pkgversion}
 BuildRequires:  python%{python3_pkgversion}-cryptography
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-resolvelib
