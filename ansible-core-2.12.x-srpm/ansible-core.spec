@@ -109,6 +109,9 @@ BuildRequires: python%{python3_pkgversion}-pytest
 BuildRequires: python%{python3_pkgversion}-pytest-xdist
 BuildRequires: python%{python3_pkgversion}-pytest-mock
 BuildRequires: python%{python3_pkgversion}-pyvmomi
+
+# Some tests have awkward "#!/usr/bin/env python"
+BuildRequires: /usr/bin/python
 %endif
 
 # RHEL8 doesn't have python3-paramiko or python3-winrm (yet), but Fedora does
@@ -148,8 +151,8 @@ This package installs extensive documentation for ansible-core
 %autosetup -p1 -n %{name}-%{version}%{?betaver}
 
 %build
-sed -i -s 's|/usr/bin/env python$|/usr/bin/python3|' test/lib/ansible_test/_util/target/cli/ansible_test_cli_stub.py
-sed -i -s 's|/usr/bin/env python$|%{__python3} |' hacking/build-ansible.py
+sed -i -s 's|/usr/bin/env python$|%{__python3}|g' test/lib/ansible_test/_util/target/cli/ansible_test_cli_stub.py
+sed -i -s 's|/usr/bin/env python$|%{__python3}|g' hacking/build-ansible.py
 
 # disable the python -s shbang flag as we want to be able to find non system modules
 %global py3_shbang_opts %(echo %{py3_shbang_opts} | sed 's/-s//')
