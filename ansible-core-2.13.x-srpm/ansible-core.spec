@@ -31,7 +31,7 @@
 Name: ansible-core
 Summary: A radically simple IT automation system
 Version: 2.13.1
-Release: 0.1%{?betaver}%{?dist}
+Release: 0.2%{?betaver}%{?dist}
 
 License: GPLv3+
 Source0: %pypi_source ansible-core %{version}%{?betaver}
@@ -69,6 +69,7 @@ Patch3:   ansible-core-2.13.1-jinja2.patch
 #
 BuildRequires: make
 BuildRequires: git-core
+BuildRequires: python%{python3_pkgversion}-packaging >= 21.3
 BuildRequires: python%{python3_pkgversion}-packaging
 BuildRequires: python%{python3_pkgversion}-pexpect
 BuildRequires: openssl
@@ -136,6 +137,9 @@ Recommends: python%{python3_pkgversion}-winrm
 Requires: python%{python3_pkgversion}-jmespath
 # needed for galaxy
 Requires: python%{python3_pkgversion}-resolvelib
+# avoid module wackiness
+Requires: python%{python3_pkgversion}-packaging >= 21.3
+
 
 %description
 Ansible is a radically simple model-driven configuration management,
@@ -165,8 +169,8 @@ This package installs extensive documentation for ansible-core
 %autosetup -p1 -n %{name}-%{version}%{?betaver}
 
 %build
-sed -i -s 's|/usr/bin/env python$|%{__python3} |' test/lib/ansible_test/_util/target/cli/ansible_test_cli_stub.py
-sed -i -s 's|/usr/bin/env python$|%{__python3} |' hacking/build-ansible.py
+sed -i -s 's|/usr/bin/env python$|%{__python3}|g' test/lib/ansible_test/_util/target/cli/ansible_test_cli_stub.py
+sed -i -s 's|/usr/bin/env python$|%{__python3}|g' hacking/build-ansible.py
 
 # disable the python -s shbang flag as we want to be able to find non system modules
 %global py3_shbang_opts %(echo %{py3_shbang_opts} | sed 's/-s//')
@@ -176,7 +180,7 @@ sed -i -s 's|/usr/bin/env python$|%{__python3} |' hacking/build-ansible.py
   make PYTHON=%{__python3} SPHINXBUILD=sphinx-build-3 -Cdocs/docsite webdocs
 %else
   # we still need things to build these minimal docs too.
-  # make PYTHON=%{__python3} -Cdocs/docsite config cli keywords modules plugins testing
+  #make PYTHON=%{__python3} -Cdocs/docsite config cli keywords modules plugins testing
 %endif
 
 %install
