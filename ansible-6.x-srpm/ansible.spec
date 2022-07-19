@@ -26,6 +26,7 @@
 %global __brp_mangle_shebangs /usr/bin/true
 
 Name:           %{pypi_name}
+#Name:           %%{pypi_realname}
 Version:        %{pypi_version}
 Release:        0.2%{?dist}
 Summary:        Radically simple IT automation
@@ -34,7 +35,7 @@ License:        GPLv3+
 URL:            https://ansible.com/
 Source0:        https://files.pythonhosted.org/packages/source/a/%{pypi_name}/%{pypi_name}-%{pypi_version}.tar.gz
 
-BuildRequires:  ansible-core < 2.14.0
+BuildRequires:  ansible-core < 2.14
 # Roll back demand for 2.13, for python 3.6 compatibility
 # Use 2.11.9 to avoid accidental published Fedora conflict
 #BuildRequires:  ansible-core >= 2.13.0
@@ -46,6 +47,7 @@ BuildRequires:  rsync
 BuildRequires:  python%{python3_pkgversion}-rpm-macros
 %endif
 
+BuildRequires:  python%{python3_pkgversion}
 BuildRequires:  python%{python3_pkgversion}-cryptography
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-resolvelib
@@ -63,6 +65,8 @@ ad-hoc task execution, network automation, and multi-node
 orchestration. Ansible makes complex changes like zero-downtime
 rolling updates with load...
 
+#%%package -n %{pypi_realname}-doc
+#%%description -n %%{pypi_realname}-doc
 %package -n %{pypi_name}-doc
 Summary:        ansible documentation
 %description -n %{pypi_name}-doc
@@ -117,16 +121,16 @@ done
 %{py3_install}
 
 # Pre-stage licenses and docs into local dirs, to avoud path stripping
-install -d %{buildroot}%{_defaultdocdir}/%{name}-%{version}/%{pypi_realname}/
+install -d %{buildroot}%{_defaultdocdir}/%{pypi_realname}-%{version}/%{pypi_realname}/
 rsync -a --prune-empty-dirs %{pypi_realname}/ \
     --exclude=docs/ \
     --include=*/ \
     --include=*README* \
     --include=*readme* \
     --exclude=* \
-    %{buildroot}%{_defaultdocdir}/%{name}-%{version}/%{pypi_realname}/
+    %{buildroot}%{_defaultdocdir}/%{pypi_realname}-%{version}/%{pypi_realname}/
 
-install -d %{buildroot}%{_defaultlicensedir}/%{name}-%{version}/%{pypi_realname}/
+install -d %{buildroot}%{_defaultlicensedir}/%{pypi_realname}-%{version}/%{pypi_realname}/
 rsync -a --prune-empty-dirs %{pypi_realname}/ \
     --exclude=licenses/ \
     --exclude=*license.py \
@@ -134,7 +138,7 @@ rsync -a --prune-empty-dirs %{pypi_realname}/ \
     --include=*LICENSE* \
     --include=*license* \
     --exclude=* \
-    %{buildroot}%{_defaultlicensedir}/%{name}-%{version}/%{pypi_realname}/
+    %{buildroot}%{_defaultlicensedir}/%{pypi_realname}-%{version}/%{pypi_realname}/
 
 %if %{with checks}
 %check
@@ -144,15 +148,16 @@ rsync -a --prune-empty-dirs %{pypi_realname}/ \
 %files
 %doc porting_guide_*.rst CHANGELOG-*.rst
 %doc COPYING README.rst
-%exclude %{_defaultdocdir}/%{name}-%{version}/%{pypi_realname}
-%license %{_defaultlicensedir}/%{name}-%{version}/%{pypi_realname}
+%exclude %{_defaultdocdir}/%{pypi_realname}-%{version}/%{pypi_realname}
+%license %{_defaultlicensedir}/%{pypi_realname}-%{version}/%{pypi_realname}
 
 %{python3_sitelib}/%{pypi_realname}
 %{python3_sitelib}/%{pypi_name}-%{pypi_version}-py%{python3_version}.egg-info
 %{_bindir}/ansible-community
 
 %files -n %{pypi_name}-doc
-%doc %{_defaultdocdir}/%{name}-%{version}/%{pypi_realname}
+#%%files -n %%{pypi_realname}-doc
+%doc %{_defaultdocdir}/%{pypi_realname}-%{version}/%{pypi_realname}
 
 %changelog
 * Tue Jun 7 2022 Nico Kadel-Garcia - 6.0.0rc1-0
@@ -166,7 +171,7 @@ rsync -a --prune-empty-dirs %{pypi_realname}/ \
 - Update to beta 6.0.0b1
 
 * Mon May 16 2022 Nico Kadel-Garcia - 6.0.0a2-0
-- Update to alpha 6.0.0a2, with ansible-core dependency updates
+- Update to slpha 6.0.0a2, with ansible-core dependency updates
 
 * Wed May 4 2022 Nico Kadel-Garcia - 5.7.1-0
 - Update to 5.7.1

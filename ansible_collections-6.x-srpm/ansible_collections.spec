@@ -3,7 +3,7 @@
 # due to very confusing upsream renaming
 %global pypi_name ansible
 %global pypi_realname ansible_collections
-%global pypi_version 6.0.0
+%global pypi_version 6.1.0
 
 # Force python38 for RHEL 8, which has python 3.6 by default
 %if 0%{?el8}
@@ -47,6 +47,7 @@ BuildRequires:  rsync
 BuildRequires:  python%{python3_pkgversion}-rpm-macros
 %endif
 
+BuildRequires:  python%{python3_pkgversion}
 BuildRequires:  python%{python3_pkgversion}-cryptography
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-resolvelib
