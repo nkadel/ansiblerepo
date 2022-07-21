@@ -30,8 +30,8 @@
 
 Name: ansible-core
 Summary: A radically simple IT automation system
-Version: 2.13.1
-Release: 0.2%{?betaver}%{?dist}
+Version: 2.13.2
+Release: 0.1%{?betaver}%{?dist}
 
 License: GPLv3+
 Source0: %pypi_source ansible-core %{version}%{?betaver}
@@ -59,7 +59,7 @@ Patch1:  2.10.3-test-patch.patch
 Patch2: ansible-core-2.13.1-python3.patch
 
 # Disable jinja2 > 3.0.0 requirement
-Patch3:   ansible-core-2.13.1-jinja2.patch
+Patch3:   ansible-core-2.13.2-jinja2.patch
 
 %if %{with tests}
 #
@@ -69,14 +69,14 @@ Patch3:   ansible-core-2.13.1-jinja2.patch
 #
 BuildRequires: make
 BuildRequires: git-core
-BuildRequires: python%{python3_pkgversion}-packaging >= 21.3
 BuildRequires: python%{python3_pkgversion}-packaging
 BuildRequires: python%{python3_pkgversion}-pexpect
 BuildRequires: openssl
 BuildRequires: python%{python3_pkgversion}-systemd
 BuildRequires: python%{python3_pkgversion}-pytz
 BuildRequires: glibc-all-langpacks
-BuildRequires: python%{python3_pkgversion}-resolvelib
+BuildRequires: python%{python3_pkgversion}-resolvelib >= 0.5.3
+BuildRequires: python%{python3_pkgversion}-resolvelib < 0.9.0
 BuildRequires: python%{python3_pkgversion}-rpm-macros
 #
 # These only exist on Fedora. RHEL8 will just skip tests that need them.
@@ -138,7 +138,7 @@ Requires: python%{python3_pkgversion}-jmespath
 # needed for galaxy
 Requires: python%{python3_pkgversion}-resolvelib
 # avoid module wackiness
-Requires: python%{python3_pkgversion}-packaging >= 21.3
+Requires: python%{python3_pkgversion}-packaging
 
 
 %description
