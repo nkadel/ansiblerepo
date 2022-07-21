@@ -10,11 +10,7 @@
 # If we should enable docs building
 # Currently we cannot until we get a stack of needed packages added and a few bugs fixed
 #
-#%%if 0%%{?rhel}
 %bcond_with docs
-#%%else
-#%%bcond_without docs
-#%%endif
 
 #
 # If we should enable tests by default
@@ -57,9 +53,6 @@ Patch1:  2.10.3-test-patch.patch
 
 # Use $(PYTHON) more consistently in Makefiles
 Patch2: ansible-core-2.13.1-python3.patch
-
-# Disable jinja2 > 3.0.0 requirement
-Patch3:   ansible-core-2.13.2-jinja2.patch
 
 %if %{with tests}
 #
@@ -115,7 +108,7 @@ BuildRequires: python%{python3_pkgversion}-setuptools
 BuildRequires: python%{python3_pkgversion}-six
 BuildRequires: python%{python3_pkgversion}-requests
 BuildRequires: python%{python3_pkgversion}-mock
-BuildRequires: python%{python3_pkgversion}-jinja2
+BuildRequires: python%{python3_pkgversion}-jinja2 >= 3.0.0
 BuildRequires: python%{python3_pkgversion}-pyyaml >= 5.1
 BuildRequires: python%{python3_pkgversion}-cryptography
 
