@@ -1,0 +1,28 @@
+diff -ur ansible-core-2.13.2.jinja2/requirements.txt ansible-core-2.13.2/requirements.txt
+--- ansible-core-2.13.2.jinja2/requirements.txt	2022-07-18 10:54:46.000000000 -0400
++++ ansible-core-2.13.2/requirements.txt	2022-07-21 07:51:29.874153843 -0400
+@@ -3,7 +3,9 @@
+ # packages.  Thus, this should be the loosest set possible (only required
+ # packages, not optional ones, and with the widest range of versions that could
+ # be suitable)
+-jinja2 >= 3.0.0
++# Reduce jinja2 requirement for RHEL
++#jinja2 >= 3.0.0
++jinja2
+ PyYAML >= 5.1  # PyYAML 5.1 is required for Python 3.8+ support
+ cryptography
+ packaging
+diff -ur ansible-core-2.13.2.jinja2/test/lib/ansible_test/_data/requirements/ansible.txt ansible-core-2.13.2/test/lib/ansible_test/_data/requirements/ansible.txt
+--- ansible-core-2.13.2.jinja2/test/lib/ansible_test/_data/requirements/ansible.txt	2022-07-18 10:54:46.000000000 -0400
++++ ansible-core-2.13.2/test/lib/ansible_test/_data/requirements/ansible.txt	2022-07-21 07:50:57.888848620 -0400
+@@ -3,7 +3,9 @@
+ # packages.  Thus, this should be the loosest set possible (only required
+ # packages, not optional ones, and with the widest range of versions that could
+ # be suitable)
+-jinja2 >= 3.0.0
++# Reduce jinja2 requirement for RHEL
++#jinja2 >= 3.0.0
++jinja2
+ PyYAML >= 5.1  # PyYAML 5.1 is required for Python 3.8+ support
+ cryptography
+ packaging
