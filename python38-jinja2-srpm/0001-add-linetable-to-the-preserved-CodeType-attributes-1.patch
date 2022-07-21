@@ -1,0 +1,27 @@
+From 9a99db929323f60553b391c80d0395821121d593 Mon Sep 17 00:00:00 2001
+From: Thomas Moschny <thomas.moschny@gmx.de>
+Date: Tue, 19 Jan 2021 21:01:18 +0100
+Subject: [PATCH] add 'linetable' to the preserved CodeType attributes (#1334)
+
+add 'linetable' to the preserved CodeType attributes
+
+co_linetable replaces co_lnotab as part of PEP 626 in Python 3.10.
+---
+ src/jinja2/debug.py | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/jinja2/debug.py b/src/jinja2/debug.py
+index 5d8aec3..e256617 100644
+--- a/src/jinja2/debug.py
++++ b/src/jinja2/debug.py
+@@ -137,6 +137,7 @@ def fake_traceback(exc_value, tb, filename, lineno):
+             "lnotab",
+             "freevars",
+             "cellvars",
++            "linetable",  # Python 3.10
+         ):
+             if isinstance(attr, tuple):
+                 # Replace with given value.
+-- 
+2.29.2
+

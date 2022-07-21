@@ -1,0 +1,49 @@
+From 58250a709532ccb3e6d92ca65b3d305d1464cb68 Mon Sep 17 00:00:00 2001
+From: Martin Krizek <martin.krizek@gmail.com>
+Date: Thu, 28 Jan 2021 10:08:50 +0100
+Subject: [PATCH] native_concat: pass only strings to literal_eval
+
+If there is only single node and it is not a string, there is no point
+in passing it into ``literal_eval``, just return it immediately.
+
+One of the examples where passing a non-string node into
+``literal_eval`` would actually cause problems is when the node is
+``Undefined``. On Python 3.10 this would cause ``UndefinedError``
+instead of just ``Undefined`` being returned.
+
+Fixes #1335
+---
+ CHANGES.rst               | 3 +++
+ src/jinja2/nativetypes.py | 2 ++
+ 2 files changed, 5 insertions(+)
+
+diff --git a/CHANGES.rst b/CHANGES.rst
+index 511b22b..a8a66ea 100644
+--- a/CHANGES.rst
++++ b/CHANGES.rst
+@@ -8,6 +8,9 @@ Released 2021-01-31
+ -   Improve the speed of the ``urlize`` filter by reducing regex
+     backtracking. Email matching requires a word character at the start
+     of the domain part, and only word characters in the TLD. :pr:`1343`
++-   Fix UndefinedError incorrectly being thrown on an undefined variable
++    instead of ``Undefined`` being returned on
++    ``NativeEnvironment`` on Python 3.10. :issue:`1335`
+ 
+ 
+ Version 2.11.2
+diff --git a/src/jinja2/nativetypes.py b/src/jinja2/nativetypes.py
+index a9ead4e..2fee17f 100644
+--- a/src/jinja2/nativetypes.py
++++ b/src/jinja2/nativetypes.py
+@@ -26,6 +26,8 @@ def native_concat(nodes):
+ 
+     if len(head) == 1:
+         raw = head[0]
++        if not isinstance(raw, str):
++            return raw
+     else:
+         raw = u"".join([text_type(v) for v in chain(head, nodes)])
+ 
+-- 
+2.29.2
+
