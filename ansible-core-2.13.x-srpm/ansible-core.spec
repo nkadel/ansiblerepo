@@ -133,6 +133,8 @@ Requires: python%{python3_pkgversion}-resolvelib
 # avoid module wackiness
 Requires: python%{python3_pkgversion}-packaging
 
+# needed for ansible galaxy
+Requires: python%{python3_pkgversion}-jinja2 >= 3.0.0
 
 %description
 Ansible is a radically simple model-driven configuration management,
