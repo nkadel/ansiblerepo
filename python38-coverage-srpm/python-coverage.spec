@@ -7,9 +7,12 @@
 %global __python3 %{_bindir}/python%{python3_version}
 %endif
 
-Name:           python-coverage
+%global pypi_name coverage
+%global pypi_version 4.5.1
+
+Name:           python-%{pypi_name}
 Summary:        Code coverage testing module for Python
-Version:        4.5.1
+Version:        %{pypi_version}
 #Release:        9%%{?prever}%%{?dist}
 Release:        0.9%{?prever}%{?dist}
 # jquery(MIT):
@@ -20,7 +23,7 @@ Release:        0.9%{?prever}%{?dist}
 #  coverage/htmlfiles/jquery.isonscreen.js
 License:        ASL 2.0 and MIT and (MIT or GPL)
 URL:            http://nedbatchelder.com/code/modules/coverage.html
-Source0:        http://pypi.python.org/packages/source/c/coverage/coverage-%{version}%{?prever}.tar.gz
+Source0:        %{pypi_source}
 
 BuildRequires:  gcc
 
@@ -30,23 +33,23 @@ execution. It uses the code analysis tools and tracing hooks provided in the
 Python standard library to determine which lines are executable, and which 
 have been executed.
 
-%package -n python%{python3_pkgversion}-coverage
+%package -n python%{python3_pkgversion}-%{pypi_name}
 Summary:        Code coverage testing module for Python 3
 BuildRequires:  python%{python3_pkgversion}
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
 Requires:       python%{python3_pkgversion}-setuptools
 
-%{?python_provide:%python_provide python%{python3_pkgversion}-coverage}
+%{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
 
-%description -n python%{python3_pkgversion}-coverage
+%description -n python%{python3_pkgversion}-%{pypi_name}
 Coverage.py is a Python 3 module that measures code coverage during Python
 execution. It uses the code analysis tools and tracing hooks provided in the 
 Python standard library to determine which lines are executable, and which 
 have been executed.
 
 %prep
-%setup -q -n coverage-%{version}%{?prever}
+%setup -q -n %{pypi_name}-%{version}%{?prever}
 
 find . -type f -exec chmod 0644 \{\} \;
 sed -i 's/\r//g' README.rst
@@ -57,14 +60,14 @@ sed -i 's/\r//g' README.rst
 
 %install
 %py3_install
-rm -f %{buildroot}%{_bindir}/coverage %{buildroot}%{_bindir}/coverage3
+rm -f %{buildroot}%{_bindir}/%{pypi_name} %{buildroot}%{_bindir}/%{pypi_name}3
 
-%files -n python%{python3_pkgversion}-coverage
+%files -n python%{python3_pkgversion}-%{pypi_name}
 %license LICENSE.txt NOTICE.txt
 %doc README.rst
-%{python3_sitearch}/coverage/
-%{python3_sitearch}/coverage*.egg-info/
-%{_bindir}/coverage-%{python3_version}
+%{python3_sitearch}/%{pypi_name}/
+%{python3_sitearch}/%{pypi_name}*.egg-info/
+%{_bindir}/%{pypi_name}-%{python3_version}
 
 %changelog
 * Mon Aug 23 2021 Tomas Orsava <torsava@redhat.com> - 4.5.1-9
