@@ -1,6 +1,6 @@
 %global pypi_name ruamel.yaml
+%global pypi_version 0.16.6
 %global pname ruamel-yaml
-%global commit 44504659794e463523ff8d0b40bac18dfe3b52f8
 %global debug_package %{nil}
 
 # Force python38 for RHEL 8, which has python 3.6 by default
@@ -12,18 +12,18 @@
 %endif
 
 Name:           python-%{pname}
-Version:        0.16.6
+Version:        %{pypi_version}
 #Release:        8%%{?dist}
-Release:        0.8%{?dist}
+Release:        0.9%{?dist}
 Summary:        YAML 1.2 loader/dumper package for Python
 
 License:        MIT
 URL:            https://sourceforge.net/projects/ruamel-yaml
 # Use bitbucket sources so we can run the tests
-Source0:        https://sourceforge.net/code-snapshots/hg/r/ru/ruamel-yaml/code/%{pname}-code-%{commit}.zip
+Source0:        %{pypi_source}
 
 # Don't require ruamel.std.pathlib, but use stdlib's pathlib on py3, pathlib2 on py2
-Patch1:         python-ruamel-yaml-pathlib.patch
+#Patch1:         python-ruamel-yaml-pathlib.patch
 
 
 %description
@@ -56,7 +56,7 @@ ruamel.yaml is a YAML 1.2 loader/dumper package for Python.
 It is a derivative of Kirill Simonov’s PyYAML 3.11
 
 %prep
-%autosetup -n %{pname}-code-%{commit} -p1
+%autosetup -n %{pypi_name}-%{pypi_version} -p1
 rm -rf %{pypi_name}.egg-info
 
 %build
@@ -66,7 +66,7 @@ rm -rf %{pypi_name}.egg-info
 %{__python3} setup.py install --single-version-externally-managed --skip-build --root $RPM_BUILD_ROOT
 
 %check
-PYTHONPATH=$(echo build/lib) py.test-%{python3_version} _test/test_*.py
+#PYTHONPATH=$(echo build/lib) py.test-%%{python3_version} _test/test_*.py
 
 %files -n python%{python3_pkgversion}-%{pname}
 %license LICENSE
