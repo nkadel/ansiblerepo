@@ -34,6 +34,11 @@ ANSIBLEPKGS+=ansible-core-2.11.x-srpm
 
 ANSIBLEPKGS+=ansible-4.x-srpm
 
+# Needed for jmespath
+ANSIBLEPKGS+=python38-coverage-srpm
+ANSIBLEPKGS+=python38-nose-srpm
+ANSIBLEPKGS+=python38-pbr-srpm
+
 ANSIBLEPKGS+=python38-jmespath-srpm
 #ANSIBLEPKGS+=ansible-5.x-srpm
 ANSIBLEPKGS+=ansible-6.x-srpm
@@ -51,10 +56,6 @@ ANSIBLEPKGS+=python-entrypoints-srpm
 ANSIBLEPKGS+=python-lark-parser-srpm
 
 ## python38
-ANSIBLEPKGS+=python38-coverage-srpm
-ANSIBLEPKGS+=python38-nose-srpm
-ANSIBLEPKGS+=python38-pbr-srpm
-
 ANSIBLEPKGS+=python38-ruamel-yaml-clib-srpm
 ANSIBLEPKGS+=python38-ruamel-yaml-srpm
 
@@ -185,7 +186,7 @@ centos-stream+epel-8-x86_64.cfg:: /etc/mock/centos-stream+epel-8-x86_64.cfg
 	@echo Generating $@ from $?
 	@echo "include('$?')" | tee $@
 	@echo "# Enable python38 modules" | tee -a $@
-	@echo "config_opts['module_setup_commands'] = [ ('enable', 'python38-devel') ]" | tee -a $@
+	@echo "config_opts['module_setup_commands'] = [ ('enable', 'python38'), ('enable', 'python38-devel') ]" | tee -a $@
 	@echo "# Disable best" | tee -a $@
 	@echo "config_opts['dnf_vars'] = { 'best': 'False' }" | tee -a $@
 
@@ -210,7 +211,7 @@ ansiblerepo-8-x86_64.cfg: /etc/mock/centos-stream+epel-8-x86_64.cfg
 	@echo "include('$?')" | tee $@
 	@echo "config_opts['root'] = 'ansiblerepo-{{ releasever }}-{{ target_arch }}'" | tee -a $@
 	@echo "# Enable python38 modules" | tee -a $@
-	@echo "config_opts['module_setup_commands'] = [ ('enable', 'python38-devel') ]" | tee -a $@
+	@echo "config_opts['module_setup_commands'] = [ ('enable', 'python38'), ('enable', 'python38-devel') ]" | tee -a $@
 	@echo "# Disable best" | tee -a $@
 	@echo "config_opts['dnf_vars'] = { 'best': 'False' }" | tee -a $@
 	@echo "config_opts['dnf.conf'] += \"\"\"" | tee -a $@
