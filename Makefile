@@ -11,22 +11,22 @@ REPOBASE=file://$(PWD)
 ANSIBLEPKGS+=pyproject-rpm-macros-srpm
 
 # Build testing requirements
-#ANSIBLEPKGS+=python38-asyncio-pool-sprm
+#ANSIBLEPKGS+=python39-asyncio-pool-sprm
 #ANSIBLEPKGS+=antsibull-core-srpm
 #ANSIBLEPKGS+=antsibull-default-srpm
 #ANSIBLEPKGS+=antsibull-docs-srpm
 #ANSIBLEPKGS+=antsibull-srpm
 
-ANSIBLEPKGS+=python38-markupsafe-srpm
-ANSIBLEPKGS+=python38-jinja2-srpm
+ANSIBLEPKGS+=python39-markupsafe-srpm
+ANSIBLEPKGS+=python39-jinja2-srpm
 
-ANSIBLEPKGS+=python38-unittest2-srpm
-ANSIBLEPKGS+=python38-mock-srpm
-ANSIBLEPKGS+=python38-straight-plugin-srpm
-ANSIBLEPKGS+=python38-pretend-srpm
-ANSIBLEPKGS+=python38-progress-srpm
-ANSIBLEPKGS+=python38-invoke-srpm
-#ANSIBLEPKGS+=python38-packaging-srpm
+ANSIBLEPKGS+=python39-unittest2-srpm
+ANSIBLEPKGS+=python39-mock-srpm
+ANSIBLEPKGS+=python39-straight-plugin-srpm
+ANSIBLEPKGS+=python39-pretend-srpm
+ANSIBLEPKGS+=python39-progress-srpm
+ANSIBLEPKGS+=python39-invoke-srpm
+#ANSIBLEPKGS+=python39-packaging-srpm
 ANSIBLEPKGS+=ansible-core-2.13.x-srpm
 
 ANSIBLEPKGS+=python-resolvelib-srpm
@@ -35,11 +35,11 @@ ANSIBLEPKGS+=ansible-core-2.11.x-srpm
 ANSIBLEPKGS+=ansible-4.x-srpm
 
 # Needed for jmespath
-ANSIBLEPKGS+=python38-coverage-srpm
-ANSIBLEPKGS+=python38-nose-srpm
-ANSIBLEPKGS+=python38-pbr-srpm
+ANSIBLEPKGS+=python39-coverage-srpm
+ANSIBLEPKGS+=python39-nose-srpm
+ANSIBLEPKGS+=python39-pbr-srpm
 
-ANSIBLEPKGS+=python38-jmespath-srpm
+ANSIBLEPKGS+=python39-jmespath-srpm
 #ANSIBLEPKGS+=ansible-5.x-srpm
 ANSIBLEPKGS+=ansible-6.x-srpm
 
@@ -49,20 +49,20 @@ ANSIBLEPKGS+=ansible_collections-4.x-srpm
 ANSIBLEPKGS+=ansible_collections-6.x-srpm
 
 ## Do not require ansiblerepo
-ANSIBLEPKGS+=python38-ansible-generator-srpm
+ANSIBLEPKGS+=python39-ansible-generator-srpm
 ANSIBLEPKGS+=ansible-freeipa-srpm
 ANSIBLEPKGS+=pyflakes-srpm
 ANSIBLEPKGS+=python-entrypoints-srpm
 ANSIBLEPKGS+=python-lark-parser-srpm
 
-## python38
-ANSIBLEPKGS+=python38-ruamel-yaml-clib-srpm
-ANSIBLEPKGS+=python38-ruamel-yaml-srpm
+## python39
+ANSIBLEPKGS+=python39-ruamel-yaml-clib-srpm
+ANSIBLEPKGS+=python39-ruamel-yaml-srpm
 
-#ANSIBLEPKGS+=python38-setuptools_scm-srpm
-#ANSIBLEPKGS+=python38-unittest2-srpm
+#ANSIBLEPKGS+=python39-setuptools_scm-srpm
+#ANSIBLEPKGS+=python39-unittest2-srpm
 
-# Requires python38-pbr
+# Requires python39-pbr
 ANSIBLEPKGS+=ansible-collections-openstack-srpm
 
 # Requires pyproject-rpm-macros, not available for EL
@@ -71,8 +71,8 @@ ANSIBLEPKGS+=ansible-collections-openstack-srpm
 #ANSIBLEPKGS+=python-commentjson-srpm
 #ANSIBLEPKGS+=python-flake8-srpm
 #
-#ANSIBLEPKGS+=python38-pytest-forked-srpm
-#ANSIBLEPKGS+=python38-pytest-xdist-srpm
+#ANSIBLEPKGS+=python39-pytest-forked-srpm
+#ANSIBLEPKGS+=python39-pytest-xdist-srpm
 #
 ANSIBLEPKGS+=ansible-collection-ansible-netcommon-srpm
 ANSIBLEPKGS+=ansible-collection-ansible-posix-srpm
@@ -109,7 +109,7 @@ CFGS+=ansiblerepo-f36-x86_64.cfg
 # Amazon 2 config
 #CFGS+=ansiblerepo-amz2-x86_64.cfg
 
-# /etc/mock version lacks python38 modules
+# /etc/mock version lacks python39 modules
 CFGS+=centos-stream+epel-8-x86_64.cfg
 
 # Link from /etc/mock
@@ -185,8 +185,8 @@ $(MOCKCFGS)::
 centos-stream+epel-8-x86_64.cfg:: /etc/mock/centos-stream+epel-8-x86_64.cfg
 	@echo Generating $@ from $?
 	@echo "include('$?')" | tee $@
-	@echo "# Enable python38 modules" | tee -a $@
-	@echo "config_opts['module_setup_commands'] = [ ('enable', 'python38'), ('enable', 'python38-devel') ]" | tee -a $@
+	@echo "# Enable python39 modules" | tee -a $@
+	@echo "config_opts['module_setup_commands'] = [ ('enable', 'python39'), ('enable', 'python39-devel') ]" | tee -a $@
 	@echo "# Disable best" | tee -a $@
 	@echo "config_opts['dnf_vars'] = { 'best': 'False' }" | tee -a $@
 
@@ -210,8 +210,8 @@ ansiblerepo-8-x86_64.cfg: /etc/mock/centos-stream+epel-8-x86_64.cfg
 	@echo Generating $@ from $?
 	@echo "include('$?')" | tee $@
 	@echo "config_opts['root'] = 'ansiblerepo-{{ releasever }}-{{ target_arch }}'" | tee -a $@
-	@echo "# Enable python38 modules" | tee -a $@
-	@echo "config_opts['module_setup_commands'] = [ ('enable', 'python38'), ('enable', 'python38-devel') ]" | tee -a $@
+	@echo "# Enable python39 modules" | tee -a $@
+	@echo "config_opts['module_setup_commands'] = [ ('enable', 'python39'), ('enable', 'python39-devel') ]" | tee -a $@
 	@echo "# Disable best" | tee -a $@
 	@echo "config_opts['dnf_vars'] = { 'best': 'False' }" | tee -a $@
 	@echo "config_opts['dnf.conf'] += \"\"\"" | tee -a $@

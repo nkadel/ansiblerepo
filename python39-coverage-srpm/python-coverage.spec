@@ -2,8 +2,8 @@
 
 # Force python38 for RHEL 8, which has python 3.6 by default
 %if 0%{?el8}
-%global python3_version 3.8
-%global python3_pkgversion 38
+%global python3_version 3.9
+%global python3_pkgversion 39
 %global __python3 %{_bindir}/python%{python3_version}
 %endif
 

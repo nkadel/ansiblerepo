@@ -1,7 +1,7 @@
 # Force python38 for RHEL 8, which has python 3.6 by default
 %if 0%{?el8}
-%global python3_version 3.8
-%global python3_pkgversion 38
+%global python3_version 3.9
+%global python3_pkgversion 39
 # For RHEL 'platform python' insanity: Simply put, no.
 %global __python3 %{_bindir}/python%{python3_version}
 %endif
@@ -36,13 +36,6 @@ plugins. Plugins included with nose provide support for doctest, code\
 coverage and profiling, flexible attribute-based test selection,\
 output capture and more.\
 
-
-# Force python38 for RHEL 8, which has python 3.6 by default
-%if 0%{?el8}
-%global python3_version 3.8
-%global python3_pkgversion 38
-%global __python3 %{_bindir}/python%{python3_version}
-%endif
 
 Name:           python-%{pypi_name}
 Version:        %{pypi_version}

@@ -22,7 +22,7 @@ The actual list of ansible collection modules in the ansible tarball
 is in the release specific file of the ansible-build-date git repo,
 for example:
 
-* https://github.com/ansible-community/ansible-build-data/blob/main/5/ansible-5.6.0.deps
+* https://github.com/ansible-community/ansible-build-data/blob/main/6/ansible-6.6.0.deps
 
 Python 3.8 compatibility split
 ==============================
@@ -36,6 +36,15 @@ ansible-core 2.13 requires jinja2 > 3.0.0, which creates dependencies
 on sphinx more recent than RHEL provides. Therefore only the Fedora
 versions of ansible-core 2.13 will provide the sphinx generated
 documentation.
+
+RHEL dnf modularity breakage
+============================
+
+The dnf modularity of RHEL 8 has completely broken dnf based
+installation of both build components and of dependencies to build
+ansible-core. The multiple versions of python38-pytest and
+python38-markupsafe, combined with the need for updated versions of
+python38-jinja2 for ansible-core-2.13, mean that, make it impossible to build these tools with "mock" until further notice.
 
 Building ansible
 ===============
