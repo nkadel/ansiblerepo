@@ -73,40 +73,33 @@ Summary:        ansible documentation
 Documentation for ansible
 
 %prep
-%autosetup -n %{pypi_name}-%{pypi_version}
+%autosetup -n %{pypi_name}-%{pypi_version} -p1
 # Remove bundled egg-info
 rm -rf %{pypi_name}.egg-info
 
-find %{pypi_realname} \
-    -name '*.swp$' -o \
-    -name .DS_Store -o \
-    -name .ansible-lint -o \
-    -name .azure-pipelines -o \
-    -name .circleci -o \
-    -name .flake8 -o \
-    -name .gitattributes -o \
-    -name .github -o \
-    -name .gitignore -o \
-    -name .gitkeep -o \
-    -name .gitlab-ci.yml -o \
-    -name .idea -o \
-    -name .keep -o \
-    -name .mypy_cache -o \
-    -name .orig -o \
-    -name .plugin-cache.yaml -o \
-    -name .pre-commit-config.yaml -o \
-    -name .pytest_cache -o \
-    -name .pytest_cache -o \
-    -name .settings \
-    -name .travis.yml -o \
-    -name .vscode -o \
-    -name .yamllint -o \
-    -name hello -o \
-    -name .zuul.yaml | \
-    sort | while read hidden; do
-    echo Flushing debris file: "$hidden"
-    rm -rf "$hidden"
-done
+# Fix wrong-script-end-of-line-encoding in azure.azcollection
+find %{pypi_name}/azure/azcollection -type f -print -exec dos2unix -k '{}' \;
+
+find %{pypi_name}/community/mongodb/roles/*/{files,templates} -type f ! -executable -name '*.sh*' \
+    -print -exec chmod a+x '{}' \;
+
+sed -i -e '1{\@^#!.*@d}' %{pypi_name}/cyberark/conjur/Jenkinsfile
+
+# Remove unnecessary files and directories included in the Ansible collection release tarballs
+# Tracked upstream in part by: https://github.com/ansible-community/community-topics/issues/29
+echo "[START] Delete unnecessary files and directories"
+
+# Collection tarballs contain a lot of hidden files and directories
+hidden_pattern=".*\.(DS_Store|all-contributorsrc|ansible-lint|azure-pipelines|circleci|codeclimate.yml|flake8|galaxy_install_info|gitattributes|github|gitignore|gitkeep|gitlab-ci.yml|idea|keep|mypy_cache|nojekyll|orig|plugin-cache.yaml|pre-commit-config.yaml|project|pydevproject|pytest_cache|pytest_cache|readthedocs.yml|settings|swp|travis.yml|vscode|yamllint|yamllint.yaml|zuul.d|zuul.yaml|rstcheck.cfg|placeholder)$"
+find %{pypi_realname} -depth -regextype posix-egrep -regex "${hidden_pattern}" -print -exec rm -r {} \;
+
+# Not needed for runtime and has
+# /Users/kbreit/Documents/Programming/%{pypi_realname}/cisco/meraki/venv/bin/python shebang
+rm -r %{pypi_realname}/cisco/meraki/scripts
+
+# Not needed for runtime
+rm -r %{pypi_realname}/netbox/netbox/hacking
+rm -r %{pypi_realname}/cyberark/conjur/roles/conjur_host_identity/tests
 
 find %{pypi_realname} -type d | grep -E "tests/unit|tests/integration|tests/utils|tests/sanity|tests/runner|tests/regression" | \
     while read tests; do
@@ -139,6 +132,11 @@ rsync -a --prune-empty-dirs %{pypi_realname}/ \
     --include=*license* \
     --exclude=* \
     %{buildroot}%{_defaultlicensedir}/%{pypi_realname}-%{version}/%{pypi_realname}/
+
+echo Hardlink internal files in: %{python3_sitelib}/%{pypi_realname}
+hardlink -v %{buildroot}%{python3_sitelib}/%{pypi_realname}
+rvho Hardlink internal files in: %{ansible_licensedir}
+hardlink -v %{buildroot}%{ansible_licensedir}
 
 %if %{with checks}
 %check
