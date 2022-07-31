@@ -18,7 +18,7 @@
 Name:           %{archive_name}
 Version:        2.5.0
 #Release:        7%%{?dist}
-Release:        0.7%{?dist}
+Release:        0.8%{?dist}
 Summary:        Creates graphs representing ansible inventory
 
 License:        GPLv3+
@@ -36,7 +36,7 @@ ansible-inventory-grapher creates a dot file suitable for use by graphviz.\
 Summary:        %summary
 
 %if 0%{?el8}
-BuildRequires:  python38-rpm-macros
+BuildRequires:  python%{python3_pkgversion}-rpm-macros
 BuildRequires:  %{_bindir}/pathfix.py
 %endif
 
