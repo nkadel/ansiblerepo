@@ -27,6 +27,7 @@ BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
 # Test dependencies
 BuildRequires:  python%{python3_pkgversion}-pytest
+BuildRequires:  python%{python3_pkgversion}-pluggy
 %{?python_provide:%python_provide python%{python3_pkgversion}-markupsafe}
 
 %description -n python%{python3_pkgversion}-markupsafe
