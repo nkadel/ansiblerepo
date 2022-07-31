@@ -18,6 +18,8 @@ ANSIBLEPKGS+=pyproject-rpm-macros-srpm
 #ANSIBLEPKGS+=antsibull-srpm
 
 ANSIBLEPKGS+=python39-markupsafe-srpm
+ANSIBLEPKGS+=python39-babel-srpm
+ANSIBLEPKGS+=python39-pytz-srpm
 ANSIBLEPKGS+=python39-jinja2-srpm
 
 ANSIBLEPKGS+=python39-unittest2-srpm
@@ -29,7 +31,7 @@ ANSIBLEPKGS+=python39-invoke-srpm
 #ANSIBLEPKGS+=python39-packaging-srpm
 ANSIBLEPKGS+=ansible-core-2.13.x-srpm
 
-ANSIBLEPKGS+=python-resolvelib-srpm
+ANSIBLEPKGS+=python39-resolvelib-srpm
 ANSIBLEPKGS+=ansible-core-2.11.x-srpm
 
 ANSIBLEPKGS+=ansible-4.x-srpm
@@ -52,8 +54,8 @@ ANSIBLEPKGS+=ansible_collections-6.x-srpm
 ANSIBLEPKGS+=python39-ansible-generator-srpm
 ANSIBLEPKGS+=ansible-freeipa-srpm
 ANSIBLEPKGS+=pyflakes-srpm
-ANSIBLEPKGS+=python-entrypoints-srpm
-ANSIBLEPKGS+=python-lark-parser-srpm
+ANSIBLEPKGS+=python39-entrypoints-srpm
+ANSIBLEPKGS+=python39-lark-parser-srpm
 
 ## python39
 ANSIBLEPKGS+=python39-ruamel-yaml-clib-srpm
@@ -68,8 +70,8 @@ ANSIBLEPKGS+=ansible-collections-openstack-srpm
 # Requires pyproject-rpm-macros, not available for EL
 #ANSIBLEPKGS+=ansible-lint-srpm
 
-#ANSIBLEPKGS+=python-commentjson-srpm
-#ANSIBLEPKGS+=python-flake8-srpm
+#ANSIBLEPKGS+=python39-commentjson-srpm
+#ANSIBLEPKGS+=python39-flake8-srpm
 #
 #ANSIBLEPKGS+=python39-pytest-forked-srpm
 #ANSIBLEPKGS+=python39-pytest-xdist-srpm
@@ -140,20 +142,21 @@ install clean getsrc build srpm src.rpm::
 
 # Dependencies of libraries on other libraries for compilation
 
-python-commentjson-srpm:: python-lark-parser-srpm
-python-entrypoints-srpm:: python-commentjson-srpm
-
-python-flake8-srpm:: pyflakes-srpm
-
-python-resolvelib-srpm:: python-flake8-srpm
-python-resolvelib-srpm:: python-commentjson-srpm
-
-ansible-core-2.11.x-srpm:: python-resolvelib-srpm
-#ansible-core-2.12.x-srpm:: python-resolvelib-srpm
-ansible-core-2.13.x-srpm:: python-resolvelib-srpm
-ansible-4.x-srpm:: ansible-core-2.11.x-srpm
-#ansible-5.x-srpm:: ansible-core-2.12.x-srpm
-ansible-6.x-srpm:: ansible-core-2.13.x-srpm
+#python39-commentjson-srpm:: python39-lark-parser-srpm
+#python39-entrypoints-srpm:: python39-commentjson-srpm
+#
+#python39-flake8-srpm:: pyflakes-srpm
+#
+#python39-resolvelib-srpm:: python39-flake8-srpm
+#python39-resolvelib-srpm:: python39-commentjson-srpm
+#
+#ansible-core-2.11.x-srpm:: python39-resolvelib-srpm
+##ansible-core-2.12.x-srpm:: python39-resolvelib-srpm
+#ansible-core-2.13.x-srpm:: python39-resolvelib-srpm
+#
+#ansible-4.x-srpm:: ansible-core-2.11.x-srpm
+##ansible-5.x-srpm:: ansible-core-2.12.x-srpm
+#ansible-6.x-srpm:: ansible-core-2.13.x-srpm
 
 # Actually build in directories
 .PHONY: $(ANSIBLEPKGS)

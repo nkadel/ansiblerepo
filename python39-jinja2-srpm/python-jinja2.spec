@@ -48,6 +48,7 @@ BuildRequires:  python2-devel
 BuildRequires:  python2-setuptools
 BuildRequires:  python2-babel >= 2.7
 BuildRequires:  python2-markupsafe >= 2
+BuildRequires:  python2-pluggy
 Requires:       python2-babel >= 2.7
 Requires:       python2-markupsafe >= .2
 Requires:       python2-setuptools
@@ -73,6 +74,7 @@ BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
 BuildRequires:  python%{python3_pkgversion}-babel >= 2.7
 BuildRequires:  python%{python3_pkgversion}-markupsafe >= 2
+BuildRequires:  python%{python3_pkgversion}-pluggy
 BuildRequires:  python%{python3_pkgversion}-pytest
 %if %{with docs}
 BuildRequires:  %{_bindir}/sphinx-build-3

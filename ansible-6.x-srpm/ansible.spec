@@ -107,6 +107,18 @@ find %{pypi_realname} -type d | grep -E "tests/unit|tests/integration|tests/util
     rm -rf "$tests"
 done
 
+# Remove shebangs instead of hardocding to %%__python3 to avoid unexpected issues
+# from https://github.com/ansible/ansible/commit/9142be2f6cabbe6597c9254c5bb9186d17036d55.
+# Upstream, ansible-core has also removed shebangs from its modules.
+find -type f ! -executable -name '*.py' -print -exec sed -i -e '1{\@^#!.*@d}' '{}' \;
+
+# This ensures that %%ansible_core_requires is set properly, when %%pyproject_buildrequires is defined.
+# It also ensures that dependencies remain consistent.
+%if %{undefined el8}
+%generate_buildrequires
+%pyproject_buildrequires
+%endif
+
 %build
 %{py3_build}
 
