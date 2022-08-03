@@ -67,9 +67,6 @@ ANSIBLEPKGS+=python39-ruamel-yaml-srpm
 # Requires python39-pbr
 ANSIBLEPKGS+=ansible-collections-openstack-srpm
 
-# Requires pyproject-rpm-macros, not available for EL
-#ANSIBLEPKGS+=ansible-lint-srpm
-
 #ANSIBLEPKGS+=python39-commentjson-srpm
 #ANSIBLEPKGS+=python39-flake8-srpm
 #
@@ -90,7 +87,6 @@ ANSIBLEPKGS+=ansible-collection-google-cloud-srpm
 ANSIBLEPKGS+=ansible-collection-microsoft-sql-srpm
 ANSIBLEPKGS+=ansible-collection-netbox-netbox-srpm
 #
-ANSIBLEPKGS+=ansible-lint-srpm
 ANSIBLEPKGS+=ansible-pcp-srpm
 #
 # Has built-in ansible bundle reuirement
