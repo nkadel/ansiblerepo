@@ -3,7 +3,7 @@
 # due to very confusing upsream renaming
 %global pypi_name ansible
 %global pypi_realname ansible_collections
-%global pypi_version 6.1.0
+%global pypi_version 6.2.0
 
 # Force python38 for RHEL 8, which has python 3.6 by default
 %if 0%{?el8}
@@ -35,14 +35,16 @@ License:        GPLv3+
 URL:            https://ansible.com/
 Source0:        https://files.pythonhosted.org/packages/source/a/%{pypi_name}/%{pypi_name}-%{pypi_version}.tar.gz
 
+BuildRequires:  dos2unix
+BuildRequires:  findutils
+BuildRequires:  hardlink
+BuildRequires:  rsync
+
 BuildRequires:  ansible-core < 2.14
 # Roll back demand for 2.13, for python 3.6 compatibility
 # Use 2.11.9 to avoid accidental published Fedora conflict
 #BuildRequires:  ansible-core >= 2.13.0
 BuildRequires:  ansible-core >= 2.11.9
-
-BuildRequires:  rsync
-
 %if 0%{?el8}
 BuildRequires:  python%{python3_pkgversion}-rpm-macros
 %endif
@@ -65,25 +67,26 @@ ad-hoc task execution, network automation, and multi-node
 orchestration. Ansible makes complex changes like zero-downtime
 rolling updates with load...
 
-#%%package -n %{pypi_realname}-doc
+#%%package -n %%{pypi_realname}-doc
+#Summary:        %%{pypi_realname} documentation
 #%%description -n %%{pypi_realname}-doc
 %package -n %{pypi_name}-doc
-Summary:        ansible documentation
+Summary:        %{pypi_name} documentation
 %description -n %{pypi_name}-doc
 Documentation for ansible
 
 %prep
 %autosetup -n %{pypi_name}-%{pypi_version} -p1
 # Remove bundled egg-info
-rm -rf %{pypi_name}.egg-info
+rm -rf *.egg-info
 
 # Fix wrong-script-end-of-line-encoding in azure.azcollection
-find %{pypi_name}/azure/azcollection -type f -print -exec dos2unix -k '{}' \;
+find %{pypi_realname}/azure/azcollection -type f -print -exec dos2unix -k '{}' \;
 
-find %{pypi_name}/community/mongodb/roles/*/{files,templates} -type f ! -executable -name '*.sh*' \
+find %{pypi_realname}/community/mongodb/roles/*/{files,templates} -type f ! -executable -name '*.sh*' \
     -print -exec chmod a+x '{}' \;
 
-sed -i -e '1{\@^#!.*@d}' %{pypi_name}/cyberark/conjur/Jenkinsfile
+sed -i -e '1{\@^#!.*@d}' %{pypi_realname}/cyberark/conjur/Jenkinsfile
 
 # Remove unnecessary files and directories included in the Ansible collection release tarballs
 # Tracked upstream in part by: https://github.com/ansible-community/community-topics/issues/29
@@ -114,7 +117,7 @@ find -type f ! -executable -name '*.py' -print -exec sed -i -e '1{\@^#!.*@d}' '{
 
 # This ensures that %%ansible_core_requires is set properly, when %%pyproject_buildrequires is defined.
 # It also ensures that dependencies remain consistent.
-%if %{undefined el8}
+%if ! 0%{?el8}
 %generate_buildrequires
 %pyproject_buildrequires
 %endif
@@ -147,7 +150,7 @@ rsync -a --prune-empty-dirs %{pypi_realname}/ \
 
 echo Hardlink internal files in: %{python3_sitelib}/%{pypi_realname}
 hardlink -v %{buildroot}%{python3_sitelib}/%{pypi_realname}
-rvho Hardlink internal files in: %{ansible_licensedir}
+echo Hardlink internal files in: %{ansible_licensedir}
 hardlink -v %{buildroot}%{ansible_licensedir}
 
 %if %{with checks}
@@ -162,7 +165,10 @@ hardlink -v %{buildroot}%{ansible_licensedir}
 %license %{_defaultlicensedir}/%{pypi_realname}-%{version}/%{pypi_realname}
 
 %{python3_sitelib}/%{pypi_realname}
-%{python3_sitelib}/%{pypi_name}-%{pypi_version}-py%{python3_version}.egg-info
+# Stop getting trying to outsmart ansible versus ansible_collections misnaming
+#%%{python3_sitelib}/%%{pypi_realname}-%%{pypi_version}-py%%{python3_version}.egg-info
+#%%{python3_sitelib}/%%{pypi_name}-%%{pypi_version}-py%%{python3_version}.egg-info
+%{python3_sitelib}/*-%{pypi_version}-py%{python3_version}.egg-info
 %{_bindir}/ansible-community
 
 %files -n %{pypi_name}-doc
