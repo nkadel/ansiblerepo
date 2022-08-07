@@ -176,7 +176,7 @@ hardlink -v %{buildroot}%{ansible_licensedir}
 %doc %{_defaultdocdir}/%{pypi_realname}-%{version}/%{pypi_realname}
 
 %changelog
-* Tue Jul 2 2022 Nico Kadel-Garcia - 6.2.0-0.2
+* Tue Aug 2 2022 Nico Kadel-Garcia - 6.2.0-0.2
 - Update to 6.2.0
 - Integrate python39 and RHEL 8 compatibility support
 
