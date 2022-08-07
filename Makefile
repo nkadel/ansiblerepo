@@ -8,7 +8,27 @@ REPOBASE=file://$(PWD)
 # Now included in base RHEL and Fedora
 #ANSIBLEPKGS+=ansible-packaging-srpm
 
-ANSIBLEPKGS+=pyproject-rpm-macros-srpm
+# Do not build these, they break in RHEL
+#ANSIBLEPKGS+=pyproject-rpm-macros-srpm
+#ANSIBLEPKGS+=ansible-openstack-modules-srpm
+
+# EPEL based packages
+ANSIBLEPKGS+=ansible-freeipa-srpm
+ANSIBLEPKGS+=pyflakes-srpm
+ANSIBLEPKGS+=python39-ansible-generator-srpm
+ANSIBLEPKGS+=python39-babel-srpm
+ANSIBLEPKGS+=python39-coverage-srpm
+ANSIBLEPKGS+=python39-entrypoints-srpm
+ANSIBLEPKGS+=python39-invoke-srpm
+ANSIBLEPKGS+=python39-lark-parser-srpm
+ANSIBLEPKGS+=python39-markupsafe-srpm
+ANSIBLEPKGS+=python39-pretend-srpm
+ANSIBLEPKGS+=python39-progress-srpm
+ANSIBLEPKGS+=python39-pytz-srpm
+ANSIBLEPKGS+=python39-resolvelib-srpm
+ANSIBLEPKGS+=python39-ruamel-yaml-clib-srpm
+ANSIBLEPKGS+=python39-straight-plugin-srpm
+ANSIBLEPKGS+=python39-unittest2-srpm
 
 # Build testing requirements
 #ANSIBLEPKGS+=python39-asyncio-pool-sprm
@@ -17,27 +37,17 @@ ANSIBLEPKGS+=pyproject-rpm-macros-srpm
 #ANSIBLEPKGS+=antsibull-docs-srpm
 #ANSIBLEPKGS+=antsibull-srpm
 
-ANSIBLEPKGS+=python39-markupsafe-srpm
-ANSIBLEPKGS+=python39-babel-srpm
-ANSIBLEPKGS+=python39-pytz-srpm
 ANSIBLEPKGS+=python39-jinja2-srpm
 
-ANSIBLEPKGS+=python39-unittest2-srpm
 ANSIBLEPKGS+=python39-mock-srpm
-ANSIBLEPKGS+=python39-straight-plugin-srpm
-ANSIBLEPKGS+=python39-pretend-srpm
-ANSIBLEPKGS+=python39-progress-srpm
-ANSIBLEPKGS+=python39-invoke-srpm
 #ANSIBLEPKGS+=python39-packaging-srpm
 ANSIBLEPKGS+=ansible-core-2.13.x-srpm
 
-ANSIBLEPKGS+=python39-resolvelib-srpm
 ANSIBLEPKGS+=ansible-core-2.11.x-srpm
 
 ANSIBLEPKGS+=ansible-4.x-srpm
 
 # Needed for jmespath
-ANSIBLEPKGS+=python39-coverage-srpm
 ANSIBLEPKGS+=python39-nose-srpm
 ANSIBLEPKGS+=python39-pbr-srpm
 
@@ -50,15 +60,7 @@ ANSIBLEPKGS+=ansible_collections-4.x-srpm
 #ANSIBLEPKGS+=ansible_collections-5.x-srpm
 ANSIBLEPKGS+=ansible_collections-6.x-srpm
 
-## Do not require ansiblerepo
-ANSIBLEPKGS+=python39-ansible-generator-srpm
-ANSIBLEPKGS+=ansible-freeipa-srpm
-ANSIBLEPKGS+=pyflakes-srpm
-ANSIBLEPKGS+=python39-entrypoints-srpm
-ANSIBLEPKGS+=python39-lark-parser-srpm
-
 ## python39
-ANSIBLEPKGS+=python39-ruamel-yaml-clib-srpm
 ANSIBLEPKGS+=python39-ruamel-yaml-srpm
 
 #ANSIBLEPKGS+=python39-setuptools_scm-srpm
