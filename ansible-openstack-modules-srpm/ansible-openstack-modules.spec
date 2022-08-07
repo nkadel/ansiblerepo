@@ -18,7 +18,7 @@ URL:		https://github.com/openstack-ansible/openstack-ansible-modules
 # git clone https://github.com/openstack-ansible/openstack-ansible-modules.git
 # cd openstack-ansible-modules
 # git archive --format=tar %%{githash} | gzip > %%{name}-%%{githash}.tar.gz
-Source0:	ansible-openstack-modules-%{githash}.tar.gz
+#Source0:	ansible-openstack-modules-%{githash}.tar.gz
 Source:         https://github.com/openstack-ansible/openstack-ansible-modules/archive/refs/heads/master.zip
 
 BuildArch:      noarch
