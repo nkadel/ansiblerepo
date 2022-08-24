@@ -19,6 +19,7 @@ ANSIBLEPKGS+=python39-ansible-generator-srpm
 ANSIBLEPKGS+=python39-babel-srpm
 ANSIBLEPKGS+=python39-coverage-srpm
 ANSIBLEPKGS+=python39-entrypoints-srpm
+ANSIBLEPKGS+=python39-docutils-srpm
 ANSIBLEPKGS+=python39-invoke-srpm
 ANSIBLEPKGS+=python39-lark-parser-srpm
 ANSIBLEPKGS+=python39-markupsafe-srpm
