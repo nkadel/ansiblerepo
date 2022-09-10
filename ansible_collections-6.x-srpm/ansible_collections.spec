@@ -28,7 +28,7 @@
 #Name:           %%{pypi_name}
 Name:           %{pypi_realname}
 Version:        %{pypi_version}
-Release:        0.2%{?dist}
+Release:        0.1%{?dist}
 Summary:        Radically simple IT automation
 
 License:        GPLv3+
@@ -176,6 +176,9 @@ hardlink -v %{buildroot}%{ansible_licensedir}
 %doc %{_defaultdocdir}/%{pypi_realname}-%{version}/%{pypi_realname}
 
 %changelog
+* Thu Aug 25 2022 Nico Kadel-Garcia - 6.3.0-0.1
+- Update to 5.3.0
+
 * Tue Aug 2 2022 Nico Kadel-Garcia - 6.2.0-0.2
 - Update to 6.2.0
 - Integrate python39 and RHEL 8 compatibility support
