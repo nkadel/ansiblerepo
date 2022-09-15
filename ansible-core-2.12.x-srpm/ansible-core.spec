@@ -22,7 +22,7 @@
 
 Name: ansible-core
 Summary: A radically simple IT automation system
-Version: 2.12.8
+Version: 2.12.9
 Release: 0.1%{?betaver}%{?dist}
 
 License: GPLv3+
@@ -61,7 +61,8 @@ BuildRequires: openssl
 BuildRequires: python%{python3_pkgversion}-systemd
 BuildRequires: python%{python3_pkgversion}-pytz
 BuildRequires: glibc-all-langpacks
-BuildRequires: python%{python3_pkgversion}-resolvelib
+BuildRequires: python%{python3_pkgversion}-resolvelib >= 0.5.3
+BuildRequires: python%{python3_pkgversion}-resolvelib < 0.6.0
 BuildRequires: python%{python3_pkgversion}-rpm-macros
 #
 # These only exist on Fedora. RHEL8 will just skip tests that need them.
@@ -95,6 +96,7 @@ BuildRequires: antsibull
 #
 # main buildrequires to build
 #
+BuildRequires: python%{python3_pkgversion}
 BuildRequires: python%{python3_pkgversion}-devel
 BuildRequires: python%{python3_pkgversion}-setuptools
 BuildRequires: python%{python3_pkgversion}-six
@@ -121,7 +123,8 @@ Recommends: python%{python3_pkgversion}-winrm
 # needed for json_query filter
 Requires: python%{python3_pkgversion}-jmespath
 # needed for galaxy
-Requires: python%{python3_pkgversion}-resolvelib
+Requires: python%{python3_pkgversion}-resolvelib >= 0.5.3
+Requires: python%{python3_pkgversion}-resolvelib < 0.6.0
 
 %description
 Ansible is a radically simple model-driven configuration management,
@@ -246,6 +249,9 @@ make PYTHON=%{__python3} tests-py3
 %endif
 
 %changelog
+* Mon Sep 12 2022 Nico Kadel-Garcia - 2.12.9-0.1
+- Update resolvelib dependencies
+
 * Tue Jun 28 2022 Nico Kadel-Garcia <nkadel@ambil.com> - 2.12.7-0.1
 - Update to 2.12.7
 

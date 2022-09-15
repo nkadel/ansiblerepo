@@ -29,7 +29,7 @@
 Name: ansible-core
 Summary: SSH-based configuration management, deployment, and task execution system
 Version: %{pypi_version}
-Release: 0.1%{?dist}
+Release: 0.2%{?dist}
 ExcludeArch: i686
 
 Group: Development/Libraries
@@ -53,31 +53,35 @@ Provides: bundled(python-distro) = 1.5.0
 Provides: bundled(python-selectors2) = 1.1.1
 Provides: bundled(python-six) = 1.13.0
 
-BuildRequires: python%{python3_pkgversion}-PyYAML
+BuildRequires: python%{python3_pkgversion}
 BuildRequires: python%{python3_pkgversion}-devel
 # BuildRequires: python%%{python3_pkgversion}-docutils
 BuildRequires: python%{python3_pkgversion}-jinja2
 BuildRequires: python%{python3_pkgversion}-pip
 BuildRequires: python%{python3_pkgversion}-packaging
 BuildRequires: python%{python3_pkgversion}-pyparsing
+BuildRequires: python%{python3_pkgversion}-PyYAML
 BuildRequires: python%{python3_pkgversion}-setuptools
 BuildRequires: python%{python3_pkgversion}-wheel
 
 # Because Red Hat cannot keep python3 names consistent
 %if 0%{?el7}
-BuildRequires: python3-resolvelib
+BuildRequires: python3-resolvelib >= 0.5.3
+BuildRequires: python3-resolvelib < 0.9.0
 BuildRequires: python3-rpm-macros
 %else
-BuildRequires: python%{python3_pkgversion}-resolvelib
+BuildRequires: python%{python3_pkgversion}-resolvelib >= 0.5.3
+BuildRequires: python%{python3_pkgversion}-resolvelib < 0.6.0
 BuildRequires: python%{python3_pkgversion}-rpm-macros
 %endif
 
 Requires: git
 Requires: python%{python3_pkgversion}
 Requires: python%{python3_pkgversion}-jinja2
-Requires: python%{python3_pkgversion}-PyYAML
 Requires: python%{python3_pkgversion}-cryptography
-Requires: python%{python3_pkgversion}-resolvelib
+Requires: python%{python3_pkgversion}-PyYAML
+Requires: python%{python3_pkgversion}-resolvelib >= 0.5.3
+Requires: python%{python3_pkgversion}-resolvelib < 0.6.0
 Requires: python%{python3_pkgversion}-six
 Requires: sshpass
 
@@ -193,6 +197,9 @@ cp -p lib/ansible_core.egg-info/PKG-INFO .
 %{python3_sitelib}/ansible_test
 
 %changelog
+* Mon Sep 12 2022 Nico Kadel-Garcia - 2.11.12-0.2
+- Update resolvelib dependencies
+
 * Fri May 27 2022 Nico Kadel-Garcia - 2.11.12-0.1
 - Update to 2.11.12-0.1
 

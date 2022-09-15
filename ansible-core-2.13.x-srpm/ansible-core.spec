@@ -26,7 +26,7 @@
 
 Name: ansible-core
 Summary: A radically simple IT automation system
-Version: 2.13.3
+Version: 2.13.4
 Release: 0.1%{?betaver}%{?dist}
 
 License: GPLv3+
@@ -103,6 +103,7 @@ BuildRequires: python%{python3_pkgversion}-pygments
 #
 # main buildrequires to build
 #
+BuildRequires: python%{python3_pkgversion}
 BuildRequires: python%{python3_pkgversion}-devel
 BuildRequires: python%{python3_pkgversion}-setuptools
 BuildRequires: python%{python3_pkgversion}-six
@@ -129,7 +130,8 @@ Recommends: python%{python3_pkgversion}-winrm
 # needed for json_query filter
 Requires: python%{python3_pkgversion}-jmespath
 # needed for galaxy
-Requires: python%{python3_pkgversion}-resolvelib
+Requires: python%{python3_pkgversion}-resolvelib >= 0.5.3
+Requires: python%{python3_pkgversion}-resolvelib < 0.9.0
 # avoid module wackiness
 Requires: python%{python3_pkgversion}-packaging
 
@@ -259,6 +261,9 @@ make PYTHON=%{__python3} tests-py3
 %endif
 
 %changelog
+* Mon Sep 12 2022 Nico Kadel-Garcia - 2.14.4-0.1
+- Update resolvelib dependencies
+
 * Wed Jun 15 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 2.13.1rc1
 - Update to 2.13.1rc1
 - Disable jinja2 requirement and doc building
