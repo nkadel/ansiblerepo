@@ -26,7 +26,7 @@
 
 Name: ansible-core
 Summary: A radically simple IT automation system
-Version: 2.13.4
+Version: 2.13.5
 Release: 0.1%{?betaver}%{?dist}
 
 License: GPLv3+
@@ -261,7 +261,10 @@ make PYTHON=%{__python3} tests-py3
 %endif
 
 %changelog
-* Mon Sep 12 2022 Nico Kadel-Garcia - 2.14.4-0.1
+* Tue Oct 11 2022 Nico Kadel-Garcia - 2.13.5-0.1
+- Update
+
+* Mon Sep 12 2022 Nico Kadel-Garcia - 2.13.4-0.1
 - Update resolvelib dependencies
 
 * Wed Jun 15 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 2.13.1rc1
