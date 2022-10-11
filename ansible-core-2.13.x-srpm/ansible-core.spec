@@ -267,93 +267,88 @@ make PYTHON=%{__python3} tests-py3
 * Mon Sep 12 2022 Nico Kadel-Garcia - 2.13.4-0.1
 - Update resolvelib dependencies
 
-* Wed Jun 15 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 2.13.1rc1
-- Update to 2.13.1rc1
-- Disable jinja2 requirement and doc building
+* Wed Aug 15 2022 James Marshall <jamarsha@redhat.com> - 2.13.3-1
+- ansible-core 2.13.3 release (rhbz#2118475)
 
-* Sat Apr 02 2022 Maxwell G <gotmax@e.email> - 2.12.4-1
-- Update to 2.12.4. Fixes rhbz#2069384.
+* Wed Jul 20 2022 James Marshall <jamarsha@redhat.com> - 2.13.2-1
+- ansible-core 2.13.2 release (rhbz#2109192)
 
-* Thu Mar 10 2022 Maxwell G <gotmax@e.email> - 2.12.3-2
-- Add patch to fix failing tests and FTBFS with Pytest 7.
-- Resolves: rhbz#2059937
+* Mon Jul 04 2022 Dimitri Savineau <dsavinea@redhat.com> - 2.13.1-1
+- ansible-core 2.13.1 release (rhbz#2103699)
+- add bundled version of jinja2, markupsafe and resolvelib
+- rebuild with python 3.9
 
-* Tue Mar 01 2022 Kevin Fenzi <kevin@scrye.com> - 2.12.3-1
-- Update to 2.12.3. Fixes rhbz#2059284
+* Mon Jun 20 2022 Dimitri Savineau <dsavinea@redhat.com> - 2.12.7-1
+- ansible-core 2.12.7 release (rhbz#2099323)
 
-* Mon Jan 31 2022 Kevin Fenzi <kevin@scrye.com> - 2.12.2-1
-- Update to 2.12.2. Fixes rhbz#2048795
+* Thu Jun 09 2022 Dimitri Savineau <dsavinea@redhat.com> - 2.12.6-3
+- Build manpages (rhbz#2032809)
+- Remove legacy files
 
-* Wed Jan 19 2022 Fedora Release Engineering <releng@fedoraproject.org> - 2.12.1-4
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
+* Tue Jun 07 2022 Dimitri Savineau <dsavinea@redhat.com> - 2.12.6-2
+- switch from git to git-core dependency (rhbz#2094549)
 
-* Thu Jan 13 2022 Neal Gompa <ngompa@fedoraproject.org> - 2.12.1-3
-- Split out packaging macros and generators to ansible-packaging
+* Tue May 24 2022 James Marshall <jamarsha@redhat.com> - 2.12.6-1
+- ansible-core 2.12.6 release
 
-* Wed Dec 08 2021 Kevin Fenzi <kevin@scrye.com> - 2.12.1-2
-- Re-enable tests
+* Mon May 09 2022 Dimitri Savineau <dsavinea@redhat.com> - 2.12.5-1
+- ansible-core 2.12.5 release
 
-* Tue Dec 07 2021 Kevin Fenzi <kevin@scrye.com> - 2.12.1-1
-- Update to 2.12.1. Fixes rhbz#2029598
+* Mon Apr 11 2022 James Marshall <jamarsha@redhat.com> - 2.12.4-1
+- ansible-core 2.12.4 release
 
-* Mon Nov 08 2021 Kevin Fenzi <kevin@scrye.com> - 2.12.0-1
-- Update to 2.12.0. Fixes rhbz#2022533
+* Mon Mar 14 2022 Dimitri Savineau <dsavinea@redhat.com> - 2.12.3-1
+- ansible-core 2.12.3 release
+- re-enable changelog and manpages
 
-* Thu Oct 14 2021 Maxwell G <gotmax@e.email> - 2.11.6-1
-- Update to 2.11.6.
+* Mon Mar 07 2022 Dimitri Savineau <dsavinea@redhat.com> - 2.12.2-3
+- replace Obsolete to Conflicts
 
-* Tue Sep 14 2021 Kevin Fenzi <kevin@scrye.com> - 2.11.5-1
-- Update to 2.11.5. Fixes rhbz#2002393
+* Wed Feb 02 2022 Dimitri Savineau <dsavinea@redhat.com> - 2.12.2-2
+- fix ansible tarball setup
 
-* Thu Aug 19 2021 Kevin Fenzi <kevin@scrye.com> - 2.11.4-1
-- Update to 2.11.4. Fixes rhbz#1994107
+* Wed Feb 02 2022 Dimitri Savineau <dsavinea@redhat.com> - 2.12.2-1
+- ansible-core 2.12.2 release
+- add gating and test files
 
-* Sun Jul 25 2021 Kevin Fenzi <kevin@scrye.com> - 2.11.3-1
-- Update to 2.11.3. Fixes rhbz#1983836
+* Wed Jan 19 2022 Dimitri Savineau <dsavinea@redhat.com> - 2.12.1-2
+- Remove Provides on ansible
 
-* Wed Jul 21 2021 Fedora Release Engineering <releng@fedoraproject.org> - 2.11.2-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
+* Thu Dec 16 2021 Yanis Guenane <yguenane@redhat.com> - 2.12.1-1
+- ansible-core 2.12.1-1
 
-* Tue Jun 22 2021 Kevin Fenzi <kevin@scrye.com> - 2.11.2-1
-- Update to 2.11.2. Fixed rhbz#1974593
+* Wed Jul 21 2021 Paul Belanger <pabelanger@redhat.com> - 2.11.3-2
+- Add git dependency for ansible-galaxy CLI command.
 
-* Fri Jun 04 2021 Python Maint <python-maint@redhat.com> - 2.11.1-2
-- Rebuilt for Python 3.10
+* Tue Jul 20 2021 Yanis Guenane <yguenane@redhat.com> - 2.11.3-1
+- ansible-core 2.11.3-1
 
-* Mon May 24 2021 Kevin Fenzi <kevin@scrye.com> - 2.11.1-1
-- Update to 2.11.1. Fixes rhbz#1964172
+* Fri Jul 02 2021 Satoe Imaishi <simaishi@redhat.com> - 2.11.2-2
+- Add man pages
 
-* Tue Apr 27 2021 Kevin Fenzi <kevin@scrye.com> - 2.11.0-1
-- Update to 2.11.0 final.
+* Tue Jun 29 2021 Paul Belanger <pabelanger@redhat.com> - 2.11.2-1
+- ansible-core 2.11.2 released.
+- Drop bundled version of resolvelib in favor of
+  python38-resolvelib.
 
-* Sat Apr 24 2021 Kevin Fenzi <kevin@scrye.com> - 2.11.0-0.3.rc2
-- Update to 2.11.0rc2.
+* Wed Mar 31 2021 Rick Elrod <relrod@redhat.com> - 2.11.0b4-1
+- ansible-core 2.11.0 beta 4
 
-* Sat Apr 03 2021 Kevin Fenzi <kevin@scrye.com> - 2.11.0-0.1.b4
-- Rename to ansible-base, update to b4 beta version.
+* Thu Mar 18 2021 Rick Elrod <relrod@redhat.com> - 2.11.0b2-3
+- Try adding a Provides for old ansible.
 
-* Sat Feb 20 2021 Kevin Fenzi <kevin@scrye.com> - 2.10.6-1
-- Update to 2.10.6.
-- Fixes CVE-2021-20228
+* Thu Mar 18 2021 Rick Elrod <relrod@redhat.com> - 2.11.0b2-2
+- Try Obsoletes instead of Conflicts.
 
-* Tue Jan 26 2021 Fedora Release Engineering <releng@fedoraproject.org> - 2.10.5-2
-- Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
+* Thu Mar 18 2021 Rick Elrod <relrod@redhat.com> - 2.11.0b2-1
+- ansible-core 2.11.0 beta 2
+- Conflict with old ansible and ansible-base.
 
-* Sun Jan 24 2021 Kevin Fenzi <kevin@scrye.com> - 2.10.5-1
-- Update to 2.10.5.
+* Thu Mar 11 2021 Rick Elrod <relrod@redhat.com> - 2.11.0b1-1
+- ansible-core 2.11.0 beta 1
 
-* Sat Dec 19 2020 Kevin Fenzi <kevin@scrye.com> - 2.10.4-1
-- Update to 2.10.4
+* Mon Nov 30 2020 Rick Elrod <relrod@redhat.com> - 2.11.0-1
+- ansible-core, beta
 
-* Sat Nov 07 2020 Kevin Fenzi <kevin@scrye.com> - 2.10.3-2
-- Various review fixes
-
-* Tue Nov 03 2020 Kevin Fenzi <kevin@scrye.com> - 2.10.3-1
-- Update to 2.10.3
-
-* Sat Oct 10 2020 Kevin Fenzi <kevin@scrye.com> - 2.10.2-1
-- Update to 2.10.2
-
-* Sat Sep 26 2020 Kevin Fenzi <kevin@scrye.com> - 2.10.1-1
-- Initial version for review.
-
+* Wed Jun 10 2020 Rick Elrod <relrod@redhat.com> - 2.10.0-1
+- ansible-base, beta
