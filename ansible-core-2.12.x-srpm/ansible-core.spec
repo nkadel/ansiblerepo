@@ -23,7 +23,7 @@
 Name: ansible-core
 Summary: A radically simple IT automation system
 Version: 2.12.10
-Release: 0.1%{?betaver}%{?dist}
+Release: 0.2%{?betaver}%{?dist}
 
 License: GPLv3+
 Source0: %pypi_source ansible-core %{version}%{?betaver}
@@ -135,6 +135,20 @@ are transferred to managed machines automatically.
 
 This is the base part of ansible (the engine).
 
+%package -n ansible-test
+Summary: Tool for testing ansible plugin and module code
+Requires: %{name} = %{version}-%{release}
+
+%description -n ansible-test
+Ansible is a radically simple model-driven configuration management,
+multi-node deployment, and remote task execution system. Ansible works
+over SSH and does not require any software or daemons to be installed
+on remote nodes. Extension modules can be written in any language and
+are transferred to managed machines automatically.
+
+This package installs the ansible-test command for testing modules and plugins
+developed for ansible.
+
 %package -n ansible-core-doc
 Summary: Documentation for Ansible Base
 Provides: ansible-base-doc = 2.10.7
@@ -237,10 +251,15 @@ make PYTHON=%{__python3} tests-py3
 %dir %{_sysconfdir}/ansible/
 %config(noreplace) %{_sysconfdir}/ansible/*
 %{_bindir}/ansible*
+%exclude %{_bindir}/ansible-test
 %{_datadir}/ansible/
 %{python3_sitelib}/ansible
-%{python3_sitelib}/ansible_test
+%exclude %{python3_sitelib}/ansible/_vendor/markupsafe/_speedups.c
 %{python3_sitelib}/*egg-info
+
+%files -n ansible-test
+%{_bindir}/ansible-test
+%{python3_sitelib}/ansible_test
 
 %files -n ansible-core-doc
 %doc docs/docsite/rst
@@ -249,6 +268,9 @@ make PYTHON=%{__python3} tests-py3
 %endif
 
 %changelog
+* Fri Oct 14 2022 Nico Kadel-Garcia - 2.12.10-0.2
+- Split away ansible-test
+
 * Tue Oct 11 2022 Nico Kadel-Garcia - 2.12.10-0.1
 - Update to 2.12.10
 
