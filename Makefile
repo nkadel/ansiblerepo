@@ -42,8 +42,10 @@ ANSIBLEPKGS+=python39-jinja2-srpm
 
 ANSIBLEPKGS+=python39-mock-srpm
 #ANSIBLEPKGS+=python39-packaging-srpm
+ANSIBLEPKGS+=ansible-core-2.14.x-srpm
 ANSIBLEPKGS+=ansible-core-2.13.x-srpm
-
+# Stop building 2.12.x by default, no need for it
+#ANSIBLEPKGS+=ansible-core-2.12.x-srpm
 ANSIBLEPKGS+=ansible-core-2.11.x-srpm
 
 ANSIBLEPKGS+=ansible-4.x-srpm
@@ -55,11 +57,13 @@ ANSIBLEPKGS+=python39-pbr-srpm
 ANSIBLEPKGS+=python39-jmespath-srpm
 #ANSIBLEPKGS+=ansible-5.x-srpm
 ANSIBLEPKGS+=ansible-6.x-srpm
+ANSIBLEPKGS+=ansible-7.x-srpm
 
 # Alternate names for 'ansible' packages, better indicates their content
 ANSIBLEPKGS+=ansible_collections-4.x-srpm
 #ANSIBLEPKGS+=ansible_collections-5.x-srpm
 ANSIBLEPKGS+=ansible_collections-6.x-srpm
+ANSIBLEPKGS+=ansible_collections-7.x-srpm
 
 ## python39
 ANSIBLEPKGS+=python39-ruamel-yaml-srpm
