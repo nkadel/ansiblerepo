@@ -110,7 +110,7 @@ done
 %install
 %{py3_install}
 
-# Pre-stage licenses and docs into local dirs, to avoud path stripping
+# Pre-stage licenses and docs into local dirs, to avoid path stripping
 install -d %{buildroot}%{_defaultdocdir}/%{pypi_realname}-%{version}/%{pypi_realname}/
 rsync -a --prune-empty-dirs %{pypi_realname}/ \
     --exclude=docs/ \
