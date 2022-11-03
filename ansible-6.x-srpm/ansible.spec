@@ -40,7 +40,7 @@ BuildRequires:  findutils
 BuildRequires:  hardlink
 BuildRequires:  rsync
 
-BuildRequires:  ansible-core < 2.14
+BuildRequires:  ansible-core < 2.15.0
 # Roll back demand for 2.13, for python 3.6 compatibility
 # Use 2.11.9 to avoid accidental published Fedora conflict
 #BuildRequires:  ansible-core >= 2.13.0
@@ -83,9 +83,11 @@ rm -rf *.egg-info
 # Fix wrong-script-end-of-line-encoding in azure.azcollection
 find %{pypi_realname}/azure/azcollection -type f -print -exec dos2unix -k '{}' \;
 
+echo "[START] Fixing executable iles in {pypi_realname}/community/mongodb/roles/*/{files,templates}"
 find %{pypi_realname}/community/mongodb/roles/*/{files,templates} -type f ! -executable -name '*.sh*' \
     -print -exec chmod a+x '{}' \;
 
+echo "[START] Delete '#!' line in %{pypi_realname}/cyberark/conjur/Jenkinsfile"
 sed -i -e '1{\@^#!.*@d}' %{pypi_realname}/cyberark/conjur/Jenkinsfile
 
 # Remove unnecessary files and directories included in the Ansible collection release tarballs
@@ -93,6 +95,7 @@ sed -i -e '1{\@^#!.*@d}' %{pypi_realname}/cyberark/conjur/Jenkinsfile
 echo "[START] Delete unnecessary files and directories"
 
 # Collection tarballs contain a lot of hidden files and directories
+echo "[START] Clear hidden files and directories"
 hidden_pattern=".*\.(DS_Store|all-contributorsrc|ansible-lint|azure-pipelines|circleci|codeclimate.yml|flake8|galaxy_install_info|gitattributes|github|gitignore|gitkeep|gitlab-ci.yml|idea|keep|mypy_cache|nojekyll|orig|plugin-cache.yaml|pre-commit-config.yaml|project|pydevproject|pytest_cache|pytest_cache|readthedocs.yml|settings|swp|travis.yml|vscode|yamllint|yamllint.yaml|zuul.d|zuul.yaml|rstcheck.cfg|placeholder)$"
 find %{pypi_realname} -depth -regextype posix-egrep -regex "${hidden_pattern}" -print -exec rm -r {} \;
 
