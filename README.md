@@ -2,18 +2,18 @@ ansiblerepo
 ==========-
 
 Wrapper for SRPM building tools for ansible 6.x and ansible-core 2.13
-using python3. CentOS 7 has ansible from before it was split
+using python3.9. CentOS 7 has ansible from before it was split
 ansible_collecitons, which is deliberately mislabeled as "ansible",
 and ansible-core. This provides an RPM based update path.
 
 Stop installing ansible package
 -------------------------------
 
-Ehe ansible package is now pointless. It contains roughly 100 distinct
-ansible_collections, takes up half a gig of disk to provide only a few
-modules that an ansible server might actually use. Those modules are
-better provided by installing ansible-core and using the "ansible
-galaxy" tool to install them as needed.
+Ehe ansible package is now pointless. It contains more than 100
+distinct ansible_collections, takes up at least 300 Meg gig of disk to
+provide only a few modules that an ansible server might actually
+use. Those modules are better provided by installing ansible-core and
+using the "ansible galaxy" tool to install them as needed.
 
 Modules in ansible
 ------------------
@@ -54,10 +54,14 @@ Ideally, install "mock" and use that to build for both RHEL 6 and RHEL
 * make getsrc # Get source tarvalls for all SRPMs
 
 * make cfgs # Create local .cfg configs for "mock".
-* * epel-7-x86_64.cfg # Used for some Makefiles
+* * centos-stream+epel-8-x86_64.cfg # Used for some Makefiles
+* * centos-stream+epel-9-x86_64.cfg # Used for some Makefiles
+* * ansiblerepo-8-x86_64.cfg
+* * ansiblerepo-9-x86_64.cfg
 
 * make repos # Creates local local yum repositories in $PWD/ansiblerepo
-* * ansiblerepo/el/7
+* * ansiblerepo/el/8
+* * ansiblerepo/el/9
 
 * make # Make all distinct versions using "mock"
 
