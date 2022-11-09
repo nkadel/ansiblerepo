@@ -185,6 +185,9 @@ hardlink -v %{buildroot}%{ansible_licensedir}
 %doc %{_defaultdocdir}/%{pypi_realname}-%{version}/%{pypi_realname}
 
 %changelog
+* Wed Nov 9 2022 Nico Kadel-Garcia - 7.0.0b1-0.1
+- Update to 7.0.0b1
+
 * Sat Oct 29 2022 Nico Kadel-Garcia - 7.0.0a2-0.1
 - Update to 7.0.0a2
 - Set all *.py files to non-executable to avoid dependencies

@@ -179,6 +179,9 @@ hardlink -v %{buildroot}%{ansible_licensedir}
 %doc %{_defaultdocdir}/%{pypi_realname}-%{version}/%{pypi_realname}
 
 %changelog
+* Wed Nov 9 2022 Nico Kadel-Garcia - 6.6.0-0.1
+- Update to 6.6.0
+
 * Thu Oct 13 2022 Nico Kadel-Garcia - 6.5.0-0.1
 - Update to 6.5.0
 
