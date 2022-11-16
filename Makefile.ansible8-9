@@ -45,7 +45,7 @@ $(MOCKS):: src.rpm
 	@if [ -e $@ -a -n "`find $@ -name '*.rpm' ! -name '*.src.rpm' 2>/dev/null`" ]; then \
 		echo "	Skipping RPM populated $@"; \
 	else \
-		echo "Actally building $? in $@"; \
+		echo "Building $(SPEC) in $@"; \
 		rm -rf $@; \
 		mock -q -r $(PWD)/../$@.cfg \
 		    --sources $(PWD) --spec $(SPEC) \
