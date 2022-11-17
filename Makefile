@@ -15,10 +15,10 @@ REPOBASE=file://$(PWD)
 # EPEL based packages
 ANSIBLEPKGS+=ansible-freeipa-srpm
 ANSIBLEPKGS+=pyflakes-srpm
+ANSIBLEPKGS+=python3-entrypoints-srpm
 ANSIBLEPKGS+=python39-ansible-generator-srpm
 ANSIBLEPKGS+=python39-babel-srpm
 ANSIBLEPKGS+=python39-coverage-srpm
-ANSIBLEPKGS+=python39-entrypoints-srpm
 ANSIBLEPKGS+=python39-docutils-srpm
 ANSIBLEPKGS+=python39-invoke-srpm
 ANSIBLEPKGS+=python39-lark-parser-srpm
@@ -43,8 +43,8 @@ ANSIBLEPKGS+=python39-jinja2-srpm
 ANSIBLEPKGS+=python39-mock-srpm
 #ANSIBLEPKGS+=python39-packaging-srpm
 ANSIBLEPKGS+=ansible-core-2.14.x-srpm
-ANSIBLEPKGS+=ansible-core-2.13.x-srpm
-# Stop building 2.12.x by default, no need for it
+# Stop building 2.12.x or 2.13.x by default, no need for it
+#ANSIBLEPKGS+=ansible-core-2.13.x-srpm
 #ANSIBLEPKGS+=ansible-core-2.12.x-srpm
 
 # For RHEL 7
@@ -58,14 +58,14 @@ ANSIBLEPKGS+=python39-pbr-srpm
 ANSIBLEPKGS+=python39-jmespath-srpm
 # Stop building by defult
 #ANSIBLEPKGS+=ansible-5.x-srpm
-ANSIBLEPKGS+=ansible-6.x-srpm
+#ANSIBLEPKGS+=ansible-6.x-srpm
 ANSIBLEPKGS+=ansible-7.x-srpm
 
 # Alternate names for 'ansible' packages, better indicates their content
 ANSIBLEPKGS+=ansible_collections-4.x-srpm
 # Stop building by defult
 #ANSIBLEPKGS+=ansible_collections-5.x-srpm
-ANSIBLEPKGS+=ansible_collections-6.x-srpm
+#ANSIBLEPKGS+=ansible_collections-6.x-srpm
 ANSIBLEPKGS+=ansible_collections-7.x-srpm
 
 ## python39
