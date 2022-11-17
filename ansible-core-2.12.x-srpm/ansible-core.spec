@@ -18,6 +18,7 @@
 %bcond_with tests
 
 # Set this when there's a beta or rc version
+#%%global betaver %%{nil}
 %global betaver %{nil}
 
 Name: ansible-core

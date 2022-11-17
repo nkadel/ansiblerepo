@@ -22,7 +22,7 @@
 %endif
 
 # Set this when there's a beta or rc version
-#%global betaver %{nil}
+#%%global betaver %%{nil}
 %global betaver %{nil}
 
 Name: ansible-core
@@ -270,7 +270,6 @@ make PYTHON=%{__python3} tests-py3
 %exclude %{python3_sitelib}/ansible_test
 %exclude %{python3_sitelib}/ansible/_vendor/markupsafe/_speedups.c
 %{python3_sitelib}/ansible_test
-%{python3_sitelib}/*egg-info
 
 %files -n ansible-test
 %{_bindir}/ansible-test
