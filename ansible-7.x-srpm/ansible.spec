@@ -3,7 +3,10 @@
 # due to very confusing upsream renaming
 %global pypi_name ansible
 %global pypi_realname ansible_collections
-%global pypi_version 7.0.0b1
+%global pypi_version 7.0.0
+# Set this when there's a beta or rc version
+#%%global betaver %%{nil}
+%global betaver rc1
 
 # Force python38 for RHEL 8, which has python 3.6 by default
 %if 0%{?el8}
@@ -33,7 +36,7 @@ Summary:        Radically simple IT automation
 
 License:        GPLv3+
 URL:            https://ansible.com/
-Source0:        https://files.pythonhosted.org/packages/source/a/%{pypi_name}/%{pypi_name}-%{pypi_version}.tar.gz
+Source0:        https://files.pythonhosted.org/packages/source/a/%{pypi_name}/%{pypi_name}-%{pypi_version}%{betaver}.tar.gz
 
 BuildRequires:  dos2unix
 BuildRequires:  findutils
@@ -43,8 +46,7 @@ BuildRequires:  rsync
 BuildRequires:  ansible-core < 2.15
 # Roll back demand for 2.15 for older ansible-core
 # Use 2.11.9 to avoid accidental published Fedora conflict
-#BuildRequires:  ansible-core >= 2.14.0
-BuildRequires:  ansible-core >= 2.14.0
+BuildRequires:  ansible-core >= 2.11.9
 %if 0%{?el8}
 BuildRequires:  python%{python3_pkgversion}-rpm-macros
 %endif
@@ -67,16 +69,15 @@ ad-hoc task execution, network automation, and multi-node
 orchestration. Ansible makes complex changes like zero-downtime
 rolling updates with load...
 
-#%%package -n %%{pypi_realname}-doc
+%package doc
 #Summary:        %%{pypi_realname} documentation
 #%%description -n %%{pypi_realname}-doc
-%package -n %{pypi_name}-doc
 Summary:        %{pypi_name} documentation
 %description -n %{pypi_name}-doc
 Documentation for ansible
 
 %prep
-%autosetup -n %{pypi_name}-%{pypi_version} -p1
+%autosetup -n %{pypi_name}-%{pypi_version}%{?betaver} -p1
 # Remove bundled egg-info
 rm -rf *.egg-info
 
@@ -138,16 +139,16 @@ find -type f ! -executable -name '*.py' -print -exec sed -i -e '1{\@^#!.*@d}' '{
 %{py3_install}
 
 # Pre-stage licenses and docs into local dirs, to avoid path stripping
-install -d %{buildroot}%{_defaultdocdir}/%{pypi_realname}-%{version}/%{pypi_realname}/
+install -d %{buildroot}%{_defaultdocdir}/%{pypi_realname}-%{version}%{?betaver}/%{pypi_realname}/
 rsync -a --prune-empty-dirs %{pypi_realname}/ \
     --exclude=docs/ \
     --include=*/ \
     --include=*README* \
     --include=*readme* \
     --exclude=* \
-    %{buildroot}%{_defaultdocdir}/%{pypi_realname}-%{version}/%{pypi_realname}/
+    %{buildroot}%{_defaultdocdir}/%{pypi_realname}-%{version}%{?betaver}/%{pypi_realname}/
 
-install -d %{buildroot}%{_defaultlicensedir}/%{pypi_realname}-%{version}/%{pypi_realname}/
+install -d %{buildroot}%{_defaultlicensedir}/%{pypi_realname}-%{version}%{?betaver}/%{pypi_realname}/
 rsync -a --prune-empty-dirs %{pypi_realname}/ \
     --exclude=licenses/ \
     --exclude=*license.py \
@@ -155,7 +156,7 @@ rsync -a --prune-empty-dirs %{pypi_realname}/ \
     --include=*LICENSE* \
     --include=*license* \
     --exclude=* \
-    %{buildroot}%{_defaultlicensedir}/%{pypi_realname}-%{version}/%{pypi_realname}/
+    %{buildroot}%{_defaultlicensedir}/%{pypi_realname}-%{version}%{?betaver}/%{pypi_realname}/
 
 echo Hardlink internal files in: %{python3_sitelib}/%{pypi_realname}
 hardlink -v %{buildroot}%{python3_sitelib}/%{pypi_realname}
@@ -170,19 +171,18 @@ hardlink -v %{buildroot}%{ansible_licensedir}
 %files
 %doc porting_guide_*.rst CHANGELOG-*.rst
 %doc COPYING README.rst
-%exclude %{_defaultdocdir}/%{pypi_realname}-%{version}/%{pypi_realname}
-%license %{_defaultlicensedir}/%{pypi_realname}-%{version}/%{pypi_realname}
+%exclude %{_defaultdocdir}/%{pypi_realname}-%{version}%{?betaver}/%{pypi_realname}
+%license %{_defaultlicensedir}/%{pypi_realname}-%{version}%{?betaver}/%{pypi_realname}
 
 %{python3_sitelib}/%{pypi_realname}
-# Stop getting trying to outsmart ansible versus ansible_collections misnaming
+# Stop trying to outsmart ansible versus ansible_collections misnaming
 #%%{python3_sitelib}/%%{pypi_realname}-%%{pypi_version}-py%%{python3_version}.egg-info
 #%%{python3_sitelib}/%%{pypi_name}-%%{pypi_version}-py%%{python3_version}.egg-info
-%{python3_sitelib}/*-%{pypi_version}-py%{python3_version}.egg-info
+%{python3_sitelib}/*-%{pypi_version}%{?betaver}-py%{python3_version}.egg-info
 %{_bindir}/ansible-community
 
-%files -n %{pypi_name}-doc
-#%%files -n %%{pypi_realname}-doc
-%doc %{_defaultdocdir}/%{pypi_realname}-%{version}/%{pypi_realname}
+%files doc
+%doc %{_defaultdocdir}/%{pypi_realname}-%{version}%{?betaver}/%{pypi_realname}
 
 %changelog
 * Wed Nov 9 2022 Nico Kadel-Garcia - 7.0.0b1-0.1

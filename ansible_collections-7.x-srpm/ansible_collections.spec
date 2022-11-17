@@ -3,7 +3,10 @@
 # due to very confusing upsream renaming
 %global pypi_name ansible
 %global pypi_realname ansible_collections
-%global pypi_version 7.0.0b1
+%global pypi_version 7.0.0
+# Set this when there's a beta or rc version
+#%%global betaver %%{nil}
+%global betaver rc1
 
 # Force python38 for RHEL 8, which has python 3.6 by default
 %if 0%{?el8}
@@ -23,17 +26,17 @@
 %define debug_package %{nil}
 
 # Disable '#!/usr/bin/python' and '#!/usr/bin/env python' complaints
-%global __brp_mangle_shebangs /usr/bin/true
+#%%global __brp_mangle_shebangs /usr/bin/true
 
 #Name:           %%{pypi_name}
 Name:           %{pypi_realname}
 Version:        %{pypi_version}
-Release:        0.1%{?dist}
+Release:        0.2%{?dist}
 Summary:        Radically simple IT automation
 
 License:        GPLv3+
 URL:            https://ansible.com/
-Source0:        https://files.pythonhosted.org/packages/source/a/%{pypi_name}/%{pypi_name}-%{pypi_version}.tar.gz
+Source0:        https://files.pythonhosted.org/packages/source/a/%{pypi_name}/%{pypi_name}-%{pypi_version}%{betaver}.tar.gz
 
 BuildRequires:  dos2unix
 BuildRequires:  findutils
@@ -43,7 +46,6 @@ BuildRequires:  rsync
 BuildRequires:  ansible-core < 2.15
 # Roll back demand for 2.15 for older ansible-core
 # Use 2.11.9 to avoid accidental published Fedora conflict
-#BuildRequires:  ansible-core >= 2.13.0
 BuildRequires:  ansible-core >= 2.11.9
 %if 0%{?el8}
 BuildRequires:  python%{python3_pkgversion}-rpm-macros
@@ -57,7 +59,7 @@ BuildRequires:  python%{python3_pkgversion}-setuptools
 #BuildRequires:  python%%{python3_pkgversion}-sphinx
 #BuildRequires:  python%%{python3_pkgversion}-sphinx_rtd_theme
 
-Requires:       ansible-core < 2.14
+Requires:       ansible-core < 2.15
 Requires:       ansible-core >= 2.11.6
 
 %description
@@ -67,25 +69,34 @@ ad-hoc task execution, network automation, and multi-node
 orchestration. Ansible makes complex changes like zero-downtime
 rolling updates with load...
 
-#%%package -n %%{pypi_name}-doc
 #Summary:        %%{pypi_name} documentation
-#%%description -n %%{pypi_name}-doc
-%package -n %{pypi_realname}-doc
+#%description -n %%{pypi_name}-doc
+%package doc
 Summary:        %{pypi_realname} documentation
 %description -n %{pypi_realname}-doc
-Documentation for ansible
+Documentation for %{pypi_realname}
 
 %prep
-%autosetup -n %{pypi_name}-%{pypi_version} -p1
+%autosetup -n %{pypi_name}-%{pypi_version}%{?betaver} -p1
 # Remove bundled egg-info
 rm -rf *.egg-info
 
-# Fix wrong-script-end-of-line-encoding in azure.azcollection
+echo "[START] Fixing wrong-script-end-of-line-encoding in azure.azcollection"
 find %{pypi_realname}/azure/azcollection -type f -print -exec dos2unix -k '{}' \;
 
+echo "[START] Fixing executale .py files in ${pypi_realname}/"
+find %{pypi_realname}/ -type f -executable -name '*.py*' \
+    -print -exec chmod a-x '{}' \;
+
+echo "[START] Fixing executale .ps1 files in ${pypi_realname}/"
+find %{pypi_realname}/ -type f -executable -name '*.ps1*' \
+    -print -exec chmod a-x '{}' \;
+
+echo "[START] Fixing executable iles in {pypi_realname}/community/mongodb/roles/*/{files,templates}"
 find %{pypi_realname}/community/mongodb/roles/*/{files,templates} -type f ! -executable -name '*.sh*' \
     -print -exec chmod a+x '{}' \;
 
+echo "[START] Delete '#!' line in %{pypi_realname}/cyberark/conjur/Jenkinsfile"
 sed -i -e '1{\@^#!.*@d}' %{pypi_realname}/cyberark/conjur/Jenkinsfile
 
 # Remove unnecessary files and directories included in the Ansible collection release tarballs
@@ -93,17 +104,15 @@ sed -i -e '1{\@^#!.*@d}' %{pypi_realname}/cyberark/conjur/Jenkinsfile
 echo "[START] Delete unnecessary files and directories"
 
 # Collection tarballs contain a lot of hidden files and directories
+echo "[START] Clear hidden files and directories"
 hidden_pattern=".*\.(DS_Store|all-contributorsrc|ansible-lint|azure-pipelines|circleci|codeclimate.yml|flake8|galaxy_install_info|gitattributes|github|gitignore|gitkeep|gitlab-ci.yml|idea|keep|mypy_cache|nojekyll|orig|plugin-cache.yaml|pre-commit-config.yaml|project|pydevproject|pytest_cache|pytest_cache|readthedocs.yml|settings|swp|travis.yml|vscode|yamllint|yamllint.yaml|zuul.d|zuul.yaml|rstcheck.cfg|placeholder)$"
 find %{pypi_realname} -depth -regextype posix-egrep -regex "${hidden_pattern}" -print -exec rm -r {} \;
-
-# Not needed for runtime and has
-# /Users/kbreit/Documents/Programming/%{pypi_realname}/cisco/meraki/venv/bin/python shebang
-rm -r %{pypi_realname}/cisco/meraki/scripts
 
 # Not needed for runtime
 rm -r %{pypi_realname}/netbox/netbox/hacking
 rm -r %{pypi_realname}/cyberark/conjur/roles/conjur_host_identity/tests
 
+echo "[START] Flush tests"
 find %{pypi_realname} -type d | grep -E "tests/unit|tests/integration|tests/utils|tests/sanity|tests/runner|tests/regression" | \
     while read tests; do
     echo Flushing tests: $tests
@@ -113,6 +122,7 @@ done
 # Remove shebangs instead of hardocding to %%__python3 to avoid unexpected issues
 # from https://github.com/ansible/ansible/commit/9142be2f6cabbe6597c9254c5bb9186d17036d55.
 # Upstream, ansible-core has also removed shebangs from its modules.
+echo "[START] Clear shebang from non-executable .py files"
 find -type f ! -executable -name '*.py' -print -exec sed -i -e '1{\@^#!.*@d}' '{}' \;
 
 # This ensures that %%ansible_core_requires is set properly, when %%pyproject_buildrequires is defined.
@@ -129,16 +139,16 @@ find -type f ! -executable -name '*.py' -print -exec sed -i -e '1{\@^#!.*@d}' '{
 %{py3_install}
 
 # Pre-stage licenses and docs into local dirs, to avoid path stripping
-install -d %{buildroot}%{_defaultdocdir}/%{pypi_realname}-%{version}/%{pypi_realname}/
+install -d %{buildroot}%{_defaultdocdir}/%{pypi_realname}-%{version}%{?betaver}/%{pypi_realname}/
 rsync -a --prune-empty-dirs %{pypi_realname}/ \
     --exclude=docs/ \
     --include=*/ \
     --include=*README* \
     --include=*readme* \
     --exclude=* \
-    %{buildroot}%{_defaultdocdir}/%{pypi_realname}-%{version}/%{pypi_realname}/
+    %{buildroot}%{_defaultdocdir}/%{pypi_realname}-%{version}%{?betaver}/%{pypi_realname}/
 
-install -d %{buildroot}%{_defaultlicensedir}/%{pypi_realname}-%{version}/%{pypi_realname}/
+install -d %{buildroot}%{_defaultlicensedir}/%{pypi_realname}-%{version}%{?betaver}/%{pypi_realname}/
 rsync -a --prune-empty-dirs %{pypi_realname}/ \
     --exclude=licenses/ \
     --exclude=*license.py \
@@ -146,7 +156,7 @@ rsync -a --prune-empty-dirs %{pypi_realname}/ \
     --include=*LICENSE* \
     --include=*license* \
     --exclude=* \
-    %{buildroot}%{_defaultlicensedir}/%{pypi_realname}-%{version}/%{pypi_realname}/
+    %{buildroot}%{_defaultlicensedir}/%{pypi_realname}-%{version}%{?betaver}/%{pypi_realname}/
 
 echo Hardlink internal files in: %{python3_sitelib}/%{pypi_realname}
 hardlink -v %{buildroot}%{python3_sitelib}/%{pypi_realname}
@@ -161,29 +171,32 @@ hardlink -v %{buildroot}%{ansible_licensedir}
 %files
 %doc porting_guide_*.rst CHANGELOG-*.rst
 %doc COPYING README.rst
-%exclude %{_defaultdocdir}/%{pypi_realname}-%{version}/%{pypi_realname}
-%license %{_defaultlicensedir}/%{pypi_realname}-%{version}/%{pypi_realname}
+%exclude %{_defaultdocdir}/%{pypi_realname}-%{version}%{?betaver}/%{pypi_realname}
+%license %{_defaultlicensedir}/%{pypi_realname}-%{version}%{?betaver}/%{pypi_realname}
 
 %{python3_sitelib}/%{pypi_realname}
-# Stop getting trying to outsmart ansible versus ansible_collections misnaming
+# Stop trying to outsmart ansible versus ansible_collections misnaming
 #%%{python3_sitelib}/%%{pypi_realname}-%%{pypi_version}-py%%{python3_version}.egg-info
 #%%{python3_sitelib}/%%{pypi_name}-%%{pypi_version}-py%%{python3_version}.egg-info
-%{python3_sitelib}/*-%{pypi_version}-py%{python3_version}.egg-info
+%{python3_sitelib}/*-%{pypi_version}%{?betaver}-py%{python3_version}.egg-info
 %{_bindir}/ansible-community
 
-#%%files -n %%{pypi_name}-doc
-%files -n %{pypi_realname}-doc
-%doc %{_defaultdocdir}/%{pypi_realname}-%{version}/%{pypi_realname}
+%files doc
+%doc %{_defaultdocdir}/%{pypi_realname}-%{version}%{?betaver}/%{pypi_realname}
 
 %changelog
 * Wed Nov 9 2022 Nico Kadel-Garcia - 7.0.0b1-0.1
 - Update to 7.0.0b1
 
+* Sat Oct 29 2022 Nico Kadel-Garcia - 7.0.0a2-0.1
+- Update to 7.0.0a2
+- Set all *.py files to non-executable to avoid dependencies
+
 * Thu Oct 13 2022 Nico Kadel-Garcia - 6.5.0-0.1
 - Update to 6.5.0
 
 * Thu Aug 25 2022 Nico Kadel-Garcia - 6.3.0-0.1
-- Update to 5.3.0
+- Update to 6.3.0
 
 * Tue Aug 2 2022 Nico Kadel-Garcia - 6.2.0-0.2
 - Update to 6.2.0
