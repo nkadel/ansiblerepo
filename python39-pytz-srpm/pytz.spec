@@ -10,7 +10,7 @@
 %bcond_with python2
 
 # Allow build without test
-%bcond_without tests
+%bcond_with tests
 
 Name:           pytz
 Version:        2019.3
