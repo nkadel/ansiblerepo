@@ -5,8 +5,7 @@
 %global pypi_realname ansible_collections
 %global pypi_version 7.0.0
 # Set this when there's a beta or rc version
-#%%global betaver %%{nil}
-%global betaver rc1
+%global betaver %{nil}
 
 # Force python38 for RHEL 8, which has python 3.6 by default
 %if 0%{?el8}
@@ -185,6 +184,9 @@ hardlink -v %{buildroot}%{ansible_licensedir}
 %doc %{_defaultdocdir}/%{pypi_realname}-%{version}%{?betaver}/%{pypi_realname}
 
 %changelog
+* Tue Nov 22 2022 Nico Kadel-Garcia - 7.0.0-0.1
+- Update to released 7.0.0
+
 * Wed Nov 9 2022 Nico Kadel-Garcia - 7.0.0b1-0.1
 - Update to 7.0.0b1
 
