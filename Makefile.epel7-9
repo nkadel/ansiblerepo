@@ -8,12 +8,12 @@ LANG=C
 MOCKS+=centos+epel-7-x86_64
 MOCKS+=centos-stream+epel-8-x86_64
 MOCKS+=centos-stream+epel-9-x86_64
-#MOCKS+=fedora-36-x86_64
+#MOCKS+=fedora-37-x86_64
 
 MOCKCFGS+=ansiblerepo-7-x86_64
 MOCKCFGS+=ansiblerepo-8-x86_64
 MOCKCFGS+=ansiblerepo-9-x86_64
-#MOCKCFGS+=ansiblerepo-f36-x86_64
+#MOCKCFGS+=ansiblerepo-f37-x86_64
 
 #REPOBASEDIR=/var/www/linux/ansiblerepo
 REPOBASEDIR:=`/bin/pwd`/../ansiblerepo
@@ -66,8 +66,8 @@ install:: $(MOCKS)
 		*-7-x86_64) yumrelease=el/7; yumarch=x86_64; ;; \
 		*-8-x86_64) yumrelease=el/8; yumarch=x86_64; ;; \
 		*-9-x86_64) yumrelease=el/9; yumarch=x86_64; ;; \
-		*-36-x86_64) yumrelease=fedora/36; yumarch=x86_64; ;; \
-		*-f36-x86_64) yumrelease=fedora/36; yumarch=x86_64; ;; \
+		*-37-x86_64) yumrelease=fedora/37; yumarch=x86_64; ;; \
+		*-f37-x86_64) yumrelease=fedora/37; yumarch=x86_64; ;; \
 		*-rawhide-x86_64) yumrelease=fedora/rawhide; yumarch=x86_64; ;; \
 		*) echo "Unrecognized release for $$repo, exiting" >&2; exit 1; ;; \
 	    esac; \
