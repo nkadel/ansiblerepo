@@ -1,12 +1,3 @@
-
-%{!?upstream_version: %global upstream_version %{version}%{?milestone}}
-
-%if 0%{?dlrn}
-%global upstream_name ansible-collections-openstack.cloud
-%else
-%global upstream_name ansible-collections-openstack
-%endif
-
 # Force python38 for RHEL 8, which has python 3.6 by default
 %if 0%{?el8}
 %global python3_version 3.9
@@ -15,79 +6,71 @@
 %global __python3 %{_bindir}/python%{python3_version}
 %endif
 
+%{?python_enable_dependency_generator}
+%{!?upstream_version: %global upstream_version %{commit}}
+%global commit 938abd0d84baa6591e09d8a83d91432c50397bba
+%global shortcommit %(c=%{commit}; echo ${c:0:7})
+# DO NOT REMOVE ALPHATAG
+%global alphatag .%{shortcommit}git
+
+%global collection_namespace openstack
+%global collection_name cloud
+
+%{?dlrn: %global tarsources ansible-collections-openstack.cloud}
+%{!?dlrn: %global tarsources ansible-collections-openstack}
+
 Name:           ansible-collections-openstack
-Version:        1.3.0
-Release:        4%{?dist}
+Version:        1.7.1
+#Release:        4%%{?alphatag}%%{?dist}
+Release:        0.4%{?alphatag}%{?dist}
 Summary:        Openstack Ansible collections
-License:        GPLv3+ and BSD
-URL:            https://opendev.org/openstack/ansible-collections-openstack
-Source0:        https://github.com/openstack/%{name}/archive/%{upstream_version}.tar.gz
+License:        GPLv3+
+URL:            %{ansible_collection_url}
+Source0:        https://github.com/openstack/%{name}/archive/%{upstream_version}.tar.gz#/%{collection_namespace}-%{collection_name}-%{version}.tar.gz
 BuildArch:      noarch
 
-BuildRequires:  git
-
 BuildRequires:  ansible-packaging
-Requires:       ansible-core >= 2.8.0
-
-%if 0%{?el8}
-BuildRequires:  python%{python3_pkgversion}-rpm-macros
-BuildRequires:  %{_bindir}/pathfix.py
+%if %{lua:print(rpm.vercmp(rpm.expand("%{version}"), '2.0.0'));} >= 0
+Requires:       python%{python3_pkgversion}-openstacksdk
+%else
+Requires:       python%{python3_pkgversion}-openstacksdk < 0.99.0
 %endif
-
-BuildRequires:  python%{python3_pkgversion}
-BuildRequires:  python%{python3_pkgversion}-devel
-BuildRequires:  python%{python3_pkgversion}-pbr
-# Manually added
-BuildRequires:  python%{python3_pkgversion}-jinja2
-BuildRequires:  python%{python3_pkgversion}-yaml
-
-Requires:       python%{python3_pkgversion}-openstacksdk >= 0.13.0
 
 %description
 Openstack Ansible collections
 
 %prep
-%autosetup -n %{upstream_name}-%{upstream_version} -S git
-find -type f ! -executable -name '*.py' -print -exec sed -i -e '1{\@^#!.*@d}' '{}' +
-
-# Prevent build failures on ambiguous python
-grep -rl -e '^#!/usr/bin/env python$' -e '^#!/usr/bin/env python $' */ | \
-    grep '\.py$' | \
-    while read name; do
-        echo "    Disambiguating /usr/bin/env python: $name"
-	pathfix.py -i %{__python3} $name
-done
-
-grep -rl -e '^#!/usr/bin/python$' -e '^#!/usr/bin/python $' */ | \
-    grep '\.py$' | \
-    while read name; do
-        echo "    Disambiguating /usr/bin/python in: $name"
-	pathfix.py -i %{__python3} $name
-done
-
-if [ "%{__python3}" != "/usr/bin/python3" ]; then
-    grep -rl -e '^#!/usr/bin/python3' -e '^#!/usr/bin/python3 $' */ | \
-	grep '\.py$' | \
-	while read name; do
-            echo "    Disambiguating /usr/bin/python3 in: $name"
-	    pathfix.py -i %{__python3} $name
-	done
-fi
+%autosetup -n %{tarsources}-%{upstream_version}
+sed -i -e 's/version:.*/version: %{version}/' galaxy.yml
+rm -vr changelogs/ ci/ contrib/ tests/ ./galaxy.yml.in .zuul.yaml setup.py docs bindep.txt
 
 %build
-%py3_build
+%ansible_collection_build
 
 %install
-%py3_install
+%ansible_collection_install
 
 %files
-
 %doc README.md
 %license COPYING
-%{python3_sitelib}/ansible_collections_openstack.cloud-*.egg-info
-%{_datadir}/ansible/collections/ansible_collections/openstack/
+%{ansible_collection_files}
 
 %changelog
+* Tue Aug 02 2022 Joel Capitao <jcapitao@redhat.com> - 1.7.1-4.938abd0git
+- Take advantage of ansible-packaging
+
+* Wed Jul 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 1.7.1-3.938abd0git
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
+
+* Mon Jun 13 2022 Python Maint <python-maint@redhat.com> - 1.7.1-2.938abd0git
+- Rebuilt for Python 3.11
+
+* Thu May 19 2022 Joel Capitao <jcapitao@redhat.com> 1.7.1-1.938abd0git
+- Update to upstream version 1.7.1
+
+* Wed Jan 19 2022 Fedora Release Engineering <releng@fedoraproject.org> - 1.3.0-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
+
 * Wed Jul 21 2021 Fedora Release Engineering <releng@fedoraproject.org> - 1.3.0-4
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
 
