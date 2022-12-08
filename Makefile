@@ -9,7 +9,7 @@ REPOBASE=file://$(PWD)
 #ANSIBLEPKGS+=ansible-packaging-srpm
 
 # Do not build these, they break in RHEL
-#ANSIBLEPKGS+=pyproject-rpm-macros-srpm
+ANSIBLEPKGS+=pyproject-rpm-macros-srpm
 #ANSIBLEPKGS+=ansible-openstack-modules-srpm
 
 # EPEL based packages
