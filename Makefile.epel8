@@ -52,8 +52,8 @@ $(MOCKS)::
 		echo "Building $(SPEC) in $@"; \
 		rm -rf $@; \
 		mock -q -r $(PWD)/../$@.cfg \
-		     --resultdir=$(PWD)/$@ \
-		     $?; \
+		    --sources $(PWD) --spec $(SPEC) \
+		    --resultdir=$(PWD)/$@; \
 	fi
 
 mock:: $(MOCKS)
