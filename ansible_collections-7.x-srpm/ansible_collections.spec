@@ -3,7 +3,7 @@
 # due to very confusing upsream renaming
 %global pypi_name ansible
 %global pypi_realname ansible_collections
-%global pypi_version 7.0.0
+%global pypi_version 7.1.0
 # Set this when there's a beta or rc version
 %global betaver %{nil}
 
@@ -184,8 +184,11 @@ hardlink -v %{buildroot}%{ansible_licensedir}
 %doc %{_defaultdocdir}/%{pypi_realname}-%{version}%{?betaver}/%{pypi_realname}
 
 %changelog
+* Thu Dec 8 2022 Nico Kadel-Garcia - 7.1.0-0.1
+- Update to release 7.1.0
+
 * Tue Nov 22 2022 Nico Kadel-Garcia - 7.0.0-0.1
-- Update to released 7.0.0
+- Update to release 7.0.0
 
 * Wed Nov 9 2022 Nico Kadel-Garcia - 7.0.0b1-0.1
 - Update to 7.0.0b1
