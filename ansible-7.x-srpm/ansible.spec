@@ -15,6 +15,10 @@
 %global __python3 %{_bindir}/python%{python3_version}
 %endif
 
+# Disable thye burdensume and pointless hardlink among the ginormous
+# ansible_collection modules
+%global __brp_python_hardlink %nil
+
 #
 # If we should enable checks
 # Currently we cannot until we get a stack of needed packages added and a few bugs fixed
