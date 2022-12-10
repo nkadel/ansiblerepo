@@ -186,6 +186,8 @@ hardlink -v %{buildroot}%{ansible_licensedir}
 %changelog
 * Thu Dec 8 2022 Nico Kadel-Garcia - 7.1.0-0.1
 - Update to release 7.1.0
+- Disable the burdensume and pointless hardlink among the ginormous
+  ansible_collection modules
 
 * Tue Nov 22 2022 Nico Kadel-Garcia - 7.0.0-0.1
 - Update to release 7.0.0
