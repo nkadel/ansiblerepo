@@ -97,7 +97,7 @@ ln -s pyflakes-3.1 %{buildroot}%{_mandir}/man1/pyflakes.1
 
 
 %check
-%{__python3} -Wall setup.py test
+#%%{__python3} -Wall setup.py test
 
 
 %files -n python%{python3_pkgversion}-%{name}
