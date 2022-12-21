@@ -40,6 +40,10 @@ ANSIBLEPKGS+=python39-unittest2-srpm
 
 ANSIBLEPKGS+=python39-jinja2-srpm
 
+# Incompatible with RHEL
+#ANSIBLEPKGS+=ansible-lint-srpm
+#ANSIBLEPKGS+=python-ansible-compat-srpm
+
 ANSIBLEPKGS+=python39-mock-srpm
 #ANSIBLEPKGS+=python39-packaging-srpm
 ANSIBLEPKGS+=ansible-core-2.14.x-srpm
