@@ -1,4 +1,11 @@
-%bcond_without ansible
+Name:             ansible-pcp
+Version:          2.2.5
+Release:          2%{?dist}
+Summary:          Ansible Metric collection for Performance Co-Pilot
+License:          MIT
+URL:              https://github.com/performancecopilot/ansible-pcp
+Source:           https://github.com/performancecopilot/ansible-pcp/archive/v%{version}/%{name}-%{version}.tar.gz
+BuildArch:        noarch
 
 %if 0%{?rhel}
 %global collection_namespace redhat
@@ -8,28 +15,30 @@
 %global collection_name metrics
 %endif
 
-# Force python38 for RHEL 8, which has python 3.6 by default
-%if 0%{?el8}
-%global python3_version 3.9
-%global python3_pkgversion 39
-# For RHEL 'platform python' insanity: Simply put, no.
-%global __python3 %{_bindir}/python%{python3_version}
+Requires: ansible-core >= 2.11.0
+
+# NOTE: Even though ansible-core is in 8.6, it is only available
+# at *runtime*, not at *buildtime* - so we can't have
+# ansible-core as a build_dep on RHEL8
+%global have_ansible 0
+%global ansible_build_dep ansible-core >= 2.11.0
+
+%if %{have_ansible}
+BuildRequires:    %{ansible_build_dep}
+# package has been removed from RHEL9
+%if 0%{?rhel} >= 9
+%global have_ansible_lint 0
+%else
+%global have_ansible_lint 1
+%endif
+%else
+%global have_ansible_lint 0
+%global ansible_collection_files %{_datadir}/ansible/collections/ansible_collections/%{collection_namespace}
 %endif
 
-Name:             ansible-pcp
-Version:          2.2.5
-#Release:          1%%{?dist}
-Release:          0.1%{?dist}
-Summary:          Ansible Metric collection for Performance Co-Pilot
-License:          MIT
-URL:              %{ansible_collection_url}
-Source:           https://github.com/performancecopilot/ansible-pcp/archive/v%{version}/%{name}-%{version}.tar.gz
-
-#BuildRequires:    ansible-core >= 2.9.10
-BuildRequires:    ansible-packaging
-#BuildRequires:    python%{python3_pkgversion}-ansible-lint
-BuildRequires:    ansible-lint
-BuildArch:        noarch
+%if %{have_ansible_lint}
+BuildRequires:    python%{python3_pkgversion}-ansible-lint
+%endif
 
 %description
 A collection containing roles for Performance Co-Pilot (PCP) and related
@@ -84,29 +93,28 @@ find . -name \*.yml -o -name \*.md | while read file; do
     $file
 done
 
-# Prevent build failures on ambiguouss python
-grep -rl '^#!/usr/bin/env python$' */ | \
-    while read name; do
-        echo "    Disambiguating /usr/bin/env python: $name"
-	sed -i -e 's|^#!/usr/bin/env python$|#!/usr/bin/python3|g' $name
-done
-
-grep -rl '^#!/usr/bin/python$' */ | \
-    while read name; do
-        echo "    Disambiguating /usr/bin/python: $name"
-	sed -i -e 's|^#!/usr/bin/python$|#!/usr/bin/python3|g' $name
-done
-
 %build
+%if %{have_ansible}
 %ansible_collection_build
+%else
+tar -cf %{_tmppath}/%{collection_namespace}-%{collection_name}-%{version}.tar.gz .
+%endif
 
 %install
+%if %{have_ansible}
 %ansible_collection_install
+%else
+mkdir -p %{buildroot}%{ansible_collection_files}/%{collection_name}
+cd %{buildroot}%{ansible_collection_files}/%{collection_name}
+tar -xf %{_tmppath}/%{collection_namespace}-%{collection_name}-%{version}.tar.gz
+%endif
 
 %check
 mv yamllint.yml .yamllint.yml
 mv yamllint_defaults.yml .yamllint_defaults.yml
+%if %{have_ansible_lint}
 ansible-lint `find roles -name \*.yml`
+%endif
 
 %files
 %doc README.md
@@ -114,6 +122,27 @@ ansible-lint `find roles -name \*.yml`
 %{ansible_collection_files}
 
 %changelog
+* Wed Jul 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 2.2.5-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
+
+* Thu Apr 21 2022 Nathan Scott <nathans@redhat.com> 2.2.5-1
+- Latest upstream release
+
+* Tue Feb 15 2022 Nathan Scott <nathans@redhat.com> 2.2.4-3
+- RHEL8.6+, RHEL9+, Fedora - add "ansible-core or ansible" dep
+
+* Wed Jan 19 2022 Fedora Release Engineering <releng@fedoraproject.org> - 2.2.4-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
+
+* Fri Dec 17 2021 Nathan Scott <nathans@redhat.com> 2.2.4-1
+- Small fixes for bpftrace, mssql roles and tests
+- RHEL9 - add "Requires: ansible-core"
+- Latest upstream release
+
+* Fri Nov 12 2021 Nathan Scott <nathans@redhat.com> 2.2.2-1
+- Correct the URL listed for this package (BZ 2001902)
+- Latest upstream release
+
 * Thu Aug 26 2021 Nathan Scott <nathans@redhat.com> 2.2.1-1
 - Latest upstream release
 
