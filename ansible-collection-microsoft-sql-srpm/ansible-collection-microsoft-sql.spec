@@ -124,11 +124,7 @@ BuildRequires: highlight
 
 # Requirements for galaxy_transform.py
 BuildRequires: python%{python3_pkgversion}-rpm-macros
-%if 0%{?fedora}
-BuildRequires: python3dist(ruamel.yaml)
-%else
 BuildRequires: python%{python3_pkgversion}-ruamel-yaml
-%endif
 
 %if %{undefined __ansible_provides}
 Provides: ansible-collection(%{collection_namespace}.%{collection_name}) = %{collection_version}
