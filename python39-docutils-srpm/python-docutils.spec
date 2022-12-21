@@ -1,3 +1,6 @@
+%global pypi_name docutils
+%global pypi_version 0.14
+
 # Force python38 for RHEL 8, which has python 3.6 by default
 %if 0%{?el8}
 %global python3_version 3.9
@@ -12,19 +15,18 @@
 # the state of the conditional is not important in the spec, it is set in modulemd
 %bcond_with python2
 
-%global srcname docutils
-
-Name:           python-%{srcname}
-Version:        0.14
+Name:           python-%{pypi_name}
+Version:        %{pypi_version}
 #Release:        12%%{?dist}
-Release:        0.12%{?dist}
+Release:        0.13%{?dist}
 Summary:        System for processing plaintext documentation
 
 Group:          Development/Languages
 # See COPYING.txt for information
 License:        Public Domain and BSD and Python and GPLv3+
 URL:            http://docutils.sourceforge.net
-Source0:        %{srcname}-%{version}.tar.gz
+#Source0:        %{pypi_name}-%{version}.tar.gz
+Source0:        %{pypi_source}
 
 BuildArch:       noarch
 
@@ -50,12 +52,12 @@ PEPs (Python Enhancement Proposals).  Work is underway to parse rST from
 Python inline documentation modules and packages.
 
 %if %{with python2}
-%package -n python2-%{srcname}
+%package -n python2-%{pypi_name}
 Summary:        System for processing plaintext documentation for python2
-%{?python_provide:%python_provide python2-%{srcname}}
+%{?python_provide:%python_provide python2-%{pypi_name}}
 Obsoletes: docutils < %{version}-%{release}
 
-%description -n python2-%{srcname}
+%description -n python2-%{pypi_name}
 The Docutils project specifies a plaintext markup language, reStructuredText,
 which is easy to read and quick to write.  The project includes a python
 library to parse rST files and transform them into other useful formats such
@@ -68,12 +70,12 @@ Python inline documentation modules and packages.
 %endif
 
 %if %{with python3}
-%package -n python%{python3_pkgversion}-%{srcname}
+%package -n python%{python3_pkgversion}-%{pypi_name}
 Summary:        System for processing plaintext documentation for python3
-%{?python_provide:%python_provide python%{python3_pkgversion}-%{srcname}}
+%{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
 Group:          Development/Languages
 
-%description -n python%{python3_pkgversion}-%{srcname}
+%description -n python%{python3_pkgversion}-%{pypi_name}
 The Docutils project specifies a plaintext markup language, reStructuredText,
 which is easy to read and quick to write.  The project includes a python
 library to parse rST files and transform them into other useful formats such
@@ -88,7 +90,7 @@ This package contains the module, ported to run under python3.
 %endif # with python3
 
 %prep
-%setup -q -n %{srcname}-%{version}
+%setup -q -n %{pypi_name}-%{version}
 
 # Remove shebang from library files
 for file in docutils/utils/{code_analyzer.py,punctuation_chars.py,error_reporting.py,smartquotes.py} docutils/utils/math/{latex2mathml.py,math2html.py} docutils/writers/xetex/__init__.py; do
@@ -161,7 +163,7 @@ popd
 #%endif
 
 %if %{with python2}
-%files -n python2-%{srcname}
+%files -n python2-%{pypi_name}
 %license COPYING.txt licenses/*
 %doc BUGS.txt COPYING.txt FAQ.txt HISTORY.txt README.txt RELEASE-NOTES.txt 
 %doc THANKS.txt docs tools/editors
@@ -169,7 +171,7 @@ popd
 %endif
 
 %if %{with python3}
-%files -n python%{python3_pkgversion}-%{srcname}
+%files -n python%{python3_pkgversion}-%{pypi_name}
 %license COPYING.txt licenses/*
 %doc BUGS.txt FAQ.txt HISTORY.txt README.txt RELEASE-NOTES.txt 
 %doc THANKS.txt docs tools/editors
@@ -178,6 +180,10 @@ popd
 %endif
 
 %changelog
+* Wed Dec 21 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 0.14-0.13
+- Activate python39 for RHEL 8
+- Use pypi_source for Source0
+
 * Thu Apr 25 2019 Tomas Orsava <torsava@redhat.com> - 0.14-12
 - Bumping due to problems with modular RPM upgrade path
 - Resolves: rhbz#1695587
