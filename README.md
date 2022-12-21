@@ -49,7 +49,8 @@ python38-jinja2 for ansible-core-2.13, mean that, make it impossible to build th
 Building ansible
 ===============
 
-Ideally, install "mock" and use that to build for both RHEL 6 and RHEL
+Ideally, install "mock" and use that to build for both RHEL 7 through
+9 and Fedora 37. Run these commands at the top directory.
 
 * make getsrc # Get source tarvalls for all SRPMs
 
