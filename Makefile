@@ -110,7 +110,7 @@ REPOS+=ansiblerepo/el/7
 REPOS+=ansiblerepo/el/8
 REPOS+=ansiblerepo/el/9
 REPOS+=ansiblerepo/fedora/37
-REPOS+=ansiblerepo/amz/2
+REPOS+=ansiblerepo/amazon/2
 
 REPODIRS := $(patsubst %,%/x86_64/repodata,$(REPOS)) $(patsubst %,%/SRPMS/repodata,$(REPOS))
 
@@ -119,7 +119,7 @@ CFGS+=ansiblerepo-8-x86_64.cfg
 CFGS+=ansiblerepo-9-x86_64.cfg
 CFGS+=ansiblerepo-f37-x86_64.cfg
 # Amazon 2 config
-#CFGS+=ansiblerepo-amz2-x86_64.cfg
+CFGS+=ansiblerepo-amz2-x86_64.cfg
 
 # /etc/mock version lacks python39 modules
 CFGS+=centos-stream+epel-8-x86_64.cfg
@@ -128,7 +128,7 @@ CFGS+=centos-stream+epel-8-x86_64.cfg
 MOCKCFGS+=centos+epel-7-x86_64.cfg
 MOCKCFGS+=centos-stream+epel-9-x86_64.cfg
 MOCKCFGS+=fedora-37-x86_64.cfg
-#MOCKCFGS+=amazonlinux-2-x86_64.cfg
+MOCKCFGS+=amazonlinux-2-x86_64.cfg
 
 all:: install
 
@@ -202,7 +202,6 @@ centos-stream+epel-8-x86_64.cfg:: /etc/mock/centos-stream+epel-8-x86_64.cfg
 	@echo "config_opts['module_setup_commands'] = [ ('enable', 'python39'), ('enable', 'python39-devel') ]" | tee -a $@
 	@echo "# Disable best" | tee -a $@
 	@echo "config_opts['dnf_vars'] = { 'best': 'False' }" | tee -a $@
-
 
 ansiblerepo-7-x86_64.cfg: /etc/mock/centos+epel-7-x86_64.cfg
 	@echo Generating $@ from $?
