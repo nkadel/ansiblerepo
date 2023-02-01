@@ -27,12 +27,11 @@
 
 Name: ansible-core
 Summary: A radically simple IT automation system
-Version: 2.14.1
+Version: 2.14.2
 Release: 0.1%{?betaver}%{?dist}
 
 License: GPLv3+
 Source0: %pypi_source ansible-core %{version}%{?betaver}
-#Patch0:  https://github.com/ansible/ansible/pull/76670.patch#/fix-tests-failing-on-pytest-7.patch
 
 Url: https://ansible.com
 BuildArch: noarch
@@ -51,9 +50,6 @@ Obsoletes: ansible-base < 2.11.0
 # A 2.10.3 async test uses /usr/bin/python, which we do not have by default.
 # Patch the test to use /usr/bin/python3 as we have for our build.
 Patch1:  2.10.3-test-patch.patch
-
-# Use $(PYTHON) more consistently in Makefiles
-Patch2: ansible-core-2.13.1-python3.patch
 
 %if %{with tests}
 #
@@ -282,6 +278,10 @@ make PYTHON=%{__python3} tests-py3
 %endif
 
 %changelog
+- Wed Feb 1 2023 Nico Kadel-Garcia - 2.14.2-0.1
+- Update to 2.14.2
+- Discard obsolete patches
+
 * Sat Nov 05 2022 Nico Kadel-Garcia - 2.14.0rc2-0.1
 - Update to 2.14.0rc2
 
