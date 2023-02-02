@@ -3,7 +3,7 @@
 # due to very confusing upsream renaming
 %global pypi_name ansible
 %global pypi_realname ansible_collections
-%global pypi_version 7.1.0
+%global pypi_version 7.2.0
 # Set this when there's a beta or rc version
 %global betaver %{nil}
 
@@ -184,6 +184,9 @@ hardlink -v %{buildroot}%{ansible_licensedir}
 %doc %{_defaultdocdir}/%{pypi_realname}-%{version}%{?betaver}/%{pypi_realname}
 
 %changelog
+* Wed Feb 1 2023 Nico Kadel-Garcia - 7.2.0-0.1
+- Update to 7.2.0
+
 * Thu Dec 8 2022 Nico Kadel-Garcia - 7.1.0-0.1
 - Update to release 7.1.0
 - Disable the burdensume and pointless hardlink among the ginormous
