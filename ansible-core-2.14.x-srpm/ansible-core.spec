@@ -264,8 +264,10 @@ make PYTHON=%{__python3} tests-py3
 %{_datadir}/ansible/
 %{python3_sitelib}/ansible*
 %exclude %{python3_sitelib}/ansible_test
+
+%if 0%{?rhel}
 %exclude %{python3_sitelib}/ansible/_vendor/markupsafe/_speedups.c
-%{python3_sitelib}/ansible_test
+%endif
 
 %files -n ansible-test
 %{_bindir}/ansible-test
