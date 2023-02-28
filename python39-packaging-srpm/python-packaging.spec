@@ -30,6 +30,7 @@ BuildRequires:  python%{python3_pkgversion}-invoke
 BuildRequires:  python%{python3_pkgversion}-pretend
 BuildRequires:  python%{python3_pkgversion}-progress
 BuildRequires:  python%{python3_pkgversion}-pytest
+BuildRequires:  python%{python3_pkgversion}-pluggy
 
 %description
 packaging .. start-introReusable core utilities for various Python Packaging

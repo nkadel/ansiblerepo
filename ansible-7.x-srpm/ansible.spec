@@ -3,7 +3,7 @@
 # due to very confusing upsream renaming
 %global pypi_name ansible
 %global pypi_realname ansible_collections
-%global pypi_version 7.2.0
+%global pypi_version 7.3.0
 # Set this when there's a beta or rc version
 %global betaver %{nil}
 
@@ -83,6 +83,9 @@ Documentation for ansible
 %autosetup -n %{pypi_name}-%{pypi_version}%{?betaver} -p1
 # Remove bundled egg-info
 rm -rf *.egg-info
+
+# Eliminate incompatible syntax
+sed -i.bak 's/~=/>=/g' requires.txt
 
 echo "[START] Fixing wrong-script-end-of-line-encoding in azure.azcollection"
 find %{pypi_realname}/azure/azcollection -type f -print -exec dos2unix -k '{}' \;
@@ -188,6 +191,9 @@ hardlink -v %{buildroot}%{ansible_licensedir}
 %doc %{_defaultdocdir}/%{pypi_realname}-%{version}%{?betaver}/%{pypi_realname}
 
 %changelog
+* Tue Feb 28 2023 Nico Kadel-Garcia - 7.3.0-0.1
+- Update to 7.3.0
+
 * Wed Feb 1 2023 Nico Kadel-Garcia - 7.2.0-0.1
 - Update to 7.2.0
 

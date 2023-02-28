@@ -27,7 +27,7 @@
 
 Name: ansible-core
 Summary: A radically simple IT automation system
-Version: 2.14.2
+Version: 2.14.3
 Release: 0.1%{?betaver}%{?dist}
 
 License: GPLv3+
@@ -280,6 +280,9 @@ make PYTHON=%{__python3} tests-py3
 %endif
 
 %changelog
+* Tue Feb 28 2023 Nico Kadel-Garcia - 2.14.3-0.1
+- Update to 2.13.3
+
 * Wed Feb 1 2023 Nico Kadel-Garcia - 2.14.2-0.1
 - Update to 2.14.2
 - Discard obsolete patches

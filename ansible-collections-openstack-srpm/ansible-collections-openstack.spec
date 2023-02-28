@@ -8,7 +8,7 @@
 
 %{?python_enable_dependency_generator}
 %{!?upstream_version: %global upstream_version %{commit}}
-%global commit 938abd0d84baa6591e09d8a83d91432c50397bba
+%global commit ed36d82a0c60a841d2f30c61a50d60531481b2cc
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 # DO NOT REMOVE ALPHATAG
 %global alphatag .%{shortcommit}git
@@ -20,18 +20,17 @@
 %{!?dlrn: %global tarsources ansible-collections-openstack}
 
 Name:           ansible-collections-openstack
-Version:        1.7.1
-#Release:        4%%{?alphatag}%%{?dist}
-Release:        0.4%{?alphatag}%{?dist}
+Version:        2.0.0
+Release:        0.2%{?alphatag}%{?dist}
 Summary:        Openstack Ansible collections
 License:        GPLv3+
 URL:            %{ansible_collection_url}
-Source0:        https://github.com/openstack/%{name}/archive/%{upstream_version}.tar.gz#/%{collection_namespace}-%{collection_name}-%{version}.tar.gz
+Source0:        https://github.com/openstack/ansible-collections-openstack/archive/%{upstream_version}.tar.gz
 BuildArch:      noarch
 
 BuildRequires:  ansible-packaging
 %if %{lua:print(rpm.vercmp(rpm.expand("%{version}"), '2.0.0'));} >= 0
-Requires:       python%{python3_pkgversion}-openstacksdk
+Requires:       python%{python3_pkgversion}-openstacksdk > 0.99.0
 %else
 Requires:       python%{python3_pkgversion}-openstacksdk < 0.99.0
 %endif
@@ -56,6 +55,12 @@ rm -vr changelogs/ ci/ contrib/ tests/ ./galaxy.yml.in .zuul.yaml setup.py docs 
 %{ansible_collection_files}
 
 %changelog
+* Wed Jan 18 2023 Fedora Release Engineering <releng@fedoraproject.org> - 2.0.0-0.2.ed36d82git
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_38_Mass_Rebuild
+
+* Wed Nov 23 2022 Alfredo Moralejo <amoralej@redhat.com> - 2.0.0-0.1.ed36d82git
+- Update to pre-2.0.0 commit (ed36d82a0c60a841d2f30c61a50d60531481b2cc)
+
 * Tue Aug 02 2022 Joel Capitao <jcapitao@redhat.com> - 1.7.1-4.938abd0git
 - Take advantage of ansible-packaging
 
