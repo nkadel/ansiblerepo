@@ -23,7 +23,7 @@ The actual list of ansible collection modules in the ansible tarball
 is in the release specific file of the ansible-build-date git repo,
 for example:
 
-* https://github.com/ansible-community/ansible-build-data/blob/main/6/ansible-7.3.0.deps
+* https://github.com/ansible-community/ansible-build-data/blob/main/7/ansible-7.3.0.deps
 
 Python 3.8 compatibility split
 ==============================
