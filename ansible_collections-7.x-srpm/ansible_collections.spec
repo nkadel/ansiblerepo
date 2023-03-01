@@ -80,8 +80,8 @@ Documentation for %{pypi_realname}
 # Remove bundled egg-info
 rm -rf *.egg-info
 
-# Eliminate incompatible syntax
-sed -i.bak 's/~=/>=/g' requires.txt
+# Avoid syntax error of requirements in RPM
+sed -i.bak 's/ ~= / >= /g' setup.py
 
 echo "[START] Fixing wrong-script-end-of-line-encoding in azure.azcollection"
 find %{pypi_realname}/azure/azcollection -type f -print -exec dos2unix -k '{}' \;
