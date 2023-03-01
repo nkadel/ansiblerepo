@@ -1,8 +1,8 @@
 ansiblerepo
 ==========-
 
-Wrapper for SRPM building tools for ansible 6.x and ansible-core 2.13
-using python3.9. CentOS 7 has ansible from before it was split
+Wrapper for SRPM building tools for ansible 7.x and ansible-core 2.14
+using python3.9. CentOS 7 has ansible from before it was split into
 ansible_collecitons, which is deliberately mislabeled as "ansible",
 and ansible-core. This provides an RPM based update path.
 
@@ -10,10 +10,11 @@ Stop installing ansible package
 -------------------------------
 
 Ehe ansible package is now pointless. It contains more than 100
-distinct ansible_collections, takes up at least 300 Meg gig of disk to
-provide only a few modules that an ansible server might actually
-use. Those modules are better provided by installing ansible-core and
-using the "ansible galaxy" tool to install them as needed.
+distinct ansible_collections entries, takes up at least 300 Meg gig of
+disk to provide only a few modules that an ansible server might
+actually use. Those modules are better provided by installing
+ansible-core and using the "ansible-galaxy" tool to install them as
+needed.
 
 Modules in ansible
 ------------------
@@ -22,17 +23,17 @@ The actual list of ansible collection modules in the ansible tarball
 is in the release specific file of the ansible-build-date git repo,
 for example:
 
-* https://github.com/ansible-community/ansible-build-data/blob/main/6/ansible-6.6.0.deps
+* https://github.com/ansible-community/ansible-build-data/blob/main/6/ansible-7.3.0.deps
 
 Python 3.8 compatibility split
 ==============================
 
-ansible-core 2.13.x and the matching ansible-6.x now require python
-3.8 or better, and are not supportable yet for RHEL 7 or 8. So the
+ansible-core 2.14.x and the matching ansible-7.x now require python
+3.8 or better, and are not supportable RHEL 7. So the
 older ansible-core 2.11.x and ansible-4.x are being built in parallel
 until further notice.
 
-ansible-core 2.13 requires jinja2 > 3.0.0, which creates dependencies
+ansible-core 2.14 requires jinja2 > 3.0.0, which creates dependencies
 on sphinx more recent than RHEL provides. Therefore only the Fedora
 versions of ansible-core 2.13 will provide the sphinx generated
 documentation.
