@@ -27,7 +27,7 @@
 
 Name: ansible-core
 Summary: A radically simple IT automation system
-Version: 2.14.3
+Version: 2.14.4
 Release: 0.1%{?betaver}%{?dist}
 
 License: GPLv3+
@@ -160,7 +160,6 @@ developed for ansible.
 
 %package -n ansible-core-doc
 Summary: Documentation for Ansible Base
-Provides: ansible-base-doc = 2.10.7
 Obsoletes: ansible-base-doc < 2.10.6-1%{?dist}
 
 %description -n ansible-core-doc
@@ -175,6 +174,11 @@ This package installs extensive documentation for ansible-core
 
 %prep
 %autosetup -p1 -n %{name}-%{version}%{?betaver}
+
+# pytest in Fedora 38 does not support --forked opton
+%if 0%{?fc38}
+sed -i.bak '/--forked/d' test/lib/ansible_test/_internal/commands/units/__init__.py
+%endif
 
 %build
 sed -i -s 's|/usr/bin/env python$|%{__python3}|g' test/lib/ansible_test/_util/target/cli/ansible_test_cli_stub.py
@@ -280,8 +284,11 @@ make PYTHON=%{__python3} tests-py3
 %endif
 
 %changelog
+* Mon Mar 27  2023 Nico Kadel-Garcia - 2.14.4-0.1
+- Update to 2.14.4
+
 * Tue Feb 28 2023 Nico Kadel-Garcia - 2.14.3-0.1
-- Update to 2.13.3
+- Update to 2.14.3
 
 * Wed Feb 1 2023 Nico Kadel-Garcia - 2.14.2-0.1
 - Update to 2.14.2
