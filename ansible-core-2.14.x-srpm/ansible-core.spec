@@ -115,9 +115,11 @@ BuildRequires: python%{python3_pkgversion}-pytest
 BuildRequires: python%{python3_pkgversion}-pytest-xdist
 BuildRequires: python%{python3_pkgversion}-pytest-mock
 BuildRequires: python%{python3_pkgversion}-pyvmomi
+BuildRequires: unzip
 
 # Some tests have awkward "#!/usr/bin/env python"
 BuildRequires: /usr/bin/python
+BuildRequires: /usr/bin/pip
 %endif
 
 # RHEL8 doesn't have python3-paramiko or python3-winrm (yet), but Fedora does
@@ -179,6 +181,13 @@ This package installs extensive documentation for ansible-core
 %if 0%{?fc38}
 sed -i.bak '/--forked/d' test/lib/ansible_test/_internal/commands/units/__init__.py
 %endif
+
+# Set /usr/bin/python consistently for tests
+#grep -rl "'/usr/bin/python'" tests/ | \
+#grep '.py$' | \
+#while reead name; do
+#      sed -i.bak "s|'/usr/bin/python'|'/usr/bin/python3'|g" $name
+#done
 
 %build
 sed -i -s 's|/usr/bin/env python$|%{__python3}|g' test/lib/ansible_test/_util/target/cli/ansible_test_cli_stub.py
@@ -245,7 +254,7 @@ find %{buildroot}/%{python3_sitelib} -name .travis.yml -exec rm -f {} \;
 
 %check
 %if %{with tests}
-ln -s /usr/bin/pytest-3 bin/pytest
+ln -s /usr/bin/pytest-%{python3_version} bin/pytest
 # This test needs a module not packaged in Fedora so disable it.
 #rm -f test/units/modules/cloud/cloudstack/test_cs_traffic_type.py
 # These tests are failing with pytest 6
