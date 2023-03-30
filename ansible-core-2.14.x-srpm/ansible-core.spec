@@ -15,11 +15,11 @@
 #
 # If we should enable tests by default
 #
-%if 0%{?rhel}
+#%%if 0%%{?rhel}
 %bcond_with tests
-%else
-%bcond_without tests
-%endif
+#%%%else
+#%%bcond_without tests
+#%%endif
 
 # Set this when there's a beta or rc version
 #%%global betaver %%{nil}
