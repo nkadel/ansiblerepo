@@ -3,7 +3,7 @@
 # due to very confusing upsream renaming
 %global pypi_name ansible
 %global pypi_realname ansible_collections
-%global pypi_version 7.3.0
+%global pypi_version 7.4.0
 # Set this when there's a beta or rc version
 %global betaver %{nil}
 
