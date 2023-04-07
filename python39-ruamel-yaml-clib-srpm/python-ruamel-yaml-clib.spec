@@ -30,6 +30,7 @@ It is the C based reader/scanner and emitter for ruamel.yaml.
 
 %package -n     python%{python3_pkgversion}-%{pname}
 Summary:        %{summary}
+BuildRequires:  python%{python3_pkgversion}
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-rpm-macros
 BuildRequires:  python%{python3_pkgversion}-setuptools
