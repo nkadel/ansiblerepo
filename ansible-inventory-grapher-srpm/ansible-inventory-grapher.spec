@@ -76,7 +76,7 @@ done
 %install
 %py3_install
 
-ln -s %{_bindir}/%{name} %{buildroot}%{_bindir}/%{name}-3
+ln -s %{name} %{buildroot}%{_bindir}/%{name}-3
 
 %if %{with checks}
 %check
