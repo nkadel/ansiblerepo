@@ -12,7 +12,6 @@ MOCKS+=ansiblerepo-f38-x86_64
 
 MOCKCFGS+=$(MOCKS)
 
-#REPOBASEDIR=/var/www/linux/ansiblerepo
 REPOBASEDIR:=`/bin/pwd`/../ansiblerepo
 
 SPEC := `ls *.spec`
