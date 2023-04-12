@@ -64,6 +64,7 @@ ANSIBLEPKGS+=python39-jmespath-srpm
 #ANSIBLEPKGS+=ansible-5.x-srpm
 #ANSIBLEPKGS+=ansible-6.x-srpm
 ANSIBLEPKGS+=ansible-7.x-srpm
+ANSIBLEPKGS+=ansible-8.x-srpm
 
 # Alternate names for 'ansible' packages, better indicates their content
 #ANSIBLEPKGS+=ansible_collections-4.x-srpm
@@ -71,6 +72,7 @@ ANSIBLEPKGS+=ansible-7.x-srpm
 #ANSIBLEPKGS+=ansible_collections-5.x-srpm
 #ANSIBLEPKGS+=ansible_collections-6.x-srpm
 ANSIBLEPKGS+=ansible_collections-7.x-srpm
+ANSIBLEPKGS+=ansible_collections-8.x-srpm
 
 ## python39
 ANSIBLEPKGS+=python39-ruamel-yaml-srpm
@@ -194,76 +196,6 @@ cfgs:: $(MOCKCFGS)
 $(MOCKCFGS)::
 	@echo Generating $@ from $?
 	@echo "include('/etc/mock/$@')" | tee $@
-
-centos-stream+epel-8-x86_64.cfg:: /etc/mock/centos-stream+epel-8-x86_64.cfg
-	@echo Generating $@ from $?
-	@echo "include('$?')" | tee $@
-	@echo "# Enable python39 modules" | tee -a $@
-	@echo "config_opts['module_setup_commands'] = [ ('enable', 'python39'), ('enable', 'python39-devel') ]" | tee -a $@
-	@echo "# Disable best" | tee -a $@
-	@echo "config_opts['dnf_vars'] = { 'best': 'False' }" | tee -a $@
-
-ansiblerepo-7-x86_64.cfg: /etc/mock/centos+epel-7-x86_64.cfg
-	@echo Generating $@ from $?
-	@echo "include('$?')" | tee $@
-	@echo "config_opts['root'] = 'ansiblerepo-{{ releasever }}-{{ target_arch }}'" | tee -a $@
-	@echo "config_opts['yum.conf'] += \"\"\"" | tee -a $@
-	@echo '[ansiblerepo]' | tee -a $@
-	@echo 'name=ansiblerepo' | tee -a $@
-	@echo 'enabled=1' | tee -a $@
-	@echo 'baseurl=$(REPOBASE)/ansiblerepo/el/7/x86_64/' | tee -a $@
-	@echo 'skip_if_unavailable=False' | tee -a $@
-	@echo 'metadata_expire=1s' | tee -a $@
-	@echo 'gpgcheck=0' | tee -a $@
-	@echo '"""' | tee -a $@
-
-# packages-microsoft-com-prod added for /bin/pwsh
-ansiblerepo-8-x86_64.cfg: /etc/mock/centos-stream+epel-8-x86_64.cfg
-	@echo Generating $@ from $?
-	@echo "include('$?')" | tee $@
-	@echo "config_opts['root'] = 'ansiblerepo-{{ releasever }}-{{ target_arch }}'" | tee -a $@
-	@echo "# Enable python39 modules" | tee -a $@
-	@echo "config_opts['module_setup_commands'] = [ ('enable', 'python39'), ('enable', 'python39-devel') ]" | tee -a $@
-	@echo "# Disable best" | tee -a $@
-	@echo "config_opts['dnf_vars'] = { 'best': 'False' }" | tee -a $@
-	@echo "config_opts['dnf.conf'] += \"\"\"" | tee -a $@
-	@echo '[ansiblerepo]' | tee -a $@
-	@echo 'name=ansiblerepo' | tee -a $@
-	@echo 'enabled=1' | tee -a $@
-	@echo 'baseurl=$(REPOBASE)/ansiblerepo/el/8/x86_64/' | tee -a $@
-	@echo 'skip_if_unavailable=False' | tee -a $@
-	@echo 'metadata_expire=1s' | tee -a $@
-	@echo 'gpgcheck=0' | tee -a $@
-	@echo '' | tee -a $@
-	@echo '[packages-microsoft-com-prod]' | tee -a $@
-	@echo 'name=packages-microsoft-com-prod' | tee -a $@
-	@echo 'baseurl=https://packages.microsoft.com/rhel/8/prod/' | tee -a $@
-	@echo 'enabled=0' | tee -a $@
-	@echo 'gpgcheck=1' | tee -a $@
-	@echo 'gpgkey=https://packages.microsoft.com/keys/microsoft.asc' | tee -a $@
-	@echo '"""' | tee -a $@
-
-# packages-microsoft-com-prod added for /bin/pwsh
-ansiblerepo-9-x86_64.cfg: centos-stream+epel-9-x86_64.cfg
-	@echo Generating $@ from $?
-	@echo "include('$?')" | tee $@
-	@echo "config_opts['root'] = 'ansiblerepo-{{ releasever }}-{{ target_arch }}'" | tee -a $@
-	@echo "config_opts['dnf.conf'] += \"\"\"" | tee -a $@
-	@echo '[ansiblerepo]' | tee -a $@
-	@echo 'name=ansiblerepo' | tee -a $@
-	@echo 'enabled=1' | tee -a $@
-	@echo 'baseurl=$(REPOBASE)/ansiblerepo/el/9/x86_64/' | tee -a $@
-	@echo 'skip_if_unavailable=False' | tee -a $@
-	@echo 'metadata_expire=1s' | tee -a $@
-	@echo 'gpgcheck=0' | tee -a $@
-	@echo '' | tee -a $@
-	@echo '[packages-microsoft-com-prod]' | tee -a $@
-	@echo 'name=packages-microsoft-com-prod' | tee -a $@
-	@echo 'baseurl=https://packages.microsoft.com/rhel/9/prod/' | tee -a $@
-	@echo 'enabled=0' | tee -a $@
-	@echo 'gpgcheck=1' | tee -a $@
-	@echo 'gpgkey=https://packages.microsoft.com/keys/microsoft.asc' | tee -a $@
-	@echo '"""' | tee -a $@
 
 ansiblerepo-f38-x86_64.cfg: /etc/mock/fedora-38-x86_64.cfg
 	@echo Generating $@ from $?
