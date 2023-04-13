@@ -217,6 +217,7 @@ classified:
       files:
       - /usr/bin/tldr
       - /usr/bin/tldr.py
+      - /usr/share/man/man1/tldr*
   ipykernel:
     metadata:
       dirs:
@@ -229,6 +230,28 @@ classified:
       - /usr/lib/python3.7/site-packages/ipykernel-5.2.1.dist-info/COPYING.md
       - /usr/lib/python3.7/site-packages/ipykernel-5.2.1.dist-info/INSTALLER
       licenses: []
+    lang:
+      ipykernel:
+        fr:
+        - /usr/lib/python3.7/site-packages/ipykernel/i18n/fr_FR/LC_MESSAGES/nbjs.mo
+        - /usr/lib/python3.7/site-packages/ipykernel/i18n/fr_FR/LC_MESSAGES/nbui.mo
+        - /usr/lib/python3.7/site-packages/ipykernel/i18n/fr_FR/LC_MESSAGES/notebook.mo
+        ja:
+        - /usr/lib/python3.7/site-packages/ipykernel/i18n/ja_JP/LC_MESSAGES/nbjs.mo
+        - /usr/lib/python3.7/site-packages/ipykernel/i18n/ja_JP/LC_MESSAGES/nbui.mo
+        - /usr/lib/python3.7/site-packages/ipykernel/i18n/ja_JP/LC_MESSAGES/notebook.mo
+        nl:
+        - /usr/lib/python3.7/site-packages/ipykernel/i18n/nl/LC_MESSAGES/nbjs.mo
+        - /usr/lib/python3.7/site-packages/ipykernel/i18n/nl/LC_MESSAGES/nbui.mo
+        - /usr/lib/python3.7/site-packages/ipykernel/i18n/nl/LC_MESSAGES/notebook.mo
+        ru:
+        - /usr/lib/python3.7/site-packages/ipykernel/i18n/ru_RU/LC_MESSAGES/nbjs.mo
+        - /usr/lib/python3.7/site-packages/ipykernel/i18n/ru_RU/LC_MESSAGES/nbui.mo
+        - /usr/lib/python3.7/site-packages/ipykernel/i18n/ru_RU/LC_MESSAGES/notebook.mo
+        zh:
+        - /usr/lib/python3.7/site-packages/ipykernel/i18n/zh_CN/LC_MESSAGES/nbjs.mo
+        - /usr/lib/python3.7/site-packages/ipykernel/i18n/zh_CN/LC_MESSAGES/nbui.mo
+        - /usr/lib/python3.7/site-packages/ipykernel/i18n/zh_CN/LC_MESSAGES/notebook.mo
     modules:
       ipykernel:
       - files:
@@ -278,6 +301,8 @@ classified:
         - /usr/lib/python3.7/site-packages/ipykernel/gui/gtk3embed.py
         - /usr/lib/python3.7/site-packages/ipykernel/gui/gtkembed.py
         - /usr/lib/python3.7/site-packages/ipykernel/heartbeat.py
+        - /usr/lib/python3.7/site-packages/ipykernel/i18n/__init__.py
+        - /usr/lib/python3.7/site-packages/ipykernel/i18n/__pycache__/__init__.cpython-37{,.opt-?}.pyc
         - /usr/lib/python3.7/site-packages/ipykernel/inprocess/__init__.py
         - /usr/lib/python3.7/site-packages/ipykernel/inprocess/__pycache__/__init__.cpython-37{,.opt-?}.pyc
         - /usr/lib/python3.7/site-packages/ipykernel/inprocess/__pycache__/blocking.cpython-37{,.opt-?}.pyc
@@ -361,6 +386,18 @@ classified:
         - /usr/lib/python3.7/site-packages/ipykernel/comm/__pycache__
         - /usr/lib/python3.7/site-packages/ipykernel/gui
         - /usr/lib/python3.7/site-packages/ipykernel/gui/__pycache__
+        - /usr/lib/python3.7/site-packages/ipykernel/i18n
+        - /usr/lib/python3.7/site-packages/ipykernel/i18n/__pycache__
+        - /usr/lib/python3.7/site-packages/ipykernel/i18n/fr_FR
+        - /usr/lib/python3.7/site-packages/ipykernel/i18n/fr_FR/LC_MESSAGES
+        - /usr/lib/python3.7/site-packages/ipykernel/i18n/ja_JP
+        - /usr/lib/python3.7/site-packages/ipykernel/i18n/ja_JP/LC_MESSAGES
+        - /usr/lib/python3.7/site-packages/ipykernel/i18n/nl
+        - /usr/lib/python3.7/site-packages/ipykernel/i18n/nl/LC_MESSAGES
+        - /usr/lib/python3.7/site-packages/ipykernel/i18n/ru_RU
+        - /usr/lib/python3.7/site-packages/ipykernel/i18n/ru_RU/LC_MESSAGES
+        - /usr/lib/python3.7/site-packages/ipykernel/i18n/zh_CN
+        - /usr/lib/python3.7/site-packages/ipykernel/i18n/zh_CN/LC_MESSAGES
         - /usr/lib/python3.7/site-packages/ipykernel/inprocess
         - /usr/lib/python3.7/site-packages/ipykernel/inprocess/__pycache__
         - /usr/lib/python3.7/site-packages/ipykernel/inprocess/tests
@@ -376,6 +413,7 @@ classified:
       - /usr/share/jupyter/kernels/python3/logo-64x64.png
       - /usr/share/jupyter/kernels/python3/logo-32x32.png
       - /usr/share/jupyter/kernels/python3/kernel.json
+      - /usr/man/man5/ipykernel.5*
   zope:
     metadata:
       dirs:
@@ -407,10 +445,27 @@ classified:
     other:
       files:
       - /usr/lib/python3.7/site-packages/zope.event-4.4-py3.7-nspkg.pth
+  comic2pdf:
+    metadata:
+      dirs:
+      - /usr/lib/python3.7/site-packages/comic2pdf-3.1.0.dist-info
+      docs: []
+      files:
+      - /usr/lib/python3.7/site-packages/comic2pdf-3.1.0.dist-info/METADATA
+      - /usr/lib/python3.7/site-packages/comic2pdf-3.1.0.dist-info/WHEEL
+      - /usr/lib/python3.7/site-packages/comic2pdf-3.1.0.dist-info/entry_points.txt
+      - /usr/lib/python3.7/site-packages/comic2pdf-3.1.0.dist-info/top_level.txt
+      - /usr/lib/python3.7/site-packages/comic2pdf-3.1.0.dist-info/zip-safe
+      licenses: []
+    modules: []
+    other:
+      files:
+      - /usr/bin/comic2pdf.py
   django:
     metadata:
       dirs:
       - /usr/lib/python3.7/site-packages/Django-3.0.7.dist-info
+      - /usr/lib/python3.7/site-packages/Django-3.0.7.dist-info/licenses
       docs: []
       files:
       - /usr/lib/python3.7/site-packages/Django-3.0.7.dist-info/AUTHORS
@@ -420,8 +475,8 @@ classified:
       - /usr/lib/python3.7/site-packages/Django-3.0.7.dist-info/entry_points.txt
       - /usr/lib/python3.7/site-packages/Django-3.0.7.dist-info/top_level.txt
       licenses:
-      - /usr/lib/python3.7/site-packages/Django-3.0.7.dist-info/LICENSE
-      - /usr/lib/python3.7/site-packages/Django-3.0.7.dist-info/LICENSE.python
+      - /usr/lib/python3.7/site-packages/Django-3.0.7.dist-info/licenses/LICENSE
+      - /usr/lib/python3.7/site-packages/Django-3.0.7.dist-info/licenses/LICENSE.python
     lang:
       django:
         af:
@@ -7421,6 +7476,19 @@ dumped:
     - /usr/lib64/python3.7/site-packages/tensorflow_core/tools/pip_package/__pycache__/__init__.cpython-37{,.opt-?}.pyc
     - /usr/lib64/python3.7/site-packages/tensorflow_core/tools/pip_package/__pycache__/setup.cpython-37{,.opt-?}.pyc
     - /usr/lib64/python3.7/site-packages/tensorflow_core/tools/pip_package/setup.py
+  - - tensorflow
+    - tensorflow_core
+    - tensorflow_core.lite
+    - tensorflow_core.lite.experimental
+    - tensorflow_core.python
+    - tensorflow_core.python.autograph
+    - tensorflow_core.python.autograph.converters
+    - tensorflow_core.python.autograph.converters.arg_defaults
+    - tensorflow_core.tools
+    - tensorflow_core.tools.common
+    - tensorflow_core.tools.docs
+    - tensorflow_core.tools.pip_package
+    - tensorflow_core.tools.pip_package.setup
 - - kerberos
   - ke?ber*
   - - '%dir /usr/lib64/python3.7/site-packages/kerberos-1.3.0.dist-info'
@@ -7429,6 +7497,7 @@ dumped:
     - /usr/lib64/python3.7/site-packages/kerberos-1.3.0.dist-info/WHEEL
     - /usr/lib64/python3.7/site-packages/kerberos-1.3.0.dist-info/top_level.txt
     - /usr/lib64/python3.7/site-packages/kerberos.cpython-37m-x86_64-linux-gnu.so
+  - - kerberos
 - - requests
   - requests
   - - '%dir /usr/lib/python3.7/site-packages/requests'
@@ -7475,6 +7544,22 @@ dumped:
     - /usr/lib/python3.7/site-packages/requests/status_codes.py
     - /usr/lib/python3.7/site-packages/requests/structures.py
     - /usr/lib/python3.7/site-packages/requests/utils.py
+  - - requests
+    - requests.adapters
+    - requests.api
+    - requests.auth
+    - requests.certs
+    - requests.compat
+    - requests.cookies
+    - requests.exceptions
+    - requests.help
+    - requests.hooks
+    - requests.models
+    - requests.packages
+    - requests.sessions
+    - requests.status_codes
+    - requests.structures
+    - requests.utils
 - - tldr
   - '*'
   - - '%dir /usr/lib/python3.7/site-packages/tldr-0.5.dist-info'
@@ -7487,6 +7572,8 @@ dumped:
     - /usr/lib/python3.7/site-packages/tldr-0.5.dist-info/WHEEL
     - /usr/lib/python3.7/site-packages/tldr-0.5.dist-info/top_level.txt
     - /usr/lib/python3.7/site-packages/tldr.py
+    - /usr/share/man/man1/tldr*
+  - - tldr
 - - mistune
   - mistune
   - - '%dir /usr/lib64/python3.7/site-packages/mistune-0.8.3.dist-info'
@@ -7498,6 +7585,7 @@ dumped:
     - /usr/lib64/python3.7/site-packages/mistune-0.8.3.dist-info/top_level.txt
     - /usr/lib64/python3.7/site-packages/mistune.cpython-37m-x86_64-linux-gnu.so
     - /usr/lib64/python3.7/site-packages/mistune.py
+  - - mistune
 - - ipykernel
   - ipykernel
   - - '%dir /usr/lib/python3.7/site-packages/ipykernel'
@@ -7507,6 +7595,18 @@ dumped:
     - '%dir /usr/lib/python3.7/site-packages/ipykernel/comm/__pycache__'
     - '%dir /usr/lib/python3.7/site-packages/ipykernel/gui'
     - '%dir /usr/lib/python3.7/site-packages/ipykernel/gui/__pycache__'
+    - '%dir /usr/lib/python3.7/site-packages/ipykernel/i18n'
+    - '%dir /usr/lib/python3.7/site-packages/ipykernel/i18n/__pycache__'
+    - '%dir /usr/lib/python3.7/site-packages/ipykernel/i18n/fr_FR'
+    - '%dir /usr/lib/python3.7/site-packages/ipykernel/i18n/fr_FR/LC_MESSAGES'
+    - '%dir /usr/lib/python3.7/site-packages/ipykernel/i18n/ja_JP'
+    - '%dir /usr/lib/python3.7/site-packages/ipykernel/i18n/ja_JP/LC_MESSAGES'
+    - '%dir /usr/lib/python3.7/site-packages/ipykernel/i18n/nl'
+    - '%dir /usr/lib/python3.7/site-packages/ipykernel/i18n/nl/LC_MESSAGES'
+    - '%dir /usr/lib/python3.7/site-packages/ipykernel/i18n/ru_RU'
+    - '%dir /usr/lib/python3.7/site-packages/ipykernel/i18n/ru_RU/LC_MESSAGES'
+    - '%dir /usr/lib/python3.7/site-packages/ipykernel/i18n/zh_CN'
+    - '%dir /usr/lib/python3.7/site-packages/ipykernel/i18n/zh_CN/LC_MESSAGES'
     - '%dir /usr/lib/python3.7/site-packages/ipykernel/inprocess'
     - '%dir /usr/lib/python3.7/site-packages/ipykernel/inprocess/__pycache__'
     - '%dir /usr/lib/python3.7/site-packages/ipykernel/inprocess/tests'
@@ -7516,6 +7616,21 @@ dumped:
     - '%dir /usr/lib/python3.7/site-packages/ipykernel/resources'
     - '%dir /usr/lib/python3.7/site-packages/ipykernel/tests'
     - '%dir /usr/lib/python3.7/site-packages/ipykernel/tests/__pycache__'
+    - '%lang(fr) /usr/lib/python3.7/site-packages/ipykernel/i18n/fr_FR/LC_MESSAGES/nbjs.mo'
+    - '%lang(fr) /usr/lib/python3.7/site-packages/ipykernel/i18n/fr_FR/LC_MESSAGES/nbui.mo'
+    - '%lang(fr) /usr/lib/python3.7/site-packages/ipykernel/i18n/fr_FR/LC_MESSAGES/notebook.mo'
+    - '%lang(ja) /usr/lib/python3.7/site-packages/ipykernel/i18n/ja_JP/LC_MESSAGES/nbjs.mo'
+    - '%lang(ja) /usr/lib/python3.7/site-packages/ipykernel/i18n/ja_JP/LC_MESSAGES/nbui.mo'
+    - '%lang(ja) /usr/lib/python3.7/site-packages/ipykernel/i18n/ja_JP/LC_MESSAGES/notebook.mo'
+    - '%lang(nl) /usr/lib/python3.7/site-packages/ipykernel/i18n/nl/LC_MESSAGES/nbjs.mo'
+    - '%lang(nl) /usr/lib/python3.7/site-packages/ipykernel/i18n/nl/LC_MESSAGES/nbui.mo'
+    - '%lang(nl) /usr/lib/python3.7/site-packages/ipykernel/i18n/nl/LC_MESSAGES/notebook.mo'
+    - '%lang(ru) /usr/lib/python3.7/site-packages/ipykernel/i18n/ru_RU/LC_MESSAGES/nbjs.mo'
+    - '%lang(ru) /usr/lib/python3.7/site-packages/ipykernel/i18n/ru_RU/LC_MESSAGES/nbui.mo'
+    - '%lang(ru) /usr/lib/python3.7/site-packages/ipykernel/i18n/ru_RU/LC_MESSAGES/notebook.mo'
+    - '%lang(zh) /usr/lib/python3.7/site-packages/ipykernel/i18n/zh_CN/LC_MESSAGES/nbjs.mo'
+    - '%lang(zh) /usr/lib/python3.7/site-packages/ipykernel/i18n/zh_CN/LC_MESSAGES/nbui.mo'
+    - '%lang(zh) /usr/lib/python3.7/site-packages/ipykernel/i18n/zh_CN/LC_MESSAGES/notebook.mo'
     - /usr/lib/python3.7/site-packages/ipykernel-5.2.1.dist-info/COPYING.md
     - /usr/lib/python3.7/site-packages/ipykernel-5.2.1.dist-info/INSTALLER
     - /usr/lib/python3.7/site-packages/ipykernel-5.2.1.dist-info/METADATA
@@ -7567,6 +7682,8 @@ dumped:
     - /usr/lib/python3.7/site-packages/ipykernel/gui/gtk3embed.py
     - /usr/lib/python3.7/site-packages/ipykernel/gui/gtkembed.py
     - /usr/lib/python3.7/site-packages/ipykernel/heartbeat.py
+    - /usr/lib/python3.7/site-packages/ipykernel/i18n/__init__.py
+    - /usr/lib/python3.7/site-packages/ipykernel/i18n/__pycache__/__init__.cpython-37{,.opt-?}.pyc
     - /usr/lib/python3.7/site-packages/ipykernel/inprocess/__init__.py
     - /usr/lib/python3.7/site-packages/ipykernel/inprocess/__pycache__/__init__.cpython-37{,.opt-?}.pyc
     - /usr/lib/python3.7/site-packages/ipykernel/inprocess/__pycache__/blocking.cpython-37{,.opt-?}.pyc
@@ -7643,9 +7760,67 @@ dumped:
     - /usr/lib/python3.7/site-packages/ipykernel/tests/utils.py
     - /usr/lib/python3.7/site-packages/ipykernel/trio_runner.py
     - /usr/lib/python3.7/site-packages/ipykernel/zmqshell.py
+    - /usr/man/man5/ipykernel.5*
     - /usr/share/jupyter/kernels/python3/kernel.json
     - /usr/share/jupyter/kernels/python3/logo-32x32.png
     - /usr/share/jupyter/kernels/python3/logo-64x64.png
+  - - ipykernel
+    - ipykernel.codeutil
+    - ipykernel.comm
+    - ipykernel.comm.comm
+    - ipykernel.comm.manager
+    - ipykernel.connect
+    - ipykernel.datapub
+    - ipykernel.displayhook
+    - ipykernel.embed
+    - ipykernel.eventloops
+    - ipykernel.gui
+    - ipykernel.gui.gtk3embed
+    - ipykernel.gui.gtkembed
+    - ipykernel.heartbeat
+    - ipykernel.i18n
+    - ipykernel.inprocess
+    - ipykernel.inprocess.blocking
+    - ipykernel.inprocess.channels
+    - ipykernel.inprocess.client
+    - ipykernel.inprocess.constants
+    - ipykernel.inprocess.ipkernel
+    - ipykernel.inprocess.manager
+    - ipykernel.inprocess.socket
+    - ipykernel.inprocess.tests
+    - ipykernel.inprocess.tests.test_kernel
+    - ipykernel.inprocess.tests.test_kernelmanager
+    - ipykernel.iostream
+    - ipykernel.ipkernel
+    - ipykernel.jsonutil
+    - ipykernel.kernelapp
+    - ipykernel.kernelbase
+    - ipykernel.kernelspec
+    - ipykernel.log
+    - ipykernel.parentpoller
+    - ipykernel.pickleutil
+    - ipykernel.pylab
+    - ipykernel.pylab.backend_inline
+    - ipykernel.pylab.config
+    - ipykernel.serialize
+    - ipykernel.tests
+    - ipykernel.tests.test_async
+    - ipykernel.tests.test_connect
+    - ipykernel.tests.test_embed_kernel
+    - ipykernel.tests.test_eventloop
+    - ipykernel.tests.test_heartbeat
+    - ipykernel.tests.test_io
+    - ipykernel.tests.test_jsonutil
+    - ipykernel.tests.test_kernel
+    - ipykernel.tests.test_kernelspec
+    - ipykernel.tests.test_message_spec
+    - ipykernel.tests.test_pickleutil
+    - ipykernel.tests.test_serialize
+    - ipykernel.tests.test_start_kernel
+    - ipykernel.tests.test_zmq_shell
+    - ipykernel.tests.utils
+    - ipykernel.trio_runner
+    - ipykernel.zmqshell
 - - zope
   - zope
   - - '%dir /usr/lib/python3.7/site-packages/zope'
@@ -7666,9 +7841,24 @@ dumped:
     - /usr/lib/python3.7/site-packages/zope/event/__pycache__/tests.cpython-37{,.opt-?}.pyc
     - /usr/lib/python3.7/site-packages/zope/event/classhandler.py
     - /usr/lib/python3.7/site-packages/zope/event/tests.py
+  - - zope
+    - zope.event
+    - zope.event.classhandler
+    - zope.event.tests
+- - comic2pdf
+  - '*'
+  - - '%dir /usr/lib/python3.7/site-packages/comic2pdf-3.1.0.dist-info'
+    - /usr/bin/comic2pdf.py
+    - /usr/lib/python3.7/site-packages/comic2pdf-3.1.0.dist-info/METADATA
+    - /usr/lib/python3.7/site-packages/comic2pdf-3.1.0.dist-info/WHEEL
+    - /usr/lib/python3.7/site-packages/comic2pdf-3.1.0.dist-info/entry_points.txt
+    - /usr/lib/python3.7/site-packages/comic2pdf-3.1.0.dist-info/top_level.txt
+    - /usr/lib/python3.7/site-packages/comic2pdf-3.1.0.dist-info/zip-safe
+  - []
 - - django
   - django
   - - '%dir /usr/lib/python3.7/site-packages/Django-3.0.7.dist-info'
+    - '%dir /usr/lib/python3.7/site-packages/Django-3.0.7.dist-info/licenses'
     - '%dir /usr/lib/python3.7/site-packages/django'
     - '%dir /usr/lib/python3.7/site-packages/django/__pycache__'
     - '%dir /usr/lib/python3.7/site-packages/django/apps'
@@ -11252,8 +11442,8 @@ dumped:
     - '%lang(zh) /usr/lib/python3.7/site-packages/django/contrib/sessions/locale/zh_Hant/LC_MESSAGES/django.mo'
     - '%lang(zh) /usr/lib/python3.7/site-packages/django/contrib/sites/locale/zh_Hans/LC_MESSAGES/django.mo'
     - '%lang(zh) /usr/lib/python3.7/site-packages/django/contrib/sites/locale/zh_Hant/LC_MESSAGES/django.mo'
-    - '%license /usr/lib/python3.7/site-packages/Django-3.0.7.dist-info/LICENSE'
-    - '%license /usr/lib/python3.7/site-packages/Django-3.0.7.dist-info/LICENSE.python'
+    - '%license /usr/lib/python3.7/site-packages/Django-3.0.7.dist-info/licenses/LICENSE'
+    - '%license /usr/lib/python3.7/site-packages/Django-3.0.7.dist-info/licenses/LICENSE.python'
     - /usr/bin/django-admin
     - /usr/bin/django-admin.py
     - /usr/lib/python3.7/site-packages/Django-3.0.7.dist-info/AUTHORS
@@ -14338,6 +14528,821 @@ dumped:
     - /usr/lib/python3.7/site-packages/django/views/templates/technical_404.html
     - /usr/lib/python3.7/site-packages/django/views/templates/technical_500.html
     - /usr/lib/python3.7/site-packages/django/views/templates/technical_500.txt
+  - - django
+    - django.apps
+    - django.apps.config
+    - django.apps.registry
+    - django.conf
+    - django.conf.global_settings
+    - django.conf.locale
+    - django.conf.locale.ar
+    - django.conf.locale.ar.formats
+    - django.conf.locale.az
+    - django.conf.locale.az.formats
+    - django.conf.locale.bg
+    - django.conf.locale.bg.formats
+    - django.conf.locale.bn
+    - django.conf.locale.bn.formats
+    - django.conf.locale.bs
+    - django.conf.locale.bs.formats
+    - django.conf.locale.ca
+    - django.conf.locale.ca.formats
+    - django.conf.locale.cs
+    - django.conf.locale.cs.formats
+    - django.conf.locale.cy
+    - django.conf.locale.cy.formats
+    - django.conf.locale.da
+    - django.conf.locale.da.formats
+    - django.conf.locale.de
+    - django.conf.locale.de.formats
+    - django.conf.locale.de_CH
+    - django.conf.locale.de_CH.formats
+    - django.conf.locale.el
+    - django.conf.locale.el.formats
+    - django.conf.locale.en
+    - django.conf.locale.en.formats
+    - django.conf.locale.en_AU
+    - django.conf.locale.en_AU.formats
+    - django.conf.locale.en_GB
+    - django.conf.locale.en_GB.formats
+    - django.conf.locale.eo
+    - django.conf.locale.eo.formats
+    - django.conf.locale.es
+    - django.conf.locale.es.formats
+    - django.conf.locale.es_AR
+    - django.conf.locale.es_AR.formats
+    - django.conf.locale.es_CO
+    - django.conf.locale.es_CO.formats
+    - django.conf.locale.es_MX
+    - django.conf.locale.es_MX.formats
+    - django.conf.locale.es_NI
+    - django.conf.locale.es_NI.formats
+    - django.conf.locale.es_PR
+    - django.conf.locale.es_PR.formats
+    - django.conf.locale.et
+    - django.conf.locale.et.formats
+    - django.conf.locale.eu
+    - django.conf.locale.eu.formats
+    - django.conf.locale.fa
+    - django.conf.locale.fa.formats
+    - django.conf.locale.fi
+    - django.conf.locale.fi.formats
+    - django.conf.locale.fr
+    - django.conf.locale.fr.formats
+    - django.conf.locale.fy
+    - django.conf.locale.fy.formats
+    - django.conf.locale.ga
+    - django.conf.locale.ga.formats
+    - django.conf.locale.gd
+    - django.conf.locale.gd.formats
+    - django.conf.locale.gl
+    - django.conf.locale.gl.formats
+    - django.conf.locale.he
+    - django.conf.locale.he.formats
+    - django.conf.locale.hi
+    - django.conf.locale.hi.formats
+    - django.conf.locale.hr
+    - django.conf.locale.hr.formats
+    - django.conf.locale.hu
+    - django.conf.locale.hu.formats
+    - django.conf.locale.id
+    - django.conf.locale.id.formats
+    - django.conf.locale.it
+    - django.conf.locale.it.formats
+    - django.conf.locale.ja
+    - django.conf.locale.ja.formats
+    - django.conf.locale.ka
+    - django.conf.locale.ka.formats
+    - django.conf.locale.km
+    - django.conf.locale.km.formats
+    - django.conf.locale.kn
+    - django.conf.locale.kn.formats
+    - django.conf.locale.ko
+    - django.conf.locale.ko.formats
+    - django.conf.locale.lt
+    - django.conf.locale.lt.formats
+    - django.conf.locale.lv
+    - django.conf.locale.lv.formats
+    - django.conf.locale.mk
+    - django.conf.locale.mk.formats
+    - django.conf.locale.ml
+    - django.conf.locale.ml.formats
+    - django.conf.locale.mn
+    - django.conf.locale.mn.formats
+    - django.conf.locale.nb
+    - django.conf.locale.nb.formats
+    - django.conf.locale.nl
+    - django.conf.locale.nl.formats
+    - django.conf.locale.nn
+    - django.conf.locale.nn.formats
+    - django.conf.locale.pl
+    - django.conf.locale.pl.formats
+    - django.conf.locale.pt
+    - django.conf.locale.pt.formats
+    - django.conf.locale.pt_BR
+    - django.conf.locale.pt_BR.formats
+    - django.conf.locale.ro
+    - django.conf.locale.ro.formats
+    - django.conf.locale.ru
+    - django.conf.locale.ru.formats
+    - django.conf.locale.sk
+    - django.conf.locale.sk.formats
+    - django.conf.locale.sl
+    - django.conf.locale.sl.formats
+    - django.conf.locale.sq
+    - django.conf.locale.sq.formats
+    - django.conf.locale.sr
+    - django.conf.locale.sr.formats
+    - django.conf.locale.sr_Latn
+    - django.conf.locale.sr_Latn.formats
+    - django.conf.locale.sv
+    - django.conf.locale.sv.formats
+    - django.conf.locale.ta
+    - django.conf.locale.ta.formats
+    - django.conf.locale.te
+    - django.conf.locale.te.formats
+    - django.conf.locale.th
+    - django.conf.locale.th.formats
+    - django.conf.locale.tr
+    - django.conf.locale.tr.formats
+    - django.conf.locale.uk
+    - django.conf.locale.uk.formats
+    - django.conf.locale.uz
+    - django.conf.locale.uz.formats
+    - django.conf.locale.vi
+    - django.conf.locale.vi.formats
+    - django.conf.locale.zh_Hans
+    - django.conf.locale.zh_Hans.formats
+    - django.conf.locale.zh_Hant
+    - django.conf.locale.zh_Hant.formats
+    - django.conf.urls
+    - django.conf.urls.i18n
+    - django.conf.urls.static
+    - django.contrib
+    - django.contrib.admin
+    - django.contrib.admin.actions
+    - django.contrib.admin.apps
+    - django.contrib.admin.checks
+    - django.contrib.admin.decorators
+    - django.contrib.admin.exceptions
+    - django.contrib.admin.filters
+    - django.contrib.admin.forms
+    - django.contrib.admin.helpers
+    - django.contrib.admin.migrations
+    - django.contrib.admin.models
+    - django.contrib.admin.options
+    - django.contrib.admin.sites
+    - django.contrib.admin.templatetags
+    - django.contrib.admin.templatetags.admin_list
+    - django.contrib.admin.templatetags.admin_modify
+    - django.contrib.admin.templatetags.admin_urls
+    - django.contrib.admin.templatetags.base
+    - django.contrib.admin.templatetags.log
+    - django.contrib.admin.tests
+    - django.contrib.admin.utils
+    - django.contrib.admin.views
+    - django.contrib.admin.views.autocomplete
+    - django.contrib.admin.views.decorators
+    - django.contrib.admin.views.main
+    - django.contrib.admin.widgets
+    - django.contrib.admindocs
+    - django.contrib.admindocs.apps
+    - django.contrib.admindocs.middleware
+    - django.contrib.admindocs.urls
+    - django.contrib.admindocs.utils
+    - django.contrib.admindocs.views
+    - django.contrib.auth
+    - django.contrib.auth.admin
+    - django.contrib.auth.apps
+    - django.contrib.auth.backends
+    - django.contrib.auth.base_user
+    - django.contrib.auth.checks
+    - django.contrib.auth.context_processors
+    - django.contrib.auth.decorators
+    - django.contrib.auth.forms
+    - django.contrib.auth.handlers
+    - django.contrib.auth.handlers.modwsgi
+    - django.contrib.auth.hashers
+    - django.contrib.auth.management
+    - django.contrib.auth.management.commands
+    - django.contrib.auth.management.commands.changepassword
+    - django.contrib.auth.management.commands.createsuperuser
+    - django.contrib.auth.middleware
+    - django.contrib.auth.migrations
+    - django.contrib.auth.mixins
+    - django.contrib.auth.models
+    - django.contrib.auth.password_validation
+    - django.contrib.auth.signals
+    - django.contrib.auth.tokens
+    - django.contrib.auth.urls
+    - django.contrib.auth.validators
+    - django.contrib.auth.views
+    - django.contrib.contenttypes
+    - django.contrib.contenttypes.admin
+    - django.contrib.contenttypes.apps
+    - django.contrib.contenttypes.checks
+    - django.contrib.contenttypes.fields
+    - django.contrib.contenttypes.forms
+    - django.contrib.contenttypes.management
+    - django.contrib.contenttypes.management.commands
+    - django.contrib.contenttypes.management.commands.remove_stale_contenttypes
+    - django.contrib.contenttypes.migrations
+    - django.contrib.contenttypes.models
+    - django.contrib.contenttypes.views
+    - django.contrib.flatpages
+    - django.contrib.flatpages.admin
+    - django.contrib.flatpages.apps
+    - django.contrib.flatpages.forms
+    - django.contrib.flatpages.middleware
+    - django.contrib.flatpages.migrations
+    - django.contrib.flatpages.models
+    - django.contrib.flatpages.sitemaps
+    - django.contrib.flatpages.templatetags
+    - django.contrib.flatpages.templatetags.flatpages
+    - django.contrib.flatpages.urls
+    - django.contrib.flatpages.views
+    - django.contrib.gis
+    - django.contrib.gis.admin
+    - django.contrib.gis.admin.options
+    - django.contrib.gis.admin.widgets
+    - django.contrib.gis.apps
+    - django.contrib.gis.db
+    - django.contrib.gis.db.backends
+    - django.contrib.gis.db.backends.base
+    - django.contrib.gis.db.backends.base.adapter
+    - django.contrib.gis.db.backends.base.features
+    - django.contrib.gis.db.backends.base.models
+    - django.contrib.gis.db.backends.base.operations
+    - django.contrib.gis.db.backends.mysql
+    - django.contrib.gis.db.backends.mysql.base
+    - django.contrib.gis.db.backends.mysql.features
+    - django.contrib.gis.db.backends.mysql.introspection
+    - django.contrib.gis.db.backends.mysql.operations
+    - django.contrib.gis.db.backends.mysql.schema
+    - django.contrib.gis.db.backends.oracle
+    - django.contrib.gis.db.backends.oracle.adapter
+    - django.contrib.gis.db.backends.oracle.base
+    - django.contrib.gis.db.backends.oracle.features
+    - django.contrib.gis.db.backends.oracle.introspection
+    - django.contrib.gis.db.backends.oracle.models
+    - django.contrib.gis.db.backends.oracle.operations
+    - django.contrib.gis.db.backends.oracle.schema
+    - django.contrib.gis.db.backends.postgis
+    - django.contrib.gis.db.backends.postgis.adapter
+    - django.contrib.gis.db.backends.postgis.base
+    - django.contrib.gis.db.backends.postgis.const
+    - django.contrib.gis.db.backends.postgis.features
+    - django.contrib.gis.db.backends.postgis.introspection
+    - django.contrib.gis.db.backends.postgis.models
+    - django.contrib.gis.db.backends.postgis.operations
+    - django.contrib.gis.db.backends.postgis.pgraster
+    - django.contrib.gis.db.backends.postgis.schema
+    - django.contrib.gis.db.backends.spatialite
+    - django.contrib.gis.db.backends.spatialite.adapter
+    - django.contrib.gis.db.backends.spatialite.base
+    - django.contrib.gis.db.backends.spatialite.client
+    - django.contrib.gis.db.backends.spatialite.features
+    - django.contrib.gis.db.backends.spatialite.introspection
+    - django.contrib.gis.db.backends.spatialite.models
+    - django.contrib.gis.db.backends.spatialite.operations
+    - django.contrib.gis.db.backends.spatialite.schema
+    - django.contrib.gis.db.backends.utils
+    - django.contrib.gis.db.models
+    - django.contrib.gis.db.models.aggregates
+    - django.contrib.gis.db.models.fields
+    - django.contrib.gis.db.models.functions
+    - django.contrib.gis.db.models.lookups
+    - django.contrib.gis.db.models.proxy
+    - django.contrib.gis.db.models.sql
+    - django.contrib.gis.db.models.sql.conversion
+    - django.contrib.gis.feeds
+    - django.contrib.gis.forms
+    - django.contrib.gis.forms.fields
+    - django.contrib.gis.forms.widgets
+    - django.contrib.gis.gdal
+    - django.contrib.gis.gdal.base
+    - django.contrib.gis.gdal.datasource
+    - django.contrib.gis.gdal.driver
+    - django.contrib.gis.gdal.envelope
+    - django.contrib.gis.gdal.error
+    - django.contrib.gis.gdal.feature
+    - django.contrib.gis.gdal.field
+    - django.contrib.gis.gdal.geometries
+    - django.contrib.gis.gdal.geomtype
+    - django.contrib.gis.gdal.layer
+    - django.contrib.gis.gdal.libgdal
+    - django.contrib.gis.gdal.prototypes
+    - django.contrib.gis.gdal.prototypes.ds
+    - django.contrib.gis.gdal.prototypes.errcheck
+    - django.contrib.gis.gdal.prototypes.generation
+    - django.contrib.gis.gdal.prototypes.geom
+    - django.contrib.gis.gdal.prototypes.raster
+    - django.contrib.gis.gdal.prototypes.srs
+    - django.contrib.gis.gdal.raster
+    - django.contrib.gis.gdal.raster.band
+    - django.contrib.gis.gdal.raster.base
+    - django.contrib.gis.gdal.raster.const
+    - django.contrib.gis.gdal.raster.source
+    - django.contrib.gis.gdal.srs
+    - django.contrib.gis.geoip2
+    - django.contrib.gis.geoip2.base
+    - django.contrib.gis.geoip2.resources
+    - django.contrib.gis.geometry
+    - django.contrib.gis.geos
+    - django.contrib.gis.geos.base
+    - django.contrib.gis.geos.collections
+    - django.contrib.gis.geos.coordseq
+    - django.contrib.gis.geos.error
+    - django.contrib.gis.geos.factory
+    - django.contrib.gis.geos.geometry
+    - django.contrib.gis.geos.io
+    - django.contrib.gis.geos.libgeos
+    - django.contrib.gis.geos.linestring
+    - django.contrib.gis.geos.mutable_list
+    - django.contrib.gis.geos.point
+    - django.contrib.gis.geos.polygon
+    - django.contrib.gis.geos.prepared
+    - django.contrib.gis.geos.prototypes
+    - django.contrib.gis.geos.prototypes.coordseq
+    - django.contrib.gis.geos.prototypes.errcheck
+    - django.contrib.gis.geos.prototypes.geom
+    - django.contrib.gis.geos.prototypes.io
+    - django.contrib.gis.geos.prototypes.misc
+    - django.contrib.gis.geos.prototypes.predicates
+    - django.contrib.gis.geos.prototypes.prepared
+    - django.contrib.gis.geos.prototypes.threadsafe
+    - django.contrib.gis.geos.prototypes.topology
+    - django.contrib.gis.management
+    - django.contrib.gis.management.commands
+    - django.contrib.gis.management.commands.inspectdb
+    - django.contrib.gis.management.commands.ogrinspect
+    - django.contrib.gis.measure
+    - django.contrib.gis.ptr
+    - django.contrib.gis.serializers
+    - django.contrib.gis.serializers.geojson
+    - django.contrib.gis.shortcuts
+    - django.contrib.gis.sitemaps
+    - django.contrib.gis.sitemaps.kml
+    - django.contrib.gis.sitemaps.views
+    - django.contrib.gis.utils
+    - django.contrib.gis.utils.layermapping
+    - django.contrib.gis.utils.ogrinfo
+    - django.contrib.gis.utils.ogrinspect
+    - django.contrib.gis.utils.srs
+    - django.contrib.gis.views
+    - django.contrib.humanize
+    - django.contrib.humanize.apps
+    - django.contrib.humanize.templatetags
+    - django.contrib.humanize.templatetags.humanize
+    - django.contrib.messages
+    - django.contrib.messages.api
+    - django.contrib.messages.apps
+    - django.contrib.messages.constants
+    - django.contrib.messages.context_processors
+    - django.contrib.messages.middleware
+    - django.contrib.messages.storage
+    - django.contrib.messages.storage.base
+    - django.contrib.messages.storage.cookie
+    - django.contrib.messages.storage.fallback
+    - django.contrib.messages.storage.session
+    - django.contrib.messages.utils
+    - django.contrib.messages.views
+    - django.contrib.postgres
+    - django.contrib.postgres.aggregates
+    - django.contrib.postgres.aggregates.general
+    - django.contrib.postgres.aggregates.mixins
+    - django.contrib.postgres.aggregates.statistics
+    - django.contrib.postgres.apps
+    - django.contrib.postgres.constraints
+    - django.contrib.postgres.fields
+    - django.contrib.postgres.fields.array
+    - django.contrib.postgres.fields.citext
+    - django.contrib.postgres.fields.hstore
+    - django.contrib.postgres.fields.jsonb
+    - django.contrib.postgres.fields.mixins
+    - django.contrib.postgres.fields.ranges
+    - django.contrib.postgres.fields.utils
+    - django.contrib.postgres.forms
+    - django.contrib.postgres.forms.array
+    - django.contrib.postgres.forms.hstore
+    - django.contrib.postgres.forms.jsonb
+    - django.contrib.postgres.forms.ranges
+    - django.contrib.postgres.functions
+    - django.contrib.postgres.indexes
+    - django.contrib.postgres.lookups
+    - django.contrib.postgres.operations
+    - django.contrib.postgres.search
+    - django.contrib.postgres.serializers
+    - django.contrib.postgres.signals
+    - django.contrib.postgres.utils
+    - django.contrib.postgres.validators
+    - django.contrib.redirects
+    - django.contrib.redirects.admin
+    - django.contrib.redirects.apps
+    - django.contrib.redirects.middleware
+    - django.contrib.redirects.migrations
+    - django.contrib.redirects.models
+    - django.contrib.sessions
+    - django.contrib.sessions.apps
+    - django.contrib.sessions.backends
+    - django.contrib.sessions.backends.base
+    - django.contrib.sessions.backends.cache
+    - django.contrib.sessions.backends.cached_db
+    - django.contrib.sessions.backends.db
+    - django.contrib.sessions.backends.file
+    - django.contrib.sessions.backends.signed_cookies
+    - django.contrib.sessions.base_session
+    - django.contrib.sessions.exceptions
+    - django.contrib.sessions.management
+    - django.contrib.sessions.management.commands
+    - django.contrib.sessions.management.commands.clearsessions
+    - django.contrib.sessions.middleware
+    - django.contrib.sessions.migrations
+    - django.contrib.sessions.models
+    - django.contrib.sessions.serializers
+    - django.contrib.sitemaps
+    - django.contrib.sitemaps.apps
+    - django.contrib.sitemaps.management
+    - django.contrib.sitemaps.management.commands
+    - django.contrib.sitemaps.management.commands.ping_google
+    - django.contrib.sitemaps.views
+    - django.contrib.sites
+    - django.contrib.sites.admin
+    - django.contrib.sites.apps
+    - django.contrib.sites.management
+    - django.contrib.sites.managers
+    - django.contrib.sites.middleware
+    - django.contrib.sites.migrations
+    - django.contrib.sites.models
+    - django.contrib.sites.requests
+    - django.contrib.sites.shortcuts
+    - django.contrib.staticfiles
+    - django.contrib.staticfiles.apps
+    - django.contrib.staticfiles.checks
+    - django.contrib.staticfiles.finders
+    - django.contrib.staticfiles.handlers
+    - django.contrib.staticfiles.management
+    - django.contrib.staticfiles.management.commands
+    - django.contrib.staticfiles.management.commands.collectstatic
+    - django.contrib.staticfiles.management.commands.findstatic
+    - django.contrib.staticfiles.management.commands.runserver
+    - django.contrib.staticfiles.storage
+    - django.contrib.staticfiles.testing
+    - django.contrib.staticfiles.urls
+    - django.contrib.staticfiles.utils
+    - django.contrib.staticfiles.views
+    - django.contrib.syndication
+    - django.contrib.syndication.apps
+    - django.contrib.syndication.views
+    - django.core
+    - django.core.asgi
+    - django.core.cache
+    - django.core.cache.backends
+    - django.core.cache.backends.base
+    - django.core.cache.backends.db
+    - django.core.cache.backends.dummy
+    - django.core.cache.backends.filebased
+    - django.core.cache.backends.locmem
+    - django.core.cache.backends.memcached
+    - django.core.cache.utils
+    - django.core.checks
+    - django.core.checks.caches
+    - django.core.checks.compatibility
+    - django.core.checks.database
+    - django.core.checks.messages
+    - django.core.checks.model_checks
+    - django.core.checks.registry
+    - django.core.checks.security
+    - django.core.checks.security.base
+    - django.core.checks.security.csrf
+    - django.core.checks.security.sessions
+    - django.core.checks.templates
+    - django.core.checks.translation
+    - django.core.checks.urls
+    - django.core.exceptions
+    - django.core.files
+    - django.core.files.base
+    - django.core.files.images
+    - django.core.files.locks
+    - django.core.files.move
+    - django.core.files.storage
+    - django.core.files.temp
+    - django.core.files.uploadedfile
+    - django.core.files.uploadhandler
+    - django.core.files.utils
+    - django.core.handlers
+    - django.core.handlers.asgi
+    - django.core.handlers.base
+    - django.core.handlers.exception
+    - django.core.handlers.wsgi
+    - django.core.mail
+    - django.core.mail.backends
+    - django.core.mail.backends.base
+    - django.core.mail.backends.console
+    - django.core.mail.backends.dummy
+    - django.core.mail.backends.filebased
+    - django.core.mail.backends.locmem
+    - django.core.mail.backends.smtp
+    - django.core.mail.message
+    - django.core.mail.utils
+    - django.core.management
+    - django.core.management.base
+    - django.core.management.color
+    - django.core.management.commands
+    - django.core.management.commands.check
+    - django.core.management.commands.compilemessages
+    - django.core.management.commands.createcachetable
+    - django.core.management.commands.dbshell
+    - django.core.management.commands.diffsettings
+    - django.core.management.commands.dumpdata
+    - django.core.management.commands.flush
+    - django.core.management.commands.inspectdb
+    - django.core.management.commands.loaddata
+    - django.core.management.commands.makemessages
+    - django.core.management.commands.makemigrations
+    - django.core.management.commands.migrate
+    - django.core.management.commands.runserver
+    - django.core.management.commands.sendtestemail
+    - django.core.management.commands.shell
+    - django.core.management.commands.showmigrations
+    - django.core.management.commands.sqlflush
+    - django.core.management.commands.sqlmigrate
+    - django.core.management.commands.sqlsequencereset
+    - django.core.management.commands.squashmigrations
+    - django.core.management.commands.startapp
+    - django.core.management.commands.startproject
+    - django.core.management.commands.test
+    - django.core.management.commands.testserver
+    - django.core.management.sql
+    - django.core.management.templates
+    - django.core.management.utils
+    - django.core.paginator
+    - django.core.serializers
+    - django.core.serializers.base
+    - django.core.serializers.json
+    - django.core.serializers.python
+    - django.core.serializers.pyyaml
+    - django.core.serializers.xml_serializer
+    - django.core.servers
+    - django.core.servers.basehttp
+    - django.core.signals
+    - django.core.signing
+    - django.core.validators
+    - django.core.wsgi
+    - django.db
+    - django.db.backends
+    - django.db.backends.base
+    - django.db.backends.base.base
+    - django.db.backends.base.client
+    - django.db.backends.base.creation
+    - django.db.backends.base.features
+    - django.db.backends.base.introspection
+    - django.db.backends.base.operations
+    - django.db.backends.base.schema
+    - django.db.backends.base.validation
+    - django.db.backends.ddl_references
+    - django.db.backends.dummy
+    - django.db.backends.dummy.base
+    - django.db.backends.dummy.features
+    - django.db.backends.mysql
+    - django.db.backends.mysql.base
+    - django.db.backends.mysql.client
+    - django.db.backends.mysql.compiler
+    - django.db.backends.mysql.creation
+    - django.db.backends.mysql.features
+    - django.db.backends.mysql.introspection
+    - django.db.backends.mysql.operations
+    - django.db.backends.mysql.schema
+    - django.db.backends.mysql.validation
+    - django.db.backends.oracle
+    - django.db.backends.oracle.base
+    - django.db.backends.oracle.client
+    - django.db.backends.oracle.creation
+    - django.db.backends.oracle.features
+    - django.db.backends.oracle.functions
+    - django.db.backends.oracle.introspection
+    - django.db.backends.oracle.operations
+    - django.db.backends.oracle.schema
+    - django.db.backends.oracle.utils
+    - django.db.backends.oracle.validation
+    - django.db.backends.postgresql
+    - django.db.backends.postgresql.base
+    - django.db.backends.postgresql.client
+    - django.db.backends.postgresql.creation
+    - django.db.backends.postgresql.features
+    - django.db.backends.postgresql.introspection
+    - django.db.backends.postgresql.operations
+    - django.db.backends.postgresql.schema
+    - django.db.backends.postgresql.utils
+    - django.db.backends.signals
+    - django.db.backends.sqlite3
+    - django.db.backends.sqlite3.base
+    - django.db.backends.sqlite3.client
+    - django.db.backends.sqlite3.creation
+    - django.db.backends.sqlite3.features
+    - django.db.backends.sqlite3.introspection
+    - django.db.backends.sqlite3.operations
+    - django.db.backends.sqlite3.schema
+    - django.db.backends.utils
+    - django.db.migrations
+    - django.db.migrations.autodetector
+    - django.db.migrations.exceptions
+    - django.db.migrations.executor
+    - django.db.migrations.graph
+    - django.db.migrations.loader
+    - django.db.migrations.migration
+    - django.db.migrations.operations
+    - django.db.migrations.operations.base
+    - django.db.migrations.operations.fields
+    - django.db.migrations.operations.models
+    - django.db.migrations.operations.special
+    - django.db.migrations.operations.utils
+    - django.db.migrations.optimizer
+    - django.db.migrations.questioner
+    - django.db.migrations.recorder
+    - django.db.migrations.serializer
+    - django.db.migrations.state
+    - django.db.migrations.utils
+    - django.db.migrations.writer
+    - django.db.models
+    - django.db.models.aggregates
+    - django.db.models.base
+    - django.db.models.constants
+    - django.db.models.constraints
+    - django.db.models.deletion
+    - django.db.models.enums
+    - django.db.models.expressions
+    - django.db.models.fields
+    - django.db.models.fields.files
+    - django.db.models.fields.mixins
+    - django.db.models.fields.proxy
+    - django.db.models.fields.related
+    - django.db.models.fields.related_descriptors
+    - django.db.models.fields.related_lookups
+    - django.db.models.fields.reverse_related
+    - django.db.models.functions
+    - django.db.models.functions.comparison
+    - django.db.models.functions.datetime
+    - django.db.models.functions.math
+    - django.db.models.functions.mixins
+    - django.db.models.functions.text
+    - django.db.models.functions.window
+    - django.db.models.indexes
+    - django.db.models.lookups
+    - django.db.models.manager
+    - django.db.models.options
+    - django.db.models.query
+    - django.db.models.query_utils
+    - django.db.models.signals
+    - django.db.models.sql
+    - django.db.models.sql.compiler
+    - django.db.models.sql.constants
+    - django.db.models.sql.datastructures
+    - django.db.models.sql.query
+    - django.db.models.sql.subqueries
+    - django.db.models.sql.where
+    - django.db.models.utils
+    - django.db.transaction
+    - django.db.utils
+    - django.dispatch
+    - django.dispatch.dispatcher
+    - django.forms
+    - django.forms.boundfield
+    - django.forms.fields
+    - django.forms.forms
+    - django.forms.formsets
+    - django.forms.models
+    - django.forms.renderers
+    - django.forms.utils
+    - django.forms.widgets
+    - django.http
+    - django.http.cookie
+    - django.http.multipartparser
+    - django.http.request
+    - django.http.response
+    - django.middleware
+    - django.middleware.cache
+    - django.middleware.clickjacking
+    - django.middleware.common
+    - django.middleware.csrf
+    - django.middleware.gzip
+    - django.middleware.http
+    - django.middleware.locale
+    - django.middleware.security
+    - django.shortcuts
+    - django.template
+    - django.template.backends
+    - django.template.backends.base
+    - django.template.backends.django
+    - django.template.backends.dummy
+    - django.template.backends.jinja2
+    - django.template.backends.utils
+    - django.template.base
+    - django.template.context
+    - django.template.context_processors
+    - django.template.defaultfilters
+    - django.template.defaulttags
+    - django.template.engine
+    - django.template.exceptions
+    - django.template.library
+    - django.template.loader
+    - django.template.loader_tags
+    - django.template.loaders
+    - django.template.loaders.app_directories
+    - django.template.loaders.base
+    - django.template.loaders.cached
+    - django.template.loaders.filesystem
+    - django.template.loaders.locmem
+    - django.template.response
+    - django.template.smartif
+    - django.template.utils
+    - django.templatetags
+    - django.templatetags.cache
+    - django.templatetags.i18n
+    - django.templatetags.l10n
+    - django.templatetags.static
+    - django.templatetags.tz
+    - django.test
+    - django.test.client
+    - django.test.html
+    - django.test.runner
+    - django.test.selenium
+    - django.test.signals
+    - django.test.testcases
+    - django.test.utils
+    - django.urls
+    - django.urls.base
+    - django.urls.conf
+    - django.urls.converters
+    - django.urls.exceptions
+    - django.urls.resolvers
+    - django.urls.utils
+    - django.utils
+    - django.utils.archive
+    - django.utils.asyncio
+    - django.utils.autoreload
+    - django.utils.baseconv
+    - django.utils.cache
+    - django.utils.crypto
+    - django.utils.datastructures
+    - django.utils.dateformat
+    - django.utils.dateparse
+    - django.utils.dates
+    - django.utils.datetime_safe
+    - django.utils.deconstruct
+    - django.utils.decorators
+    - django.utils.deprecation
+    - django.utils.duration
+    - django.utils.encoding
+    - django.utils.feedgenerator
+    - django.utils.formats
+    - django.utils.functional
+    - django.utils.hashable
+    - django.utils.html
+    - django.utils.http
+    - django.utils.inspect
+    - django.utils.ipv6
+    - django.utils.itercompat
+    - django.utils.jslex
+    - django.utils.log
+    - django.utils.lorem_ipsum
+    - django.utils.module_loading
+    - django.utils.numberformat
+    - django.utils.regex_helper
+    - django.utils.safestring
+    - django.utils.termcolors
+    - django.utils.text
+    - django.utils.timesince
+    - django.utils.timezone
+    - django.utils.topological_sort
+    - django.utils.translation
+    - django.utils.translation.reloader
+    - django.utils.translation.template
+    - django.utils.translation.trans_null
+    - django.utils.translation.trans_real
+    - django.utils.tree
+    - django.utils.version
+    - django.utils.xmlutils
+    - django.views
+    - django.views.csrf
+    - django.views.debug
+    - django.views.decorators
+    - django.views.decorators.cache
+    - django.views.decorators.clickjacking
+    - django.views.decorators.csrf
+    - django.views.decorators.debug
+    - django.views.decorators.gzip
+    - django.views.decorators.http
+    - django.views.decorators.vary
+    - django.views.defaults
+    - django.views.generic
+    - django.views.generic.base
+    - django.views.generic.dates
+    - django.views.generic.detail
+    - django.views.generic.edit
+    - django.views.generic.list
+    - django.views.i18n
+    - django.views.static
 - - printrun
   - printrun
   - - '%dir /usr/lib/python3.7/site-packages/Printrun-2.0.0rc6.dist-info'
@@ -14486,6 +15491,50 @@ dumped:
     - /usr/share/pronterface/reset.png
     - /usr/share/pronterface/zoom_in.png
     - /usr/share/pronterface/zoom_out.png
+  - - printrun
+    - printrun.eventhandler
+    - printrun.excluder
+    - printrun.gcodeplater
+    - printrun.gcoder
+    - printrun.gcview
+    - printrun.gl
+    - printrun.gl.libtatlin
+    - printrun.gl.libtatlin.actors
+    - printrun.gl.panel
+    - printrun.gl.trackball
+    - printrun.gui
+    - printrun.gui.bufferedcanvas
+    - printrun.gui.controls
+    - printrun.gui.graph
+    - printrun.gui.log
+    - printrun.gui.toolbar
+    - printrun.gui.utils
+    - printrun.gui.viz
+    - printrun.gui.widgets
+    - printrun.gui.xybuttons
+    - printrun.gui.zbuttons
+    - printrun.gviz
+    - printrun.injectgcode
+    - printrun.objectplater
+    - printrun.packer
+    - printrun.plugins
+    - printrun.plugins.sample
+    - printrun.power
+    - printrun.power.osx
+    - printrun.printcore
+    - printrun.projectlayer
+    - printrun.pronsole
+    - printrun.pronterface
+    - printrun.rpc
+    - printrun.settings
+    - printrun.spoolmanager
+    - printrun.spoolmanager.spoolmanager
+    - printrun.spoolmanager.spoolmanager_gui
+    - printrun.stlplater
+    - printrun.stltool
+    - printrun.stlview
+    - printrun.utils
+    - printrun.zscaper
 
 metadata:
   requests:
@@ -14607,6 +15656,7 @@ records:
       ../../../bin/__pycache__/tldr.cpython-37.pyc,,
       ../../../bin/tldr,sha256=6MUiLCWhldmV8OelT2dvPgS7q5GFwuhvd6th0Bb-LH4,12766
       ../../../bin/tldr.py,sha256=6MUiLCWhldmV8OelT2dvPgS7q5GFwuhvd6th0Bb-LH4,12766
+      ../../../share/man/man1/tldr.bz2,sha256=xp_kqadh3PjDb4OaU8D8RQDcakrwl5AMmCnaOUV7ioo,10957
       __pycache__/tldr.cpython-37.pyc,,
       tldr-0.5.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4
       tldr-0.5.dist-info/LICENSE,sha256=q7quAfjDWCYKC_WRk_uaP6d2wwVpOpVjUSkv8l6H7xI,1075
@@ -14635,6 +15685,7 @@ records:
       ../../../share/jupyter/kernels/python3/kernel.json,sha256=7o0-HNZRKjrk7Fqb71O3gptCssqWqfd_sxw5FNFeYO0,143
       ../../../share/jupyter/kernels/python3/logo-32x32.png,sha256=4ytcKCBy1xeIe2DacxeP3TWmXcPK6sunoCblpCVcyZc,1084
       ../../../share/jupyter/kernels/python3/logo-64x64.png,sha256=XJBjtDbO3wVnSA_kh-zg0UeeqVRfMQy6k_oYTMurKQ0,2180
+      ../../../man/man5/ipykernel.5,sha256=xp_kqadh3PjDb4OaU8D8RQDcakrwl5AMmCnaOUV7ioo,10957
       __pycache__/ipykernel_launcher.cpython-37.pyc,,
       ipykernel-5.2.1.dist-info/COPYING.md,sha256=YMWypaSJDUjGk7i5CKSWdbUkuErBWn7ByVY-Bea__ho,2835
       ipykernel-5.2.1.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4
@@ -14688,6 +15739,24 @@ records:
       ipykernel/gui/gtk3embed.py,sha256=mjUXqAzPxF956OcmWdWzvU2VLJoZ4ZyXrqCImJcn_Ug,3222
       ipykernel/gui/gtkembed.py,sha256=yYp-Npg8jPrfXiN6mrzFy8L6JS7JeBOHz5WxTxSdvMA,3131
       ipykernel/heartbeat.py,sha256=ZwIsWYgvjZQgFLjw6PrD9GJnN9XO1CzafUc89DEiPaA,4194
+      ipykernel/i18n/__init__.py,sha256=0000000000000000000000000000000000000000000,10
+      ipykernel/i18n/__pycache__/__init__.cpython-37.opt-1.pyc,,
+      ipykernel/i18n/__pycache__/__init__.cpython-37.pyc,,
+      ipykernel/i18n/fr_FR/LC_MESSAGES/nbjs.mo,sha256=0000000000000000000000000000000000000000000,10
+      ipykernel/i18n/fr_FR/LC_MESSAGES/nbui.mo,sha256=0000000000000000000000000000000000000000000,10
+      ipykernel/i18n/fr_FR/LC_MESSAGES/notebook.mo,sha256=0000000000000000000000000000000000000000000,10
+      ipykernel/i18n/ja_JP/LC_MESSAGES/nbjs.mo,sha256=0000000000000000000000000000000000000000000,10
+      ipykernel/i18n/ja_JP/LC_MESSAGES/nbui.mo,sha256=0000000000000000000000000000000000000000000,10
+      ipykernel/i18n/ja_JP/LC_MESSAGES/notebook.mo,sha256=0000000000000000000000000000000000000000000,10
+      ipykernel/i18n/nl/LC_MESSAGES/nbjs.mo,sha256=0000000000000000000000000000000000000000000,10
+      ipykernel/i18n/nl/LC_MESSAGES/nbui.mo,sha256=0000000000000000000000000000000000000000000,10
+      ipykernel/i18n/nl/LC_MESSAGES/notebook.mo,sha256=0000000000000000000000000000000000000000000,10
+      ipykernel/i18n/ru_RU/LC_MESSAGES/nbjs.mo,sha256=0000000000000000000000000000000000000000000,10
+      ipykernel/i18n/ru_RU/LC_MESSAGES/nbui.mo,sha256=0000000000000000000000000000000000000000000,10
+      ipykernel/i18n/ru_RU/LC_MESSAGES/notebook.mo,sha256=0000000000000000000000000000000000000000000,10
+      ipykernel/i18n/zh_CN/LC_MESSAGES/nbjs.mo,sha256=0000000000000000000000000000000000000000000,10
+      ipykernel/i18n/zh_CN/LC_MESSAGES/nbui.mo,sha256=0000000000000000000000000000000000000000000,10
+      ipykernel/i18n/zh_CN/LC_MESSAGES/notebook.mo,sha256=0000000000000000000000000000000000000000000,10
       ipykernel/inprocess/__init__.py,sha256=UrsfQEevAq5OZ3au4Fn9bu_7c6b_QqroRIE7vE4PB_o,211
       ipykernel/inprocess/__pycache__/__init__.cpython-37.pyc,,
       ipykernel/inprocess/__pycache__/blocking.cpython-37.pyc,,
@@ -14785,6 +15854,17 @@ records:
       zope/event/classhandler.py,sha256=CEx6issKWSia0Wruob_jIQI2EfYX45krokoTHyVsJFQ,1816
       zope/event/tests.py,sha256=bvEzvOmPoQETMqYiqsR9EeVsC8Dzy-HOclfpQFVjDhE,1871
 
+  comic2pdf:
+    path: /usr/lib/python3.7/site-packages/comic2pdf-3.1.0.dist-info/RECORD
+    content: |
+      ../../../bin/comic2pdf.py,sha256=ad0XbWxj2fzn_oYi1h-usY8jsxAvfpYA1aaify1Ym88,3266
+      comic2pdf-3.1.0.dist-info/METADATA,sha256=qMVNbSPY02NdWfGex5yWNxoK1d96ereES-XoKxshVEA,3195
+      comic2pdf-3.1.0.dist-info/WHEEL,sha256=G16H4A3IeoQmnOrYV4ueZGKSjhipXx8zc8nu9FGlvMA,92
+      comic2pdf-3.1.0.dist-info/entry_points.txt,sha256=uORK0FJD-i46W74x2mNHfloSPS4QElN3-Y0vKQZ7svw,46
+      comic2pdf-3.1.0.dist-info/top_level.txt,sha256=AbpHGcgLb-kRsJGnwFEktk7uzpZOCcBY74-YBdrKVGs,1
+      comic2pdf-3.1.0.dist-info/zip-safe,sha256=AbpHGcgLb-kRsJGnwFEktk7uzpZOCcBY74-YBdrKVGs,1
+      comic2pdf-3.1.0.dist-info/RECORD,,
+
   django:
     path: /usr/lib/python3.7/site-packages/Django-3.0.7.dist-info/RECORD
     content: |
@@ -14793,8 +15873,8 @@ records:
       ../../../bin/django-admin.py,sha256=OOv0QKYqhDD2O4X3HQx3gFFQ-CC7hSLnWuzZnQXeiiA,115
       Django-3.0.7.dist-info/AUTHORS,sha256=cV29hNQ1SpKhTmZuPff3LWHyQ7mHNBWP7_0JufEUHbs,36806
       Django-3.0.7.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4
-      Django-3.0.7.dist-info/LICENSE,sha256=uEZBXRtRTpwd_xSiLeuQbXlLxUbKYSn5UKGM0JHipmk,1552
-      Django-3.0.7.dist-info/LICENSE.python,sha256=Z-Pr3SuMPxOcaosqZSgr_NAjh2cFRcFyPZjP7nMeQrQ,13231
+      Django-3.0.7.dist-info/licenses/LICENSE,sha256=uEZBXRtRTpwd_xSiLeuQbXlLxUbKYSn5UKGM0JHipmk,1552
+      Django-3.0.7.dist-info/licenses/LICENSE.python,sha256=Z-Pr3SuMPxOcaosqZSgr_NAjh2cFRcFyPZjP7nMeQrQ,13231
       Django-3.0.7.dist-info/METADATA,sha256=0ZU0N0E-CHKarXMLp4oOYf7EMUHR8eJ79f2yqw2NwoM,3574
       Django-3.0.7.dist-info/RECORD,,
       Django-3.0.7.dist-info/WHEEL,sha256=g4nMs7d-Xl9-xC9XovUrsDHGXt-FT0E17Yqo92DEfvY,92

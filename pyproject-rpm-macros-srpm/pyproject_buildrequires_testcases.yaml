@@ -30,6 +30,7 @@ No pyproject.toml, empty setup.py:
   installed:
     setuptools: 50
     wheel: 1
+  include_runtime: false
   setup.py: |
   expected: |
     python3dist(setuptools) >= 40.8
@@ -42,6 +43,7 @@ Default build system, empty setup.py:
     setuptools: 50
     wheel: 1
     toml: 1
+  include_runtime: false
   pyproject.toml: |
     # empty
   setup.py: |
@@ -159,13 +161,13 @@ Build system dependencies in pyproject.toml with extras:
     build-backend = "foo.build"
   expected: |
     python3dist(foo)
-    python3dist(bar) > 5
-    python3dist(bar[baz]) > 5
+    python3dist(bar) > 5.0
+    python3dist(bar[baz]) > 5.0
     (python3dist(ne) < 1 or python3dist(ne) > 1)
     python3dist(ge) >= 1.2
     python3dist(le) <= 1.2.3
-    python3dist(lt) < 1.2.3.4
-    python3dist(gt) > 1.2.3.4.5
+    python3dist(lt) < 1.2.3.4~~
+    python3dist(gt) > 1.2.3.4.5.0
     (python3dist(compatible) >= 0.4 with python3dist(compatible) < 0.5)
     python3dist(equal) = 0.5
     python3dist(arbitrary-equal) = 0.6
@@ -174,7 +176,7 @@ Build system dependencies in pyproject.toml with extras:
     python3dist(multi) = 6
     python3dist(multi[extras1]) = 6
     python3dist(multi[extras2]) = 6
-    ((python3dist(combo) < 3 or python3dist(combo) > 3) with python3dist(combo) < 5 with python3dist(combo) > 2)
+    ((python3dist(combo) < 3 or python3dist(combo) > 3) with python3dist(combo) < 5~~ with python3dist(combo) > 2.0)
     python3dist(py3)
   stderr_contains: "WARNING: Simplifying 'appdirs@https://github.com/ActiveState/appdirs/archive/8eacfa312d77aba28d483fbfb6f6fc54099622be.zip' to 'appdirs'."
   result: 0
@@ -193,7 +195,7 @@ Build system dependencies in pyproject.toml without extras:
     ]
     build-backend = "foo.build"
   expected: |
-    python3dist(bar) > 5
+    python3dist(bar) > 5.0
     python3dist(multi) = 6
   result: 0
 
@@ -201,6 +203,7 @@ Default build system, build dependencies in setup.py:
   installed:
     setuptools: 50
     wheel: 1
+  include_runtime: false
   setup.py: |
     from setuptools import setup
     setup(
@@ -223,7 +226,6 @@ Default build system, run dependencies in setup.py:
     setuptools: 50
     wheel: 1
     pyyaml: 1
-  include_runtime: true
   setup.py: |
     from setuptools import setup
     setup(
@@ -237,8 +239,8 @@ Default build system, run dependencies in setup.py:
     python3dist(wheel)
     python3dist(wheel)
     python3dist(pyyaml)
-    python3dist(inst) > 1
-    python3dist(inst2) < 3
+    python3dist(inst) > 1.0
+    python3dist(inst2) < 3~~
   result: 0
 
 Run dependencies with extras (not selected):
@@ -246,7 +248,6 @@ Run dependencies with extras (not selected):
     setuptools: 50
     wheel: 1
     pyyaml: 1
-  include_runtime: true
   setup.py: &pytest_setup_py |
         # slightly abriged copy of pytest's setup.py
         from setuptools import setup
@@ -267,6 +268,8 @@ Run dependencies with extras (not selected):
 
         def main():
             setup(
+                name = "pytest",
+                version = "6.6.6",
                 setup_requires=["setuptools>=40.0"],
                 # fmt: off
                 extras_require={
@@ -357,6 +360,35 @@ Run dependencies with multiple extras:
     python3dist(dep1)
   result: 0
 
+Run dependencies with extras and build wheel option:
+  installed:
+    setuptools: 50
+    wheel: 1
+    pyyaml: 1
+  include_runtime: true
+  build_wheel: true
+  extras:
+    - testing
+  setup.py: *pytest_setup_py
+  expected: |
+    python3dist(setuptools) >= 40.8
+    python3dist(wheel)
+    python3dist(wheel)
+    python3dist(setuptools) >= 40
+    python3dist(py) >= 1.5
+    python3dist(six) >= 1.10
+    python3dist(setuptools)
+    python3dist(attrs) >= 17.4
+    python3dist(atomicwrites) >= 1
+    python3dist(pluggy) >= 0.11
+    python3dist(more-itertools) >= 4
+    python3dist(argcomplete)
+    python3dist(hypothesis) >= 3.56
+    python3dist(nose)
+    python3dist(requests)
+  result: 0
+  stderr_contains: "Reading metadata from {wheeldir}/pytest-6.6.6-py3-none-any.whl"
+
 Tox dependencies:
   installed:
     setuptools: 50
@@ -381,14 +413,24 @@ Tox dependencies:
         toxdep2
     commands =
         true
-  expected: |
-    python3dist(setuptools) >= 40.8
-    python3dist(wheel)
-    python3dist(wheel)
-    python3dist(tox-current-env) >= 0.0.6
-    python3dist(toxdep1)
-    python3dist(toxdep2)
-    python3dist(inst)
+  expected:
+    - |  # tox 3
+      python3dist(setuptools) >= 40.8
+      python3dist(wheel)
+      python3dist(wheel)
+      python3dist(tox-current-env) >= 0.0.6
+      python3dist(toxdep1)
+      python3dist(toxdep2)
+      python3dist(inst)
+    - |  # tox 4
+      python3dist(setuptools) >= 40.8
+      python3dist(wheel)
+      python3dist(wheel)
+      python3dist(tox-current-env) >= 0.0.6
+      python3dist(tox)
+      python3dist(toxdep1)
+      python3dist(toxdep2)
+      python3dist(inst)
   result: 0
 
 Tox extras:
@@ -423,20 +465,36 @@ Tox extras:
         extra1
     commands =
         true
-  expected: |
-    python3dist(setuptools) >= 40.8
-    python3dist(wheel)
-    python3dist(wheel)
-    python3dist(tox-current-env) >= 0.0.6
-    python3dist(toxdep)
-    python3dist(inst)
-    python3dist(dep11) > 11
-    python3dist(dep12)
-    python3dist(dep21)
-    python3dist(dep22)
-    python3dist(dep23)
-    python3dist(extra-dep)
-    python3dist(extra-dep[extra_dep])
+  expected:
+    - |  # tox 3
+      python3dist(setuptools) >= 40.8
+      python3dist(wheel)
+      python3dist(wheel)
+      python3dist(tox-current-env) >= 0.0.6
+      python3dist(toxdep)
+      python3dist(inst)
+      python3dist(dep11) > 11.0
+      python3dist(dep12)
+      python3dist(dep21)
+      python3dist(dep22)
+      python3dist(dep23)
+      python3dist(extra-dep)
+      python3dist(extra-dep[extra_dep])
+    - |  # tox 4
+      python3dist(setuptools) >= 40.8
+      python3dist(wheel)
+      python3dist(wheel)
+      python3dist(tox-current-env) >= 0.0.6
+      python3dist(tox)
+      python3dist(toxdep)
+      python3dist(inst)
+      python3dist(dep11) > 11.0
+      python3dist(dep12)
+      python3dist(dep21)
+      python3dist(dep22)
+      python3dist(dep23)
+      python3dist(extra-dep)
+      python3dist(extra-dep[extra_dep])
   result: 0
 
 Tox provision unsatisfied:
@@ -464,14 +522,24 @@ Tox provision unsatisfied:
     deps =
         toxdep1
         toxdep2
-  expected: |
-    python3dist(setuptools) >= 40.8
-    python3dist(wheel)
-    python3dist(wheel)
-    python3dist(tox-current-env) >= 0.0.6
-    python3dist(tox) >= 3.999
-    python3dist(setuptools) > 40
-    python3dist(wheel) > 2
+  expected:
+    - |  # tox 3
+      python3dist(setuptools) >= 40.8
+      python3dist(wheel)
+      python3dist(wheel)
+      python3dist(tox-current-env) >= 0.0.6
+      python3dist(tox) >= 3.999
+      python3dist(setuptools) > 40.0
+      python3dist(wheel) > 2.0
+    - |  # tox 4
+      python3dist(setuptools) >= 40.8
+      python3dist(wheel)
+      python3dist(wheel)
+      python3dist(tox-current-env) >= 0.0.6
+      python3dist(tox) >= 3.999
+      python3dist(setuptools) > 40.0
+      python3dist(wheel) > 2.0
+      python3dist(tox) >= 3.999
   result: 0
 
 Tox provision satisfied:
@@ -498,16 +566,27 @@ Tox provision satisfied:
     deps =
         toxdep1
         toxdep2
-  expected: |
-    python3dist(setuptools) >= 40.8
-    python3dist(wheel)
-    python3dist(wheel)
-    python3dist(tox-current-env) >= 0.0.6
-    python3dist(tox) >= 3.5
-    python3dist(setuptools) > 40
-    python3dist(toxdep1)
-    python3dist(toxdep2)
-    python3dist(inst)
+  expected:
+    - |  # tox 3
+      python3dist(setuptools) >= 40.8
+      python3dist(wheel)
+      python3dist(wheel)
+      python3dist(tox-current-env) >= 0.0.6
+      python3dist(tox) >= 3.5
+      python3dist(setuptools) > 40.0
+      python3dist(toxdep1)
+      python3dist(toxdep2)
+      python3dist(inst)
+    - |  # tox 4
+      python3dist(setuptools) >= 40.8
+      python3dist(wheel)
+      python3dist(wheel)
+      python3dist(tox-current-env) >= 0.0.6
+      python3dist(setuptools) > 40.0
+      python3dist(tox) >= 3.5
+      python3dist(toxdep1)
+      python3dist(toxdep2)
+      python3dist(inst)
   result: 0
 
 Default build system, unmet deps in requirements file:
@@ -564,7 +643,7 @@ Default build system, met deps in requirements file:
     python3dist(ncclient)
     (python3dist(cryptography) < 1.5.2 or python3dist(cryptography) > 1.5.2)
     python3dist(paramiko)
-    (python3dist(sqlalchemy) < 1.1 with python3dist(sqlalchemy) >= 1.0.10)
+    (python3dist(sqlalchemy) < 1.1~~ with python3dist(sqlalchemy) >= 1.0.10)
     python3dist(setuptools) >= 40.8
     python3dist(wheel)
     python3dist(wheel)
@@ -663,7 +742,6 @@ Value error if -N and -e arguments are present:
   use_build_system: false
   except: ValueError
 
-
 Weird and complex requirements file:
   installed:
     setuptools: 50
@@ -716,4 +794,45 @@ Weird and complex requirements file:
   # XXX: pyproject_requirements_txt adds a prefix that's not actually in the source;
   # but that's good enough:
   - "WARNING: Simplifying 'ugly@git+https://github.com/monty/spam.git@master#egg=ugly' to 'ugly'."
+  result: 0
+
+
+Pre-releases are accepted:
+  installed:
+    setuptools: 50
+    wheel: 1
+    toml: 1
+    cffi: 1.15.0rc2
+  pyproject.toml: |
+    [build-system]
+    requires = [
+        "setuptools",
+        "wheel",
+        "cffi",
+    ]
+    build-backend = "setuptools.build_meta"
+  expected: |
+    python3dist(setuptools)
+    python3dist(wheel)
+    python3dist(cffi)
+    python3dist(wheel)
+  stderr_contains: "Requirement satisfied: cffi"
+  result: 0
+
+
+Wrapped subprocess prints to stdout from setup.py:
+  installed:
+    setuptools: 50
+    wheel: 1
+  include_runtime: false
+  setup.py: |
+    import os
+    os.system('echo LEAK?')
+    from setuptools import setup
+    setup(name='test', version='0.1')
+  expected: |
+    python3dist(setuptools) >= 40.8
+    python3dist(wheel)
+    python3dist(wheel)
+  stderr_contains: "HOOK STDOUT: LEAK?"
   result: 0

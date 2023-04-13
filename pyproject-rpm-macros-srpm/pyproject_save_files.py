@@ -4,12 +4,35 @@ import json
 import os
 
 from collections import defaultdict
+from keyword import iskeyword
 from pathlib import PosixPath, PurePosixPath
 from importlib.metadata import Distribution
 
 
 # From RPM's build/files.c strtokWithQuotes delim argument
 RPM_FILES_DELIMETERS = ' \n\t'
+
+# RPM hardcodes the lists of manpage extensions and directories,
+# so we have to maintain separate ones :(
+# There is an issue for RPM to provide the lists as macros:
+# https://github.com/rpm-software-management/rpm/issues/1865
+# The original lists can be found here:
+# https://github.com/rpm-software-management/rpm/blob/master/scripts/brp-compress
+MANPAGE_EXTENSIONS = ['gz', 'Z', 'bz2', 'xz', 'lzma', 'zst', 'zstd']
+MANDIRS = [
+    '/man/man*',
+    '/man/*/man*',
+    '/info',
+    '/share/man/man*',
+    '/share/man/*/man*',
+    '/share/info',
+    '/kerberos/man',
+    '/X11R6/man/man*',
+    '/lib/perl5/man/man*',
+    '/share/doc/*/man/man*',
+    '/lib/*/man/man*',
+    '/share/fish/man/man*',
+]
 
 
 class BuildrootPath(PurePosixPath):
@@ -131,8 +154,8 @@ def add_lang_to_module(paths, module_name, path):
     Returns True if the language code detection was successful
     """
     for i, parent in enumerate(path.parents):
-        if i > 0 and parent.name == 'locale':
-            lang_country_code = path.parents[i-1].name
+        if parent.name == 'LC_MESSAGES':
+            lang_country_code = path.parents[i+1].name
             break
     else:
         return False
@@ -144,12 +167,161 @@ def add_lang_to_module(paths, module_name, path):
     return True
 
 
+def prepend_mandirs(prefix):
+    """
+    Return the list of man page directories prepended with the given prefix.
+    """
+    return [str(prefix) + mandir for mandir in MANDIRS]
+
+
+def normalize_manpage_filename(prefix, path):
+    """
+    If a path is processed by RPM's brp-compress script, strip it of the extension
+    (if the extension matches one of the listed by brp-compress),
+    append '*' to the filename and return it. If not, return the unchanged path.
+    Rationale: https://docs.fedoraproject.org/en-US/packaging-guidelines/#_manpages
+
+    Examples:
+
+        >>> normalize_manpage_filename(PosixPath('/usr'), BuildrootPath('/usr/share/man/de/man1/linkchecker.1'))
+        BuildrootPath('/usr/share/man/de/man1/linkchecker.1*')
+
+        >>> normalize_manpage_filename(PosixPath('/usr'), BuildrootPath('/usr/share/doc/en/man/man1/getmac.1'))
+        BuildrootPath('/usr/share/doc/en/man/man1/getmac.1*')
+
+        >>> normalize_manpage_filename(PosixPath('/usr'), BuildrootPath('/usr/share/man/man8/abc.8.zstd'))
+        BuildrootPath('/usr/share/man/man8/abc.8*')
+
+        >>> normalize_manpage_filename(PosixPath('/usr'), BuildrootPath('/usr/kerberos/man/dir'))
+        BuildrootPath('/usr/kerberos/man/dir')
+
+        >>> normalize_manpage_filename(PosixPath('/usr'), BuildrootPath('/usr/kerberos/man/dir.1'))
+        BuildrootPath('/usr/kerberos/man/dir.1*')
+
+        >>> normalize_manpage_filename(PosixPath('/usr'), BuildrootPath('/usr/bin/getmac'))
+        BuildrootPath('/usr/bin/getmac')
+    """
+
+    prefixed_mandirs = prepend_mandirs(prefix)
+    for mandir in prefixed_mandirs:
+        # "dir" is explicitly excluded by RPM
+        # https://github.com/rpm-software-management/rpm/blob/rpm-4.17.0-release/scripts/brp-compress#L24
+        if fnmatch.fnmatch(str(path.parent), mandir) and path.name != "dir":
+            # "abc.1.gz2" -> "abc.1*"
+            if path.suffix[1:] in MANPAGE_EXTENSIONS:
+                return BuildrootPath(path.parent / (path.stem + "*"))
+            # "abc.1 -> abc.1*"
+            else:
+                return BuildrootPath(path.parent / (path.name + "*"))
+    else:
+        return path
+
+
+def is_valid_module_name(s):
+    """Return True if a string is considered a valid module name and False otherwise.
+
+    String must be a valid Python name, not a Python keyword and must not
+    start with underscore - we treat those as private.
+    Examples:
+
+        >>> is_valid_module_name('module_name')
+        True
+
+        >>> is_valid_module_name('12module_name')
+        False
+
+        >>> is_valid_module_name('module-name')
+        False
+
+        >>> is_valid_module_name('return')
+        False
+
+        >>> is_valid_module_name('_module_name')
+        False
+    """
+    if (s.isidentifier() and not iskeyword(s) and not s.startswith("_")):
+        return True
+    return False
+
+
+def module_names_from_path(path):
+    """Get all importable module names from given path.
+
+    Paths containing ".py" and ".so" files are considered importable modules,
+    and so their respective directories (ie. "foo/bar/baz.py": "foo", "foo.bar",
+    "foo.bar.baz").
+    Paths containing invalid Python strings are discarded.
+
+    Return set of all valid possibilities.
+    """
+    # Discard all files that are not valid modules
+    if path.suffix not in (".py", ".so"):
+        return set()
+
+    parts = list(path.parts)
+
+    # Modify the file names according to their suffixes
+    if path.suffix == ".py":
+        parts[-1] = path.stem
+    elif path.suffix == ".so":
+        # .so files can have two suffixes - cut both of them
+        parts[-1] = PosixPath(path.stem).stem
+
+    # '__init__' indicates a module but we don't want to import the actual file
+    # It's unclear whether there can be __init__.so files in the Python packages.
+    # The idea to implement this file was raised in 2008 on Python-ideas mailing list
+    # (https://mail.python.org/pipermail/python-ideas/2008-October/002292.html)
+    # and there are a few reports of people compiling their __init__.py to __init__.so.
+    # However it's not officially documented nor forbidden,
+    # so we're checking for the stem after stripping the suffix from the file.
+    if parts[-1] == "__init__":
+        del parts[-1]
+
+    # For each part of the path check whether it's valid
+    # If not, discard the whole path - return an empty set
+    for path_part in parts:
+        if not is_valid_module_name(path_part):
+            return set()
+    else:
+        return {'.'.join(parts[:x+1]) for x in range(len(parts))}
+
+
+def is_license_file(path, license_files, license_directories):
+    """
+    Check if the given BuildrootPath path matches any of the "License-File" entries.
+    The path is considered matched when resolved from any of the license_directories
+    matches string-wise what is stored in any "License-File" entry (license_files).
+
+    Examples:
+        >>> site_packages = BuildrootPath('/usr/lib/python3.12/site-packages')
+        >>> distinfo = site_packages / 'foo-1.0.dist-info'
+        >>> license_directories = [distinfo / 'licenses', distinfo]
+        >>> license_files = ['LICENSE.txt', 'AUTHORS.md']
+        >>> is_license_file(distinfo / 'AUTHORS.md', license_files, license_directories)
+        True
+        >>> is_license_file(distinfo / 'licenses/LICENSE.txt', license_files, license_directories)
+        True
+        >>> # we don't match based on directory only
+        >>> is_license_file(distinfo / 'licenses/COPYING', license_files, license_directories)  
+        False
+        >>> is_license_file(site_packages / 'foo/LICENSE.txt', license_files, license_directories)
+        False
+    """
+    if not license_files or not license_directories:
+        return False
+    for license_dir in license_directories:
+        if (path.is_relative_to(license_dir) and
+                str(path.relative_to(license_dir)) in license_files):
+            return True
+    return False
+
+
 def classify_paths(
-    record_path, parsed_record_content, metadata, sitedirs, python_version
+    record_path, parsed_record_content, metadata, sitedirs, python_version, prefix
 ):
     """
     For each BuildrootPath in parsed_record_content classify it to a dict structure
-    that allows to filter the files for the %files section easier.
+    that allows to filter the files for the %files and %check section easier.
 
     For the dict structure, look at the beginning of this function's code.
 
@@ -165,31 +337,47 @@ def classify_paths(
         },
         "lang": {}, # %lang entries: [module_name or None][language_code] lists of .mo files
         "modules": defaultdict(list),  # each importable module (directory, .py, .so)
+        "module_names": set(),  # qualified names of each importable module ("foo.bar.baz")
         "other": {"files": []},  # regular %file entries we could not parse :(
     }
+
+    license_files = metadata.get_all('License-File')
+    license_directory = distinfo / 'licenses'  # See PEP 369 "Root License Directory"
+    # setuptools was the first known build backend to implement License-File.
+    # Unfortunately they don't put licenses to the license directory (yet):
+    #     https://github.com/pypa/setuptools/issues/3596
+    # Hence, we check licenses in both licenses and dist-info
+    license_directories = (license_directory, distinfo)
 
     # In RECORDs generated by pip, there are no directories, only files.
     # The example RECORD from PEP 376 does not contain directories either.
     # Hence, we'll only assume files, but TODO get it officially documented.
-    license_files = metadata.get_all('License-File')
     for path in parsed_record_content:
         if path.suffix == ".pyc":
             # we handle bytecode separately
             continue
 
-        if path.parent == distinfo:
-            if path.name in ("RECORD", "REQUESTED"):
+        if distinfo in path.parents:
+            if path.parent == distinfo and path.name in ("RECORD", "REQUESTED"):
                 # RECORD and REQUESTED files are removed in %pyproject_install
                 # See PEP 627
                 continue
-            if license_files and path.name in license_files:
+            if is_license_file(path, license_files, license_directories):
                 paths["metadata"]["licenses"].append(path)
             else:
                 paths["metadata"]["files"].append(path)
+            # nested directories within distinfo
+            index = path.parents.index(distinfo)
+            for parent in list(path.parents)[:index]:  # no direct slice until Python 3.10
+                if parent not in paths["metadata"]["dirs"]:
+                    paths["metadata"]["dirs"].append(parent)
             continue
 
         for sitedir in sitedirs:
             if sitedir in path.parents:
+                # Get only the part without sitedir prefix to classify module names
+                relative_path = path.relative_to(sitedir)
+                paths["module_names"].update(module_names_from_path(relative_path))
                 if path.parent == sitedir:
                     if path.suffix == ".so":
                         # extension modules can have 2 suffixes
@@ -227,6 +415,7 @@ def classify_paths(
             if path.suffix == ".mo":
                 add_lang_to_module(paths, None, path) or paths["other"]["files"].append(path)
             else:
+                path = normalize_manpage_filename(prefix, path)
                 paths["other"]["files"].append(path)
 
     return paths
@@ -333,12 +522,62 @@ def generate_file_list(paths_dict, module_globs, include_others=False):
                     done_modules.add(name)
                 done_globs.add(glob)
 
+    # Users using '*' don't care about the files in the package, so it's ok
+    # not to fail the build when no modules are detected
+    # There can be legitimate reasons to create a package without Python modules
+    if not modules and fnmatch.fnmatchcase("", glob):
+        done_globs.add(glob)
+
     missed = module_globs - done_globs
     if missed:
         missed_text = ", ".join(sorted(missed))
         raise ValueError(f"Globs did not match any module: {missed_text}")
 
     return sorted(files)
+
+
+def generate_module_list(paths_dict, module_globs):
+    """
+    This function takes the paths_dict created by the classify_paths() function and
+    reads the modules names from it.
+    It filters those whose top-level module names match any of the provided module_globs.
+
+    Returns list with matching qualified module names.
+
+    Examples:
+
+        >>> generate_module_list({'module_names': {'foo', 'foo.bar', 'baz'}}, {'foo'})
+        ['foo', 'foo.bar']
+
+        >>> generate_module_list({'module_names': {'foo', 'foo.bar', 'baz'}}, {'*foo'})
+        ['foo', 'foo.bar']
+
+        >>> generate_module_list({'module_names': {'foo', 'foo.bar', 'baz'}}, {'foo', 'baz'})
+        ['baz', 'foo', 'foo.bar']
+
+        >>> generate_module_list({'module_names': {'foo', 'foo.bar', 'baz'}}, {'*'})
+        ['baz', 'foo', 'foo.bar']
+
+        >>> generate_module_list({'module_names': {'foo', 'foo.bar', 'baz'}}, {'bar'})
+        []
+
+    Submodules aren't discovered:
+
+        >>> generate_module_list({'module_names': {'foo', 'foo.bar', 'baz'}}, {'*bar'})
+        []
+    """
+
+    module_names = paths_dict['module_names']
+    filtered_module_names = set()
+
+    for glob in module_globs:
+        for name in module_names:
+            # Match the top-level part of the qualified name, eg. 'foo.bar.baz' -> 'foo'
+            top_level_name = name.split('.')[0]
+            if fnmatch.fnmatchcase(top_level_name, glob):
+                filtered_module_names.add(name)
+
+    return sorted(filtered_module_names)
 
 
 def parse_varargs(varargs):
@@ -453,11 +692,13 @@ def dist_metadata(buildroot, record_path):
     dist = Distribution.at(real_dist_path)
     return dist.metadata
 
-def pyproject_save_files(buildroot, sitelib, sitearch, python_version, pyproject_record, varargs):
+
+def pyproject_save_files_and_modules(buildroot, sitelib, sitearch, python_version, pyproject_record, prefix, varargs):
     """
     Takes arguments from the %{pyproject_save_files} macro
 
-    Returns list of paths for the %files section
+    Returns tuple: list of paths for the %files section and list of module names
+    for the %check section
     """
     # On 32 bit architectures, sitelib equals to sitearch
     # This saves us browsing one directory twice
@@ -467,43 +708,65 @@ def pyproject_save_files(buildroot, sitelib, sitearch, python_version, pyproject
     parsed_records = load_parsed_record(pyproject_record)
 
     final_file_list = []
+    final_module_list = []
 
     for record_path, files in parsed_records.items():
         metadata = dist_metadata(buildroot, record_path)
         paths_dict = classify_paths(
-            record_path, files, metadata, sitedirs, python_version
+            record_path, files, metadata, sitedirs, python_version, prefix
         )
 
         final_file_list.extend(
             generate_file_list(paths_dict, globs, include_auto)
         )
+        final_module_list.extend(
+            generate_module_list(paths_dict, globs)
+        )
 
-    return final_file_list
+    return final_file_list, final_module_list
 
 
 def main(cli_args):
-    file_section = pyproject_save_files(
+    file_section, module_names = pyproject_save_files_and_modules(
         cli_args.buildroot,
         cli_args.sitelib,
         cli_args.sitearch,
         cli_args.python_version,
         cli_args.pyproject_record,
+        cli_args.prefix,
         cli_args.varargs,
     )
 
-    cli_args.output.write_text("\n".join(file_section) + "\n", encoding="utf-8")
+    cli_args.output_files.write_text("\n".join(file_section) + "\n", encoding="utf-8")
+    cli_args.output_modules.write_text("\n".join(module_names) + "\n", encoding="utf-8")
 
 
 def argparser():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        description="Create %{pyproject_files} for a Python project.",
+        prog="%pyproject_save_files",
+        add_help=False,
+        # custom usage to add +auto
+        usage="%(prog)s MODULE_GLOB [MODULE_GLOB ...] [+auto]",
+    )
+    parser.add_argument(
+        '--help', action='help',
+        default=argparse.SUPPRESS,
+        help=argparse.SUPPRESS,
+    )
     r = parser.add_argument_group("required arguments")
-    r.add_argument("--output", type=PosixPath, required=True)
-    r.add_argument("--buildroot", type=PosixPath, required=True)
-    r.add_argument("--sitelib", type=BuildrootPath, required=True)
-    r.add_argument("--sitearch", type=BuildrootPath, required=True)
-    r.add_argument("--python-version", type=str, required=True)
-    r.add_argument("--pyproject-record", type=PosixPath, required=True)
-    parser.add_argument("varargs", nargs="+")
+    r.add_argument("--output-files", type=PosixPath, required=True, help=argparse.SUPPRESS)
+    r.add_argument("--output-modules", type=PosixPath, required=True, help=argparse.SUPPRESS)
+    r.add_argument("--buildroot", type=PosixPath, required=True, help=argparse.SUPPRESS)
+    r.add_argument("--sitelib", type=BuildrootPath, required=True, help=argparse.SUPPRESS)
+    r.add_argument("--sitearch", type=BuildrootPath, required=True, help=argparse.SUPPRESS)
+    r.add_argument("--python-version", type=str, required=True, help=argparse.SUPPRESS)
+    r.add_argument("--pyproject-record", type=PosixPath, required=True, help=argparse.SUPPRESS)
+    r.add_argument("--prefix", type=PosixPath, required=True, help=argparse.SUPPRESS)
+    parser.add_argument(
+        "varargs", nargs="+", metavar="MODULE_GLOB",
+        help="Shell-like glob matching top-level module names to save into %%{pyproject_files}",
+    )
     return parser
 
 

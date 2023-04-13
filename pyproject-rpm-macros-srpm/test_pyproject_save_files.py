@@ -8,8 +8,10 @@ from pyproject_preprocess_record import parse_record, read_record, save_parsed_r
 
 from pyproject_save_files import argparser, generate_file_list, BuildrootPath
 from pyproject_save_files import main as save_files_main
+from pyproject_save_files import module_names_from_path
 
 DIR = Path(__file__).parent
+PREFIX = Path("/usr")
 BINDIR = BuildrootPath("/usr/bin")
 DATADIR = BuildrootPath("/usr/share")
 SITELIB = BuildrootPath("/usr/lib/python3.7/site-packages")
@@ -61,8 +63,12 @@ def prepare_pyproject_record(tmp_path, package=None, content=None):
 
 
 @pytest.fixture
-def output(tmp_path):
+def output_files(tmp_path):
     return tmp_path / "pyproject_files"
+
+@pytest.fixture
+def output_modules(tmp_path):
+    return tmp_path / "pyproject_modules"
 
 
 def test_parse_record_tldr():
@@ -105,19 +111,27 @@ def test_parse_record_tensorflow():
 
 
 def remove_others(expected):
-    return [p for p in expected if not (p.startswith(str(BINDIR)) or p.endswith(".pth") or p.rpartition(' ')[-1].startswith(str(DATADIR)))]
+    return [
+        p for p in expected
+        if not (
+            p.startswith(str(BINDIR)) or
+            p.endswith(".pth") or
+            p.endswith("*") or
+            p.rpartition(' ')[-1].startswith(str(DATADIR))
+        )
+    ]
 
 
 @pytest.mark.parametrize("include_auto", (True, False))
-@pytest.mark.parametrize("package, glob, expected", EXPECTED_FILES)
-def test_generate_file_list(package, glob, expected, include_auto):
+@pytest.mark.parametrize("package, glob, expected_files, expected_modules", EXPECTED_FILES)
+def test_generate_file_list(package, glob, expected_files, include_auto, expected_modules):
     paths_dict = EXPECTED_DICT[package]
     modules_glob = {glob}
     if not include_auto:
-        expected = remove_others(expected)
+        expected_files = remove_others(expected_files)
     tested = generate_file_list(paths_dict, modules_glob, include_auto)
 
-    assert tested == expected
+    assert tested == expected_files
 
 
 def test_generate_file_list_unused_glob():
@@ -130,10 +144,41 @@ def test_generate_file_list_unused_glob():
     assert "kerb" not in str(excinfo.value)
 
 
-def default_options(output, mock_root, pyproject_record):
+@pytest.mark.parametrize(
+    "path, expected",
+    [
+        ("foo/bar/baz.py", {"foo", "foo.bar", "foo.bar.baz"}),
+        ("foo/bar.py", {"foo", "foo.bar"}),
+        ("foo.py", {"foo"}),
+        ("foo/bar.so.2", set()),
+        ("foo.cpython-37m-x86_64-linux-gnu.so", {"foo"}),
+        ("foo/_api/v2/__init__.py", set()),
+        ("foo/__init__.py", {"foo"}),
+        ("foo/_priv.py", set()),
+        ("foo/_bar/lib.so", set()),
+        ("foo/bar/baz.so", {"foo", "foo.bar", "foo.bar.baz"}),
+        ("foo/bar/baz.pth", set()),
+        ("foo/bar/baz.pyc", set()),
+        ("def.py", set()),
+        ("foo-bar/baz.py", set()),
+        ("foobar/12baz.py", set()),
+        ("foo/\nbar/baz.py", set()),
+        ("foo/+bar/baz.py", set()),
+        ("foo/__init__.cpython-39-x86_64-linux-gnu.so", {"foo"}),
+        ("foo/bar/__pycache__/abc.cpython-37.pyc", set()),
+    ],
+)
+def test_module_names_from_path(path, expected):
+    tested = Path(path)
+    assert module_names_from_path(tested) == expected
+
+
+def default_options(output_files, output_modules, mock_root, pyproject_record):
     return [
-        "--output",
-        str(output),
+        "--output-files",
+        str(output_files),
+        "--output-modules",
+        str(output_modules),
         "--buildroot",
         str(mock_root),
         "--sitelib",
@@ -143,67 +188,75 @@ def default_options(output, mock_root, pyproject_record):
         "--python-version",
         "3.7",  # test data are for 3.7,
         "--pyproject-record",
-        str(pyproject_record)
+        str(pyproject_record),
+        "--prefix",
+        str(PREFIX),
     ]
 
 
 @pytest.mark.parametrize("include_auto", (True, False))
-@pytest.mark.parametrize("package, glob, expected", EXPECTED_FILES)
-def test_cli(tmp_path, package, glob, expected, include_auto, pyproject_record):
+@pytest.mark.parametrize("package, glob, expected_files, expected_modules", EXPECTED_FILES)
+def test_cli(tmp_path, package, glob, expected_files, expected_modules, include_auto, pyproject_record):
     prepare_pyproject_record(tmp_path, package)
-    output = tmp_path / "files"
+    output_files = tmp_path / "files"
+    output_modules = tmp_path / "modules"
     globs = [glob, "+auto"] if include_auto else [glob]
-    cli_args = argparser().parse_args([*default_options(output, tmp_path, pyproject_record), *globs])
+    cli_args = argparser().parse_args([*default_options(output_files, output_modules, tmp_path, pyproject_record), *globs])
     save_files_main(cli_args)
 
     if not include_auto:
-        expected = remove_others(expected)
-    tested = output.read_text()
-    assert tested == "\n".join(expected) + "\n"
+        expected_files = remove_others(expected_files)
+    tested_files = output_files.read_text()
+    assert tested_files == "\n".join(expected_files) + "\n"
+
+    tested_modules = output_modules.read_text().split()
+
+    assert tested_modules == expected_modules
 
 
 def test_cli_no_pyproject_record(tmp_path, pyproject_record):
-    output = tmp_path / "files"
-    cli_args = argparser().parse_args([*default_options(output, tmp_path, pyproject_record), "tldr*"])
+    output_files = tmp_path / "files"
+    output_modules = tmp_path / "modules"
+    cli_args = argparser().parse_args([*default_options(output_files, output_modules, tmp_path, pyproject_record), "tldr*"])
 
     with pytest.raises(FileNotFoundError):
         save_files_main(cli_args)
 
 
-def test_cli_too_many_RECORDS(tldr_root, output, pyproject_record):
+def test_cli_too_many_RECORDS(tldr_root, output_files, output_modules, pyproject_record):
     # Two calls to simulate how %pyproject_install process more than one RECORD file
     prepare_pyproject_record(tldr_root,
                              content=("foo/bar/dist-info/RECORD", []))
     prepare_pyproject_record(tldr_root,
                              content=("foo/baz/dist-info/RECORD", []))
-    cli_args = argparser().parse_args([*default_options(output, tldr_root, pyproject_record), "tldr*"])
+    cli_args = argparser().parse_args([*default_options(output_files, output_modules, tldr_root, pyproject_record), "tldr*"])
 
     with pytest.raises(FileExistsError):
         save_files_main(cli_args)
 
 
-def test_cli_bad_argument(tldr_root, output, pyproject_record):
+def test_cli_bad_argument(tldr_root, output_files, output_modules, pyproject_record):
     cli_args = argparser().parse_args(
-        [*default_options(output, tldr_root, pyproject_record), "tldr*", "+foodir"]
+        [*default_options(output_files, output_modules, tldr_root, pyproject_record), "tldr*", "+foodir"]
     )
 
     with pytest.raises(ValueError):
         save_files_main(cli_args)
 
 
-def test_cli_bad_option(tldr_root, output, pyproject_record):
+def test_cli_bad_option(tldr_root, output_files, output_modules, pyproject_record):
     prepare_pyproject_record(tldr_root.parent, content=("RECORD1", []))
     cli_args = argparser().parse_args(
-        [*default_options(output, tldr_root, pyproject_record), "tldr*", "you_cannot_have_this"]
+        [*default_options(output_files, output_modules, tldr_root, pyproject_record), "tldr*", "you_cannot_have_this"]
     )
 
     with pytest.raises(ValueError):
         save_files_main(cli_args)
 
 
-def test_cli_bad_namespace(tldr_root, output, pyproject_record):
+def test_cli_bad_namespace(tldr_root, output_files, output_modules, pyproject_record):
     cli_args = argparser().parse_args(
-        [*default_options(output, tldr_root, pyproject_record), "tldr.didntread"]
+        [*default_options(output_files, output_modules, tldr_root, pyproject_record), "tldr.didntread"]
     )
 
     with pytest.raises(ValueError):
