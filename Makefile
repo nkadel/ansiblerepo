@@ -15,7 +15,6 @@ ANSIBLEPKGS+=pyproject-rpm-macros-srpm
 # EPEL based packages
 ANSIBLEPKGS+=ansible-freeipa-srpm
 ANSIBLEPKGS+=pyflakes-srpm
-ANSIBLEPKGS+=python3-entrypoints-srpm
 ANSIBLEPKGS+=python39-ansible-generator-srpm
 ANSIBLEPKGS+=python39-babel-srpm
 ANSIBLEPKGS+=python39-coverage-srpm
@@ -25,6 +24,7 @@ ANSIBLEPKGS+=python39-lark-parser-srpm
 ANSIBLEPKGS+=python39-markupsafe-srpm
 ANSIBLEPKGS+=python39-pretend-srpm
 ANSIBLEPKGS+=python39-progress-srpm
+ANSIBLEPKGS+=python39-pyfakes-srpm
 ANSIBLEPKGS+=python39-pytz-srpm
 ANSIBLEPKGS+=python39-resolvelib-srpm
 ANSIBLEPKGS+=python39-ruamel-yaml-clib-srpm
@@ -50,10 +50,6 @@ ANSIBLEPKGS+=ansible-core-2.14.x-srpm
 # Stop building 2.12.x or 2.13.x by default, no need for it
 #ANSIBLEPKGS+=ansible-core-2.13.x-srpm
 #ANSIBLEPKGS+=ansible-core-2.12.x-srpm
-
-# For RHEL 7
-#ANSIBLEPKGS+=ansible-core-2.11.x-srpm
-#ANSIBLEPKGS+=ansible-4.x-srpm
 
 # Needed for jmespath
 ANSIBLEPKGS+=python39-nose-srpm
@@ -108,7 +104,6 @@ ANSIBLEPKGS+=ansible-pcp-srpm
 # Has built-in ansible bundle reuirement
 ANSIBLEPKGS+=ansible-inventory-grapher-srpm
 
-REPOS+=ansiblerepo/el/7
 REPOS+=ansiblerepo/el/8
 REPOS+=ansiblerepo/el/9
 REPOS+=ansiblerepo/fedora/38
@@ -116,7 +111,6 @@ REPOS+=ansiblerepo/amazon/2
 
 REPODIRS := $(patsubst %,%/x86_64/repodata,$(REPOS)) $(patsubst %,%/SRPMS/repodata,$(REPOS))
 
-CFGS+=ansiblerepo-7-x86_64.cfg
 CFGS+=ansiblerepo-8-x86_64.cfg
 CFGS+=ansiblerepo-9-x86_64.cfg
 CFGS+=ansiblerepo-f38-x86_64.cfg
@@ -127,7 +121,6 @@ CFGS+=ansiblerepo-amz2-x86_64.cfg
 CFGS+=centos-stream+epel-8-x86_64.cfg
 
 # Link from /etc/mock
-MOCKCFGS+=centos+epel-7-x86_64.cfg
 MOCKCFGS+=centos-stream+epel-9-x86_64.cfg
 MOCKCFGS+=fedora-38-x86_64.cfg
 MOCKCFGS+=amazonlinux-2-x86_64.cfg
@@ -162,10 +155,6 @@ install clean getsrc build srpm src.rpm::
 #python39-resolvelib-srpm:: python39-flake8-srpm
 #python39-resolvelib-srpm:: python39-commentjson-srpm
 #
-#ansible-core-2.11.x-srpm:: python39-resolvelib-srpm
-##ansible-core-2.12.x-srpm:: python39-resolvelib-srpm
-#ansible-core-2.13.x-srpm:: python39-resolvelib-srpm
-#
 #ansible-4.x-srpm:: ansible-core-2.11.x-srpm
 ##ansible-5.x-srpm:: ansible-core-2.12.x-srpm
 #ansible-6.x-srpm:: ansible-core-2.13.x-srpm
@@ -196,6 +185,62 @@ cfgs:: $(MOCKCFGS)
 $(MOCKCFGS)::
 	@echo Generating $@ from $?
 	@echo "include('/etc/mock/$@')" | tee $@
+
+centos-stream+epel-8-x86_64.cfg:: /etc/mock/centos-stream+epel-8-x86_64.cfg
+	@echo Generating $@ from $?
+	@echo "include('$?')" | tee $@
+	@echo "# Enable python39 modules" | tee -a $@
+	@echo "config_opts['module_setup_commands'] = [ ('enable', 'python39'), ('enable', 'python39-devel') ]" | tee -a $@
+	@echo "# Disable best" | tee -a $@
+	@echo "config_opts['dnf_vars'] = { 'best': 'False' }" | tee -a $@
+
+# packages-microsoft-com-prod added for /bin/pwsh
+ansiblerepo-8-x86_64.cfg: /etc/mock/centos-stream+epel-8-x86_64.cfg
+	@echo Generating $@ from $?
+	@echo "include('$?')" | tee $@
+	@echo "config_opts['root'] = 'ansiblerepo-{{ releasever }}-{{ target_arch }}'" | tee -a $@
+	@echo "# Enable python39 modules" | tee -a $@
+	@echo "config_opts['module_setup_commands'] = [ ('enable', 'python39'), ('enable', 'python39-devel') ]" | tee -a $@
+	@echo "# Disable best" | tee -a $@
+	@echo "config_opts['dnf_vars'] = { 'best': 'False' }" | tee -a $@
+	@echo "config_opts['dnf.conf'] += \"\"\"" | tee -a $@
+	@echo '[ansiblerepo]' | tee -a $@
+	@echo 'name=ansiblerepo' | tee -a $@
+	@echo 'enabled=1' | tee -a $@
+	@echo 'baseurl=$(REPOBASE)/ansiblerepo/el/8/x86_64/' | tee -a $@
+	@echo 'skip_if_unavailable=False' | tee -a $@
+	@echo 'metadata_expire=1s' | tee -a $@
+	@echo 'gpgcheck=0' | tee -a $@
+	@echo '' | tee -a $@
+	@echo '[packages-microsoft-com-prod]' | tee -a $@
+	@echo 'name=packages-microsoft-com-prod' | tee -a $@
+	@echo 'baseurl=https://packages.microsoft.com/rhel/8/prod/' | tee -a $@
+	@echo 'enabled=0' | tee -a $@
+	@echo 'gpgcheck=1' | tee -a $@
+	@echo 'gpgkey=https://packages.microsoft.com/keys/microsoft.asc' | tee -a $@
+	@echo '"""' | tee -a $@
+
+# packages-microsoft-com-prod added for /bin/pwsh
+ansiblerepo-9-x86_64.cfg: centos-stream+epel-9-x86_64.cfg
+	@echo Generating $@ from $?
+	@echo "include('$?')" | tee $@
+	@echo "config_opts['root'] = 'ansiblerepo-{{ releasever }}-{{ target_arch }}'" | tee -a $@
+	@echo "config_opts['dnf.conf'] += \"\"\"" | tee -a $@
+	@echo '[ansiblerepo]' | tee -a $@
+	@echo 'name=ansiblerepo' | tee -a $@
+	@echo 'enabled=1' | tee -a $@
+	@echo 'baseurl=$(REPOBASE)/ansiblerepo/el/9/x86_64/' | tee -a $@
+	@echo 'skip_if_unavailable=False' | tee -a $@
+	@echo 'metadata_expire=1s' | tee -a $@
+	@echo 'gpgcheck=0' | tee -a $@
+	@echo '' | tee -a $@
+	@echo '[packages-microsoft-com-prod]' | tee -a $@
+	@echo 'name=packages-microsoft-com-prod' | tee -a $@
+	@echo 'baseurl=https://packages.microsoft.com/rhel/9/prod/' | tee -a $@
+	@echo 'enabled=0' | tee -a $@
+	@echo 'gpgcheck=1' | tee -a $@
+	@echo 'gpgkey=https://packages.microsoft.com/keys/microsoft.asc' | tee -a $@
+	@echo '"""' | tee -a $@
 
 ansiblerepo-f38-x86_64.cfg: /etc/mock/fedora-38-x86_64.cfg
 	@echo Generating $@ from $?

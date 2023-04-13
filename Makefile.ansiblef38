@@ -4,7 +4,6 @@
 
 # Assure that sorting is case sensitive
 LANG=C
-#MOCKS+=ansiblerepo-7-x86_64
 #MOCKS+=ansiblerepo-8-x86_64
 #MOCKS+=ansiblerepo-9-x86_64
 MOCKS+=ansiblerepo-f38-x86_64

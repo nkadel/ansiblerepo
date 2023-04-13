@@ -42,7 +42,7 @@ BuildRequires:  findutils
 BuildRequires:  hardlink
 BuildRequires:  rsync
 
-BuildRequires:  ansible-core < 2.15
+BuildRequires:  ansible-core < 2.16
 # Roll back demand for 2.15 for older ansible-core
 # Use 2.11.9 to avoid accidental published Fedora conflict
 BuildRequires:  ansible-core >= 2.11.9
@@ -58,7 +58,7 @@ BuildRequires:  python%{python3_pkgversion}-setuptools
 #BuildRequires:  python%%{python3_pkgversion}-sphinx
 #BuildRequires:  python%%{python3_pkgversion}-sphinx_rtd_theme
 
-Requires:       ansible-core < 2.15
+Requires:       ansible-core < 2.16
 Requires:       ansible-core >= 2.11.6
 
 %description

@@ -62,7 +62,7 @@ BuildRequires:  python%{python3_pkgversion}-setuptools
 #BuildRequires:  python%%{python3_pkgversion}-sphinx
 #BuildRequires:  python%%{python3_pkgversion}-sphinx_rtd_theme
 
-Requires:       ansible-core < 2.15
+Requires:       ansible-core < 2.16
 Requires:       ansible-core >= 2.11.6
 
 %description
