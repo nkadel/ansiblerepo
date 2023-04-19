@@ -26,7 +26,6 @@ ANSIBLEPKGS+=python39-pretend-srpm
 ANSIBLEPKGS+=python39-progress-srpm
 ANSIBLEPKGS+=python39-pyfakes-srpm
 ANSIBLEPKGS+=python39-pytz-srpm
-ANSIBLEPKGS+=python39-resolvelib-srpm
 ANSIBLEPKGS+=python39-ruamel-yaml-clib-srpm
 ANSIBLEPKGS+=python39-straight-plugin-srpm
 ANSIBLEPKGS+=python39-unittest2-srpm
@@ -47,9 +46,7 @@ ANSIBLEPKGS+=python39-jinja2-srpm
 ANSIBLEPKGS+=python39-mock-srpm
 #ANSIBLEPKGS+=python39-packaging-srpm
 ANSIBLEPKGS+=ansible-core-2.14.x-srpm
-# Stop building 2.12.x or 2.13.x by default, no need for it
-#ANSIBLEPKGS+=ansible-core-2.13.x-srpm
-#ANSIBLEPKGS+=ansible-core-2.12.x-srpm
+ANSIBLEPKGS+=ansible-core-2.15.x-srpm
 
 # Needed for jmespath
 ANSIBLEPKGS+=python39-nose-srpm
@@ -79,8 +76,6 @@ ANSIBLEPKGS+=python39-ruamel-yaml-srpm
 # Requires python39-pbr
 ANSIBLEPKGS+=ansible-collections-openstack-srpm
 
-#ANSIBLEPKGS+=python39-commentjson-srpm
-#ANSIBLEPKGS+=python39-flake8-srpm
 #
 #ANSIBLEPKGS+=python39-pytest-forked-srpm
 #ANSIBLEPKGS+=python39-pytest-xdist-srpm
@@ -147,18 +142,8 @@ install clean getsrc build srpm src.rpm::
 
 # Dependencies of libraries on other libraries for compilation
 
-#python39-commentjson-srpm:: python39-lark-parser-srpm
-#python39-entrypoints-srpm:: python39-commentjson-srpm
 #
-#python39-flake8-srpm:: pyflakes-srpm
 #
-#python39-resolvelib-srpm:: python39-flake8-srpm
-#python39-resolvelib-srpm:: python39-commentjson-srpm
-#
-#ansible-4.x-srpm:: ansible-core-2.11.x-srpm
-##ansible-5.x-srpm:: ansible-core-2.12.x-srpm
-#ansible-6.x-srpm:: ansible-core-2.13.x-srpm
-
 # Actually build in directories
 .PHONY: $(ANSIBLEPKGS)
 $(ANSIBLEPKGS)::
