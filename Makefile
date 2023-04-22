@@ -45,9 +45,7 @@ ANSIBLEPKGS+=python3.11-jinja2-srpm
 ANSIBLEPKGS+=python3.11-mock-srpm
 ##ANSIBLEPKGS+=python39-packaging-srpm
 ANSIBLEPKGS+=ansible-core-2.14.x-srpm
-# Stop building 2.12.x or 2.13.x by default, no need for it
-##ANSIBLEPKGS+=ansible-core-2.13.x-srpm
-##ANSIBLEPKGS+=ansible-core-2.12.x-srpm
+ANSIBLEPKGS+=ansible-core-2.15.x-srpm
 
 # For RHEL 7
 ##ANSIBLEPKGS+=ansible-core-2.11.x-srpm
@@ -63,14 +61,16 @@ ANSIBLEPKGS+=python3.11-jmespath-srpm
 # Stop building by defult
 ##ANSIBLEPKGS+=ansible-5.x-srpm
 ##ANSIBLEPKGS+=ansible-6.x-srpm
-#ANSIBLEPKGS+=ansible-7.x-srpm
+ANSIBLEPKGS+=ansible-7.x-srpm
+ANSIBLEPKGS+=ansible-8.x-srpm
 
 # Alternate names for 'ansible' packages, better indicates their content
 ##ANSIBLEPKGS+=ansible_collections-4.x-srpm
 # Stop building by defult
 ###ANSIBLEPKGS+=ansible_collections-5.x-srpm
 ###ANSIBLEPKGS+=ansible_collections-6.x-srpm
-#ANSIBLEPKGS+=ansible_collections-7.x-srpm
+ANSIBLEPKGS+=ansible_collections-7.x-srpm
+ANSIBLEPKGS+=ansible_collections-8.x-srpm
 
 ## python3.11
 ANSIBLEPKGS+=python3.11-ruamel-yaml-srpm
