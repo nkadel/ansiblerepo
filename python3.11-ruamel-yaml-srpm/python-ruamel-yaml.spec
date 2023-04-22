@@ -39,17 +39,15 @@ BuildRequires:  python%{python3_pkgversion}-setuptools
 # For tests
 BuildRequires:  python%{python3_pkgversion}-pytest
 # typing was added in Python 3.5
-%if %{python3_pkgversion} == 34
-BuildRequires:  python%{python3_pkgversion}-typing
-%endif
+# Only for python 3.4
+#BuildRequires:  python%{python3_pkgversion}-typing
 %{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
 
 # Put this her to avoid dependency loop
 Requires:       python%{python3_pkgversion}-ruamel-yaml-clib
 Requires:       python%{python3_pkgversion}-setuptools
-%if %{python3_pkgversion} == 34
-Requires:       python%{python3_pkgversion}-typing
-%endif
+# Only for python 3.4
+#Requires:       python%{python3_pkgversion}-typing
 
 %description -n python%{python3_pkgversion}-%{pname}
 ruamel.yaml is a YAML 1.2 loader/dumper package for Python.
