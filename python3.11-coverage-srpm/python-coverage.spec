@@ -1,20 +1,20 @@
-# %%global prever b1
-
 # Force python38 for RHEL 8, which has python 3.6 by default
-%if 0%{?el8}
+%if 0%{?el8} || 0%{?el9}
 %global python3_version 3.11
 %global python3_pkgversion 3.11
+# For RHEL 'platform python' insanity: Simply put, no.
 %global __python3 %{_bindir}/python%{python3_version}
 %endif
 
-%global pypi_name coverage
-%global pypi_version 4.5.1
+#global prever b1
 
-Name:           python-%{pypi_name}
+%global py2support 0
+
+Name:           python-coverage
 Summary:        Code coverage testing module for Python
-Version:        %{pypi_version}
-#Release:        9%%{?prever}%%{?dist}
-Release:        0.9%{?prever}%{?dist}
+Version:        6.4.2
+#Release:        2%%{?dist}
+Release:        0.2%{?dist}
 # jquery(MIT):
 #  coverage/htmlfiles/jquery.min.js
 # MIT or GPL:
@@ -23,8 +23,7 @@ Release:        0.9%{?prever}%{?dist}
 #  coverage/htmlfiles/jquery.isonscreen.js
 License:        ASL 2.0 and MIT and (MIT or GPL)
 URL:            http://nedbatchelder.com/code/modules/coverage.html
-Source0:        %{pypi_source}
-
+Source0:        https://pypi.python.org/packages/source/c/coverage/coverage-%{version}%{?prever}.tar.gz
 BuildRequires:  gcc
 
 %description
@@ -33,74 +32,209 @@ execution. It uses the code analysis tools and tracing hooks provided in the
 Python standard library to determine which lines are executable, and which 
 have been executed.
 
-%package -n python%{python3_pkgversion}-%{pypi_name}
+%{?python_extras_subpkg:%python_extras_subpkg -n python%{python3_pkgversion}-coverage -i %{python3_sitearch}/coverage*.egg-info toml}
+
+%if %{py2support}
+
+%package -n python2-coverage
+Summary:        Code coverage testing module for Python 2
+BuildRequires:  python2-devel
+BuildRequires:  python2-setuptools
+# As the "coverage" executable requires the setuptools at runtime (#556290),
+# so the "python3-coverage" executable requires python3-setuptools:
+Requires:       python2-setuptools
+%{?python_provide:%python_provide python2-coverage}
+Provides:       bundled(js-jquery) = 1.11.1
+Provides:       bundled(js-jquery-debounce) = 1.1
+Provides:       bundled(js-jquery-hotkeys) = 0.8
+Provides:       bundled(js-jquery-isonscreen) = 1.2.0
+Provides:       bundled(js-jquery-tablesorter)
+
+%description -n python2-coverage
+Coverage.py is a Python 2 module that measures code coverage during Python
+execution. It uses the code analysis tools and tracing hooks provided in the 
+Python standard library to determine which lines are executable, and which 
+have been executed.
+
+%endif
+
+%package -n python%{python3_pkgversion}-coverage
 Summary:        Code coverage testing module for Python 3
-BuildRequires:  python%{python3_pkgversion}
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
+# As the "coverage" executable requires the setuptools at runtime (#556290),
+# so the "python3-coverage" executable requires python3-setuptools:
 Requires:       python%{python3_pkgversion}-setuptools
+%{?python_provide:%python_provide python%{python3_pkgversion}-coverage}
+Provides:       bundled(js-jquery) = 1.11.1
+Provides:       bundled(js-jquery-debounce) = 1.1
+Provides:       bundled(js-jquery-hotkeys) = 0.8
+Provides:       bundled(js-jquery-isonscreen) = 1.2.0
+Provides:       bundled(js-jquery-tablesorter)
+Conflicts:      python2-coverage < 4.5.4-2
 
-%{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
-
-%description -n python%{python3_pkgversion}-%{pypi_name}
+%description -n python%{python3_pkgversion}-coverage
 Coverage.py is a Python 3 module that measures code coverage during Python
 execution. It uses the code analysis tools and tracing hooks provided in the 
 Python standard library to determine which lines are executable, and which 
 have been executed.
 
 %prep
-%setup -q -n %{pypi_name}-%{version}%{?prever}
+%setup -q -n coverage-%{version}%{?prever}
 
 find . -type f -exec chmod 0644 \{\} \;
 sed -i 's/\r//g' README.rst
 
-
 %build
+%if %{py2support}
+%py2_build
+%endif
 %py3_build
 
 %install
-%py3_install
-rm -f %{buildroot}%{_bindir}/%{pypi_name} %{buildroot}%{_bindir}/%{pypi_name}3
+%if %{py2support}
+%py2_install
+rm %{buildroot}/%{_bindir}/coverage
+%endif
 
-%files -n python%{python3_pkgversion}-%{pypi_name}
+%py3_install
+rm %{buildroot}/%{_bindir}/coverage
+
+# make compat symlinks
+pushd %{buildroot}%{_bindir}
+%if %{py2support}
+ln -s coverage-%{python2_version} coverage-2
+%endif
+ln -s coverage-%{python3_version} coverage-3
+ln -s coverage-%{python3_version} coverage
+popd
+
+%if %{py2support}
+%files -n python2-coverage
 %license LICENSE.txt NOTICE.txt
 %doc README.rst
-%{python3_sitearch}/%{pypi_name}/
-%{python3_sitearch}/%{pypi_name}*.egg-info/
-%{_bindir}/%{pypi_name}-%{python3_version}
+%{_bindir}/coverage2
+%{_bindir}/coverage-2*
+%{python2_sitearch}/coverage/
+%{python2_sitearch}/coverage*.egg-info/
+%endif
+
+%files -n python%{python3_pkgversion}-coverage
+%license LICENSE.txt NOTICE.txt
+%doc README.rst
+%{_bindir}/coverage
+%{_bindir}/coverage3
+%{_bindir}/coverage-3*
+%{python3_sitearch}/coverage/
+%{python3_sitearch}/coverage*.egg-info/
 
 %changelog
-* Mon Aug 23 2021 Tomas Orsava <torsava@redhat.com> - 4.5.1-9
-- Bump release to rebuild
+* Fri Jul 22 2022 Fedora Release Engineering <releng@fedoraproject.org> - 6.4.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
 
-* Fri Jul 30 2021 Tomas Orsava <torsava@redhat.com> - 4.5.1-8
-- Adjusted the postun scriptlets to enable upgrading to RHEL 9
-- Resolves: rhbz#1933055
+* Fri Jul 15 2022 Miro Hrončok <mhroncok@redhat.com> - 6.4.2-1
+- Update to 6.4.2
+- Fix coverage reporting for Python 3.11.0b4+
+- Fixes: rhbz#2049354
 
-* Wed Dec 12 2018 Tomas Orsava <torsava@redhat.com> - 4.5.1-7
-- New subpackage platform-python-coverage without files from /usr/bin/*
-- python3-coverage contains only files from /usr/bin/* and depends
-  on platform-python-coverage
-- Resolves: rhbz#1658674
+* Mon Jun 13 2022 Python Maint <python-maint@redhat.com> - 6.3.3-2
+- Rebuilt for Python 3.11
 
-* Fri Nov 16 2018 Lumír Balhar <lbalhar@redhat.com> - 4.5.1-6
-- Require platform-python-setuptools instead of python3-setuptools
-- Resolves: rhbz#1650532
+* Wed May 18 2022 Tomáš Hrnčiar <thrnciar@redhat.com> - 6.3.3-1
+- Update to 6.3.3
 
-* Tue Sep 25 2018 Lumír Balhar <lbalhar@redhat.com> - 4.5.1-5
-- Add alternatives for coverage-3 -> coverage-3.6
-- Resolves: rhbz#1633547
+* Tue Jan 25 2022 Tom Callaway <spot@fedoraproject.org> - 6.3-1
+- update to 6.3
 
-* Mon Aug 06 2018 Petr Viktorin <pviktori@redhat.com> - 4.5.1-4
-- Remove unversioned executables (only *-3.6 should be provided)
+* Fri Jan 21 2022 Fedora Release Engineering <releng@fedoraproject.org> - 6.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
 
-* Mon Jul 09 2018 Petr Viktorin <pviktori@redhat.com> - 4.5.1-3
-- Remove the python2 subpackage
-  https://bugzilla.redhat.com/show_bug.cgi?id=1595193
+* Sun Dec 05 2021 Orion Poplawski <orion@nwra.com> - 6.2-1
+- Update to 6.2
 
-* Mon Jun 25 2018 Petr Viktorin <pviktori@redhat.com> - 4.5.1-2
-- Allow Python 2 for build
-  see https://hurl.corp.redhat.com/rhel8-py2
+* Mon Oct 04 2021 Charalampos Stratakis <cstratak@redhat.com> - 5.6-0.4b1
+- Provide the extra toml package (rhbz#2010422)
+
+* Tue Jul 27 2021 Fedora Release Engineering <releng@fedoraproject.org> - 5.6-0.3b1
+- Second attempt - Rebuilt for
+  https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
+
+* Wed Jun 02 2021 Python Maint <python-maint@redhat.com> - 5.6-0.2b1
+- Rebuilt for Python 3.10
+
+* Wed Apr 14 2021 Tom Callaway <spot@fedoraproject.org> - 5.6-0.1.b1
+- 5.6b1
+
+* Mon Mar  1 2021 Tom Callaway <spot@fedoraproject.org> - 5.5-1
+- update to 5.5
+
+* Tue Jan 26 2021 Tom Callaway <spot@fedoraproject.org> - 5.4-1
+- update to 5.4
+
+* Wed Dec 30 2020 Tom Callaway <spot@fedoraproject.org> - 5.3.1-1
+- update to 5.3.1
+
+* Mon Sep 14 2020 Tom Callaway <spot@fedoraproject.org> - 5.3-1
+- update to 5.3
+
+* Thu Aug 13 2020 Tom Callaway <spot@fedoraproject.org> - 5.2.1-1
+- update to 5.2.1
+
+* Wed Jul 29 2020 Fedora Release Engineering <releng@fedoraproject.org> - 5.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
+
+* Thu Jul  9 2020 Tom Callaway <spot@fedoraproject.org> - 5.2-1
+- update to 5.2
+
+* Fri May 22 2020 Miro Hrončok <mhroncok@redhat.com> - 5.1-2
+- Rebuilt for Python 3.9
+
+* Mon Apr 13 2020 Tom Callaway <spot@fedoraproject.org> - 5.1-1
+- update to 5.1
+
+* Tue Mar 17 2020 Tom Callaway <spot@fedoraproject.org> - 5.0.4-1
+- update to 5.0.4
+
+* Thu Jan 30 2020 Fedora Release Engineering <releng@fedoraproject.org> - 5.0.3-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
+
+* Mon Jan 13 2020 Tom Callaway <spot@fedoraproject.org> - 5.0.3-1
+- update to 5.0.3
+
+* Mon Jan  6 2020 Tom Callaway <spot@fedoraproject.org> - 5.0.2-1
+- update to 5.0.2
+
+* Tue Nov 12 2019 Tom Callaway <spot@fedoraproject.org> - 4.5.4-5
+- conditionalize (and disable) python2 support
+
+* Thu Oct 03 2019 Miro Hrončok <mhroncok@redhat.com> - 4.5.4-4
+- Rebuilt for Python 3.8.0rc1 (#1748018)
+
+* Thu Aug 15 2019 Miro Hrončok <mhroncok@redhat.com> - 4.5.4-3
+- Rebuilt for Python 3.8
+
+* Mon Aug 12 2019 Miro Hrončok <mhroncok@redhat.com> - 4.5.4-2
+- Make /usr/bin/coverage Python 3
+- Remove /usr/bin/python*-coverage links to cleanse tab completion results
+- Drop no longer needed Obsoletes for platform-python-coverage
+
+* Mon Aug  5 2019 Tom Callaway <spot@fedoraproject.org> - 4.5.4-1
+- update to 4.5.4
+
+* Fri Jul 26 2019 Fedora Release Engineering <releng@fedoraproject.org> - 4.5.3-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
+
+* Tue Apr 23 2019 Tom Callaway <spot@fedoraproject.org> - 4.5.3-1
+- update to 4.5.3
+
+* Sat Feb 02 2019 Fedora Release Engineering <releng@fedoraproject.org> - 4.5.1-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
+
+* Fri Jul 13 2018 Fedora Release Engineering <releng@fedoraproject.org> - 4.5.1-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_29_Mass_Rebuild
+
+* Thu Jun 14 2018 Miro Hrončok <mhroncok@redhat.com> - 4.5.1-2
+- Rebuilt for Python 3.7
 
 * Mon Feb 12 2018 Tom Callaway <spot@fedoraproject.org> - 4.5.1-1
 - update to 4.5.1
