@@ -21,7 +21,7 @@ ANSIBLEPKGS+=python3.11-coverage-srpm
 #ANSIBLEPKGS+=python39-pretend-srpm
 ANSIBLEPKGS+=python3.11-pytz-srpm
 ANSIBLEPKGS+=python3.11-resolvelib-srpm
-#ANSIBLEPKGS+=python39-ruamel-yaml-clib-srpm
+ANSIBLEPKGS+=python3.11-ruamel-yaml-clib-srpm
 ANSIBLEPKGS+=python3.11-unittest2-srpm
 
 # Ansible repo based packages
@@ -73,7 +73,7 @@ ANSIBLEPKGS+=python3.11-jmespath-srpm
 #ANSIBLEPKGS+=ansible_collections-7.x-srpm
 
 ## python3.11
-#ANSIBLEPKGS+=python3.119-ruamel-yaml-srpm
+ANSIBLEPKGS+=python3.11-ruamel-yaml-srpm
 
 ##ANSIBLEPKGS+=python39-setuptools_scm-srpm
 ##ANSIBLEPKGS+=python39-unittest2-srpm
@@ -94,14 +94,15 @@ ANSIBLEPKGS+=ansible-collection-community-mysql-srpm
 ANSIBLEPKGS+=ansible-collection-containers-podman-srpm
 ANSIBLEPKGS+=ansible-collection-google-cloud-srpm
 
+ANSIBLEPKGS+=ansible-collection-netbox-netbox-srpm
+ANSIBLEPKGS+=ansible-pcp-srpm
+
 # Requires ruamel, not yet portable to older OS
+# Requires rubygem modules
 #ANSIBLEPKGS+=ansible-collection-microsoft-sql-srpm
-#ANSIBLEPKGS+=ansible-collection-netbox-netbox-srpm
-#
-#ANSIBLEPKGS+=ansible-pcp-srpm
-#
+
 # Has built-in ansible bundle reuirement
-#ANSIBLEPKGS+=ansible-inventory-grapher-srpm
+ANSIBLEPKGS+=ansible-inventory-grapher-srpm
 
 REPOS+=ansiblerepo/el/7
 REPOS+=ansiblerepo/el/8
