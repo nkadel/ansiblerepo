@@ -5,87 +5,84 @@
 #REOBASEE=http://localhost
 REPOBASE=file://$(PWD)
 
-# Now included in base RHEL and Fedora
-#ANSIBLEPKGS+=ansible-packaging-srpm
-
-# Do not build these, they break in RHEL
-ANSIBLEPKGS+=pyproject-rpm-macros-srpm
 #ANSIBLEPKGS+=ansible-openstack-modules-srpm
 
 # EPEL based packages
-ANSIBLEPKGS+=ansible-freeipa-srpm
-ANSIBLEPKGS+=pyflakes-srpm
-ANSIBLEPKGS+=python3-entrypoints-srpm
-ANSIBLEPKGS+=python39-ansible-generator-srpm
-ANSIBLEPKGS+=python39-babel-srpm
-ANSIBLEPKGS+=python39-coverage-srpm
-ANSIBLEPKGS+=python39-docutils-srpm
-ANSIBLEPKGS+=python39-invoke-srpm
-ANSIBLEPKGS+=python39-lark-parser-srpm
-ANSIBLEPKGS+=python39-markupsafe-srpm
-ANSIBLEPKGS+=python39-pretend-srpm
-ANSIBLEPKGS+=python39-progress-srpm
-ANSIBLEPKGS+=python39-pytz-srpm
-ANSIBLEPKGS+=python39-resolvelib-srpm
-ANSIBLEPKGS+=python39-ruamel-yaml-clib-srpm
-ANSIBLEPKGS+=python39-straight-plugin-srpm
-ANSIBLEPKGS+=python39-unittest2-srpm
+#ANSIBLEPKGS+=ansible-freeipa-srpm
+#ANSIBLEPKGS+=pyflakes-srpm
+ANSIBLEPKGS+=pyproject-rpm-macros-srpm
+ANSIBLEPKGS+=ansible-collections-openstack-srpm
+#ANSIBLEPKGS+=python39-ansible-generator-srpm
+ANSIBLEPKGS+=python3.11-babel-srpm
+ANSIBLEPKGS+=python3.11-coverage-srpm
+#ANSIBLEPKGS+=python39-docutils-srpm
+#ANSIBLEPKGS+=python39-invoke-srpm
+#ANSIBLEPKGS+=python39-lark-parser-srpm
+#ANSIBLEPKGS+=python39-pretend-srpm
+ANSIBLEPKGS+=python3.11-pytz-srpm
+ANSIBLEPKGS+=python3.11-resolvelib-srpm
+#ANSIBLEPKGS+=python39-ruamel-yaml-clib-srpm
+ANSIBLEPKGS+=python3.11-unittest2-srpm
+
+# Ansible repo based packages
+ANSIBLEPKGS+=python3.11-markupsafe-srpm
+#ANSIBLEPKGS+=python39-progress-srpm
 
 # Build testing requirements
-#ANSIBLEPKGS+=python39-asyncio-pool-sprm
-#ANSIBLEPKGS+=antsibull-core-srpm
-#ANSIBLEPKGS+=antsibull-default-srpm
-#ANSIBLEPKGS+=antsibull-docs-srpm
-#ANSIBLEPKGS+=antsibull-srpm
+##ANSIBLEPKGS+=python39-asyncio-pool-sprm
+##ANSIBLEPKGS+=antsibull-core-srpm
+##ANSIBLEPKGS+=antsibull-default-srpm
+##ANSIBLEPKGS+=antsibull-docs-srpm
+##ANSIBLEPKGS+=antsibull-srpm
 
-ANSIBLEPKGS+=python39-jinja2-srpm
+# Requires babel and markupsafe
+ANSIBLEPKGS+=python3.11-jinja2-srpm
 
 # Incompatible with RHEL
-#ANSIBLEPKGS+=ansible-lint-srpm
-#ANSIBLEPKGS+=python-ansible-compat-srpm
+##ANSIBLEPKGS+=ansible-lint-srpm
+##ANSIBLEPKGS+=python-ansible-compat-srpm
 
-ANSIBLEPKGS+=python39-mock-srpm
-#ANSIBLEPKGS+=python39-packaging-srpm
+ANSIBLEPKGS+=python3.11-mock-srpm
+##ANSIBLEPKGS+=python39-packaging-srpm
 ANSIBLEPKGS+=ansible-core-2.14.x-srpm
 # Stop building 2.12.x or 2.13.x by default, no need for it
-#ANSIBLEPKGS+=ansible-core-2.13.x-srpm
-#ANSIBLEPKGS+=ansible-core-2.12.x-srpm
+##ANSIBLEPKGS+=ansible-core-2.13.x-srpm
+##ANSIBLEPKGS+=ansible-core-2.12.x-srpm
 
 # For RHEL 7
-#ANSIBLEPKGS+=ansible-core-2.11.x-srpm
-#ANSIBLEPKGS+=ansible-4.x-srpm
+##ANSIBLEPKGS+=ansible-core-2.11.x-srpm
+##ANSIBLEPKGS+=ansible-4.x-srpm
 
+# Requires coverage
 # Needed for jmespath
-ANSIBLEPKGS+=python39-nose-srpm
-ANSIBLEPKGS+=python39-pbr-srpm
+ANSIBLEPKGS+=python3.11-nose-srpm
+#ANSIBLEPKGS+=python39-pbr-srpm
 
-ANSIBLEPKGS+=python39-jmespath-srpm
+ANSIBLEPKGS+=python3.11-jmespath-srpm
+
 # Stop building by defult
-#ANSIBLEPKGS+=ansible-5.x-srpm
-#ANSIBLEPKGS+=ansible-6.x-srpm
-ANSIBLEPKGS+=ansible-7.x-srpm
+##ANSIBLEPKGS+=ansible-5.x-srpm
+##ANSIBLEPKGS+=ansible-6.x-srpm
+#ANSIBLEPKGS+=ansible-7.x-srpm
 
 # Alternate names for 'ansible' packages, better indicates their content
-#ANSIBLEPKGS+=ansible_collections-4.x-srpm
+##ANSIBLEPKGS+=ansible_collections-4.x-srpm
 # Stop building by defult
-#ANSIBLEPKGS+=ansible_collections-5.x-srpm
-#ANSIBLEPKGS+=ansible_collections-6.x-srpm
-ANSIBLEPKGS+=ansible_collections-7.x-srpm
+###ANSIBLEPKGS+=ansible_collections-5.x-srpm
+###ANSIBLEPKGS+=ansible_collections-6.x-srpm
+#ANSIBLEPKGS+=ansible_collections-7.x-srpm
 
-## python39
-ANSIBLEPKGS+=python39-ruamel-yaml-srpm
+## python3.11
+#ANSIBLEPKGS+=python3.119-ruamel-yaml-srpm
 
-#ANSIBLEPKGS+=python39-setuptools_scm-srpm
-#ANSIBLEPKGS+=python39-unittest2-srpm
+##ANSIBLEPKGS+=python39-setuptools_scm-srpm
+##ANSIBLEPKGS+=python39-unittest2-srpm
 
-# Requires python39-pbr
-ANSIBLEPKGS+=ansible-collections-openstack-srpm
-
-#ANSIBLEPKGS+=python39-commentjson-srpm
-#ANSIBLEPKGS+=python39-flake8-srpm
+##ANSIBLEPKGS+=python39-commentjson-srpm
+##ANSIBLEPKGS+=python39-flake8-srpm
 #
-#ANSIBLEPKGS+=python39-pytest-forked-srpm
-#ANSIBLEPKGS+=python39-pytest-xdist-srpm
+##ANSIBLEPKGS+=python39-pytest-forked-srpm
+##ANSIBLEPKGS+=python39-pytest-xdist-srpm
 #
 ANSIBLEPKGS+=ansible-collection-ansible-netcommon-srpm
 ANSIBLEPKGS+=ansible-collection-ansible-posix-srpm
@@ -98,13 +95,13 @@ ANSIBLEPKGS+=ansible-collection-containers-podman-srpm
 ANSIBLEPKGS+=ansible-collection-google-cloud-srpm
 
 # Requires ruamel, not yet portable to older OS
-ANSIBLEPKGS+=ansible-collection-microsoft-sql-srpm
-ANSIBLEPKGS+=ansible-collection-netbox-netbox-srpm
+#ANSIBLEPKGS+=ansible-collection-microsoft-sql-srpm
+#ANSIBLEPKGS+=ansible-collection-netbox-netbox-srpm
 #
-ANSIBLEPKGS+=ansible-pcp-srpm
+#ANSIBLEPKGS+=ansible-pcp-srpm
 #
 # Has built-in ansible bundle reuirement
-ANSIBLEPKGS+=ansible-inventory-grapher-srpm
+#ANSIBLEPKGS+=ansible-inventory-grapher-srpm
 
 REPOS+=ansiblerepo/el/7
 REPOS+=ansiblerepo/el/8
@@ -135,7 +132,7 @@ all:: install
 install:: $(CFGS)
 install:: $(MOCKCFGS)
 install:: $(REPODIRS)
-install:: $(ANSIBLEPKGS)
+install:: $(#ANSIBLEPKGS)
 
 # Actually put all the modules in the local repo
 .PHONY: install clean getsrc build srpm src.rpm
