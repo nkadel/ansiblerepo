@@ -1,10 +1,19 @@
+# Force python38 for RHEL 8, which has python 3.6 by default
+%if 0%{?el8} || 0%{?el9}
+%global python3_version 3.11
+%global python3_pkgversion 3.11
+# For RHEL 'platform python' insanity: Simply put, no.
+%global __python3 %{_bindir}/python%{python3_version}
+%endif
+
 # Disable tests on RHEL9 as to not pull in the test dependencies
 # Specify --with tests to run the tests e.g. on EPEL
 %bcond_with tests
 
 Name:           python-setuptools_scm
 Version:        6.0.1
-Release:        1%{?dist}
+#Release:        1%%{?dist}
+Release:        0.1%{?dist}
 Summary:        Blessed package to manage your versions by SCM tags
 
 License:        MIT
@@ -44,8 +53,9 @@ It also handles file finders for the supported SCMs.
 # That only works assuming the backend in the file remains the default backend.
 
 
-%{?%generate_buildrequires:%generate_buildrequires}
-%{?pyproject_buildrequires:%pyproject_buildrequires %{?with_tests:-e %{toxenv}-test}}
+%generate_buildrequires
+%pyproject_buildrequires %{?with_tests:-e %{toxenv}-test}
+
 
 %build
 %pyproject_wheel
