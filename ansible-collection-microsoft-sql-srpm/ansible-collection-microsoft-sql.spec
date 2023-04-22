@@ -102,7 +102,7 @@ BuildRequires: highlight
 %endif
 
 # Requirements for galaxy_transform.py
-BuildRequires: python%{python3_pkgverson}
+BuildRequires: python%{python3_pkgversion}
 BuildRequires: python%{python3_pkgversion}-ruamel-yaml
 
 %description
