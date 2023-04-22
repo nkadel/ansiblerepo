@@ -1,3 +1,11 @@
+# Force python38 for RHEL 8, which has python 3.6 by default
+%if 0%{?el8} || 0%{?el9}
+%global python3_version 3.11
+%global python3_pkgversion 3.11
+# For RHEL 'platform python' insanity: Simply put, no.
+%global __python3 %{_bindir}/python%{python3_version}
+%endif
+
 # Created by pyp2rpm-3.3.7
 # tarball is named ansible at pypi.org, real modules go in ansible_collections
 # due to very confusing upsream renaming
@@ -6,14 +14,6 @@
 %global pypi_version 7.4.0
 # Set this when there's a beta or rc version
 %global betaver %{nil}
-
-# Force python38 for RHEL 8, which has python 3.6 by default
-%if 0%{?el8}
-%global python3_version 3.9
-%global python3_pkgversion 39
-# For RHEL 'platform python' insanity: Simply put, no.
-%global __python3 %{_bindir}/python%{python3_version}
-%endif
 
 # Disable thye burdensume and pointless hardlink among the ginormous
 # ansible_collection modules
