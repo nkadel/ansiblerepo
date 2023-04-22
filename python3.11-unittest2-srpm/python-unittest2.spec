@@ -90,8 +90,7 @@ popd
 %{_bindir}/unit2-%{python3_version}
 %{_bindir}/python%{python3_pkgversion}-unit2
 %{python3_sitelib}/%{pypi_name}
-%{python3_sitelib}/%{pypi_name}-%{version}-py%{python3_pkgversion}.egg-info
-
+%{python3_sitelib}/%{pypi_name}-%{version}-py%{python3_version}.egg-info
 
 %changelog
 * Fri Nov 16 2018 Lumír Balhar <lbalhar@redhat.com> - 1.1.0-16

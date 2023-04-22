@@ -65,7 +65,7 @@ Pretend is a library to make stubbing with Python easier.
 %license LICENSE.rst
 %{python3_sitelib}/pretend.py
 %{python3_sitelib}/__pycache__/pretend.cpython-3?*
-%{python3_sitelib}/pretend-%{version}-py3.?.egg-info
+%{python3_sitelib}/pretend-%{version}-py${python3_version}.egg-info
 %endif
 
 
