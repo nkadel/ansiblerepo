@@ -73,6 +73,11 @@ Provides:       bundled(js-jquery-isonscreen) = 1.2.0
 Provides:       bundled(js-jquery-tablesorter)
 Conflicts:      python2-coverage < 4.5.4-2
 
+# Ensure only one coverage installed due to conflicts
+%if 0%{?el8} || 0%{?el9}
+Conflicts: python3-coverage
+%endif
+
 %description -n python%{python3_pkgversion}-coverage
 Coverage.py is a Python 3 module that measures code coverage during Python
 execution. It uses the code analysis tools and tracing hooks provided in the 
