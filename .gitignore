@@ -1,4 +1,5 @@
 *.cfg
+*.orig
 *.out
 *.repo
 *.rpm
