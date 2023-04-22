@@ -22,6 +22,7 @@ ANSIBLEPKGS+=python3.11-coverage-srpm
 ANSIBLEPKGS+=python3.11-pytz-srpm
 ANSIBLEPKGS+=python3.11-resolvelib-srpm
 ANSIBLEPKGS+=python3.11-ruamel-yaml-clib-srpm
+ANSIBLEPKGS+=python3.11-toml-srpm
 ANSIBLEPKGS+=python3.11-unittest2-srpm
 
 # Ansible repo based packages
@@ -75,7 +76,7 @@ ANSIBLEPKGS+=ansible_collections-8.x-srpm
 ## python3.11
 ANSIBLEPKGS+=python3.11-ruamel-yaml-srpm
 
-##ANSIBLEPKGS+=python39-setuptools_scm-srpm
+ANSIBLEPKGS+=python3.11-setuptools_scm-srpm
 ##ANSIBLEPKGS+=python39-unittest2-srpm
 
 ##ANSIBLEPKGS+=python39-commentjson-srpm
