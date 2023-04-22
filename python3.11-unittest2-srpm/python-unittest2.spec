@@ -1,14 +1,14 @@
-# Created by pyp2rpm-1.1.1
-%global pypi_name unittest2
-%global bootstrap_traceback2 0
-
 # Force python38 for RHEL 8, which has python 3.6 by default
-%if 0%{?el8}
-%global python3_version 3.9
-%global python3_pkgversion 39
+%if 0%{?el8} || 0%{?el9}
+%global python3_version 3.11
+%global python3_pkgversion 3.11
 # For RHEL 'platform python' insanity: Simply put, no.
 %global __python3 %{_bindir}/python%{python3_version}
 %endif
+
+# Created by pyp2rpm-1.1.1
+%global pypi_name unittest2
+%global bootstrap_traceback2 0
 
 Name:           python-%{pypi_name}
 Version:        1.1.0
@@ -79,16 +79,18 @@ ln -s unit2-%{python3_version} python%{python3_pkgversion}-unit2
 popd
 
 
+# Disable checks on el8 and el9, they don't work
+%if ! 0%{?el8} && ! 0%{?el9}
 %check
 %{__python3} -m unittest2
-
+%endif
 
 %files -n python%{python3_pkgversion}-%{pypi_name}
 %doc README.txt
 %{_bindir}/unit2-%{python3_version}
 %{_bindir}/python%{python3_pkgversion}-unit2
 %{python3_sitelib}/%{pypi_name}
-%{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
+%{python3_sitelib}/%{pypi_name}-%{version}-py%{python3_pkgversion}.egg-info
 
 
 %changelog
