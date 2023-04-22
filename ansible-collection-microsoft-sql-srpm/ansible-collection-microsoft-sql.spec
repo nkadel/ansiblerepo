@@ -1,3 +1,11 @@
+# Force python38 for RHEL 8, which has python 3.6 by default
+%if 0%{?el8} || 0%{?el9}
+%global python3_version 3.11
+%global python3_pkgversion 3.11
+# For RHEL 'platform python' insanity: Simply put, no.
+%global __python3 %{_bindir}/python%{python3_version}
+%endif
+
 # NOTE: Even though ansible-core is in 8.6, it is only available
 # at *runtime*, not at *buildtime* - so we can't have
 # ansible-core as a build_dep on RHEL8
@@ -94,7 +102,7 @@ BuildRequires: highlight
 %endif
 
 # Requirements for galaxy_transform.py
-BuildRequires: python3
+BuildRequires: python%{python3_pkgverson}
 BuildRequires: python%{python3_pkgversion}-ruamel-yaml
 
 %description
@@ -171,7 +179,7 @@ sed -i 's/fedora\.linux_system_roles/redhat.rhel_system_roles/g' \
 %endif
 
 # Convert to the collection format
-python3 lsr_role2collection.py --role "%{rolename}" \
+%{python3} lsr_role2collection.py --role "%{rolename}" \
     --src-path "%{rolename}" \
     --src-owner linux-system-roles \
     --dest-path .collections \
