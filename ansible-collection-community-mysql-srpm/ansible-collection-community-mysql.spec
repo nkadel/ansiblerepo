@@ -11,7 +11,7 @@
 
 Name:           ansible-collection-%{collection_namespace}-%{collection_name}
 Version:        2.3.1
-Release:        0.1%{?dist}
+Release:        0.2%{?dist}
 Summary:        MySQL collection for Ansible
 
 License:        GPLv3+

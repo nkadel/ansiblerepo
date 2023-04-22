@@ -1,13 +1,13 @@
-%global archive_name ansible-inventory-grapher
-%global lib_name ansibleinventorygrapher
-
 # Force python38 for RHEL 8, which has python 3.6 by default
-%if 0%{?el8}
-%global python3_version 3.9
-%global python3_pkgversion 39
+%if 0%{?el8} || 0%{?el9}
+%global python3_version 3.11
+%global python3_pkgversion 3.11
 # For RHEL 'platform python' insanity: Simply put, no.
 %global __python3 %{_bindir}/python%{python3_version}
 %endif
+
+%global archive_name ansible-inventory-grapher
+%global lib_name ansibleinventorygrapher
 
 #
 # If we should enable checks
@@ -18,7 +18,7 @@
 Name:           %{archive_name}
 Version:        2.5.0
 #Release:        7%%{?dist}
-Release:        0.8%{?dist}
+Release:        0.9%{?dist}
 Summary:        Creates graphs representing ansible inventory
 
 License:        GPLv3+

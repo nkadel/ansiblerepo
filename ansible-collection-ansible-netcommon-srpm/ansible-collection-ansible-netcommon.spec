@@ -11,7 +11,7 @@
 
 Name:           ansible-collection-%{collection_namespace}-%{collection_name}
 Version:        2.4.0
-Release:        0.1%{?dist}
+Release:        0.2%{?dist}
 Summary:        Ansible Network Collection for Common Code
 
 # plugins/module_utils/compat/ipaddress.py: Python Software Foundation License version 2

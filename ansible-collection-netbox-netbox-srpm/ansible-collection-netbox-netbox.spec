@@ -11,7 +11,7 @@
 
 Name:           ansible-collection-%{collection_namespace}-%{collection_name}
 Version:        2.0.0
-Release:        0.2%{?dist}
+Release:        0.3%{?dist}
 Summary:        Netbox modules for Ansible
 
 License:        GPLv3+

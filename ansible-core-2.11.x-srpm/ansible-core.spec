@@ -29,7 +29,7 @@
 Name: ansible-core
 Summary: SSH-based configuration management, deployment, and task execution system
 Version: %{pypi_version}
-Release: 0.2%{?dist}
+Release: 0.3%{?dist}
 ExcludeArch: i686
 
 Group: Development/Libraries

@@ -1,6 +1,15 @@
+# Force python38 for RHEL 8, which has python 3.6 by default
+%if 0%{?el8} || 0%{?el9}
+%global python3_version 3.11
+%global python3_pkgversion 3.11
+# For RHEL 'platform python' insanity: Simply put, no.
+%global __python3 %{_bindir}/python%{python3_version}
+%endif
+
 Name:             ansible-pcp
 Version:          2.2.5
-Release:          2%{?dist}
+#Release:          2%%{?dist}
+Release:          0.2%{?dist}
 Summary:          Ansible Metric collection for Performance Co-Pilot
 License:          MIT
 URL:              https://github.com/performancecopilot/ansible-pcp

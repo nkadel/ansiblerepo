@@ -11,7 +11,7 @@
 
 Name:           ansible-collection-%{collection_namespace}-%{collection_name}
 Version:        1.1.0
-Release:        0%{?dist}
+Release:        0.1%{?dist}
 Summary:        Ansible collection for Chocolatey
 
 License:        GPLv3+

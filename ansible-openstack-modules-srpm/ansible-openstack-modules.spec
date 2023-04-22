@@ -1,16 +1,17 @@
-%global githash 79d751a
-
-
-# Force python38 for RHEL 8, which has python 3.6 by default
-%if 0%{?el8}
-%global python3_version 3.9
-%global python3_pkgversion 39
+ Force python38 for RHEL 8, which has python 3.6 by default
+%if 0%{?el8} || 0%{?el9}
+%global python3_version 3.11
+%global python3_pkgversion 3.11
+# For RHEL 'platform python' insanity: Simply put, no.
 %global __python3 %{_bindir}/python%{python3_version}
 %endif
 
+%global githash 79d751a
+
 Name:		ansible-openstack-modules
 Version:	0
-Release:	20140914git%{githash}%{?dist}
+#Release:	20140914git%%{githash}%{?dist}
+Release:	20230422gitgit%{githash}%{?dist}
 Summary:	Unofficial Ansible modules for managing Openstack
 
 License:	GPLv3

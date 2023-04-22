@@ -11,7 +11,7 @@
 
 Name:           ansible-collection-%{collection_namespace}-%{collection_name}
 Version:        1.0.1
-Release:        0.5%{?dist}
+Release:        0.6%{?dist}
 Summary:        Google Cloud Platform collection
 
 # roles/gcloud: MIT

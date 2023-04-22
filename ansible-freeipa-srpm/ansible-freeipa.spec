@@ -15,7 +15,7 @@ Summary: Roles and playbooks to deploy FreeIPA servers, replicas and clients
 Name: ansible-freeipa
 Version: 0.3.8
 #Release: 2%{?dist}
-Release: 0.2%{?dist}
+Release: 0.3%{?dist}
 URL: https://github.com/freeipa/ansible-freeipa
 License: GPLv3+
 Source: https://github.com/freeipa/ansible-freeipa/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz

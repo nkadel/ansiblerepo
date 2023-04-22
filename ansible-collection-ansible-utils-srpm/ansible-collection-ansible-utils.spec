@@ -11,7 +11,7 @@
 
 Name:           ansible-collection-%{collection_namespace}-%{collection_name}
 Version:        2.4.2
-Release:        0%{?dist}
+Release:        0.1%{?dist}
 Summary:        Ansible Network Collection for Common Code
 
 License:        GPLv3+

@@ -21,7 +21,7 @@
 
 Name:           ansible-collections-openstack
 Version:        2.0.0
-Release:        0.2%{?alphatag}%{?dist}
+Release:        0.3%{?alphatag}%{?dist}
 Summary:        Openstack Ansible collections
 License:        GPLv3+
 URL:            %{ansible_collection_url}

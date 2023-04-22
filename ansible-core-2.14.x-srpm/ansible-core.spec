@@ -28,7 +28,7 @@
 Name: ansible-core
 Summary: A radically simple IT automation system
 Version: 2.14.4
-Release: 0.1%{?betaver}%{?dist}
+Release: 0.4%{?betaver}%{?dist}
 
 License: GPLv3+
 Source0: %pypi_source ansible-core %{version}%{?betaver}

@@ -11,7 +11,7 @@
 
 Name:           ansible-collection-%{collection_namespace}-%{collection_name}
 Version:        2.0.0
-Release:        0%{?dist}
+Release:        0.1%{?dist}
 Summary:        Kubernetes Collection for Ansible
 
 License:        GPLv3+

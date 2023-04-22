@@ -11,7 +11,7 @@
 
 Name:           ansible-collection-%{collection_namespace}-%{collection_name}
 Version:        4.0.0
-Release:        0%{?dist}
+Release:        0.1%{?dist}
 Summary:        Modules and plugins supported by Ansible community
 
 # plugins/module_utils/_mount.py: Python Software Foundation License version 2

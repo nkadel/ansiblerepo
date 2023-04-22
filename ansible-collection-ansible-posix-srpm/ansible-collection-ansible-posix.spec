@@ -11,7 +11,7 @@
 
 Name:           ansible-collection-%{collection_namespace}-%{collection_name}
 Version:        1.3.0
-Release:        0.3%{?dist}
+Release:        0.4%{?dist}
 Summary:        Ansible Collection targeting POSIX and POSIX-ish platforms
 
 # plugins/module_utils/mount.py: Python Software Foundation License version 2

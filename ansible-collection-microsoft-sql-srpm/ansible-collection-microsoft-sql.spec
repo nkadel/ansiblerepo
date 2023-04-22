@@ -33,7 +33,7 @@ Name: ansible-collection-microsoft-sql
 Url: https://github.com/linux-system-roles/mssql
 Summary: The Ansible collection for Microsoft SQL Server management
 Version: 1.2.4
-Release: 0.5%{?dist}
+Release: 0.6%{?dist}
 
 License: MIT
 
