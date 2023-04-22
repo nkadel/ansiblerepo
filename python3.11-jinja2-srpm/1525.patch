@@ -1,0 +1,33 @@
+From e32c985af3a419ae2ea0853ad8084a12ab62745b Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Miro=20Hron=C4=8Dok?= <miro@hroncok.cz>
+Date: Tue, 2 Nov 2021 16:47:28 +0100
+Subject: [PATCH] Tests: Make "Traceback did not match" an actual f-string
+
+Otherwise the failure looks like this:
+
+    >       assert (
+                m is not None
+            ), "Traceback did not match:\n\n{''.join(tb)}\nexpected:\n{expected_tb}"
+    E       AssertionError: Traceback did not match:
+    E
+    E         {''.join(tb)}
+    E         expected:
+    E         {expected_tb}
+    E       assert None is not None
+---
+ tests/test_debug.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tests/test_debug.py b/tests/test_debug.py
+index 0aec78ae4..c639bbc29 100644
+--- a/tests/test_debug.py
++++ b/tests/test_debug.py
+@@ -25,7 +25,7 @@ def assert_traceback_matches(self, callback, expected_tb):
+         m = re.search(expected_tb.strip(), "".join(tb))
+         assert (
+             m is not None
+-        ), "Traceback did not match:\n\n{''.join(tb)}\nexpected:\n{expected_tb}"
++        ), f"Traceback did not match:\n\n{''.join(tb)}\nexpected:\n{expected_tb}"
+ 
+     def test_runtime_error(self, fs_env):
+         def test():

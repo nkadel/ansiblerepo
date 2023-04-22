@@ -1,36 +1,38 @@
 # Force python38 for RHEL 8, which has python 3.6 by default
-%if 0%{?el8}
-%global python3_version 3.9
-%global python3_pkgversion 39
+%if 0%{?el8} || 0%{?el9}
+%global python3_version 3.11
+%global python3_pkgversion 3.11
 # For RHEL 'platform python' insanity: Simply put, no.
 %global __python3 %{_bindir}/python%{python3_version}
 %endif
 
-%global pypi_name Jinja2
+%global srcname Jinja2
 
 Name:           python-jinja2
 Version:        3.0.3
-Release:        0.1%{?dist}
+#Release:        5%%{?dist}
+Release:        0.5%{?dist}
 Summary:        General purpose template engine
 License:        BSD
 URL:            https://palletsprojects.com/p/jinja/
 Source0:        %{pypi_source}
-# cherry-picked patches to build with Python 3.10 (#1907442)
-#Patch1:         0001-add-linetable-to-the-preserved-CodeType-attributes-1.patch
-#Patch2:         0002-native_concat-pass-only-strings-to-literal_eval.patch
 
-%bcond_without python3
-%bcond_with python2
+# Tests: Make "Traceback did not match" an actual f-string
+Patch1:         https://github.com/pallets/jinja/pull/1525.patch
 
-# No docs in RHEL 9: https://bugzilla.redhat.com/show_bug.cgi?id=1944567
+# Enable building without docs to avoid a circular dependency between this
+# and python-sphinx:
+# Do not build docs for python 3.11
+%if 0%{?el8} || 0%{?el9}
 %bcond_with docs
-
-%bcond_without async
+%else
+%bcond_without docs
+%endif
 
 BuildArch:      noarch
 
-%description
-Jinja2 is a template engine written in pure Python.  It provides a
+%global _description %{expand:
+Jinja2 is a template engine written in pure Python. It provides a
 Django inspired non-XML syntax but supports inline expressions and an
 optional sandboxed environment.
 
@@ -38,153 +40,109 @@ If you have any exposure to other text-based template languages, such
 as Smarty or Django, you should feel right at home with Jinja2. It's
 both designer and developer friendly by sticking to Python's
 principles and adding functionality useful for templating
-environments.
+environments.}
 
+%description %_description
 
-%if %{with python2}
-%package -n python2-jinja2
-Summary:        General purpose template engine for python2
-BuildRequires:  python2-devel
-BuildRequires:  python2-setuptools
-BuildRequires:  python2-babel >= 2.7
-BuildRequires:  python2-markupsafe >= 2
-BuildRequires:  python2-pluggy
-Requires:       python2-babel >= 2.7
-Requires:       python2-markupsafe >= .2
-Requires:       python2-setuptools
-%{?python_provide:%python_provide python2-jinja2}
-
-%description -n python2-jinja2
-Jinja2 is a template engine written in pure Python.  It provides a
-Django inspired non-XML syntax but supports inline expressions and an
-optional sandboxed environment.
-
-If you have any exposure to other text-based template languages, such
-as Smarty or Django, you should feel right at home with Jinja2. It's
-both designer and developer friendly by sticking to Python's
-principles and adding functionality useful for templating
-environments.
-%endif # with python2
-
-
-%if %{with python3}
 %package -n python%{python3_pkgversion}-jinja2
-Summary:        General purpose template engine for python3
+Summary:        %{summary}
+%if 0%{?el8} || 0%{?el9}
+BuildRequires:  pyproject-rpm-macros
+BuildRequires:  python%{python3_pkgversion}-babel
+BuildRequires:  python%{python3_pkgversion}-markupsafe
+BuildRequires:  python%{python3_pkgversion}-pip
+BuildRequires:  python%{python3_pkgversion}-wheel
+%endif
+
 BuildRequires:  python%{python3_pkgversion}-devel
-BuildRequires:  python%{python3_pkgversion}-setuptools
-BuildRequires:  python%{python3_pkgversion}-babel >= 2.7
-BuildRequires:  python%{python3_pkgversion}-markupsafe >= 2
-BuildRequires:  python%{python3_pkgversion}-pluggy
 BuildRequires:  python%{python3_pkgversion}-pytest
 %if %{with docs}
 BuildRequires:  %{_bindir}/sphinx-build-3
 BuildRequires:  make
-BuildRequires:  python%{python3_pkgversion}-Pallets-Sphinx-Themes
+BuildRequires:  python%{python3_pkgversion}-Pallets-Sphinx-Themes >= 2
 BuildRequires:  python%{python3_pkgversion}-sphinxcontrib-log-cabinet
 BuildRequires:  python%{python3_pkgversion}-sphinx-issues
 %endif
-Requires:       python%{python3_pkgversion}-babel >= 2.7
-Requires:       python%{python3_pkgversion}-markupsafe >= 2
-Requires:       python%{python3_pkgversion}-setuptools
-%{?python_provide:%python_provide python%{python3_pkgversion}-jinja2}
 
-%description -n python%{python3_pkgversion}-jinja2
-Jinja2 is a template engine written in pure Python.  It provides a
-Django inspired non-XML syntax but supports inline expressions and an
-optional sandboxed environment.
+%description -n python%{python3_pkgversion}-jinja2 %_description
 
-If you have any exposure to other text-based template languages, such
-as Smarty or Django, you should feel right at home with Jinja2. It's
-both designer and developer friendly by sticking to Python's
-principles and adding functionality useful for templating
-environments.
-%endif # with python3
-
+%if ! 0%{?el8}
+%pyproject_extras_subpkg -n python%{python3_pkgversion}-jinja2 i18n
+%endif
 
 %prep
-%autosetup -p1 -n %{pypi_name}-%{version}
+%autosetup -p1 -n %{srcname}-%{version}
 
-# cleanup
-find . -name '*.pyo' -o -name '*.pyc' -delete
+%if ! 0%{?el8}
+%generate_buildrequires
+%pyproject_buildrequires -x i18n
+%endif
 
 %build
-%if %{with python2}
-%py2_build
-%endif # with python2
-
-%if %{with python3}
-%py3_build
+%pyproject_wheel
 %if %{with docs}
 make -C docs html PYTHONPATH=$(pwd)/src SPHINXBUILD=sphinx-build-3
 # remove hidden file
-rm -rf docs/_build/html/.buildinfo
-%endif # with docs
-%endif # with python3
+rm -rvf docs/_build/html/.buildinfo
+%endif
 
 
 %install
-%if %{with python2}
-%py2_install
-
-# these files are valid only on Python 3.6+
-rm %{buildroot}%{python2_sitelib}/jinja2/asyncsupport.py
-rm %{buildroot}%{python2_sitelib}/jinja2/asyncfilters.py
-%endif # with python2
-
-%if %{with python3}
-%py3_install
-
-%if ! %{with async}
-# these files are valid only on Python 3.6+
-rm %{buildroot}%{python3_sitelib}/jinja2/asyncsupport.py
-rm %{buildroot}%{python3_sitelib}/jinja2/asyncfilters.py
-%endif # ! with async
-%endif # with python3
+%pyproject_install
+%pyproject_save_files jinja2
 
 
+# Disable for python 3.11
+%if ! 0%{?el8} && ! 0%{?el9}
 %check
-%if %{with python3}
-PYTHONPATH=$(pwd)/src %{__python3} -m pytest tests
-%endif # with python3
+%pytest tests
+%endif
 
-
-%if %{with python2}
-%files -n python2-jinja2
+%files -n python%{python3_pkgversion}-jinja2 -f %{pyproject_files}
 %doc CHANGES.rst
 %doc examples
 %license LICENSE.rst
 %if %{with docs}
 %doc docs/_build/html
 %endif
-%{python2_sitelib}/jinja2/
-%{python2_sitelib}/Jinja2-*.egg-info/
-%endif # with python2
-
-
-%if %{with python3}
-%files -n python%{python3_pkgversion}-jinja2
-%doc CHANGES.rst
-%doc examples
-%license LICENSE.rst
-%if %{with docs}
-%doc docs/_build/html
-%endif
-%{python3_sitelib}/jinja2/
-%{python3_sitelib}/Jinja2-*.egg-info/
-%endif # with python3
 
 
 %changelog
-* Tue Aug 10 2021 Mohan Boddu <mboddu@redhat.com> - 2.11.3-4
-- Rebuilt for IMA sigs, glibc 2.34, aarch64 flags
-  Related: rhbz#1991688
+* Fri Jul 22 2022 Fedora Release Engineering <releng@fedoraproject.org> - 3.0.3-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
 
-* Fri Apr 16 2021 Mohan Boddu <mboddu@redhat.com> - 2.11.3-3
-- Rebuilt for RHEL 9 BETA on Apr 15th 2021. Related: rhbz#1947937
+* Mon Jun 13 2022 Python Maint <python-maint@redhat.com> - 3.0.3-4
+- Rebuilt for Python 3.11
 
-* Tue Apr 13 2021 Miro Hrončok <mhroncok@redhat.com> - 2.11.3-2
-- Disable documentation
-- Resolves: rhbz#1944567
+* Mon Jun 13 2022 Python Maint <python-maint@redhat.com> - 3.0.3-3
+- Bootstrap for Python 3.11
+
+* Fri Jan 21 2022 Fedora Release Engineering <releng@fedoraproject.org> - 3.0.3-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
+
+* Mon Nov 15 2021 Thomas Moschny <thomas.moschny@gmx.de> - 3.0.3-1
+- Update to 3.0.3.
+
+* Mon Nov 15 2021 Thomas Moschny <thomas.moschny@gmx.de> - 3.0.1-4
+- Use new Python packaging guidelines.
+- Jinja2 version 3 does not support Python 2 anymore.
+
+* Wed Nov 10 2021 Karolina Surma <ksurma@redhat.com> - 3.0.1-3
+- Don't explicitly declare runtime dependencies when building for Python 3
+- Declare jinja2+i18n extra to map the upstream package structure
+
+* Fri Jul 23 2021 Fedora Release Engineering <releng@fedoraproject.org> - 3.0.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
+
+* Tue Jun 22 2021 Lumír Balhar <lbalhar@redhat.com> - 3.0.1-1
+- Update to 3.0.1
+- Resolves: rhbz#1961862
+
+* Fri Jun 04 2021 Python Maint <python-maint@redhat.com> - 2.11.3-3
+- Rebuilt for Python 3.10
+
+* Wed Jun 02 2021 Python Maint <python-maint@redhat.com> - 2.11.3-2
+- Bootstrap for Python 3.10
 
 * Sat Feb  6 2021 Thomas Moschny <thomas.moschny@gmx.de> - 2.11.3-1
 - Update to 2.11.3.
