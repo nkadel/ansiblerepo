@@ -1,7 +1,7 @@
 # Force python38 for RHEL 8, which has python 3.6 by default
-%if 0%{?el8}
-%global python3_version 3.9
-%global python3_pkgversion 39
+%if 0%{?el8} ||  0%{?el9}
+%global python3_version 3.11
+%global python3_pkgversion 3.11
 # For RHEL 'platform python' insanity: Simply put, no.
 %global __python3 %{_bindir}/python%{python3_version}
 %endif
@@ -12,7 +12,9 @@
 # Allow build without test
 %bcond_with tests
 
-Name:           pytz
+%global pypi_name pytz
+
+Name:           python-%{pypi_name}
 Version:        2019.3
 #Release:        3%%{?dist}
 Release:        0.3%{?dist}
@@ -45,9 +47,9 @@ Almost all (over 540) of the Olson timezones are supported.
 
 
 %if %{with python2}
-%package -n python2-%{name}
+%package -n python2-%{pypi_name}
 Summary:        %summary
-%{?python_provide:%python_provide python2-%{name}}
+%{?python_provide:%python_provide python2-%{pypi_name}}
 BuildRequires:  python2-devel
 %if %{with tests}
 BuildRequires:  python2-pytest
@@ -55,16 +57,16 @@ BuildRequires:  python2-pluggy
 %endif
 Requires:       tzdata
 # Remove before F30
-Provides: pytz = %{version}-%{release}
-Obsoletes: pytz < %{version}-%{release}
+Provides: %{pypi_name} = %{version}-%{release}
+Obsoletes: %{pypi_name} < %{version}-%{release}
 
-%description -n python2-%{name} %_description
+%description -n python2-%{pypi_name} %_description
 %endif
 
 
-%package -n python%{python3_pkgversion}-%{name}
+%package -n python%{python3_pkgversion}-%{pypi_name}
 Summary:        %summary
-%{?python_provide:%python_provide python%{python3_pkgversion}-%{name}}
+%{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-rpm-macros
 %if %{with tests}
@@ -73,12 +75,11 @@ BuildRequires:  python%{python3_pkgversion}-pluggy
 %endif
 Requires:       tzdata
 
-%description -n python%{python3_pkgversion}-%{name} %_description
+%description -n python%{python3_pkgversion}-%{pypi_name} %_description
 
 
 %prep
-%autosetup -p1
-
+%autosetup -p1 -n %{pypi_name}-%{version}
 
 %build
 %if %{with python2}
@@ -109,17 +110,17 @@ PYTHONPATH=%{buildroot}%{python3_sitelib} %{__python3} -m pytest -v
 
 
 %if %{with python2}
-%files -n python2-%{name}
+%files -n python2-%{pypi_name}
 %license LICENSE.txt
 %doc README.txt
-%{python2_sitelib}/pytz/
+%{python2_sitelib}/%{pypi_name}/
 %{python2_sitelib}/*.egg-info
 %endif
 
-%files -n python%{python3_pkgversion}-pytz
+%files -n python%{python3_pkgversion}-%{pypi_name}
 %license LICENSE.txt
 %doc README.txt
-%{python3_sitelib}/pytz/
+%{python3_sitelib}/%{pypi_name}/
 %{python3_sitelib}/*.egg-info
 
 
