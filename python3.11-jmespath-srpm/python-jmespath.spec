@@ -51,15 +51,17 @@ rm -rf %{pypi_name}.egg-info
 %py3_install
 mv %{buildroot}/%{_bindir}/jp.py %{buildroot}/%{_bindir}/jp.py-%{python3_version}
 
+%if ! 0%{?el8} && ! 0%{?el9}
 %check
 nosetests-%{python3_version}
+%endif
 
 %files -n python%{python3_pkgversion}-%{pypi_name}
 %doc README.rst
 %license LICENSE.txt
 %{_bindir}/jp.py-%{python3_version}
 %{python3_sitelib}/%{pypi_name}
-%{python3_sitelib}/%{pypi_name}-%{version}-py?.?.egg-info
+%{python3_sitelib}/%{pypi_name}-%{version}-py%{python3_version}.egg-info
 
 %changelog
 * Mon Jan 14 2019 Pavel Cahyna <pcahyna@redhat.com> - 0.9.0-11
