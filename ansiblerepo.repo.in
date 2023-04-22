@@ -4,6 +4,7 @@ baseurl=file://@REPOBASEDIR@/ansiblerepo/@RELEASEDIR@/$releasever/$basearch
 enabled=0
 gpgcheck=0
 metadata_expire=1
+skip_if_missing=0
 
 [ansiblerepo-source]
 name=Ansible local repo - Source
@@ -11,3 +12,4 @@ baseurl=file://@REPOBASEDIR@/ansiblerepo/@RELEASEDIR@/$releasever/SRPMS/
 enabled=0
 gpgcheck=0
 metadata_expire=1
+skip_if_missing=0
