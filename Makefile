@@ -77,6 +77,7 @@ ANSIBLEPKGS+=ansible-pcp-srpm
 # Has built-in ansible bundle reuirement
 ANSIBLEPKGS+=ansible-inventory-grapher-srpm
 
+REPOS+=ansiblerepo/el/7
 REPOS+=ansiblerepo/el/8
 REPOS+=ansiblerepo/el/9
 REPOS+=ansiblerepo/fedora/38
