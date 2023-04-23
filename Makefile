@@ -39,6 +39,10 @@ ANSIBLEPKGS+=python3.11-jinja2-srpm
 ANSIBLEPKGS+=python3.11-mock-srpm
 ANSIBLEPKGS+=ansible-core-2.15.x-srpm
 
+# For RHEL 7
+##ANSIBLEPKGS+=ansible-core-2.11.x-srpm
+##ANSIBLEPKGS+=ansible-4.x-srpm
+
 # Needed for jmespath
 ANSIBLEPKGS+=python3.11-nose-srpm
 
