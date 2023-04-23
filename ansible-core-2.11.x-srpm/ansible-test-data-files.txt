@@ -1,0 +1,1 @@
+/usr/lib/python[0-9]+\.[0-9]+/site-packages/ansible_test/_data/.*
