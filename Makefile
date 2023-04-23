@@ -12,13 +12,8 @@ REPOBASE=file://$(PWD)
 #ANSIBLEPKGS+=pyflakes-srpm
 ANSIBLEPKGS+=pyproject-rpm-macros-srpm
 ANSIBLEPKGS+=ansible-collections-openstack-srpm
-#ANSIBLEPKGS+=python39-ansible-generator-srpm
 ANSIBLEPKGS+=python3.11-babel-srpm
 ANSIBLEPKGS+=python3.11-coverage-srpm
-#ANSIBLEPKGS+=python39-docutils-srpm
-#ANSIBLEPKGS+=python39-invoke-srpm
-#ANSIBLEPKGS+=python39-lark-parser-srpm
-#ANSIBLEPKGS+=python39-pretend-srpm
 ANSIBLEPKGS+=python3.11-pytz-srpm
 ANSIBLEPKGS+=python3.11-resolvelib-srpm
 ANSIBLEPKGS+=python3.11-ruamel-yaml-clib-srpm
@@ -27,10 +22,8 @@ ANSIBLEPKGS+=python3.11-unittest2-srpm
 
 # Ansible repo based packages
 ANSIBLEPKGS+=python3.11-markupsafe-srpm
-#ANSIBLEPKGS+=python39-progress-srpm
 
 # Build testing requirements
-##ANSIBLEPKGS+=python39-asyncio-pool-sprm
 ##ANSIBLEPKGS+=antsibull-core-srpm
 ##ANSIBLEPKGS+=antsibull-default-srpm
 ##ANSIBLEPKGS+=antsibull-docs-srpm
@@ -44,17 +37,14 @@ ANSIBLEPKGS+=python3.11-jinja2-srpm
 ##ANSIBLEPKGS+=python-ansible-compat-srpm
 
 ANSIBLEPKGS+=python3.11-mock-srpm
-##ANSIBLEPKGS+=python39-packaging-srpm
 ANSIBLEPKGS+=ansible-core-2.15.x-srpm
 
 # For RHEL 7
 ##ANSIBLEPKGS+=ansible-core-2.11.x-srpm
 ##ANSIBLEPKGS+=ansible-4.x-srpm
 
-# Requires coverage
 # Needed for jmespath
 ANSIBLEPKGS+=python3.11-nose-srpm
-#ANSIBLEPKGS+=python39-pbr-srpm
 
 ANSIBLEPKGS+=python3.11-jmespath-srpm
 
@@ -70,11 +60,6 @@ ANSIBLEPKGS+=python3.11-ruamel-yaml-srpm
 # RHEL 3 and 9 lack this with python3.11
 ANSIBLEPKGS+=python3.11-setuptools_scm-srpm
 
-##ANSIBLEPKGS+=python39-commentjson-srpm
-##ANSIBLEPKGS+=python39-flake8-srpm
-#
-##ANSIBLEPKGS+=python39-pytest-forked-srpm
-##ANSIBLEPKGS+=python39-pytest-xdist-srpm
 #
 ANSIBLEPKGS+=ansible-collection-ansible-netcommon-srpm
 ANSIBLEPKGS+=ansible-collection-ansible-posix-srpm
@@ -111,7 +96,7 @@ CFGS+=ansiblerepo-f38-x86_64.cfg
 # Amazon 2 config
 CFGS+=ansiblerepo-amz2-x86_64.cfg
 
-# /etc/mock version lacks python39 modules
+# /etc/mock version lacks python3.11 modules
 CFGS+=centos-stream+epel-8-x86_64.cfg
 
 # Link from /etc/mock
@@ -141,22 +126,6 @@ install clean getsrc build srpm src.rpm::
 #	     git submodule update --init $@
 
 # Dependencies of libraries on other libraries for compilation
-
-#python39-commentjson-srpm:: python39-lark-parser-srpm
-#python39-entrypoints-srpm:: python39-commentjson-srpm
-#
-#python39-flake8-srpm:: pyflakes-srpm
-#
-#python39-resolvelib-srpm:: python39-flake8-srpm
-#python39-resolvelib-srpm:: python39-commentjson-srpm
-#
-#ansible-core-2.11.x-srpm:: python39-resolvelib-srpm
-##ansible-core-2.12.x-srpm:: python39-resolvelib-srpm
-#ansible-core-2.13.x-srpm:: python39-resolvelib-srpm
-#
-#ansible-4.x-srpm:: ansible-core-2.11.x-srpm
-##ansible-5.x-srpm:: ansible-core-2.12.x-srpm
-#ansible-6.x-srpm:: ansible-core-2.13.x-srpm
 
 # Actually build in directories
 .PHONY: $(ANSIBLEPKGS)
@@ -188,9 +157,6 @@ $(MOCKCFGS)::
 centos-stream+epel-8-x86_64.cfg:: /etc/mock/centos-stream+epel-8-x86_64.cfg
 	@echo Generating $@ from $?
 	@echo "include('$?')" | tee $@
-	@echo "# Enable python39 modules" | tee -a $@
-	@echo "config_opts['module_setup_commands'] = [ ('enable', 'python39'), ('enable', 'python39-devel') ]" | tee -a $@
-	@echo "# Disable best" | tee -a $@
 	@echo "config_opts['dnf_vars'] = { 'best': 'False' }" | tee -a $@
 
 ansiblerepo-7-x86_64.cfg: /etc/mock/centos+epel-7-x86_64.cfg
@@ -212,8 +178,6 @@ ansiblerepo-8-x86_64.cfg: /etc/mock/centos-stream+epel-8-x86_64.cfg
 	@echo Generating $@ from $?
 	@echo "include('$?')" | tee $@
 	@echo "config_opts['root'] = 'ansiblerepo-{{ releasever }}-{{ target_arch }}'" | tee -a $@
-	@echo "# Enable python39 modules" | tee -a $@
-	@echo "config_opts['module_setup_commands'] = [ ('enable', 'python39'), ('enable', 'python39-devel') ]" | tee -a $@
 	@echo "# Disable best" | tee -a $@
 	@echo "config_opts['dnf_vars'] = { 'best': 'False' }" | tee -a $@
 	@echo "config_opts['dnf.conf'] += \"\"\"" | tee -a $@
