@@ -46,10 +46,10 @@ BuildRequires:  findutils
 BuildRequires:  hardlink
 BuildRequires:  rsync
 
-BuildRequires:  ansible-core < 2.16
+BuildRequires:  ansible-core < 2.16.0
 # Roll back demand for 2.15 for older ansible-core
 # Use 2.11.9 to avoid accidental published Fedora conflict
-BuildRequires:  ansible-core >= 2.11.9
+BuildRequires:  ansible-core >= 2.15.0
 %if 0%{?el8}
 BuildRequires:  python%{python3_pkgversion}-rpm-macros
 %endif
