@@ -28,7 +28,7 @@
 Name: ansible-core
 Summary: A radically simple IT automation system
 Version: 2.15.0
-Release: 0.1%{?betaver}%{?dist}
+Release: 0.2%{?betaver}%{?dist}
 
 License: GPLv3+
 Source0: %pypi_source ansible-core %{version}%{?betaver}
@@ -177,6 +177,12 @@ This package installs extensive documentation for ansible-core
 %prep
 %autosetup -p1 -n %{name}-%{version}%{?betaver}
 
+# RPM dependency generation confused by dependencies on RHEL 8,
+# python 3.11 has this modle built in
+%if 0%{?el8}
+sed -i.bak 's/^importlib_resources /#importlib_resources /g' requirements.txt
+%endif
+
 # pytest in Fedora 38 does not support --forked opton
 %if 0%{?fc38}
 sed -i.bak '/--forked/d' test/lib/ansible_test/_internal/commands/units/__init__.py
@@ -293,7 +299,11 @@ make PYTHON=%{__python3} tests-py3
 %endif
 
 %changelog
-* Mon Mar 27  2023 Nico Kadel-Garcia - 2.14.4-0.1
+* Sun Apr 23 2023 Nico Kadel-Garcia - 2.14.4-0.1
+- Update to 2.15.0b2
+- Disable conditional importlib-resources from requirements.txt on RHEL 8
+
+* Mon Mar 27 2023 Nico Kadel-Garcia - 2.14.4-0.1
 - Update to 2.14.4
 
 * Tue Feb 28 2023 Nico Kadel-Garcia - 2.14.3-0.1
