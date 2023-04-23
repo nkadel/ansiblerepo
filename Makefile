@@ -39,10 +39,6 @@ ANSIBLEPKGS+=python3.11-jinja2-srpm
 ANSIBLEPKGS+=python3.11-mock-srpm
 ANSIBLEPKGS+=ansible-core-2.15.x-srpm
 
-# For RHEL 7
-##ANSIBLEPKGS+=ansible-core-2.11.x-srpm
-##ANSIBLEPKGS+=ansible-4.x-srpm
-
 # Needed for jmespath
 ANSIBLEPKGS+=python3.11-nose-srpm
 
@@ -81,7 +77,6 @@ ANSIBLEPKGS+=ansible-pcp-srpm
 # Has built-in ansible bundle reuirement
 ANSIBLEPKGS+=ansible-inventory-grapher-srpm
 
-REPOS+=ansiblerepo/el/7
 REPOS+=ansiblerepo/el/8
 REPOS+=ansiblerepo/el/9
 REPOS+=ansiblerepo/fedora/38
@@ -89,7 +84,6 @@ REPOS+=ansiblerepo/amazon/2
 
 REPODIRS := $(patsubst %,%/x86_64/repodata,$(REPOS)) $(patsubst %,%/SRPMS/repodata,$(REPOS))
 
-CFGS+=ansiblerepo-7-x86_64.cfg
 CFGS+=ansiblerepo-8-x86_64.cfg
 CFGS+=ansiblerepo-9-x86_64.cfg
 CFGS+=ansiblerepo-f38-x86_64.cfg
@@ -100,7 +94,6 @@ CFGS+=ansiblerepo-amz2-x86_64.cfg
 CFGS+=centos-stream+epel-8-x86_64.cfg
 
 # Link from /etc/mock
-MOCKCFGS+=centos+epel-7-x86_64.cfg
 MOCKCFGS+=centos-stream+epel-9-x86_64.cfg
 MOCKCFGS+=fedora-38-x86_64.cfg
 MOCKCFGS+=amazonlinux-2-x86_64.cfg
@@ -158,20 +151,6 @@ centos-stream+epel-8-x86_64.cfg:: /etc/mock/centos-stream+epel-8-x86_64.cfg
 	@echo Generating $@ from $?
 	@echo "include('$?')" | tee $@
 	@echo "config_opts['dnf_vars'] = { 'best': 'False' }" | tee -a $@
-
-ansiblerepo-7-x86_64.cfg: /etc/mock/centos+epel-7-x86_64.cfg
-	@echo Generating $@ from $?
-	@echo "include('$?')" | tee $@
-	@echo "config_opts['root'] = 'ansiblerepo-{{ releasever }}-{{ target_arch }}'" | tee -a $@
-	@echo "config_opts['yum.conf'] += \"\"\"" | tee -a $@
-	@echo '[ansiblerepo]' | tee -a $@
-	@echo 'name=ansiblerepo' | tee -a $@
-	@echo 'enabled=1' | tee -a $@
-	@echo 'baseurl=$(REPOBASE)/ansiblerepo/el/7/x86_64/' | tee -a $@
-	@echo 'skip_if_unavailable=False' | tee -a $@
-	@echo 'metadata_expire=1s' | tee -a $@
-	@echo 'gpgcheck=0' | tee -a $@
-	@echo '"""' | tee -a $@
 
 # packages-microsoft-com-prod added for /bin/pwsh
 ansiblerepo-8-x86_64.cfg: /etc/mock/centos-stream+epel-8-x86_64.cfg
