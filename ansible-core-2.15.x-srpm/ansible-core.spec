@@ -23,7 +23,7 @@
 
 # Set this when there's a beta or rc version
 #%%global betaver %%{nil}
-%global betaver b2
+%global betaver b3
 
 Name: ansible-core
 Summary: A radically simple IT automation system
@@ -178,7 +178,7 @@ This package installs extensive documentation for ansible-core
 %autosetup -p1 -n %{name}-%{version}%{?betaver}
 
 # RPM dependency generation confused by dependencies on RHEL 8,
-# python 3.11 has this modle built in
+# python 3.11 has this module built in
 %if 0%{?el8}
 sed -i.bak 's/^importlib_resources /#importlib_resources /g' requirements.txt
 %endif
@@ -299,7 +299,10 @@ make PYTHON=%{__python3} tests-py3
 %endif
 
 %changelog
-* Sun Apr 23 2023 Nico Kadel-Garcia - 2.14.4-0.1
+* Tue Apr 25 2023 Nico Kadel-Garcia - 2.15.5.0b3-0.1
+- Update to 2.15.0b2
+
+* Sun Apr 23 2023 Nico Kadel-Garcia - 2.15.0b2-0.1
 - Update to 2.15.0b2
 - Disable conditional importlib-resources from requirements.txt on RHEL 8
 
