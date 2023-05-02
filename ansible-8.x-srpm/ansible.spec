@@ -87,6 +87,9 @@ rm -rf *.egg-info
 # Avoid syntax error of requirements in RPM
 sed -i.bak 's/ ~= / >= /g' setup.py
 
+# Keep ansible-core dependencies compatible with RPM
+sed -i.bak 's/^ansible-core~=2.15.0.*/ansible-core~=2.15.0/g' ansible.egg-info/requires.txt
+
 echo "[START] Fixing wrong-script-end-of-line-encoding in azure.azcollection"
 find %{pypi_realname}/azure/azcollection -type f -print -exec dos2unix -k '{}' \;
 
