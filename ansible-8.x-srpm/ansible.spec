@@ -13,7 +13,7 @@
 %global pypi_realname ansible_collections
 %global pypi_version 8.0.0
 # Set this when there's a beta or rc version
-%global betaver a2
+%global betaver a3
 
 # Disable thye burdensume and pointless hardlink among the ginormous
 # ansible_collection modules
@@ -87,23 +87,24 @@ rm -rf *.egg-info
 # Avoid syntax error of requirements in RPM
 sed -i.bak 's/ ~= / >= /g' setup.py
 
-# Keep ansible-core dependencies compatible with RPM
-sed -i.bak 's/^ansible-core~=2.15.0.*/ansible-core~=2.15.0/g' ansible.egg-info/requires.txt
+# Reset setup.py version requirement for RPM name consistency
+sed -i.bak "s/0rc.*'/0'/g" setup.py
 
 echo "[START] Fixing wrong-script-end-of-line-encoding in azure.azcollection"
-find %{pypi_realname}/azure/azcollection -type f -print -exec dos2unix -k '{}' \;
+find %{pypi_realname}/azure/azcollection -type f \
+     -exec dos2unix -k '{}' \;
 
 echo "[START] Fixing executale .py files in ${pypi_realname}/"
 find %{pypi_realname}/ -type f -executable -name '*.py*' \
-    -print -exec chmod a-x '{}' \;
+    -exec chmod a-x '{}' \;
 
 echo "[START] Fixing executale .ps1 files in ${pypi_realname}/"
 find %{pypi_realname}/ -type f -executable -name '*.ps1*' \
-    -print -exec chmod a-x '{}' \;
+    -exec chmod a-x '{}' \;
 
 echo "[START] Fixing executable iles in {pypi_realname}/community/mongodb/roles/*/{files,templates}"
 find %{pypi_realname}/community/mongodb/roles/*/{files,templates} -type f ! -executable -name '*.sh*' \
-    -print -exec chmod a+x '{}' \;
+    -exec chmod a+x '{}' \;
 
 echo "[START] Delete '#!' line in %{pypi_realname}/cyberark/conjur/Jenkinsfile"
 sed -i -e '1{\@^#!.*@d}' %{pypi_realname}/cyberark/conjur/Jenkinsfile
@@ -115,7 +116,7 @@ echo "[START] Delete unnecessary files and directories"
 # Collection tarballs contain a lot of hidden files and directories
 echo "[START] Clear hidden files and directories"
 hidden_pattern=".*\.(DS_Store|all-contributorsrc|ansible-lint|azure-pipelines|circleci|codeclimate.yml|flake8|galaxy_install_info|gitattributes|github|gitignore|gitkeep|gitlab-ci.yml|idea|keep|mypy_cache|nojekyll|orig|plugin-cache.yaml|pre-commit-config.yaml|project|pydevproject|pytest_cache|pytest_cache|readthedocs.yml|settings|swp|travis.yml|vscode|yamllint|yamllint.yaml|zuul.d|zuul.yaml|rstcheck.cfg|placeholder)$"
-find %{pypi_realname} -depth -regextype posix-egrep -regex "${hidden_pattern}" -print -exec rm -r {} \;
+find %{pypi_realname} -depth -regextype posix-egrep -regex "${hidden_pattern}" -exec rm -r {} \;
 
 # Not needed for runtime
 rm -r %{pypi_realname}/netbox/netbox/hacking
@@ -123,8 +124,8 @@ rm -r %{pypi_realname}/cyberark/conjur/roles/conjur_host_identity/tests
 
 echo "[START] Flush tests"
 find %{pypi_realname} -type d | grep -E "tests/unit|tests/integration|tests/utils|tests/sanity|tests/runner|tests/regression" | \
+    LANG=C sort | \
     while read tests; do
-    echo Flushing tests: $tests
     rm -rf "$tests"
 done
 
@@ -132,7 +133,7 @@ done
 # from https://github.com/ansible/ansible/commit/9142be2f6cabbe6597c9254c5bb9186d17036d55.
 # Upstream, ansible-core has also removed shebangs from its modules.
 echo "[START] Clear shebang from non-executable .py files"
-find -type f ! -executable -name '*.py' -print -exec sed -i -e '1{\@^#!.*@d}' '{}' \;
+find -type f ! -executable -name '*.py' -exec sed -i -e '1{\@^#!.*@d}' '{}' \;
 
 # This ensures that %%ansible_core_requires is set properly, when %%pyproject_buildrequires is defined.
 # It also ensures that dependencies remain consistent.
@@ -194,6 +195,10 @@ hardlink -v %{buildroot}%{ansible_licensedir}
 %doc %{_defaultdocdir}/%{pypi_realname}-%{version}%{?betaver}/%{pypi_realname}
 
 %changelog
+* Tue May 2 2023 Nico Kadel-Garcia - 8.0.0a1-0.3
+- Update to 8.0.0a3
+- Reduce spew from find statements in %%setup
+
 * Wed Apr 12 2023 Nico Kadel-Garcia - 8.0.0a1-0.1
 - Update to 8.0.0a1
 
