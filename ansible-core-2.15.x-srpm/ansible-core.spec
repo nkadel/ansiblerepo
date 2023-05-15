@@ -22,8 +22,8 @@
 #%%endif
 
 # Set this when there's a beta or rc version
-#%%global betaver %%{nil}
-%global betaver rc2
+%global betaver %{nil}
+#%%global betaver rc2
 
 Name: ansible-core
 Summary: A radically simple IT automation system
@@ -299,6 +299,9 @@ make PYTHON=%{__python3} tests-py3
 %endif
 
 %changelog
+* Mon May 15 2023 Nico Kadel-Garcia - 2.15.0-0.1
+- Update to 2.15.0
+
 * Wed May 3 2023 Nico Kadel-Garcia - 2.15.0rc2-0.1
 - Update to 2.15.0rc2
 
