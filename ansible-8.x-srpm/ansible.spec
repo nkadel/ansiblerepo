@@ -13,7 +13,8 @@
 %global pypi_realname ansible_collections
 %global pypi_version 8.0.0
 # Set this when there's a beta or rc version
-%global betaver a3
+%global betaver b1
+#%%global betaver %%{nil}
 
 # Disable thye burdensume and pointless hardlink among the ginormous
 # ansible_collection modules
@@ -88,7 +89,7 @@ rm -rf *.egg-info
 sed -i.bak 's/ ~= / >= /g' setup.py
 
 # Reset setup.py version requirement for RPM name consistency
-sed -i.bak "s/0rc.*'/0'/g" setup.py
+sed -i.bak "s/\.0rc?/.0'/g" setup.py
 
 echo "[START] Fixing wrong-script-end-of-line-encoding in azure.azcollection"
 find %{pypi_realname}/azure/azcollection -type f \
