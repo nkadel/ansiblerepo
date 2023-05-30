@@ -13,8 +13,8 @@
 %global pypi_realname ansible_collections
 %global pypi_version 8.0.0
 # Set this when there's a beta or rc version
-%global betaver b1
-#%%global betaver %%{nil}
+#%%global betaver b1
+%global betaver %{nil}
 
 # Disable thye burdensume and pointless hardlink among the ginormous
 # ansible_collection modules
@@ -35,7 +35,7 @@
 Name:           %{pypi_name}
 #Name:           %%{pypi_realname}
 Version:        %{pypi_version}
-Release:        0.2%{?dist}
+Release:        0.3%{?dist}
 Summary:        Radically simple IT automation
 
 License:        GPLv3+
