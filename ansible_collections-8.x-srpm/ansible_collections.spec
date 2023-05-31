@@ -34,7 +34,7 @@
 Name:           %{pypi_realname}
 #Name:           %%{pypi_realname}
 Version:        %{pypi_version}
-Release:        0.3%{?dist}
+Release:        0.4%{?dist}
 Summary:        Radically simple IT automation
 
 License:        GPLv3+
@@ -195,6 +195,9 @@ hardlink -v %{buildroot}%{ansible_licensedir}
 %doc %{_defaultdocdir}/%{pypi_realname}-%{version}%{?betaver}/%{pypi_realname}
 
 %changelog
+* Tue May 31 2023 Nico Kadel-Garcia - 8.0.0-0.4
+- Update to 8.0.0
+
 * Tue May 2 2023 Nico Kadel-Garcia - 8.0.0a1-0.3
 - Update to 8.0.0a3
 - Reduce spew from find statements in %%setup
