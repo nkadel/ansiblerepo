@@ -22,8 +22,8 @@
 #%%endif
 
 # Set this when there's a beta or rc version
-#%%global betaver %{nil}
-%global betaver rc1
+%global betaver %{nil}
+#%%global betaver rc1
 
 Name: ansible-core
 Summary: A radically simple IT automation system
@@ -37,7 +37,9 @@ Url: https://ansible.com
 BuildArch: noarch
 
 # This makes the transition seamless for other packages
-Requires: (ansible-packaging if rpm-build)
+# Not all rpm versions support if statements
+#Requires: (ansible-packaging if rpm-build)
+Requires: ansible-packaging
 
 #Provides: ansible = %%{version}-%%{release}
 # For now conflict with the ansible 'classic' package.
@@ -123,8 +125,10 @@ BuildRequires: /usr/bin/pip
 %endif
 
 # RHEL8 doesn't have python3-paramiko or python3-winrm (yet), but Fedora does
+%if 0%{?el} > 8 || 0%{?fedora}
 Recommends: python%{python3_pkgversion}-paramiko
 Recommends: python%{python3_pkgversion}-winrm
+%endif
 
 # needed for json_query filter
 Requires: python%{python3_pkgversion}-jmespath
@@ -299,6 +303,9 @@ make PYTHON=%{__python3} tests-py3
 %endif
 
 %changelog
+* Tue Jul 18 2023 Nico Kadel-Garcia - 2.15.2-0.1
+- Update to 2.25.2
+
 * Mon Jul 17 2023 Nico Kadel-Garcia - 2.15.2-0.1rc1
 - Update to 2.15.2rc1
 
