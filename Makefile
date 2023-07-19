@@ -5,27 +5,30 @@
 #REOBASEE=http://localhost
 REPOBASE=file://$(PWD)
 
+# EPEL buildable packages
+
 #ANSIBLEPKGS+=ansible-openstack-modules-srpm
-
-# EPEL based packages
-#ANSIBLEPKGS+=ansible-freeipa-srpm
 #ANSIBLEPKGS+=pyflakes-srpm
-ANSIBLEPKGS+=pyproject-rpm-macros-srpm
-
-ANSIBLEPKGS+=ansible-packaging-srpm
 ANSIBLEPKGS+=ansible-collection-netcommon-srpm
-
 ANSIBLEPKGS+=ansible-collections-openstack-srpm
+ANSIBLEPKGS+=ansible-packaging-srpm
+ANSIBLEPKGS+=pyproject-rpm-macros-srpm
 ANSIBLEPKGS+=python3.11-babel-srpm
 ANSIBLEPKGS+=python3.11-coverage-srpm
-ANSIBLEPKGS+=python3.11-pytz-srpm
-ANSIBLEPKGS+=python3.11-resolvelib-srpm
-ANSIBLEPKGS+=python3.11-ruamel-yaml-clib-srpm
-ANSIBLEPKGS+=python3.11-toml-srpm
-ANSIBLEPKGS+=python3.11-unittest2-srpm
-
 # Ansible repo based packages
 ANSIBLEPKGS+=python3.11-markupsafe-srpm
+ANSIBLEPKGS+=python3.11-resolvelib-srpm
+ANSIBLEPKGS+=python3.11-ruamel-yaml-clib-srpm
+ANSIBLEPKGS+=python3.11-unittest2-srpm
+
+# Remaining packages require ansiblerepo
+#ANSIBLEPKGS+=ansible-freeipa-srpm
+
+ANSIBLEPKGS+=python3.11-pytz-srpm
+# RHEL 3 and 9 lack this with python3.11
+ANSIBLEPKGS+=python3.11-setuptools_scm-srpm
+ANSIBLEPKGS+=python3.11-toml-srpm
+
 
 # Build testing requirements
 ##ANSIBLEPKGS+=antsibull-core-srpm
@@ -56,9 +59,6 @@ ANSIBLEPKGS+=ansible_collections-8.x-srpm
 
 ## python3.11
 ANSIBLEPKGS+=python3.11-ruamel-yaml-srpm
-
-# RHEL 3 and 9 lack this with python3.11
-ANSIBLEPKGS+=python3.11-setuptools_scm-srpm
 
 #
 ANSIBLEPKGS+=ansible-collection-ansible-netcommon-srpm
