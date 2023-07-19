@@ -1,0 +1,39 @@
+From 0616c8cd27b47edadbc0bcfcb4d57610abe866e5 Mon Sep 17 00:00:00 2001
+From: Maxwell G <gotmax@e.email>
+Date: Thu, 8 Sep 2022 10:06:17 -0500
+Subject: [PATCH] build_ignore unnecessary files
+
+This is a downstream only patch. Upstream has reasons for continuing to
+include files.
+
+diff --git a/galaxy.yml b/galaxy.yml
+index 5671d47..4dacf87 100644
+--- a/galaxy.yml
++++ b/galaxy.yml
+@@ -14,3 +14,23 @@ tags: [networking, security, cloud, network_cli, netconf, httpapi, grpc]
+ # NOTE(pabelanger): We create an empty version key to keep ansible-galaxy
+ # happy. We dynamically inject version info based on git information.
+ version: null
++build_ignore:
++  - .pre-commit-config.yaml
++  - .gitignore
++  - .yamllint
++  - .github
++  - .flake8
++  - .isort.cfg
++  - .prettierignore
++  - tests
++  - changelogs/fragments/.keep
++  - requirements.txt
++  - test-requirements.txt
++  - tox.ini
++  # We install these files with %doc/%license. We don't want them duplicated.
++  - CHANGELOG.rst
++  - README.md
++  - LICENSE
++  - LICENSES
++  - docs
++
+-- 
+2.37.3
+
