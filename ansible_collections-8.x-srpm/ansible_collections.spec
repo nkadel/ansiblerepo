@@ -195,7 +195,7 @@ hardlink -v %{buildroot}%{ansible_licensedir}
 %doc %{_defaultdocdir}/%{pypi_realname}-%{version}%{?betaver}/%{pypi_realname}
 
 %changelog
-* Tue May 31 2023 Nico Kadel-Garcia - 8.0.0-0.4
+* Tue May 30 2023 Nico Kadel-Garcia - 8.0.0-0.4
 - Update to 8.0.0
 
 * Tue May 2 2023 Nico Kadel-Garcia - 8.0.0a1-0.3
