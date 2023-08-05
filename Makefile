@@ -12,9 +12,9 @@ REPOBASE=file://$(PWD)
 ANSIBLEPKGS+=ansible-collection-netcommon-srpm
 ANSIBLEPKGS+=ansible-collections-openstack-srpm
 ANSIBLEPKGS+=ansible-packaging-srpm
-ANSIBLEPKGS+=ansible-packaging-srpm
 ANSIBLEPKGS+=pyproject-rpm-macros-srpm
 
+ANSIBLEPKGS+=python3.11-Pallets-Sphinx-Themes-srpm
 ANSIBLEPKGS+=python3.11-babel-srpm
 ANSIBLEPKGS+=python3.11-coverage-srpm
 
@@ -22,6 +22,8 @@ ANSIBLEPKGS+=python3.11-markupsafe-srpm
 ANSIBLEPKGS+=python3.11-resolvelib-srpm
 ANSIBLEPKGS+=python3.11-ruamel-yaml-clib-srpm
 ANSIBLEPKGS+=python3.11-unittest2-srpm
+
+ANSIBLEPKGS+=rust-asn1-srpm
 
 # Remaining packages require ansiblerepo
 #ANSIBLEPKGS+=ansible-freeipa-srpm
@@ -38,7 +40,7 @@ ANSIBLEPKGS+=python3.11-toml-srpm
 ##ANSIBLEPKGS+=antsibull-docs-srpm
 ##ANSIBLEPKGS+=antsibull-srpm
 
-# Requires babel and markupsafe
+# Requires babel and markupsafe and Pallets-Sphinx-Theme
 ANSIBLEPKGS+=python3.11-jinja2-srpm
 
 # Incompatible with RHEL
