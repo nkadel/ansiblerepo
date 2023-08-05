@@ -4,7 +4,6 @@
 
 # Assure that sorting is case sensitive
 LANG=C
-#MOCKS+=ansiblerepo-7-x86_64
 MOCKS+=ansiblerepo-8-x86_64
 #MOCKS+=ansiblerepo-9-x86_64
 #MOCKS+=ansiblerepo-f38-x86_64
@@ -60,7 +59,6 @@ install:: $(MOCKS)
 	    case $$repo in \
 		amazonlinux-2023-x86_64) yumrelease=amazon/2023; yumarch=x86_64; ;; \
 		*-amz2023-x86_64) yumrelease=amazon/2023; yumarch=x86_64; ;; \
-		*-7-x86_64) yumrelease=el/7; yumarch=x86_64; ;; \
 		*-8-x86_64) yumrelease=el/8; yumarch=x86_64; ;; \
 		*-9-x86_64) yumrelease=el/9; yumarch=x86_64; ;; \
 		*-38-x86_64) yumrelease=fedora/38; yumarch=x86_64; ;; \
