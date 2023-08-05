@@ -1,1 +1,1 @@
-../Makefile.amz2
+../Makefile.amz2023
