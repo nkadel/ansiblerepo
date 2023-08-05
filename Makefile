@@ -5,25 +5,32 @@
 #REOBASEE=http://localhost
 REPOBASE=file://$(PWD)
 
-#ANSIBLEPKGS+=ansible-openstack-modules-srpm
+# EPEL buildable packages
 
-# EPEL based packages
-#ANSIBLEPKGS+=ansible-freeipa-srpm
+#ANSIBLEPKGS+=ansible-openstack-modules-srpm
 #ANSIBLEPKGS+=pyflakes-srpm
-ANSIBLEPKGS+=pyproject-rpm-macros-srpm
+ANSIBLEPKGS+=ansible-collection-netcommon-srpm
 ANSIBLEPKGS+=ansible-collections-openstack-srpm
-# Needed for amazon
 ANSIBLEPKGS+=ansible-packaging-srpm
+ANSIBLEPKGS+=ansible-packaging-srpm
+ANSIBLEPKGS+=pyproject-rpm-macros-srpm
+
 ANSIBLEPKGS+=python3.11-babel-srpm
 ANSIBLEPKGS+=python3.11-coverage-srpm
-ANSIBLEPKGS+=python3.11-pytz-srpm
+
+ANSIBLEPKGS+=python3.11-markupsafe-srpm
 ANSIBLEPKGS+=python3.11-resolvelib-srpm
 ANSIBLEPKGS+=python3.11-ruamel-yaml-clib-srpm
-ANSIBLEPKGS+=python3.11-toml-srpm
 ANSIBLEPKGS+=python3.11-unittest2-srpm
 
-# Ansible repo based packages
-ANSIBLEPKGS+=python3.11-markupsafe-srpm
+# Remaining packages require ansiblerepo
+#ANSIBLEPKGS+=ansible-freeipa-srpm
+
+ANSIBLEPKGS+=python3.11-pytz-srpm
+# RHEL 3 and 9 lack this with python3.11
+ANSIBLEPKGS+=python3.11-setuptools_scm-srpm
+ANSIBLEPKGS+=python3.11-toml-srpm
+
 
 # Build testing requirements
 ##ANSIBLEPKGS+=antsibull-core-srpm
@@ -54,9 +61,6 @@ ANSIBLEPKGS+=ansible_collections-8.x-srpm
 
 ## python3.11
 ANSIBLEPKGS+=python3.11-ruamel-yaml-srpm
-
-# RHEL 3 and 9 lack this with python3.11
-ANSIBLEPKGS+=python3.11-setuptools_scm-srpm
 
 #
 ANSIBLEPKGS+=ansible-collection-ansible-netcommon-srpm
@@ -89,10 +93,10 @@ REPODIRS := $(patsubst %,%/x86_64/repodata,$(REPOS)) $(patsubst %,%/SRPMS/repoda
 CFGS+=ansiblerepo-8-x86_64.cfg
 CFGS+=ansiblerepo-9-x86_64.cfg
 CFGS+=ansiblerepo-f38-x86_64.cfg
-# Amazon 2 config
+
+# Amazon 2023 config
 CFGS+=ansiblerepo-amz2023-x86_64.cfg
 
-# /etc/mock version lacks python3.11 modules
 CFGS+=centos-stream+epel-8-x86_64.cfg
 
 # Link from /etc/mock
@@ -228,7 +232,7 @@ ansiblerepo-rawhide-x86_64.cfg: /etc/mock/fedora-rawhide-x86_64.cfg
 	@echo 'gpgcheck=0' | tee -a $@
 	@echo '"""' | tee -a $@
 
-ansiblerepo-amz2023-x86_64.cfg: /etc/mock/amazonlinux-2-x86_64.cfg
+ansiblerepo-amz2023-x86_64.cfg: /etc/mock/amazonlinux-2023-x86_64.cfg
 	@echo Generating $@ from $?
 	@echo "include('$?')" | tee $@
 	@echo "config_opts['root'] = 'ansiblerepo-amz2023-{{ target_arch }}'" | tee -a $@
@@ -236,7 +240,7 @@ ansiblerepo-amz2023-x86_64.cfg: /etc/mock/amazonlinux-2-x86_64.cfg
 	@echo '[ansiblerepo]' | tee -a $@
 	@echo 'name=ansiblerepo' | tee -a $@
 	@echo 'enabled=1' | tee -a $@
-	@echo 'baseurl=$(REPOBASE)/ansiblerepo/amazon/2/x86_64/' | tee -a $@
+	@echo 'baseurl=$(REPOBASE)/ansiblerepo/amazon/2023/x86_64/' | tee -a $@
 	@echo 'skip_if_unavailable=False' | tee -a $@
 	@echo 'metadata_expire=1s' | tee -a $@
 	@echo 'gpgcheck=0' | tee -a $@
