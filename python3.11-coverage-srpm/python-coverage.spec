@@ -70,19 +70,26 @@ sed -i 's/\r//g' README.rst
 %install
 %py3_install
 rm %{buildroot}/%{_bindir}/coverage
+rm %{buildroot}/%{_bindir}/coverage3
 
 # make compat symlinks
 pushd %{buildroot}%{_bindir}
+%if ! 0%{?el8} && ! 0%{?el9}
 ln -s coverage-%{python3_version} coverage-3
+ln -s coverage-%{python3_version} coverage3
 ln -s coverage-%{python3_version} coverage
+%endif
 popd
 
 %files -n python%{python3_pkgversion}-coverage
 %license LICENSE.txt NOTICE.txt
 %doc README.rst
+%if ! 0%{?el8} && ! 0%{?el9}
 %{_bindir}/coverage
 %{_bindir}/coverage3
-%{_bindir}/coverage-3*
+%{_bindir}/coverage-3
+%endif
+%{_bindir}/coverage-%{python3_version}
 %{python3_sitearch}/coverage/
 %{python3_sitearch}/coverage*.egg-info/
 
