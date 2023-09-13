@@ -29,7 +29,6 @@ ANSIBLEPKGS+=python3.11-pytz-srpm
 ANSIBLEPKGS+=python3.11-setuptools_scm-srpm
 ANSIBLEPKGS+=python3.11-toml-srpm
 
-
 # Build testing requirements
 ##ANSIBLEPKGS+=antsibull-core-srpm
 ##ANSIBLEPKGS+=antsibull-default-srpm
@@ -145,7 +144,6 @@ cfg:: cfgs
 .PHONY: cfgs
 cfgs:: $(CFGS)
 cfgs:: $(MOCKCFGS)
-
 
 $(MOCKCFGS)::
 	@echo Generating $@ from $?
