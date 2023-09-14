@@ -48,9 +48,7 @@ BuildRequires:  hardlink
 BuildRequires:  rsync
 
 BuildRequires:  ansible-core < 2.16.0
-# Roll back demand for 2.15 for older ansible-core
-# Use 2.11.9 to avoid accidental published Fedora conflict
-BuildRequires:  ansible-core >= 2.15.0
+BuildRequires:  ansible-core >= 2.15.4
 %if 0%{?el8}
 BuildRequires:  python%{python3_pkgversion}-rpm-macros
 %endif
@@ -196,7 +194,7 @@ hardlink -v %{buildroot}%{ansible_licensedir}
 %doc %{_defaultdocdir}/%{pypi_realname}-%{version}%{?betaver}/%{pypi_realname}
 
 %changelog
-* Wed Sep 12 2023 Nico Kadel-Garcia - 8.4.0-0.1
+* Wed Sep 13 2023 Nico Kadel-Garcia - 8.4.0-0.1
 - Update to 8.4.0
 
 * Tue May 30 2023 Nico Kadel-Garcia - 8.0.0-0.4

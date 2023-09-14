@@ -48,6 +48,7 @@ ANSIBLEPKGS+=ansible-core-2.15.x-srpm
 # Needed for jmespath
 ANSIBLEPKGS+=python3.11-nose-srpm
 
+# Requires nose
 ANSIBLEPKGS+=python3.11-jmespath-srpm
 
 # Restrict to latest version
