@@ -83,14 +83,14 @@ ANSIBLEPKGS+=ansible-inventory-grapher-srpm
 
 REPOS+=ansiblerepo/el/8
 REPOS+=ansiblerepo/el/9
-REPOS+=ansiblerepo/fedora/38
+REPOS+=ansiblerepo/fedora/39
 REPOS+=ansiblerepo/amazon/2023
 
 REPODIRS := $(patsubst %,%/x86_64/repodata,$(REPOS)) $(patsubst %,%/SRPMS/repodata,$(REPOS))
 
 CFGS+=ansiblerepo-8-x86_64.cfg
 CFGS+=ansiblerepo-9-x86_64.cfg
-CFGS+=ansiblerepo-f38-x86_64.cfg
+CFGS+=ansiblerepo-f39-x86_64.cfg
 # Amazon 2 023config
 CFGS+=ansiblerepo-amz2023-x86_64.cfg
 
@@ -99,7 +99,7 @@ CFGS+=centos-stream+epel-8-x86_64.cfg
 
 # Link from /etc/mock
 MOCKCFGS+=centos-stream+epel-9-x86_64.cfg
-MOCKCFGS+=fedora-38-x86_64.cfg
+MOCKCFGS+=fedora-39-x86_64.cfg
 MOCKCFGS+=amazonlinux-2023-x86_64.cfg
 
 all:: install
@@ -201,7 +201,7 @@ ansiblerepo-9-x86_64.cfg: centos-stream+epel-9-x86_64.cfg
 	@echo 'gpgkey=https://packages.microsoft.com/keys/microsoft.asc' | tee -a $@
 	@echo '"""' | tee -a $@
 
-ansiblerepo-f38-x86_64.cfg: /etc/mock/fedora-38-x86_64.cfg
+ansiblerepo-f39-x86_64.cfg: /etc/mock/fedora-39-x86_64.cfg
 	@echo Generating $@ from $?
 	@echo "include('$?')" | tee $@
 	@echo "config_opts['root'] = 'ansiblerepo-f{{ releasever }}-{{ target_arch }}'" | tee -a $@
@@ -209,7 +209,7 @@ ansiblerepo-f38-x86_64.cfg: /etc/mock/fedora-38-x86_64.cfg
 	@echo '[ansiblerepo]' | tee -a $@
 	@echo 'name=ansiblerepo' | tee -a $@
 	@echo 'enabled=1' | tee -a $@
-	@echo 'baseurl=$(REPOBASE)/ansiblerepo/fedora/38/x86_64/' | tee -a $@
+	@echo 'baseurl=$(REPOBASE)/ansiblerepo/fedora/39/x86_64/' | tee -a $@
 	@echo 'skip_if_unavailable=False' | tee -a $@
 	@echo 'metadata_expire=1s' | tee -a $@
 	@echo 'gpgcheck=0' | tee -a $@
