@@ -43,7 +43,7 @@ ANSIBLEPKGS+=python3.11-jinja2-srpm
 ##ANSIBLEPKGS+=python-ansible-compat-srpm
 
 ANSIBLEPKGS+=python3.11-mock-srpm
-ANSIBLEPKGS+=ansible-core-2.15.x-srpm
+ANSIBLEPKGS+=ansible-core-2.16.x-srpm
 
 # Needed for jmespath
 ANSIBLEPKGS+=python3.11-nose-srpm
@@ -52,10 +52,10 @@ ANSIBLEPKGS+=python3.11-nose-srpm
 ANSIBLEPKGS+=python3.11-jmespath-srpm
 
 # Restrict to latest version
-ANSIBLEPKGS+=ansible-8.x-srpm
+ANSIBLEPKGS+=ansible-9.x-srpm
 
 # Alternate names for 'ansible' packages, better indicates their content
-ANSIBLEPKGS+=ansible_collections-8.x-srpm
+ANSIBLEPKGS+=ansible_collections-9.x-srpm
 
 ## python3.11
 ANSIBLEPKGS+=python3.11-ruamel-yaml-srpm

@@ -22,12 +22,12 @@
 #%%endif
 
 # Set this when there's a beta or rc version
-%global betaver %{nil}
-#%%global betaver rc1
+#%%global betaver %{nil}
+%global betaver rc1
 
 Name: ansible-core
 Summary: A radically simple IT automation system
-Version: 2.15.4
+Version: 2.16.0
 Release: 0.1%{?betaver}%{?dist}
 
 License: GPLv3+
@@ -48,10 +48,6 @@ Conflicts: ansible < 2.11.0
 # obsoletes/provides for ansible-base
 #
 Obsoletes: ansible-base < 2.11.0
-
-# A 2.10.3 async test uses /usr/bin/python, which we do not have by default.
-# Patch the test to use /usr/bin/python3 as we have for our build.
-Patch1:  2.10.3-test-patch.patch
 
 %if %{with tests}
 #
@@ -201,7 +197,6 @@ sed -i.bak '/--forked/d' test/lib/ansible_test/_internal/commands/units/__init__
 
 %build
 sed -i -s 's|/usr/bin/env python$|%{__python3}|g' test/lib/ansible_test/_util/target/cli/ansible_test_cli_stub.py
-sed -i -s 's|/usr/bin/env python$|%{__python3}|g' hacking/build-ansible.py
 
 # disable the python -s shbang flag as we want to be able to find non system modules
 %global py3_shbang_opts %(echo %{py3_shbang_opts} | sed 's/-s//')
@@ -255,9 +250,6 @@ done
 mkdir -p %{buildroot}/etc/ansible/
 mkdir -p %{buildroot}/etc/ansible/roles/
 
-cp examples/hosts %{buildroot}/etc/ansible/
-cp examples/ansible.cfg %{buildroot}/etc/ansible/
-
 # no need to ship zero length files
 find %{buildroot}/%{python3_sitelib} -name .git_keep -exec rm -f {} \;
 find %{buildroot}/%{python3_sitelib} -name .travis.yml -exec rm -f {} \;
@@ -279,7 +271,7 @@ make PYTHON=%{__python3} tests-py3
 
 %files
 %license COPYING
-%doc README.rst PKG-INFO changelogs/CHANGELOG-*.rst
+%doc README.md PKG-INFO changelogs/CHANGELOG-*.rst
 %dir %{_sysconfdir}/ansible/
 %config(noreplace) %{_sysconfdir}/ansible/*
 %{_bindir}/ansible*
@@ -288,16 +280,11 @@ make PYTHON=%{__python3} tests-py3
 %{python3_sitelib}/ansible*
 %exclude %{python3_sitelib}/ansible_test
 
-%if 0%{?rhel}
-%exclude %{python3_sitelib}/ansible/_vendor/markupsafe/_speedups.c
-%endif
-
 %files -n ansible-test
 %{_bindir}/ansible-test
 %{python3_sitelib}/ansible_test
 
 %files -n ansible-core-doc
-%doc docs/docsite/rst
 %if %{with docs}
 %doc docs/docsite/_build/html
 %endif

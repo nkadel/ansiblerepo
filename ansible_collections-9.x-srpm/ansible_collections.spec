@@ -11,9 +11,9 @@
 # due to very confusing upsream renaming
 %global pypi_name ansible
 %global pypi_realname ansible_collections
-%global pypi_version 8.4.0
-#%%global betaver b1
-%global betaver %{nil}
+%global pypi_version 9.0.0
+%global betaver a3
+#%%global betaver %{nil}
 
 # Disable thye burdensume and pointless hardlink among the ginormous
 # ansible_collection modules
@@ -46,8 +46,8 @@ BuildRequires:  findutils
 BuildRequires:  hardlink
 BuildRequires:  rsync
 
-BuildRequires:  ansible-core < 2.16.0
-BuildRequires:  ansible-core >= 2.15.4
+BuildRequires:  ansible-core < 2.17.0
+BuildRequires:  ansible-core >= 2.16.0
 %if 0%{?el8}
 BuildRequires:  python%{python3_pkgversion}-rpm-macros
 %endif
@@ -60,8 +60,8 @@ BuildRequires:  python%{python3_pkgversion}-setuptools
 #BuildRequires:  python%%{python3_pkgversion}-sphinx
 #BuildRequires:  python%%{python3_pkgversion}-sphinx_rtd_theme
 
-Requires:       ansible-core < 2.16.0
-Requires:       ansible-core >= 2.11.6
+Requires:       ansible-core < 2.17.0
+Requires:       ansible-core >= 2.16.0
 
 %description
 Ansible is a radically simple IT automation system. It handles

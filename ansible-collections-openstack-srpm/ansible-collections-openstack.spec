@@ -20,12 +20,12 @@
 %{!?dlrn: %global tarsources ansible-collections-openstack}
 
 Name:           ansible-collections-openstack
-Version:        2.0.0
-Release:        0.3%{?alphatag}%{?dist}
+Version:        2.1.0
+Release:        0.1%{?alphatag}%{?dist}
 Summary:        Openstack Ansible collections
 License:        GPLv3+
 URL:            %{ansible_collection_url}
-Source0:        https://github.com/openstack/ansible-collections-openstack/archive/%{upstream_version}.tar.gz
+Source0:        https://github.com/openstack/ansible-collections-openstack/archive/refs/tags/%{version}.zip
 BuildArch:      noarch
 
 BuildRequires:  ansible-packaging
