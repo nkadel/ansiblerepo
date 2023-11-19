@@ -12,8 +12,9 @@
 %global pypi_name ansible
 %global pypi_realname ansible_collections
 %global pypi_version 9.0.0
-%global betaver b1
-#%%global betaver %{nil}
+# Set this when there's a beta or rc version
+%global betaver rc1
+#%%global betaver %%{nil}
 
 # Disable thye burdensume and pointless hardlink among the ginormous
 # ansible_collection modules
