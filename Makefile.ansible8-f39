@@ -63,7 +63,6 @@ install:: $(MOCKS)
 =======
 		amazonlinux-2-x86_64) yumrelease=amazon/2023; yumarch=x86_64; ;; \
 		*-amz2023-x86_64) yumrelease=amazon/2023; yumarch=x86_64; ;; \
-		*-7-x86_64) yumrelease=el/7; yumarch=x86_64; ;; \
 >>>>>>> origin/master:Makefile.ansible8-f39
 		*-8-x86_64) yumrelease=el/8; yumarch=x86_64; ;; \
 		*-9-x86_64) yumrelease=el/9; yumarch=x86_64; ;; \
