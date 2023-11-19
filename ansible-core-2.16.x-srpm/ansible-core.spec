@@ -23,11 +23,10 @@
 
 # Set this when there's a beta or rc version
 %global betaver %{nil}
-#%%global betaver rc1
 
 Name: ansible-core
 Summary: A radically simple IT automation system
-Version: 2.15.3
+Version: 2.16.0
 Release: 0.1%{?betaver}%{?dist}
 
 License: GPLv3+
@@ -48,10 +47,6 @@ Conflicts: ansible < 2.11.0
 # obsoletes/provides for ansible-base
 #
 Obsoletes: ansible-base < 2.11.0
-
-# A 2.10.3 async test uses /usr/bin/python, which we do not have by default.
-# Patch the test to use /usr/bin/python3 as we have for our build.
-Patch1:  2.10.3-test-patch.patch
 
 %if %{with tests}
 #

@@ -11,10 +11,10 @@
 # due to very confusing upsream renaming
 %global pypi_name ansible
 %global pypi_realname ansible_collections
-%global pypi_version 8.2.0
+%global pypi_version 9.0.0
 # Set this when there's a beta or rc version
-#%%global betaver b1
-%global betaver %{nil}
+%global betaver rc1
+#%%global betaver %{nil}
 
 # Disable thye burdensume and pointless hardlink among the ginormous
 # ansible_collection modules
@@ -47,10 +47,8 @@ BuildRequires:  findutils
 BuildRequires:  hardlink
 BuildRequires:  rsync
 
-BuildRequires:  ansible-core < 2.16.0
-# Roll back demand for 2.15 for older ansible-core
-# Use 2.11.9 to avoid accidental published Fedora conflict
-BuildRequires:  ansible-core >= 2.15.0
+BuildRequires:  ansible-core < 2.17.0
+BuildRequires:  ansible-core >= 2.16.0
 %if 0%{?el8}
 BuildRequires:  python%{python3_pkgversion}-rpm-macros
 %endif
@@ -63,8 +61,8 @@ BuildRequires:  python%{python3_pkgversion}-setuptools
 #BuildRequires:  python%%{python3_pkgversion}-sphinx
 #BuildRequires:  python%%{python3_pkgversion}-sphinx_rtd_theme
 
-Requires:       ansible-core < 2.16
-Requires:       ansible-core >= 2.11.6
+Requires:       ansible-core < 2.17.0
+Requires:       ansible-core >= 2.16.0
 
 %description
 Ansible is a radically simple IT automation system. It handles
@@ -196,6 +194,9 @@ hardlink -v %{buildroot}%{ansible_licensedir}
 %doc %{_defaultdocdir}/%{pypi_realname}-%{version}%{?betaver}/%{pypi_realname}
 
 %changelog
+* Wed Sep 13 2023 Nico Kadel-Garcia - 8.4.0-0.1
+- Update to 8.4.0
+
 * Tue May 30 2023 Nico Kadel-Garcia - 8.0.0-0.4
 - Update to 8.0.0
 

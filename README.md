@@ -1,7 +1,7 @@
 ansiblerepo
 ==========-
 
-Wrapper for SRPM building tools for ansible 8.x and ansible-core 2.15
+Wrapper for SRPM building tools for ansibl9 8.x and ansible-core 2.16
 using python3.11. CentOS 7 does not have python3.11 easily available,
 so it's no longer supported here for Ansible servers.
 

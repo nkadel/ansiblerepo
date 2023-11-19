@@ -33,7 +33,6 @@ ANSIBLEPKGS+=python3.11-pytz-srpm
 ANSIBLEPKGS+=python3.11-setuptools_scm-srpm
 ANSIBLEPKGS+=python3.11-toml-srpm
 
-
 # Build testing requirements
 ##ANSIBLEPKGS+=antsibull-core-srpm
 ##ANSIBLEPKGS+=antsibull-default-srpm
@@ -48,18 +47,19 @@ ANSIBLEPKGS+=python3.11-jinja2-srpm
 ##ANSIBLEPKGS+=python-ansible-compat-srpm
 
 ANSIBLEPKGS+=python3.11-mock-srpm
-ANSIBLEPKGS+=ansible-core-2.15.x-srpm
+ANSIBLEPKGS+=ansible-core-2.16.x-srpm
 
 # Needed for jmespath
 ANSIBLEPKGS+=python3.11-nose-srpm
 
+# Requires nose
 ANSIBLEPKGS+=python3.11-jmespath-srpm
 
 # Restrict to latest version
-ANSIBLEPKGS+=ansible-8.x-srpm
+ANSIBLEPKGS+=ansible-9.x-srpm
 
 # Alternate names for 'ansible' packages, better indicates their content
-ANSIBLEPKGS+=ansible_collections-8.x-srpm
+ANSIBLEPKGS+=ansible_collections-9.x-srpm
 
 ## python3.11
 ANSIBLEPKGS+=python3.11-ruamel-yaml-srpm
@@ -99,9 +99,8 @@ CFGS+=ansiblerepo-f39-x86_64.cfg
 # Amazon 2023 config
 CFGS+=ansiblerepo-amz2023-x86_64.cfg
 
-CFGS+=centos-stream+epel-8-x86_64.cfg
-
 # Link from /etc/mock
+MOCKCFGS+=centos-stream+epel-8-x86_64.cfg
 MOCKCFGS+=centos-stream+epel-9-x86_64.cfg
 MOCKCFGS+=fedora-39-x86_64.cfg
 MOCKCFGS+=amazonlinux-2023-x86_64.cfg
@@ -150,23 +149,16 @@ cfg:: cfgs
 cfgs:: $(CFGS)
 cfgs:: $(MOCKCFGS)
 
-
 $(MOCKCFGS)::
 	@echo Generating $@ from $?
 	@echo "include('/etc/mock/$@')" | tee $@
-
-centos-stream+epel-8-x86_64.cfg:: /etc/mock/centos-stream+epel-8-x86_64.cfg
-	@echo Generating $@ from $?
-	@echo "include('$?')" | tee $@
 	@echo "config_opts['dnf_vars'] = { 'best': 'False' }" | tee -a $@
 
 # packages-microsoft-com-prod added for /bin/pwsh
-ansiblerepo-8-x86_64.cfg: /etc/mock/centos-stream+epel-8-x86_64.cfg
+ansiblerepo-8-x86_64.cfg: ./centos-stream+epel-8-x86_64.cfg
 	@echo Generating $@ from $?
 	@echo "include('$?')" | tee $@
 	@echo "config_opts['root'] = 'ansiblerepo-{{ releasever }}-{{ target_arch }}'" | tee -a $@
-	@echo "# Disable best" | tee -a $@
-	@echo "config_opts['dnf_vars'] = { 'best': 'False' }" | tee -a $@
 	@echo "config_opts['dnf.conf'] += \"\"\"" | tee -a $@
 	@echo '[ansiblerepo]' | tee -a $@
 	@echo 'name=ansiblerepo' | tee -a $@
@@ -185,7 +177,7 @@ ansiblerepo-8-x86_64.cfg: /etc/mock/centos-stream+epel-8-x86_64.cfg
 	@echo '"""' | tee -a $@
 
 # packages-microsoft-com-prod added for /bin/pwsh
-ansiblerepo-9-x86_64.cfg: centos-stream+epel-9-x86_64.cfg
+ansiblerepo-9-x86_64.cfg: ./centos-stream+epel-9-x86_64.cfg
 	@echo Generating $@ from $?
 	@echo "include('$?')" | tee $@
 	@echo "config_opts['root'] = 'ansiblerepo-{{ releasever }}-{{ target_arch }}'" | tee -a $@
@@ -206,7 +198,7 @@ ansiblerepo-9-x86_64.cfg: centos-stream+epel-9-x86_64.cfg
 	@echo 'gpgkey=https://packages.microsoft.com/keys/microsoft.asc' | tee -a $@
 	@echo '"""' | tee -a $@
 
-ansiblerepo-f39-x86_64.cfg: /etc/mock/fedora-39-x86_64.cfg
+ansiblerepo-f39-x86_64.cfg: ./fedora-39-x86_64.cfg
 	@echo Generating $@ from $?
 	@echo "include('$?')" | tee $@
 	@echo "config_opts['root'] = 'ansiblerepo-f{{ releasever }}-{{ target_arch }}'" | tee -a $@
@@ -220,7 +212,7 @@ ansiblerepo-f39-x86_64.cfg: /etc/mock/fedora-39-x86_64.cfg
 	@echo 'gpgcheck=0' | tee -a $@
 	@echo '"""' | tee -a $@
 
-ansiblerepo-rawhide-x86_64.cfg: /etc/mock/fedora-rawhide-x86_64.cfg
+ansiblerepo-rawhide-x86_64.cfg: ./fedora-rawhide-x86_64.cfg
 	@echo Generating $@ from $?
 	@echo "include('$?')" | tee $@
 	@echo "config_opts['root'] = 'ansiblerepo-rawhide-{{ target_arch }}'" | tee -a $@
@@ -234,7 +226,7 @@ ansiblerepo-rawhide-x86_64.cfg: /etc/mock/fedora-rawhide-x86_64.cfg
 	@echo 'gpgcheck=0' | tee -a $@
 	@echo '"""' | tee -a $@
 
-ansiblerepo-amz2023-x86_64.cfg: /etc/mock/amazonlinux-2023-x86_64.cfg
+ansiblerepo-amz2023-x86_64.cfg: ./amazonlinux-2023-x86_64.cfg
 	@echo Generating $@ from $?
 	@echo "include('$?')" | tee $@
 	@echo "config_opts['root'] = 'ansiblerepo-amz2023-{{ target_arch }}'" | tee -a $@
