@@ -12,7 +12,6 @@ REPOBASE=file://$(PWD)
 ANSIBLEPKGS+=ansible-collection-netcommon-srpm
 ANSIBLEPKGS+=ansible-collections-openstack-srpm
 ANSIBLEPKGS+=ansible-packaging-srpm
-ANSIBLEPKGS+=pyproject-rpm-macros-srpm
 ANSIBLEPKGS+=python3.11-babel-srpm
 ANSIBLEPKGS+=python3.11-coverage-srpm
 # Ansible repo based packages
