@@ -152,6 +152,7 @@ $(MOCKCFGS)::
 ansiblerepo-8-x86_64.cfg: ./centos-stream+epel-8-x86_64.cfg
 	@echo Generating $@ from $?
 	@echo "include('$?')" | tee $@
+	@echo "config_opts['dnf_vars'] = { 'best': 'False' }" | tee -a $@
 	@echo "config_opts['root'] = 'ansiblerepo-{{ releasever }}-{{ target_arch }}'" | tee -a $@
 	@echo "config_opts['dnf.conf'] += \"\"\"" | tee -a $@
 	@echo '[ansiblerepo]' | tee -a $@
@@ -174,6 +175,7 @@ ansiblerepo-8-x86_64.cfg: ./centos-stream+epel-8-x86_64.cfg
 ansiblerepo-9-x86_64.cfg: centos-stream+epel-9-x86_64.cfg
 	@echo Generating $@ from $?
 	@echo "include('$?')" | tee $@
+	@echo "config_opts['dnf_vars'] = { 'best': 'False' }" | tee -a $@
 	@echo "config_opts['root'] = 'ansiblerepo-{{ releasever }}-{{ target_arch }}'" | tee -a $@
 	@echo "config_opts['dnf.conf'] += \"\"\"" | tee -a $@
 	@echo '[ansiblerepo]' | tee -a $@
@@ -195,6 +197,7 @@ ansiblerepo-9-x86_64.cfg: centos-stream+epel-9-x86_64.cfg
 ansiblerepo-f39-x86_64.cfg: ./fedora-39-x86_64.cfg
 	@echo Generating $@ from $?
 	@echo "include('$?')" | tee $@
+	@echo "config_opts['dnf_vars'] = { 'best': 'False' }" | tee -a $@
 	@echo "config_opts['root'] = 'ansiblerepo-f{{ releasever }}-{{ target_arch }}'" | tee -a $@
 	@echo "config_opts['dnf.conf'] += \"\"\"" | tee -a $@
 	@echo '[ansiblerepo]' | tee -a $@
@@ -209,6 +212,7 @@ ansiblerepo-f39-x86_64.cfg: ./fedora-39-x86_64.cfg
 ansiblerepo-rawhide-x86_64.cfg: ./fedora-rawhide-x86_64.cfg
 	@echo Generating $@ from $?
 	@echo "include('$?')" | tee $@
+	@echo "config_opts['dnf_vars'] = { 'best': 'False' }" | tee -a $@
 	@echo "config_opts['root'] = 'ansiblerepo-rawhide-{{ target_arch }}'" | tee -a $@
 	@echo "config_opts['dnf.conf'] += \"\"\"" | tee -a $@
 	@echo '[ansiblerepo]' | tee -a $@
@@ -223,6 +227,7 @@ ansiblerepo-rawhide-x86_64.cfg: ./fedora-rawhide-x86_64.cfg
 ansiblerepo-amz2023-x86_64.cfg: ./amazonlinux-2023-x86_64.cfg
 	@echo Generating $@ from $?
 	@echo "include('$?')" | tee $@
+	@echo "config_opts['dnf_vars'] = { 'best': 'False' }" | tee -a $@
 	@echo "config_opts['root'] = 'ansiblerepo-amz2023-{{ target_arch }}'" | tee -a $@
 	@echo "config_opts['dnf.conf'] += \"\"\"" | tee -a $@
 	@echo '[ansiblerepo]' | tee -a $@
