@@ -11,10 +11,9 @@
 # due to very confusing upsream renaming
 %global pypi_name ansible
 %global pypi_realname ansible_collections
-%global pypi_version 9.0.0
+%global pypi_version 9.0.1
 # Set this when there's a beta or rc version
-%global betaver rc1
-#%%global betaver %{nil}
+%global betaver %{nil}
 
 # Disable thye burdensume and pointless hardlink among the ginormous
 # ansible_collection modules
