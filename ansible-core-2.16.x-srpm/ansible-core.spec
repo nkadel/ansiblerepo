@@ -26,7 +26,7 @@
 
 Name: ansible-core
 Summary: A radically simple IT automation system
-Version: 2.16.2
+Version: 2.16.3
 Release: 0.1%{?betaver}%{?dist}
 
 License: GPLv3+
