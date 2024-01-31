@@ -11,7 +11,7 @@
 # due to very confusing upsream renaming
 %global pypi_name ansible
 %global pypi_realname ansible_collections
-%global pypi_version 9.1.0
+%global pypi_version 9.2.0
 # Set this when there's a beta or rc version
 %global betaver %{nil}
 
@@ -34,7 +34,7 @@
 Name:           %{pypi_name}
 #Name:           %%{pypi_realname}
 Version:        %{pypi_version}
-Release:        0.4%{?dist}
+Release:        0.1%{?dist}
 Summary:        Radically simple IT automation
 
 License:        GPLv3+
@@ -46,8 +46,8 @@ BuildRequires:  findutils
 BuildRequires:  hardlink
 BuildRequires:  rsync
 
-BuildRequires:  ansible-core < 2.17.0
-BuildRequires:  ansible-core >= 2.16.0
+#BuildRequires:  ansible-core < 2.17.0
+BuildRequires:  ansible-core >= 1:2.16.0
 %if 0%{?el8}
 BuildRequires:  python%{python3_pkgversion}-rpm-macros
 %endif
@@ -83,7 +83,7 @@ Documentation for ansible
 rm -rf *.egg-info
 
 # Avoid syntax error of requirements in RPM
-sed -i.bak 's/ ~= / >= /g' setup.py
+sed -i.bak 's/~=/>=/g' setup.py PKG-INFO
 
 # Reset setup.py version requirement for RPM name consistency
 sed -i.bak "s/\.0rc?/.0'/g" setup.py
@@ -193,6 +193,9 @@ hardlink -v %{buildroot}%{ansible_licensedir}
 %doc %{_defaultdocdir}/%{pypi_realname}-%{version}%{?betaver}/%{pypi_realname}
 
 %changelog
+* Wed Jan 31 2024 Nico Kadel-Garcia - 9.2.9-0.1
+- Update to 9.2.0
+
 * Wed Sep 13 2023 Nico Kadel-Garcia - 8.4.0-0.1
 - Update to 8.4.0
 

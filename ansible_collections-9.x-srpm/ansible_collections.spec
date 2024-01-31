@@ -34,7 +34,7 @@
 Name:           %{pypi_realname}
 #Name:           %%{pypi_realname}
 Version:        %{pypi_version}
-Release:        0.4%{?dist}
+Release:        0.1%{?dist}
 Summary:        Radically simple IT automation
 
 License:        GPLv3+
@@ -46,8 +46,8 @@ BuildRequires:  findutils
 BuildRequires:  hardlink
 BuildRequires:  rsync
 
-BuildRequires:  ansible-core < 2.17.0
-BuildRequires:  ansible-core >= 2.16.0
+#BuildRequires:  ansible-core < 2.17.0
+BuildRequires:  ansible-core >= 1:2.16.0
 %if 0%{?el8}
 BuildRequires:  python%{python3_pkgversion}-rpm-macros
 %endif
@@ -83,7 +83,7 @@ Documentation for ansible
 rm -rf *.egg-info
 
 # Avoid syntax error of requirements in RPM
-sed -i.bak 's/ ~= / >= /g' setup.py
+sed -i.bak 's/~=/>=/g' setup.py PKG-INFO
 
 # Reset setup.py version requirement for RPM name consistency
 sed -i.bak "s/\.0rc?/.0'/g" setup.py
@@ -94,7 +94,7 @@ find %{pypi_realname}/azure/azcollection -type f \
 
 echo "[START] Fixing executale .py files in ${pypi_realname}/"
 find %{pypi_realname}/ -type f -executable -name '*.py*' \
-    -exec chmod a-x '{}' \;
+    -exec chmod a-x '{}' \;5
 
 echo "[START] Fixing executale .ps1 files in ${pypi_realname}/"
 find %{pypi_realname}/ -type f -executable -name '*.ps1*' \
@@ -193,6 +193,9 @@ hardlink -v %{buildroot}%{ansible_licensedir}
 %doc %{_defaultdocdir}/%{pypi_realname}-%{version}%{?betaver}/%{pypi_realname}
 
 %changelog
+* Wed Jan 31 2024 Nico Kadel-Garcia - 9.2.9-0.1
+- Update to 9.2.0
+
 * Wed Sep 13 2023 Nico Kadel-Garcia - 8.4.0-0.1
 - Update to 8.4.0
 
