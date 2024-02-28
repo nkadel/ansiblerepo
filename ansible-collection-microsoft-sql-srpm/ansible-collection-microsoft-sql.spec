@@ -83,9 +83,11 @@ Requires: rhel-system-roles
 Requires: linux-system-roles
 %endif
 
+%global auto_version 1.75.1
 %global mainid cdc706f14614ef5e80bbce8db10beb369e889df9
 %global parenturl https://github.com/linux-system-roles
-Source: %{parenturl}/auto-maintenance/archive/%{mainid}/auto-maintenance-%{mainid}.tar.gz
+#Source: %{parenturl}/auto-maintenance/archive/%{mainid}/auto-maintenance-%{mainid}.tar.gz
+Source: https://github.com/linux-system-roles/auto-maintenance/archive/refs/tags/%{auto_version}.zip
 Source1: %{parenturl}/%{rolename}/archive/%{version}/%{rolename}-%{version}.tar.gz
 
 BuildArch: noarch
@@ -104,6 +106,7 @@ BuildRequires: highlight
 # Requirements for galaxy_transform.py
 BuildRequires: python%{python3_pkgversion}
 BuildRequires: python%{python3_pkgversion}-ruamel-yaml
+BuildRequires: python%{python3_pkgversion}-ruamel-yaml-clib
 
 %description
 This RPM installs the %{collection_namespace}.%{collection_name} Ansible
@@ -128,7 +131,8 @@ if st and st.type == "link" then
 end
 
 %prep
-%setup -q -a1 -n auto-maintenance-%{mainid}
+#%setup -q -a1 -n auto-maintenance-%{mainid}
+%setup -q -a1 -n auto-maintenance-%{auto_version}
 
 mv %{rolename}-%{version} %{rolename}
 
@@ -154,7 +158,7 @@ cp %{rolename}/.collection/galaxy.yml ./
 
 %if 0%{?rhel}
 # Ensure the correct entries in galaxy.yml
-./galaxy_transform.py "%{collection_namespace}" "%{collection_name}" "%{version}" \
+%{__python3} ./galaxy_transform.py "%{collection_namespace}" "%{collection_name}" "%{version}" \
                       "Ansible collection for Microsoft SQL Server management" \
                       "https://github.com/linux-system-roles/mssql" \
                       "https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/administration_and_configuration_tasks_using_system_roles_in_rhel/assembly_configuring-microsoft-sql-server-using-microsoft-sql-server-ansible-role_assembly_updating-packages-to-enable-automation-for-the-rhel-system-roles" \
@@ -162,7 +166,7 @@ cp %{rolename}/.collection/galaxy.yml ./
                       "https://bugzilla.redhat.com/enter_bug.cgi?product=Red%20Hat%20Enterprise%20Linux%208&component=ansible-collection-microsoft-sql" \
                       > galaxy.yml.tmp
 %else
-./galaxy_transform.py "%{collection_namespace}" "%{collection_name}" "%{version}" \
+%{__python3} ./galaxy_transform.py "%{collection_namespace}" "%{collection_name}" "%{version}" \
                       "Ansible collection for Microsoft SQL Server management" \
                       > galaxy.yml.tmp
 %endif
@@ -351,6 +355,10 @@ find %{buildroot}%{ansible_roles_dir} -mindepth 1 -maxdepth 1 | \
 %endif
 
 %changelog
+* Wed Feb 28 2024 Nico Kadel-Garcia <nkadel@gmail.com>
+- Use python3.11 for RHEL
+- Use __python3 to use python3.11 for .py scripts
+
 * Wed Jan 18 2023 Fedora Release Engineering <releng@fedoraproject.org> - 1.2.4-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_38_Mass_Rebuild
 
