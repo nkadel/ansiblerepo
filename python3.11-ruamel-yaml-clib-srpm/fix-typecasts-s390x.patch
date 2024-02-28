@@ -1,0 +1,38 @@
+diff -up ruamel-yaml-clib-code-85e484db2b7c37107e4edd2ae6fc380877bbc08e/_ruamel_yaml.pxd.s390x ruamel-yaml-clib-code-85e484db2b7c37107e4edd2ae6fc380877bbc08e/_ruamel_yaml.pxd
+--- ruamel-yaml-clib-code-85e484db2b7c37107e4edd2ae6fc380877bbc08e/_ruamel_yaml.pxd.s390x	2022-05-11 17:33:41.727476439 +0200
++++ ruamel-yaml-clib-code-85e484db2b7c37107e4edd2ae6fc380877bbc08e/_ruamel_yaml.pxd	2022-05-11 17:34:34.197700039 +0200
+@@ -86,10 +86,10 @@ cdef extern from "_ruamel_yaml.h":
+         YAML_MAPPING_END_EVENT
+ 
+     ctypedef int yaml_read_handler_t(void *data, char *buffer,
+-            int size, int *size_read) except 0
++            size_t size, size_t *size_read) except 0
+ 
+     ctypedef int yaml_write_handler_t(void *data, char *buffer,
+-            int size) except 0
++            size_t size) except 0
+ 
+     ctypedef struct yaml_mark_t:
+         int index
+diff -up ruamel-yaml-clib-code-85e484db2b7c37107e4edd2ae6fc380877bbc08e/_ruamel_yaml.pyx.s390x ruamel-yaml-clib-code-85e484db2b7c37107e4edd2ae6fc380877bbc08e/_ruamel_yaml.pyx
+--- ruamel-yaml-clib-code-85e484db2b7c37107e4edd2ae6fc380877bbc08e/_ruamel_yaml.pyx.s390x	2022-05-12 13:05:17.540913818 +0200
++++ ruamel-yaml-clib-code-85e484db2b7c37107e4edd2ae6fc380877bbc08e/_ruamel_yaml.pyx	2022-05-12 13:06:38.211269280 +0200
+@@ -904,7 +904,7 @@ cdef class CParser:
+                 raise error
+         return 1
+ 
+-cdef int input_handler(void *data, char *buffer, int size, int *read) except 0:
++cdef int input_handler(void *data, char *buffer, size_t size, size_t *read) except 0:
+     cdef CParser parser
+     parser = <CParser>data
+     if parser.stream_cache is None:
+@@ -1514,7 +1514,7 @@ cdef class CEmitter:
+             self.ascend_resolver()
+         return 1
+ 
+-cdef int output_handler(void *data, char *buffer, int size) except 0:
++cdef int output_handler(void *data, char *buffer, size_t size) except 0:
+     cdef CEmitter emitter
+     emitter = <CEmitter>data
+     if emitter.dump_unicode == 0:
+diff -up ruamel-yaml-clib-code-85e484db2b7c37107e4edd2ae6fc380877bbc08e/yaml.h.s390x ruamel-yaml-clib-code-85e484db2b7c37107e4edd2ae6fc380877bbc08e/yaml.h
