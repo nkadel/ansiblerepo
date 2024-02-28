@@ -12,8 +12,12 @@ REPOBASE=file://$(PWD)
 ANSIBLEPKGS+=ansible-collection-netcommon-srpm
 ANSIBLEPKGS+=ansible-collections-openstack-srpm
 ANSIBLEPKGS+=ansible-packaging-srpm
+
+ANSIBLEPKGS+=doctest-srpm
+
 ANSIBLEPKGS+=python3.11-babel-srpm
 ANSIBLEPKGS+=python3.11-coverage-srpm
+ANSIBLEPKGS+=python3.11-gast-srpm
 # Ansible repo based packages
 ANSIBLEPKGS+=python3.11-markupsafe-srpm
 ANSIBLEPKGS+=python3.11-resolvelib-srpm
@@ -33,6 +37,18 @@ ANSIBLEPKGS+=python3.11-toml-srpm
 ##ANSIBLEPKGS+=antsibull-default-srpm
 ##ANSIBLEPKGS+=antsibull-docs-srpm
 ##ANSIBLEPKGS+=antsibull-srpm
+
+# Requires doctest
+ANSIBLEPKGS+=xsimd-srpm
+
+# Requires gast
+ANSIBLEPKGS+=python3.11-beniget-srpm
+
+# Requires xsimd
+ANSIBLEPKGS+=python3.11-pythran-srpm
+
+# Requires pythran
+ANSIBLEPKGS+=python3.11-Cython-srpm
 
 # Requires babel and markupsafe
 ANSIBLEPKGS+=python3.11-jinja2-srpm
@@ -56,7 +72,7 @@ ANSIBLEPKGS+=ansible-9.x-srpm
 # Alternate names for 'ansible' packages, better indicates their content
 ANSIBLEPKGS+=ansible_collections-9.x-srpm
 
-## python3.11
+## Requires ruamel-blibc
 ANSIBLEPKGS+=python3.11-ruamel-yaml-srpm
 
 #
@@ -73,9 +89,8 @@ ANSIBLEPKGS+=ansible-collection-google-cloud-srpm
 ANSIBLEPKGS+=ansible-collection-netbox-netbox-srpm
 ANSIBLEPKGS+=ansible-pcp-srpm
 
-# Requires ruamel, not yet portable to older OS
-# Requires rubygem modules
-#ANSIBLEPKGS+=ansible-collection-microsoft-sql-srpm
+# Requires ruamel-yaml
+ANSIBLEPKGS+=ansible-collection-microsoft-sql-srpm
 
 # Has built-in ansible bundle reuirement
 ANSIBLEPKGS+=ansible-inventory-grapher-srpm
