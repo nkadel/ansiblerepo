@@ -1,0 +1,42 @@
+From cb3c78cfe89990d4b15ea8e2cbf4aa00ba528d3a Mon Sep 17 00:00:00 2001
+From: serge-sans-paille <serge.guelton@telecom-bretagne.eu>
+Date: Sun, 9 Jul 2023 17:56:35 +0200
+Subject: [PATCH] Use pythran logger instead of default logger to report
+ absence of spec
+
+Should fix #2121
+---
+ docs/CLI.rst    | 2 +-
+ pythran/spec.py | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/docs/CLI.rst b/docs/CLI.rst
+index d30d73c9d..fda4d061a 100644
+--- a/docs/CLI.rst
++++ b/docs/CLI.rst
+@@ -65,7 +65,7 @@ That's some heavily templated code ;-) Pythran can then compile it for you to a
+ Pythran can also generate raw C++ code, using the ``-e`` switch::
+ 
+   $> printf 'msg = \"hello world\"\ndef bar(): print(msg)' > cli_bar.py
+-  $> pythran -e cli_bar.py -o cli_bar.hpp
++  $> pythran -e cli_bar.py -w -o cli_bar.hpp
+   $> printf '#include \"cli_bar.hpp\"\nusing namespace __pythran_cli_bar ; int main() { bar()(); return 0 ; }' > cli_bar.cpp
+   $> `pythran-config --compiler --cflags` -std=c++11 cli_bar.cpp -o cli_bar
+   $> ./cli_bar
+diff --git a/pythran/spec.py b/pythran/spec.py
+index 64ab66aeb..41081a978 100644
+--- a/pythran/spec.py
++++ b/pythran/spec.py
+@@ -90,9 +90,9 @@ def __init__(self, functions, capsules=None):
+                 self.functions[fname] = (signatures,)
+ 
+         if not self:
+-            import logging
+-            logging.warning("No pythran specification, "
+-                            "nothing will be exported")
++            from pythran.log import logger
++            logger.warning("No pythran specification, "
++                           "nothing will be exported")
+ 
+     def keys(self):
+         return list(self.functions.keys()) + list(self.capsules.keys())

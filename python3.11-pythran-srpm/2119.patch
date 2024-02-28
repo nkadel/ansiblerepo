@@ -1,0 +1,24 @@
+From 1ba8363928d4f0a25bcdc8635a59a110d49702e5 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Miro=20Hron=C4=8Dok?= <miro@hroncok.cz>
+Date: Mon, 3 Jul 2023 22:11:21 +0200
+Subject: [PATCH] assertEquals was removed from unittest in Python 3.12
+
+---
+ pythran/tests/test_spec_parser.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/pythran/tests/test_spec_parser.py b/pythran/tests/test_spec_parser.py
+index a93fc38f2..b06f7b645 100644
+--- a/pythran/tests/test_spec_parser.py
++++ b/pythran/tests/test_spec_parser.py
+@@ -135,8 +135,8 @@ def zoo(i): return
+ #      pythran export zoo(str)
+ def bar(i): return
+             '''
+-        self.assertEquals(len(pythran.spec_parser(code).functions), 1)
+-        self.assertEquals(len(pythran.spec_parser(code).functions['zoo']), 2)
++        self.assertEqual(len(pythran.spec_parser(code).functions), 1)
++        self.assertEqual(len(pythran.spec_parser(code).functions['zoo']), 2)
+ 
+     def test_var_export0(self):
+         code = '''
