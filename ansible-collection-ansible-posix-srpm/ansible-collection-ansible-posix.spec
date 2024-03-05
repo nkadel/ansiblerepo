@@ -10,8 +10,8 @@
 %global collection_name posix
 
 Name:           ansible-collection-%{collection_namespace}-%{collection_name}
-Version:        1.3.0
-Release:        0.4%{?dist}
+Version:        1.5.4
+Release:        0.1%{?dist}
 Summary:        Ansible Collection targeting POSIX and POSIX-ish platforms
 
 # plugins/module_utils/mount.py: Python Software Foundation License version 2
@@ -78,6 +78,9 @@ fi
 %{ansible_collection_files}
 
 %changelog
+* Tue Mar 4 2024 Nico Kadel-Garcia <nkadel@gmail.com> - 1.5.4
+- update to 1.5.4
+
 * Thu Oct 14 2021 Sagi Shnaidman <sshnaidm@redhat.com> - 1.3.0-2
 - Use ansible or ansible-core as BuildRequires
 
