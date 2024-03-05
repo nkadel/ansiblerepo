@@ -10,7 +10,7 @@
 %global collection_name kubernetes
 
 Name:           ansible-collection-%{collection_namespace}-%{collection_name}
-Version:        2.0.0
+Version:        2.0.1
 Release:        0.1%{?dist}
 Summary:        Kubernetes Collection for Ansible
 
@@ -36,7 +36,10 @@ BuildArch:      noarch
 
 %prep
 %autosetup -n %{collection_namespace}.%{collection_name}-%{version}
-rm -vr tests/integration molecule .github .yamllint codecov.yml setup.cfg
+rm -vr .github
+rm -vr .yamllint
+rm -vr codecov.yml
+rm -vr setup.cfg
 find -type f ! -executable -name '*.py' -print -exec sed -i -e '1{\@^#!.*@d}' '{}' +
 find -type f -name '.gitignore' -print -delete
 
@@ -76,6 +79,9 @@ fi
 %{ansible_collection_files}
 
 %changelog
+* Tue Mar 5 2024 Nico Kadel-Garcia <nkadel@gmail.com> - 2.0.1
+- Update to 2.0.1
+
 * Wed Jul 21 2021 Fedora Release Engineering <releng@fedoraproject.org> - 1.1.1-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
 
