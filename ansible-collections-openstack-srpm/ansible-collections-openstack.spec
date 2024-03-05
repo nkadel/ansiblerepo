@@ -13,9 +13,9 @@
 %{!?dlrn: %global tarsources ansible-collections-openstack}
 
 Name:           ansible-collections-openstack
-Version:        2.1.0
-#Release:        2%%{?dist}
-Release:        0.2%{?dist}
+Version:        2.2.0
+#Release:        1%%{?dist}
+Release:        0.1%{?dist}
 Summary:        Openstack Ansible collections
 License:        GPLv3+
 URL:            %{ansible_collection_url}
