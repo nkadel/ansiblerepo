@@ -54,17 +54,19 @@ ANSIBLEPKGS+=python3.11-jmespath-srpm
 ANSIBLEPKGS+=ansible-9.x-srpm
 
 # Alternate names for 'ansible' packages, better indicates their content
-ANSIBLEPKGS+=ansible_collections-9.x-srpm
+#ANSIBLEPKGS+=ansible_collections-9.x-srpm
 
 ## python3.11
 ANSIBLEPKGS+=python3.11-ruamel-yaml-srpm
 
 #
 ANSIBLEPKGS+=ansible-collection-ansible-netcommon-srpm
-ANSIBLEPKGS+=ansible-collection-ansible-posix-srpm
-ANSIBLEPKGS+=ansible-collection-ansible-utils-srpm
-ANSIBLEPKGS+=ansible-collection-chocolatey-chocolatey-srpm
-ANSIBLEPKGS+=ansible-collection-community-general-srpm
+# Updated in EPEL
+#ANSIBLEPKGS+=ansible-collection-ansible-posix-srpm
+#ANSIBLEPKGS+=ansible-collection-ansible-utils-srpm
+#ANSIBLEPKGS+=ansible-collection-chocolatey-chocolatey-srpm
+#ANSIBLEPKGS+=ansible-collection-community-general-srpm
+
 ANSIBLEPKGS+=ansible-collection-community-kubernetes-srpm
 ANSIBLEPKGS+=ansible-collection-community-mysql-srpm
 ANSIBLEPKGS+=ansible-collection-containers-podman-srpm
