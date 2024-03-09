@@ -10,7 +10,7 @@
 %global collection_name netbox
 
 Name:           ansible-collection-%{collection_namespace}-%{collection_name}
-Version:        2.0.0
+Version:        3.17.0
 Release:        0.3%{?dist}
 Summary:        Netbox modules for Ansible
 
