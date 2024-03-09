@@ -10,8 +10,8 @@
 %global collection_name cloud
 
 Name:           ansible-collection-%{collection_namespace}-%{collection_name}
-Version:        1.0.1
-Release:        0.6%{?dist}
+Version:        1.3.0
+Release:        0.1%{?dist}
 Summary:        Google Cloud Platform collection
 
 # roles/gcloud: MIT
