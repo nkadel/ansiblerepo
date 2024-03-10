@@ -28,6 +28,8 @@ Name: ansible-core
 Summary: A radically simple IT automation system
 Version: 2.16.4
 Release: 0.1%{?betaver}%{?dist}
+# Required for RHEL wacky renumberings
+Epoch:   1
 
 License: GPLv3+
 Source0: %pypi_source ansible-core %{version}%{?betaver}
@@ -289,6 +291,10 @@ make PYTHON=%{__python3} tests-py3
 %endif
 
 %changelog
+* Sun Mar 10 2024 Nico Kadel-Garcia - 2.16.4-0.1
+- Update to 2.16.5
+- Add Epoch to avoid conflicts on RHEL deployment
+
 * Tue Jul 18 2023 Nico Kadel-Garcia - 2.15.2-0.1
 - Update to 2.25.2
 
