@@ -9,11 +9,13 @@ REPOBASE=file://$(PWD)
 
 #ANSIBLEPKGS+=ansible-openstack-modules-srpm
 #ANSIBLEPKGS+=pyflakes-srpm
+ANSIBLEPKGS+=ansible-collection-azure-azcollection-srpm
 ANSIBLEPKGS+=ansible-collection-netcommon-srpm
 ANSIBLEPKGS+=ansible-collections-openstack-srpm
 ANSIBLEPKGS+=ansible-packaging-srpm
 ANSIBLEPKGS+=python3.11-babel-srpm
 ANSIBLEPKGS+=python3.11-coverage-srpm
+
 # Ansible repo based packages
 ANSIBLEPKGS+=python3.11-markupsafe-srpm
 ANSIBLEPKGS+=python3.11-resolvelib-srpm
