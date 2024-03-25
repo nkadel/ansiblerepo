@@ -7,14 +7,13 @@
 %endif
 
 # Breaks the circular dependency with ruamel.yaml.clib.
-%bcond_with bootstrap
+%bcond_without bootstrap
 
-%global commit 829991d24309dd85ef9c066dbfed17eb4e4fd571
+%global commit eb3ecf31085135283908fc8449befebbc1fff4b3
 
 Name:           python-ruamel-yaml
-Version:        0.17.32
-#Release:        3%%{?dist}
-Release:        0.3%{?dist}
+Version:        0.18.5
+Release:        0.1%{?dist}
 Summary:        YAML 1.2 loader/dumper package for Python
 
 # SPDX
@@ -34,6 +33,7 @@ comments, seq/map flow style, and map key order.}
 %package -n     python%{python3_pkgversion}-ruamel-yaml
 Summary:        YAML 1.2 loader/dumper package for Python
 
+BuildRequires:  pyproject-rpm-macros
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-pytest
 
@@ -73,9 +73,24 @@ k="${k-}${k+ and }not test_dump_cyaml_1_2"
 
 %files -n python%{python3_pkgversion}-ruamel-yaml -f %{pyproject_files}
 # pyproject_files handles LICENSE; verify with “rpm -qL -p …”
-%doc README.rst
+%doc README.md
 
 %changelog
+* Fri Jan 26 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.18.5-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
+
+* Mon Jan 22 2024 Fedora Release Engineering <releng@fedoraproject.org> - 0.18.5-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
+
+* Sun Nov 12 2023 Parag Nemade <pnemade AT redhat DOT com> - 0.18.5-1
+- Update to 0.18.5
+
+* Thu Oct 26 2023 Joel Capitao <jcapitao@redhat.com> - 0.18.2-1
+- Update to 0.18.2 (close RHBZ#2245968)
+
+* Tue Oct 24 2023 Joel Capitao <jcapitao@redhat.com> - 0.18.1-1
+- Update to 0.18.1 (close RHBZ#2241174)
+
 * Fri Jul 21 2023 Fedora Release Engineering <releng@fedoraproject.org> - 0.17.32-3
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_39_Mass_Rebuild
 
