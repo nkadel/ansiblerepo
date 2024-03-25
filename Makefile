@@ -9,6 +9,7 @@ REPOBASE=file://$(PWD)
 
 #ANSIBLEPKGS+=ansible-openstack-modules-srpm
 #ANSIBLEPKGS+=pyflakes-srpm
+ANSIBLEPKGS+=ansible-collection-azure-azcollection-srpm
 ANSIBLEPKGS+=ansible-collection-netcommon-srpm
 ANSIBLEPKGS+=ansible-collections-openstack-srpm
 ANSIBLEPKGS+=ansible-packaging-srpm
@@ -18,6 +19,7 @@ ANSIBLEPKGS+=ansible-packaging-srpm
 ANSIBLEPKGS+=python3.11-babel-srpm
 ANSIBLEPKGS+=python3.11-coverage-srpm
 ANSIBLEPKGS+=python3.11-gast-srpm
+
 # Ansible repo based packages
 ANSIBLEPKGS+=python3.11-markupsafe-srpm
 ANSIBLEPKGS+=python3.11-resolvelib-srpm
@@ -69,17 +71,19 @@ ANSIBLEPKGS+=ansible-core-2.16.x-srpm
 ANSIBLEPKGS+=ansible-9.x-srpm
 
 # Alternate names for 'ansible' packages, better indicates their content
-ANSIBLEPKGS+=ansible_collections-9.x-srpm
+#ANSIBLEPKGS+=ansible_collections-9.x-srpm
 
 ## Requires ruamel-blibc
 ANSIBLEPKGS+=python3.11-ruamel-yaml-srpm
 
 #
 ANSIBLEPKGS+=ansible-collection-ansible-netcommon-srpm
-ANSIBLEPKGS+=ansible-collection-ansible-posix-srpm
-ANSIBLEPKGS+=ansible-collection-ansible-utils-srpm
-ANSIBLEPKGS+=ansible-collection-chocolatey-chocolatey-srpm
-ANSIBLEPKGS+=ansible-collection-community-general-srpm
+# Updated in EPEL
+#ANSIBLEPKGS+=ansible-collection-ansible-posix-srpm
+#ANSIBLEPKGS+=ansible-collection-ansible-utils-srpm
+#ANSIBLEPKGS+=ansible-collection-chocolatey-chocolatey-srpm
+#ANSIBLEPKGS+=ansible-collection-community-general-srpm
+
 ANSIBLEPKGS+=ansible-collection-community-kubernetes-srpm
 ANSIBLEPKGS+=ansible-collection-community-mysql-srpm
 ANSIBLEPKGS+=ansible-collection-containers-podman-srpm

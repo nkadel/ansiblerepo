@@ -10,7 +10,7 @@
 %global collection_name podman
 
 Name:           ansible-collection-%{collection_namespace}-%{collection_name}
-Version:        1.8.1
+Version:        1.12.0
 Release:        0.1%{?dist}
 Summary:        Podman Ansible collection for Podman containers
 

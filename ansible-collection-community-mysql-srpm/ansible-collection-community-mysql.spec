@@ -10,8 +10,8 @@
 %global collection_name mysql
 
 Name:           ansible-collection-%{collection_namespace}-%{collection_name}
-Version:        2.3.1
-Release:        0.2%{?dist}
+Version:        3.9.0
+Release:        0.1%{?dist}
 Summary:        MySQL collection for Ansible
 
 License:        GPLv3+
@@ -24,6 +24,8 @@ BuildRequires:  ansible-core >= 2.10.0
 
 %if 0%{?el8}
 BuildRequires:  python%{python3_pkgversion}-rpm-macros
+%endif
+%if 0%{?el8} || 0%{?el9}
 BuildRequires:  %{_bindir}/pathfix.py
 %endif
 
@@ -43,28 +45,18 @@ find -type f ! -executable -name '*.py' -print -exec sed -i -e '1{\@^#!.*@d}' '{
 find -type f -name '.gitignore' -print -delete
 
 # Prevent build failures on ambiguous python
-grep -rl -e '^#!/usr/bin/env python$' -e '^#!/usr/bin/env python $' */ | \
-    grep '\.py$' | \
-    while read name; do
-        echo "    Disambiguating /usr/bin/env python: $name"
-	pathfix.py -i %{__python3} $name
+%if 0%{?el8} || 0%{?el9}
+find . -name '*.py' | while read name; do
+    pathfix.py -i %{__python3} $name
+    rm -f ${name}~
+done
+%else
+find . -name '*.py' | while read name; do
+    sed -i 's|#!/usr/bin/env python$|#!%__python3|g' $name
+    rm -f ${name}~
 done
 
-grep -rl -e '^#!/usr/bin/python$' -e '^#!/usr/bin/python $' */ | \
-    grep '\.py$' | \
-    while read name; do
-        echo "    Disambiguating /usr/bin/python in: $name"
-	pathfix.py -i %{__python3} $name
-done
-
-if [ "%{__python3}" != "/usr/bin/python3" ]; then
-    grep -rl -e '^#!/usr/bin/python3' -e '^#!/usr/bin/python3 $' */ | \
-	grep '\.py$' | \
-	while read name; do
-            echo "    Disambiguating /usr/bin/python3 in: $name"
-	    pathfix.py -i %{__python3} $name
-	done
-fi
+%endif
 
 %build
 %ansible_collection_build
@@ -75,7 +67,7 @@ rm -vr %{buildroot}%{ansible_collection_files}/%{collection_name}/tests
 
 %files
 %license COPYING
-%doc README.md changelogs/CHANGELOG.rst
+%doc README.md CHANGELOG.rst
 %{ansible_collection_files}
 
 %changelog

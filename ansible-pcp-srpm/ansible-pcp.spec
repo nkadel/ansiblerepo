@@ -7,9 +7,8 @@
 %endif
 
 Name:             ansible-pcp
-Version:          2.2.5
-#Release:          2%%{?dist}
-Release:          0.2%{?dist}
+Version:          2.3.0
+Release:          0.1%{?dist}
 Summary:          Ansible Metric collection for Performance Co-Pilot
 License:          MIT
 URL:              https://github.com/performancecopilot/ansible-pcp
@@ -86,8 +85,8 @@ of performance data.
 
 %prep
 %autosetup
-mv .yamllint.yml yamllint.yml
-mv .yamllint_defaults.yml yamllint_defaults.yml
+#mv .yamllint.yml yamllint.yml
+#mv .yamllint_defaults.yml yamllint_defaults.yml
 %if 0%{?rhel}
 rm -vr roles/repository tests/*repository* tests/*/*repository* docs/repository
 %endif
@@ -119,8 +118,8 @@ tar -xf %{_tmppath}/%{collection_namespace}-%{collection_name}-%{version}.tar.gz
 %endif
 
 %check
-mv yamllint.yml .yamllint.yml
-mv yamllint_defaults.yml .yamllint_defaults.yml
+#mv yamllint.yml .yamllint.yml
+#mv yamllint_defaults.yml .yamllint_defaults.yml
 %if %{have_ansible_lint}
 ansible-lint `find roles -name \*.yml`
 %endif
