@@ -9,8 +9,8 @@
 %global _docdir_fmt %{name}
 
 Name:           ansible-collection-ansible-netcommon
-Version:        4.1.0
-Release:        0.2%{?dist}
+Version:        6.0.0
+Release:        0.1%{?dist}
 Summary:        Ansible Network Collection for Common Code
 
 # All files are licensed under GPL-3.0-or-later except:
@@ -31,10 +31,10 @@ Summary:        Ansible Network Collection for Common Code
 # plugins/module_utils/network/restconf/restconf.py:# SPDX-License-Identifier: BSD-2-Clause
 License:        GPL-3.0-or-later AND BSD-2-Clause
 URL:            %{ansible_collection_url ansible netcommon}
-Source:         https://github.com/ansible-collections/ansible.netcommon/archive/%{version}/%{name}-%{version}.tar.gz
+Source:         https://github.com/ansible-collections/ansible.netcommon/archive/refs/tags/v%{version}.zip
 # Patch galaxy.yml to exclude unnecessary files from the built collection.
 # This is a downstream only patch.
-Patch:          0001-build_ignore-unnecessary-files.patch
+#Patch:          0001-build_ignore-unnecessary-files.patch
 
 BuildRequires:  ansible-packaging
 
