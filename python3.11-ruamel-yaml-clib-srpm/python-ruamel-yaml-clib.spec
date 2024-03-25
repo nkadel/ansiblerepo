@@ -34,6 +34,7 @@ It is the C based reader/scanner and emitter for ruamel.yaml.}
 %package -n     python%{python3_pkgversion}-ruamel-yaml-clib
 Summary:        %{summary}
 
+BuildRequires:  python%{python3_pkgversion}
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  %{py3_dist Cython}
 
