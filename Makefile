@@ -27,10 +27,10 @@ ANSIBLEPKGS+=python3.11-ruamel-yaml-clib-srpm
 ANSIBLEPKGS+=python3.11-unittest2-srpm
 
 # Remaining packages require ansiblerepo
-#ANSIBLEPKGS+=ansible-freeipa-srpm
+ANSIBLEPKGS+=ansible-freeipa-srpm
 
 ANSIBLEPKGS+=python3.11-pytz-srpm
-# RHEL 3 and 9 lack this with python3.11
+# RHEL 8 and 9 lack this with python3.11
 ANSIBLEPKGS+=python3.11-setuptools_scm-srpm
 ANSIBLEPKGS+=python3.11-toml-srpm
 
