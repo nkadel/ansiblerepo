@@ -291,6 +291,9 @@ make PYTHON=%{__python3} tests-py3
 %endif
 
 %changelog
+* Wed Mar 26 2024 Nico Kadel-Garcia - 2.16.5-0.1
+- Update to 2.16.5
+
 * Sun Mar 10 2024 Nico Kadel-Garcia - 2.16.4-0.1
 - Update to 2.16.5
 - Add Epoch to avoid conflicts on RHEL deployment
