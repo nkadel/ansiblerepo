@@ -8,7 +8,6 @@ REPOBASE=file://$(PWD)
 # EPEL buildable packages
 
 #ANSIBLEPKGS+=ansible-openstack-modules-srpm
-#ANSIBLEPKGS+=pyflakes-srpm
 ANSIBLEPKGS+=ansible-collection-azure-azcollection-srpm
 ANSIBLEPKGS+=ansible-collection-netcommon-srpm
 ANSIBLEPKGS+=ansible-collections-openstack-srpm
@@ -23,7 +22,6 @@ ANSIBLEPKGS+=python3.11-gast-srpm
 # Ansible repo based packages
 ANSIBLEPKGS+=python3.11-markupsafe-srpm
 ANSIBLEPKGS+=python3.11-resolvelib-srpm
-#ANSIBLEPKGS+=python3.11-ruamel-yaml-clib-srpm
 ANSIBLEPKGS+=python3.11-unittest2-srpm
 
 # Remaining packages require ansiblerepo
@@ -40,32 +38,14 @@ ANSIBLEPKGS+=python3.11-toml-srpm
 ##ANSIBLEPKGS+=antsibull-docs-srpm
 ##ANSIBLEPKGS+=antsibull-srpm
 
-# Requires doctest
-#ANSIBLEPKGS+=xsimd-srpm
-
-# Requires gast
-ANSIBLEPKGS+=python3.11-beniget-srpm
-
-# Requires xsimd
-#ANSIBLEPKGS+=python3.11-pythran-srpm
-
-# Requires pythran
-#ANSIBLEPKGS+=python3.11-Cython-srpm
-
 # Requires babel and markupsafe
 ANSIBLEPKGS+=python3.11-jinja2-srpm
 
 # Incompatible with RHEL
 ##ANSIBLEPKGS+=ansible-lint-srpm
-##ANSIBLEPKGS+=python-ansible-compat-srpm
 
 ANSIBLEPKGS+=python3.11-mock-srpm
 ANSIBLEPKGS+=ansible-core-srpm
-
-#ANSIBLEPKGS+=python3.11-nose-srpm
-
-## Requires nose
-#ANSIBLEPKGS+=python3.11-jmespath-srpm
 
 # Restrict to latest version
 ANSIBLEPKGS+=ansible-srpm
