@@ -11,9 +11,10 @@
 # due to very confusing upsream renaming
 %global pypi_name ansible
 %global pypi_realname ansible_collections
-%global pypi_version 9.4.0
+%global pypi_version 10.0.0
 # Set this when there's a beta or rc version
-%global betaver %{nil}
+#%%global betaver %%{nil}
+%global betaver a1
 
 # Disable thye burdensume and pointless hardlink among the ginormous
 # ansible_collection modules
@@ -40,13 +41,14 @@ Summary:        Radically simple IT automation
 License:        GPLv3+
 URL:            https://ansible.com/
 Source0:        https://files.pythonhosted.org/packages/source/a/%{pypi_name}/%{pypi_name}-%{pypi_version}%{betaver}.tar.gz
+Patch0:		ansible-core.patch
 
 BuildRequires:  dos2unix
 BuildRequires:  findutils
 BuildRequires:  hardlink
 BuildRequires:  rsync
 
-#BuildRequires:  ansible-core < 2.17.0
+#BuildRequires:  ansible-core < 1:2.17.0
 BuildRequires:  ansible-core >= 1:2.16.0
 %if 0%{?el8}
 BuildRequires:  python%{python3_pkgversion}-rpm-macros
@@ -60,8 +62,8 @@ BuildRequires:  python%{python3_pkgversion}-setuptools
 #BuildRequires:  python%%{python3_pkgversion}-sphinx
 #BuildRequires:  python%%{python3_pkgversion}-sphinx_rtd_theme
 
-Requires:       ansible-core < 2.17.0
-Requires:       ansible-core >= 2.16.0
+#Requires:       ansible-core < 1:2.17.0
+Requires:       ansible-core >= 1:2.16.0
 
 %description
 Ansible is a radically simple IT automation system. It handles
@@ -84,9 +86,6 @@ rm -rf *.egg-info
 
 # Avoid syntax error of requirements in RPM
 sed -i.bak 's/~=/>=/g' setup.py PKG-INFO
-
-# Reset setup.py version requirement for RPM name consistency
-sed -i.bak "s/\.0rc?/.0'/g" setup.py
 
 echo "[START] Fixing wrong-script-end-of-line-encoding in azure.azcollection"
 find %{pypi_realname}/azure/azcollection -type f \
@@ -193,6 +192,9 @@ hardlink -v %{buildroot}%{ansible_licensedir}
 %doc %{_defaultdocdir}/%{pypi_realname}-%{version}%{?betaver}/%{pypi_realname}
 
 %changelog
+* Fri Apr 12 2024 Nico Kadel-Garcia - 10.0.0b1-0.1
+- Update to 10.0.0b1
+
 * Wed Jan 31 2024 Nico Kadel-Garcia - 9.2.9-0.1
 - Update to 9.2.0
 
