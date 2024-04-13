@@ -1,0 +1,11 @@
+--- ansible-10.0.0a1/setup.cfg.bak	2024-04-12 20:19:54.963304761 -0400
++++ ansible-10.0.0a1/setup.cfg	2024-04-12 20:20:30.222856439 -0400
+@@ -33,7 +33,7 @@
+ [options]
+ zip_safe = False
+ install_requires = 
+-	ansible-core ~= 2.17.0b1
++	ansible-core >= 2.16.0
+ python_requires = >=3.10
+ package_dir = 
+ 	=.
