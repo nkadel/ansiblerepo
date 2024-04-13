@@ -6,7 +6,7 @@
 LANG=C
 #MOCKS+=ansiblerepo-8-x86_64
 #MOCKS+=ansiblerepo-9-x86_64
-#MOCKS+=ansiblerepo-f39-x86_64
+#MOCKS+=ansiblerepo-f40-x86_64
 MOCKS+=ansiblerepo-amz2023-x86_64
 
 MOCKCFGS+=$(MOCKS)
@@ -61,8 +61,8 @@ install:: $(MOCKS)
 		*-amz2023-x86_64) yumrelease=amazon/2023; yumarch=x86_64; ;; \
 		*-8-x86_64) yumrelease=el/8; yumarch=x86_64; ;; \
 		*-9-x86_64) yumrelease=el/9; yumarch=x86_64; ;; \
-		*-39-x86_64) yumrelease=fedora/39; yumarch=x86_64; ;; \
-		*-f39-x86_64) yumrelease=fedora/39; yumarch=x86_64; ;; \
+		*-40-x86_64) yumrelease=fedora/40; yumarch=x86_64; ;; \
+		*-f40-x86_64) yumrelease=fedora/40; yumarch=x86_64; ;; \
 		*-rawhide-x86_64) yumrelease=fedora/rawhide; yumarch=x86_64; ;; \
 		*) echo "Unrecognized release for $$repo, exiting" >&2; exit 1; ;; \
 	    esac; \
