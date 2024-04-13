@@ -60,7 +60,7 @@ ANSIBLEPKGS+=python3.11-jinja2-srpm
 ##ANSIBLEPKGS+=python-ansible-compat-srpm
 
 ANSIBLEPKGS+=python3.11-mock-srpm
-ANSIBLEPKGS+=ansible-core-2.16.x-srpm
+ANSIBLEPKGS+=ansible-core-srpm
 
 #ANSIBLEPKGS+=python3.11-nose-srpm
 

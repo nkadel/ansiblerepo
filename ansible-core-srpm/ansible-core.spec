@@ -65,7 +65,7 @@ BuildRequires: python%{python3_pkgversion}-systemd
 BuildRequires: python%{python3_pkgversion}-pytz
 BuildRequires: glibc-all-langpacks
 BuildRequires: python%{python3_pkgversion}-resolvelib >= 0.5.3
-BuildRequires: python%{python3_pkgversion}-resolvelib < 0.9.0
+BuildRequires: python%{python3_pkgversion}-resolvelib < 1.1.0
 BuildRequires: python%{python3_pkgversion}-rpm-macros
 #
 # These only exist on Fedora. RHEL8 will just skip tests that need them.
@@ -131,7 +131,7 @@ Recommends: python%{python3_pkgversion}-winrm
 Requires: python%{python3_pkgversion}-jmespath
 # needed for galaxy
 Requires: python%{python3_pkgversion}-resolvelib >= 0.5.3
-Requires: python%{python3_pkgversion}-resolvelib < 0.9.0
+Requires: python%{python3_pkgversion}-resolvelib < 1.1.0
 # avoid module wackiness
 Requires: python%{python3_pkgversion}-packaging
 
@@ -291,7 +291,7 @@ make PYTHON=%{__python3} tests-py3
 %endif
 
 %changelog
-* Wed Mar 26 2024 Nico Kadel-Garcia - 2.16.5-0.1
+* Tue Mar 26 2024 Nico Kadel-Garcia - 2.16.5-0.1
 - Update to 2.16.5
 
 * Sun Mar 10 2024 Nico Kadel-Garcia - 2.16.4-0.1
