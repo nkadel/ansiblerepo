@@ -15,22 +15,28 @@ ANSIBLEPKGS+=ansible-packaging-srpm
 
 #ANSIBLEPKGS+=doctest-srpm
 
-ANSIBLEPKGS+=python3.11-babel-srpm
-ANSIBLEPKGS+=python3.11-coverage-srpm
-ANSIBLEPKGS+=python3.11-gast-srpm
+ANSIBLEPKGS+=python3.12-babel-srpm
+ANSIBLEPKGS+=python3.12-coverage-srpm
+ANSIBLEPKGS+=python3.12-gast-srpm
+ANSIBLEPKGS+=python3.12-six-srpm
 
 # Ansible repo based packages
-ANSIBLEPKGS+=python3.11-markupsafe-srpm
-ANSIBLEPKGS+=python3.11-resolvelib-srpm
-ANSIBLEPKGS+=python3.11-unittest2-srpm
+ANSIBLEPKGS+=python3.12-markupsafe-srpm
+ANSIBLEPKGS+=python3.12-resolvelib-srpm
+ANSIBLEPKGS+=python3.12-unittest2-srpm
 
 # Remaining packages require ansiblerepo
 ANSIBLEPKGS+=ansible-freeipa-srpm
 
-ANSIBLEPKGS+=python3.11-pytz-srpm
-# RHEL 8 and 9 lack this with python3.11
-ANSIBLEPKGS+=python3.11-setuptools_scm-srpm
-ANSIBLEPKGS+=python3.11-toml-srpm
+# Requires babel and markupsafe
+ANSIBLEPKGS+=python3.12-jinja2-srpm
+
+# Requires jinja2
+ANSIBLEPKGS+=python3.12-pytz-srpm
+
+# RHEL 8 and 9 lack this with python3.12
+ANSIBLEPKGS+=python3.12-setuptools_scm-srpm
+ANSIBLEPKGS+=python3.12-toml-srpm
 
 # Build testing requirements
 ##ANSIBLEPKGS+=antsibull-core-srpm
@@ -38,13 +44,12 @@ ANSIBLEPKGS+=python3.11-toml-srpm
 ##ANSIBLEPKGS+=antsibull-docs-srpm
 ##ANSIBLEPKGS+=antsibull-srpm
 
-# Requires babel and markupsafe
-ANSIBLEPKGS+=python3.11-jinja2-srpm
-
 # Incompatible with RHEL
 ##ANSIBLEPKGS+=ansible-lint-srpm
 
-ANSIBLEPKGS+=python3.11-mock-srpm
+# Requires six and unittest2
+ANSIBLEPKGS+=python3.12-mock-srpm
+
 ANSIBLEPKGS+=ansible-core-srpm
 
 # Restrict to latest version
@@ -53,8 +58,8 @@ ANSIBLEPKGS+=ansible-srpm
 # Alternate names for 'ansible' packages, better indicates their content
 #ANSIBLEPKGS+=ansible_collections-srpm
 
-## Requires ruamel-blibc
-#ANSIBLEPKGS+=python3.11-ruamel-yaml-srpm
+## Requires ruamel-glibc
+#ANSIBLEPKGS+=python3.12-ruamel-yaml-srpm
 
 #
 ANSIBLEPKGS+=ansible-collection-ansible-netcommon-srpm
@@ -66,6 +71,7 @@ ANSIBLEPKGS+=ansible-collection-ansible-netcommon-srpm
 
 ANSIBLEPKGS+=ansible-collection-community-kubernetes-srpm
 ANSIBLEPKGS+=ansible-collection-community-mysql-srpm
+# Requires jinja2
 ANSIBLEPKGS+=ansible-collection-containers-podman-srpm
 ANSIBLEPKGS+=ansible-collection-google-cloud-srpm
 
@@ -91,7 +97,7 @@ CFGS+=ansiblerepo-f40-x86_64.cfg
 # Amazon 2 023config
 CFGS+=ansiblerepo-amz2023-x86_64.cfg
 
-# /etc/mock version lacks python3.11 modules
+# /etc/mock version lacks python3.12 modules
 MOCKCFGS+=centos-stream+epel-next-8-x86_64.cfg
 MOCKCFGS+=centos-stream+epel-next-9-x86_64.cfg
 MOCKCFGS+=fedora-40-x86_64.cfg

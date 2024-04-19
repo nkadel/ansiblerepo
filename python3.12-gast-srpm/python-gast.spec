@@ -1,6 +1,6 @@
 %if 0%{?el8} || 0%{?el9}
-%global python3_version 3.11
-%global python3_pkgversion 3.11
+%global python3_version 3.12
+%global python3_pkgversion 3.12
 # For RHEL 'platform python' insanity: Simply put, no.
 %global __python3 %{_bindir}/python%{python3_version}
 %endif

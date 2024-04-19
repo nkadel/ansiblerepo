@@ -1,7 +1,7 @@
 # Force python38 for RHEL 8, which has python 3.6 by default
 %if 0%{?el8} || 0%{?el9}
-%global python3_version 3.11
-%global python3_pkgversion 3.11
+%global python3_version 3.12
+%global python3_pkgversion 3.12
 # For RHEL 'platform python' insanity: Simply put, no.
 %global __python3 %{_bindir}/python%{python3_version}
 %endif
@@ -47,5 +47,5 @@ find -type f -name '*.py' | xargs sed -i 's|^#!/usr/bin/env python$|#!%{__python
 %doc README.md CHANGELOG.md
 
 %changelog
-* Tue Mar 4 2024 Nico Kadel-Garcia <nkadel@gmail.com>
+* Mon Mar 4 2024 Nico Kadel-Garcia <nkadel@gmail.com>
 - Package azure collection as RPM
