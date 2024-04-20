@@ -68,7 +68,11 @@ Obsoletes: %{pypi_name} < %{version}-%{release}
 Summary:        %summary
 %{?python_provide:%python_provide python%{python3_pkgversion}-%{pypi_name}}
 BuildRequires:  python%{python3_pkgversion}-devel
+BuildRequires:  python%{python3_pkgversion}-setuptools
 BuildRequires:  python%{python3_pkgversion}-rpm-macros
+# Added for nonstandard python3_pkgvesion
+BuildRequires:  %{_bindir}/pathfix.py
+
 %if %{with tests}
 BuildRequires:  python%{python3_pkgversion}-pytest
 BuildRequires:  python%{python3_pkgversion}-pluggy
@@ -97,8 +101,8 @@ pathfix.py -pn -i %{__python2} %{buildroot}%{python2_sitelib}
 
 %py3_install
 rm -r %{buildroot}%{python3_sitelib}/pytz/zoneinfo
-pathfix%{python3_version}.py -pn -i %{__python3} %{buildroot}%{python3_sitelib}
-
+#pathfix%{python3_version}.py -pn -i %{__python3} %{buildroot}%{python3_sitelib}
+%{_bindir}/pathfix.py -pn -i %{__python3} %{buildroot}%{python3_sitelib}
 
 %check
 %if %{with tests}
