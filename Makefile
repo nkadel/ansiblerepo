@@ -18,21 +18,22 @@ ANSIBLEPKGS+=ansible-packaging-srpm
 ANSIBLEPKGS+=python3.12-babel-srpm
 ANSIBLEPKGS+=python3.12-coverage-srpm
 ANSIBLEPKGS+=python3.12-gast-srpm
+ANSIBLEPKGS+=python3.12-jmespath-srpm
+ANSIBLEPKGS+=python3.12-pytz-srpm
 ANSIBLEPKGS+=python3.12-six-srpm
 
 # Ansible repo based packages
 ANSIBLEPKGS+=python3.12-markupsafe-srpm
 ANSIBLEPKGS+=python3.12-resolvelib-srpm
-ANSIBLEPKGS+=python3.12-unittest2-srpm
 
 # Remaining packages require ansiblerepo
+# Requires six
+ANSIBLEPKGS+=python3.12-unittest2-srpm
+
 ANSIBLEPKGS+=ansible-freeipa-srpm
 
 # Requires babel and markupsafe
 ANSIBLEPKGS+=python3.12-jinja2-srpm
-
-# Requires jinja2
-ANSIBLEPKGS+=python3.12-pytz-srpm
 
 # RHEL 8 and 9 lack this with python3.12
 ANSIBLEPKGS+=python3.12-setuptools_scm-srpm
@@ -50,6 +51,7 @@ ANSIBLEPKGS+=python3.12-toml-srpm
 # Requires six and unittest2
 ANSIBLEPKGS+=python3.12-mock-srpm
 
+# Requires jinj2 and mock
 ANSIBLEPKGS+=ansible-core-srpm
 
 # Restrict to latest version
