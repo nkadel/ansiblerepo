@@ -60,8 +60,10 @@ ANSIBLEPKGS+=ansible-srpm
 # Alternate names for 'ansible' packages, better indicates their content
 #ANSIBLEPKGS+=ansible_collections-srpm
 
-## Requires ruamel-glibc
-#ANSIBLEPKGS+=python3.12-ruamel-yaml-srpm
+## Requires ruamel-yaml-glibc if not in bootstrap
+ANSIBLEPKGS+=python3.12-ruamel-yaml-srpm
+# Requires ruamel-yaml
+ANSIBLEPKGS+=python3.12-ruamel-yaml-clib-srpm
 
 #
 ANSIBLEPKGS+=ansible-collection-ansible-netcommon-srpm
