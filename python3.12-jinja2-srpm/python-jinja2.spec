@@ -9,21 +9,16 @@
 %global srcname Jinja2
 
 Name:           python-jinja2
-Version:        3.0.3
-#Release:        5%%{?dist}
-Release:        0.5%{?dist}
+Version:        3.1.2
+Release:        5%{?dist}
 Summary:        General purpose template engine
 License:        BSD
 URL:            https://palletsprojects.com/p/jinja/
-Source0:        %{pypi_source}
-
-# Tests: Make "Traceback did not match" an actual f-string
-Patch1:         https://github.com/pallets/jinja/pull/1525.patch
+Source0:        %{pypi_source %srcname}
 
 # Enable building without docs to avoid a circular dependency between this
 # and python-sphinx:
-# Do not build docs for python 3.11
-%if 0%{?el8} || 0%{?el9}
+%if 0%{?rhel}
 %bcond_with docs
 %else
 %bcond_without docs
@@ -46,14 +41,6 @@ environments.}
 
 %package -n python%{python3_pkgversion}-jinja2
 Summary:        %{summary}
-%if 0%{?el8} || 0%{?el9}
-BuildRequires:  pyproject-rpm-macros
-BuildRequires:  python%{python3_pkgversion}-babel
-BuildRequires:  python%{python3_pkgversion}-markupsafe
-BuildRequires:  python%{python3_pkgversion}-pip
-BuildRequires:  python%{python3_pkgversion}-wheel
-%endif
-
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-pytest
 %if %{with docs}
@@ -66,17 +53,18 @@ BuildRequires:  python%{python3_pkgversion}-sphinx-issues
 
 %description -n python%{python3_pkgversion}-jinja2 %_description
 
-%if ! 0%{?el8}
 %pyproject_extras_subpkg -n python%{python3_pkgversion}-jinja2 i18n
-%endif
+
 
 %prep
 %autosetup -p1 -n %{srcname}-%{version}
 
-%if ! 0%{?el8}
+# Fix for https://github.com/pallets/jinja/issues/1758
+sed -i "s/def teardown/def teardown_method/" tests/test_loader.py
+
 %generate_buildrequires
 %pyproject_buildrequires -x i18n
-%endif
+
 
 %build
 %pyproject_wheel
@@ -92,11 +80,9 @@ rm -rvf docs/_build/html/.buildinfo
 %pyproject_save_files jinja2
 
 
-# Disable for python 3.11
-%if ! 0%{?el8} && ! 0%{?el9}
 %check
 %pytest tests
-%endif
+
 
 %files -n python%{python3_pkgversion}-jinja2 -f %{pyproject_files}
 %doc CHANGES.rst
@@ -108,6 +94,27 @@ rm -rvf docs/_build/html/.buildinfo
 
 
 %changelog
+* Fri Jul 21 2023 Fedora Release Engineering <releng@fedoraproject.org> - 3.1.2-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_39_Mass_Rebuild
+
+* Fri Jun 16 2023 Python Maint <python-maint@redhat.com> - 3.1.2-4
+- Rebuilt for Python 3.12
+
+* Tue Jun 13 2023 Python Maint <python-maint@redhat.com> - 3.1.2-3
+- Bootstrap for Python 3.12
+
+* Fri May 19 2023 Yaakov Selkowitz <yselkowi@redhat.com> - 3.1.2-2
+- Disable docs by default in RHEL builds
+
+* Mon May 01 2023 Sandro Mani <manisandro@gmail.com> - 3.1.2-1
+- Update to 3.1.2
+
+* Fri Jan 20 2023 Fedora Release Engineering <releng@fedoraproject.org> - 3.0.3-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_38_Mass_Rebuild
+
+* Mon Nov 14 2022 Lumír Balhar <lbalhar@redhat.com> - 3.0.3-6
+- Fix compatibility with pytest 7.2
+
 * Fri Jul 22 2022 Fedora Release Engineering <releng@fedoraproject.org> - 3.0.3-5
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
 
