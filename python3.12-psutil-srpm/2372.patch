@@ -1,0 +1,54 @@
+From 7664f36157268dba47313043da27761727c813ab Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Miro=20Hron=C4=8Dok?= <miro@hroncok.cz>
+Date: Fri, 9 Feb 2024 14:55:41 +0100
+Subject: [PATCH] Tests: Compare floats less strictly
+
+We see:
+
+    ======================================================================
+    FAIL: psutil.tests.test_system.TestCpuAPIs.test_cpu_times
+    ----------------------------------------------------------------------
+    Traceback (most recent call last):
+      File "/builddir/build/BUILD/psutil-release-5.9.5/psutil/tests/test_system.py", line 351, in test_cpu_times
+        self.assertAlmostEqual(total, sum(times))
+    AssertionError: 885725913.3 != 885725913.3000001 within 7 places (1.1920928955078125e-07 difference)
+    ----------------------------------------------------------------------
+
+Or:
+
+    ======================================================================
+    FAIL: psutil.tests.test_system.TestCpuAPIs.test_cpu_times
+    ----------------------------------------------------------------------
+    Traceback (most recent call last):
+      File "/builddir/build/BUILD/psutil-release-5.9.5/psutil/tests/test_system.py", line 351, in test_cpu_times
+        self.assertAlmostEqual(total, sum(times))
+    AssertionError: 324284741.90999997 != 324284741.91 within 7 places (5.960464477539063e-08 difference)
+    ----------------------------------------------------------------------
+
+In CentOS Stream 10 builds on i686 and x86_64.
+---
+ psutil/tests/test_system.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/psutil/tests/test_system.py b/psutil/tests/test_system.py
+index 6656c19ba..56979c927 100755
+--- a/psutil/tests/test_system.py
++++ b/psutil/tests/test_system.py
+@@ -385,7 +385,7 @@ def test_cpu_times(self):
+             self.assertIsInstance(cp_time, float)
+             self.assertGreaterEqual(cp_time, 0.0)
+             total += cp_time
+-        self.assertAlmostEqual(total, sum(times))
++        self.assertAlmostEqual(total, sum(times), places=6)
+         str(times)
+         # CPU times are always supposed to increase over time
+         # or at least remain the same and that's because time
+@@ -424,7 +424,7 @@ def test_per_cpu_times(self):
+                 self.assertIsInstance(cp_time, float)
+                 self.assertGreaterEqual(cp_time, 0.0)
+                 total += cp_time
+-            self.assertAlmostEqual(total, sum(times))
++            self.assertAlmostEqual(total, sum(times), places=6)
+             str(times)
+         self.assertEqual(
+             len(psutil.cpu_times(percpu=True)[0]),

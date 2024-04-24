@@ -1,0 +1,12 @@
+diff --git a/psutil/tests/test_misc.py b/psutil/tests/test_misc.py
+index 700c054..d0b675e 100755
+--- a/psutil/tests/test_misc.py
++++ b/psutil/tests/test_misc.py
+@@ -569,6 +569,7 @@ class TestCommonModule(PsutilTestCase):
+         with mock.patch('psutil._common.stat.S_ISREG', return_value=False):
+             assert not isfile_strict(this_file)
+ 
++    @unittest.skip("https://github.com/giampaolo/psutil/issues/2374")
+     def test_debug(self):
+         if PY3:
+             from io import StringIO

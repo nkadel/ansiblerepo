@@ -20,6 +20,7 @@ ANSIBLEPKGS+=python3.12-coverage-srpm
 ANSIBLEPKGS+=python3.12-gast-srpm
 ANSIBLEPKGS+=python3.12-jmespath-srpm
 ANSIBLEPKGS+=python3.12-pytz-srpm
+ANSIBLEPKGS+=python3.12-psutil-srpm
 ANSIBLEPKGS+=python3.12-six-srpm
 
 # Ansible repo based packages
