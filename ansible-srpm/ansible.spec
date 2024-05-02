@@ -14,7 +14,7 @@
 %global pypi_version 10.0.0
 # Set this when there's a beta or rc version
 #%%global betaver %%{nil}
-%global betaver a1
+%global betaver a2
 
 # Disable thye burdensume and pointless hardlink among the ginormous
 # ansible_collection modules
@@ -41,7 +41,6 @@ Summary:        Radically simple IT automation
 License:        GPLv3+
 URL:            https://ansible.com/
 Source0:        https://files.pythonhosted.org/packages/source/a/%{pypi_name}/%{pypi_name}-%{pypi_version}%{betaver}.tar.gz
-Patch0:		ansible-core.patch
 
 BuildRequires:  dos2unix
 BuildRequires:  findutils
@@ -86,6 +85,9 @@ rm -rf *.egg-info
 
 # Avoid syntax error of requirements in RPM
 sed -i.bak 's/~=/>=/g' setup.py PKG-INFO
+
+echo "[START] Increase ansible-core compatiblity"
+sed -i.bak 's/	ansible-core ~= 2.17*/	ansible-core >= 2.16.0/g' setup.cfg
 
 echo "[START] Fixing wrong-script-end-of-line-encoding in azure.azcollection"
 find %{pypi_realname}/azure/azcollection -type f \

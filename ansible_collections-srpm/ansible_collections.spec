@@ -14,7 +14,7 @@
 %global pypi_version 10.0.0
 # Set this when there's a beta or rc version
 #%%global betaver %%{nil}
-%global betaver a1
+%global betaver a2
 
 # Disable thye burdensume and pointless hardlink among the ginormous
 # ansible_collection modules

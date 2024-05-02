@@ -6,63 +6,55 @@
 %global __python3 %{_bindir}/python%{python3_version}
 %endif
 
-%global srcname Babel
-%global sum Library for internationalizing Python applications
-
 # There is some bootstrapping involved when upgrading Python 3
 # First of all we need babel (this package) to use sphinx
 # And pytest is at this point not yet ready
-%bcond_without bootstrap
+%if 0%{?el8} || 0%{?el9}
+%bcond bootstrap 1
+%else
+%bcond bootstrap 0
+%endif
 
-%bcond_with python2
+# Since babel 2.12, the pytz dependency is optional.
+# However, pytz is preferred when installed.
+# Running tests with pytz is optional as well.
+# We don't want to pull pytz into ELN/RHEL just to test integration with it,
+# but we don't want to ship babel in Fedora with an untested default,
+# so we make the dependency conditional.
+# Ideally, the dependency would be conditional on pytz availability in the repo,
+# but that's not possible in 2023 yet.
+# Additionally, the date/time tests require freezegun, which is unwanted in RHEL.
+%bcond datetime_tests %{undefined rhel}
 
-# Upstream calls this package babel, for no good reason
-#Name:           babel
-Name:           python-babel
-Version:        2.7.0
-Release:        11%{?dist}
+Name:           babel
+Version:        2.13.1
+Release:        3%{?dist}
 Summary:        Tools for internationalizing Python applications
 
-License:        BSD
-URL:            http://babel.pocoo.org/
-Source0:        https://files.pythonhosted.org/packages/source/B/%{srcname}/%{srcname}-%{version}.tar.gz
-
-# Fix CVE-2021-20095: relative path traversal allows an attacker to load
-# arbitrary locale files on disk and execute arbitrary code
-# Resolved upstream: https://github.com/python-babel/babel/pull/782/
-# CVE bugzilla: https://bugzilla.redhat.com/show_bug.cgi?id=1955615
-Patch1:         CVE-2021-20095.patch
+License:        BSD-3-Clause
+URL:            https://babel.pocoo.org/
+Source:         %{pypi_source Babel}
 
 BuildArch:      noarch
-# Exclude i686 arch. Due to a modularity issue it's being added to the
-# x86_64 compose of CRB, but we don't want to ship it at all.
-# See: https://projects.engineering.redhat.com/browse/RCM-72605
-ExcludeArch:    i686
 
-%if %{with python2}
-BuildRequires:  python2-devel
-BuildRequires:  python2-setuptools
-%if %{with python2_pytest}
-BuildRequires:  python2-pytz
-BuildRequires:  python2-pytest
-BuildRequires:  python2-freezegun
-%endif
-%endif
 BuildRequires:  python%{python3_pkgversion}-devel
-BuildRequires:  python%{python3_pkgversion}-setuptools
-BuildRequires:  python%{python3_pkgversion}-rpm-macros
-%if !%{with bootstrap}
-BuildRequires:  python%{python3_pkgversion}-pytz
-BuildRequires:  python%{python3_pkgversion}-pytest
-BuildRequires:  python%{python3_pkgversion}-freezegun
-%endif
 
+%if %{without bootstrap}
+BuildRequires:  coreutils
+# The Python test dependencies are not generated from tox.ini,
+# because it would require complex patching to be usable
+# and becasue we want to avoid the tox dependency in ELN/RHEL.
+BuildRequires:  python%{python3_pkgversion}-pytest
+%if %{with datetime_tests}
+BuildRequires:  python%{python3_pkgversion}-freezegun
+# The pytz tests are skipped when pytz is missing
+BuildRequires:  python%{python3_pkgversion}-pytz
+%endif
 # build the documentation
 BuildRequires:  make
-
-%if !%{with bootstrap}
 BuildRequires:  python%{python3_pkgversion}-sphinx
 %endif
+Requires:       python%{python3_pkgversion}-babel = %{?epoch:%{epoch}:}%{version}-%{release}
 
 
 %description
@@ -75,33 +67,8 @@ Babel is composed of two major parts:
   and date formatting, etc.
 
 
-%if %{with python2}
-%package -n python2-babel
-Summary:        %sum
-
-Requires:       python2-setuptools
-Requires:       python2-pytz
-
-%{?python_provide:%python_provide python2-babel}
-
-%description -n python2-babel
-Babel is composed of two major parts:
-
-* tools to build and work with gettext message catalogs
-
-* a Python interface to the CLDR (Common Locale Data Repository),
-  providing access to various locale display names, localized number
-  and date formatting, etc.
-%endif
-
-
 %package -n python%{python3_pkgversion}-babel
-Summary:        %sum
-
-Requires:       python%{python3_pkgversion}-setuptools
-Requires:       python%{python3_pkgversion}-pytz
-
-%{?python_provide:%python_provide python%{python3_pkgversion}-babel}
+Summary:        Library for internationalizing Python applications
 
 %description -n python%{python3_pkgversion}-babel
 Babel is composed of two major parts:
@@ -112,90 +79,178 @@ Babel is composed of two major parts:
   providing access to various locale display names, localized number
   and date formatting, etc.
 
-%if !%{with bootstrap}
+%if %{without bootstrap}
 %package doc
 Summary:        Documentation for Babel
-Provides:       python-babel-doc = %{version}-%{release}
-Provides:       python2-babel-doc = %{version}-%{release}
-Provides:       python3-babel-doc = %{version}-%{release}
+%py_provides    python%{python3_pkgversion}-babel-doc
 
 %description doc
 Documentation for Babel
 %endif
 
 %prep
-%autosetup -n %{srcname}-%{version} -p1
+%autosetup -p1 -n Babel-%{version}
+
+%generate_buildrequires
+%pyproject_buildrequires
 
 %build
-%if %{with python2}
-%py2_build
-%endif
-%py3_build
+%pyproject_wheel
 
 BUILDDIR="$PWD/built-docs"
 rm -rf "$BUILDDIR"
 
-%if !%{with bootstrap}
+%if %{without bootstrap}
 pushd docs
 make \
     SPHINXBUILD=sphinx-build-3 \
     BUILDDIR="$BUILDDIR" \
-    html
+    html man
 popd
 rm -f "$BUILDDIR/html/.buildinfo"
 %endif
 
 %install
-%if %{with python2}
-%py2_install
-%endif
-%py3_install
+%pyproject_install
+%pyproject_save_files babel
 
-mv %{buildroot}%{_bindir}/pybabel %{buildroot}%{_bindir}/pybabel-%{python3_version}
+%if %{without bootstrap}
+install -D -m 0644 built-docs/man/babel.1 %{buildroot}%{_mandir}/man1/pybabel.1
+%endif
 
 %check
-export TZ=America/New_York
-%if %{with python2} && %{with python2_pytest}
-%{__python2} -m pytest
-%endif
-%if !%{with bootstrap}
-%{__python3} -m pytest
-%endif
-
-%if %{with python2}
-%files -n python2-babel
-%doc CHANGES AUTHORS
-%license LICENSE
-%{python2_sitelib}/Babel-%{version}-py*.egg-info
-%{python2_sitelib}/babel
+export TZ=UTC
+%pyproject_check_import
+%if %{without bootstrap}
+# The deselected doctests fail without pytz when run during Eastern Daylight Time
+# https://github.com/python-babel/babel/issues/988
+# The ignored files use freezegun
+%pytest %{!?with_datetime_tests:\
+  -k "not (babel.dates.format_time or babel.dates.get_timezone_name)" \
+  --ignore tests/test_dates.py --ignore tests/messages/test_frontend.py}
 %endif
 
-%files -n python%{python3_pkgversion}-babel
-%doc CHANGES AUTHORS
-%license LICENSE
-%{python3_sitelib}/Babel-%{version}-py*.egg-info
-%{python3_sitelib}/babel
-%{_bindir}/pybabel-%{python3_version}
+%files
+%doc CHANGES.rst AUTHORS
+%{_bindir}/pybabel
 
-%if !%{with bootstrap}
+%if %{without bootstrap}
+%{_mandir}/man1/pybabel.1*
+%endif
+
+%files -n python%{python3_pkgversion}-babel -f %{pyproject_files}
+
+%if %{without bootstrap}
 %files doc
+%license LICENSE
 %doc built-docs/html/*
 %endif
 
 %changelog
-* Wed May 12 2021 Charalampos Stratakis <cstratak@redhat.com> - 2.7.0-11
-- Fix CVE-2021-20095
-Resolves: rhbz#1955615
+* Tue Jan 23 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.13.1-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
 
-* Fri Dec 13 2019 Tomas Orsava <torsava@redhat.com> - 2.7.0-10
-- Exclude unsupported i686 arch
+* Fri Jan 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.13.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
 
-* Tue Dec 03 2019 Tomas Orsava <torsava@redhat.com> - 2.7.0-9
-- Rename the pybabel executable to pybabel-3.8 and move it to the
-  python38-babel package
+* Wed Jul 19 2023 Fedora Release Engineering <releng@fedoraproject.org> - 2.12.1-6
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_39_Mass_Rebuild
 
-* Wed Nov 20 2019 Lumír Balhar <lbalhar@redhat.com> - 2.7.0-8
-- Adjusted for Python 3.8 module in RHEL 8
+* Fri Jun 16 2023 Python Maint <python-maint@redhat.com> - 2.12.1-5
+- Rebuilt for Python 3.12
+
+* Tue Jun 13 2023 Python Maint <python-maint@redhat.com> - 2.12.1-4
+- Bootstrap for Python 3.12
+
+* Mon Jun 05 2023 Yaakov Selkowitz <yselkowi@redhat.com> - 2.12.1-3
+- Avoid libfaketime and python-freezegun deps in RHEL builds
+
+* Mon Apr 10 2023 Miro Hrončok <mhroncok@redhat.com> - 2.12.1-2
+- Fix DST-related test failures
+
+* Wed Mar 01 2023 Miro Hrončok <mhroncok@redhat.com> - 2.12.1-1
+- Update to 2.12.1
+
+* Tue Feb 28 2023 Miro Hrončok <mhroncok@redhat.com> - 2.12.0-1
+- Update to 2.12.0
+- No longer depends on pytz
+- No longer depends on setuptools
+- Update the License tag to SPDX
+
+* Wed Jan 18 2023 Fedora Release Engineering <releng@fedoraproject.org> - 2.11.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_38_Mass_Rebuild
+
+* Sun Jan 01 2023 Felix Schwarz <fschwarz@fedoraproject.org> - 2.11.0-1
+- update to 2.11.0
+
+* Wed Jul 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 2.10.3-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
+
+* Mon Jun 20 2022 Felix Schwarz <fschwarz@fedoraproject.org> - 2.10.3-2
+- backport patch to remove usage of cgi module (rhbz #2083956)
+
+* Mon Jun 20 2022 Felix Schwarz <fschwarz@fedoraproject.org> - 2.10.3-1
+- update to 2.10.3
+
+* Mon Jun 13 2022 Python Maint <python-maint@redhat.com> - 2.10.1-4
+- Rebuilt for Python 3.11
+
+* Mon Jun 13 2022 Python Maint <python-maint@redhat.com> - 2.10.1-3
+- Bootstrap for Python 3.11
+
+* Mon May 16 2022 Nils Philippsen <nils@redhat.com> - 2.10.1-2
+- Build and distribute man page for pybabel (#1611174)
+
+* Fri Apr 22 2022 Felix Schwarz <fschwarz@fedoraproject.org> - 2.10.1-1
+- update to 2.10.1
+
+* Wed Jan 19 2022 Fedora Release Engineering <releng@fedoraproject.org> - 2.9.1-5
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
+
+* Wed Jul 21 2021 Fedora Release Engineering <releng@fedoraproject.org> - 2.9.1-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
+
+* Thu Jun 03 2021 Python Maint <python-maint@redhat.com> - 2.9.1-3
+- Rebuilt for Python 3.10
+
+* Wed Jun 02 2021 Python Maint <python-maint@redhat.com> - 2.9.1-2
+- Bootstrap for Python 3.10
+
+* Wed Apr 28 2021 Felix Schwarz <fschwarz@fedoraproject.org> - 2.9.1-1
+- update to 2.9.1
+
+* Tue Jan 26 2021 Fedora Release Engineering <releng@fedoraproject.org> - 2.9.0-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
+
+* Mon Dec 21 2020 Miro Hrončok <mhroncok@redhat.com> - 2.9.0-3
+- Disable Python 2 build entirely
+
+* Tue Nov 24 2020 Miro Hrončok <mhroncok@redhat.com>
+- Disable Python 2 build on RHEL 9+
+
+* Mon Nov 16 22:22:25 CET 2020 Felix Schwarz <fschwarz@fedoraproject.org> - 2.9.0-1
+- update to 2.9.0
+
+* Mon Jul 27 2020 Fedora Release Engineering <releng@fedoraproject.org> - 2.8.0-7
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
+
+* Sat May 23 2020 Miro Hrončok <mhroncok@redhat.com> - 2.8.0-6
+- Rebuilt for Python 3.9
+
+* Fri May 22 2020 Miro Hrončok <mhroncok@redhat.com> - 2.8.0-5
+- Bootstrap for Python 3.9
+
+* Fri May 08 2020 Felix Schwarz <fschwarz@fedoraproject.org> - 2.8.0-4
+- reenable Python 2 subpackage for Fedora 33+ (rhbz #1737930)
+
+* Tue May 05 2020 Felix Schwarz <fschwarz@fedoraproject.org> - 2.8.0-3
+- add patch for compatibility with Python 3.9a6
+
+* Tue Jan 28 2020 Fedora Release Engineering <releng@fedoraproject.org> - 2.8.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
+
+* Thu Jan 02 2020 Felix Schwarz <fschwarz@fedoraproject.org> - 2.8.0-1
+- update to upstream version 2.8.0
 
 * Thu Oct 31 2019 Nils Philippsen <nils@tiptoe.de> - 2.7.0-7
 - drop python2-babel only from F33 on as it is needed for trac (for the time

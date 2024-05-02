@@ -15,7 +15,7 @@ ANSIBLEPKGS+=ansible-packaging-srpm
 
 #ANSIBLEPKGS+=doctest-srpm
 
-ANSIBLEPKGS+=python3.12-babel-srpm
+ANSIBLEPKGS+=babel-srpm
 ANSIBLEPKGS+=python3.12-coverage-srpm
 ANSIBLEPKGS+=python3.12-gast-srpm
 ANSIBLEPKGS+=python3.12-jmespath-srpm
