@@ -22,17 +22,22 @@
 #%%endif
 
 # Set this when there's a beta or rc version
-%global betaver %{nil}
+%global betaver rc1
 
-Name: ansible-core
+# Differing names since upstream split
+%global pypi_name ansible-core
+%global srcname ansible
+
+Name: %{pypi_name}
 Summary: A radically simple IT automation system
-Version: 2.16.5
+Version: 2.17.0
 Release: 0.1%{?betaver}%{?dist}
 
 License: GPLv3+
 Epoch: 1
 
-Source0: %pypi_source ansible-core %{version}%{?betaver}
+#Source0: %%pypi_source %%{pypi_name} %%{version}%%{?betaver}
+Source0: https://github.com/ansible/%{srcname}/archive/refs/tags/v%{version}%{betaver}.zip
 
 Url: https://ansible.com
 BuildArch: noarch
@@ -161,11 +166,11 @@ are transferred to managed machines automatically.
 This package installs the ansible-test command for testing modules and plugins
 developed for ansible.
 
-%package -n ansible-core-doc
+%package -n %{pypi_name}-doc
 Summary: Documentation for Ansible Base
 Obsoletes: ansible-base-doc < 2.10.6-1%{?dist}
 
-%description -n ansible-core-doc
+%description -n %{pypi_name}-doc
 
 Ansible is a radically simple model-driven configuration management,
 multi-node deployment, and remote task execution system. Ansible works
@@ -173,10 +178,10 @@ over SSH and does not require any software or daemons to be installed
 on remote nodes. Extension modules can be written in any language and
 are transferred to managed machines automatically.
 
-This package installs extensive documentation for ansible-core
+This package installs extensive documentation for %{pypi_name}
 
 %prep
-%autosetup -p1 -n %{name}-%{version}%{?betaver}
+%autosetup -p1 -n %{srcname}-%{version}%{?betaver}
 
 # RPM dependency generation confused by dependencies on RHEL 8,
 # python 3.11 has this module built in
@@ -272,7 +277,8 @@ make PYTHON=%{__python3} tests-py3
 
 %files
 %license COPYING
-%doc README.md PKG-INFO changelogs/CHANGELOG-*.rst
+%doc README.md
+%doc changelogs/CHANGELOG-*.rst
 %dir %{_sysconfdir}/ansible/
 %config(noreplace) %{_sysconfdir}/ansible/*
 %{_bindir}/ansible*
@@ -285,7 +291,7 @@ make PYTHON=%{__python3} tests-py3
 %{_bindir}/ansible-test
 %{python3_sitelib}/ansible_test
 
-%files -n ansible-core-doc
+%files -n %{pypi_name}-doc
 %if %{with docs}
 %doc docs/docsite/_build/html
 %endif
