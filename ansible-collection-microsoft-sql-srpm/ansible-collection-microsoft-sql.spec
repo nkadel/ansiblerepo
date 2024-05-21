@@ -66,15 +66,11 @@ Provides: ansible-collection(%{collection_namespace}.%{collection_name}) = %{col
 # be compatible with the usual Fedora Provides:
 Provides: ansible-collection-%{collection_namespace}-%{collection_name} = %{collection_version}-%{release}
 
-# ansible-core is in rhel 8.6 and later - default to ansible-core, but allow
-# the use of ansible if present - we may revisit this if the automatic dependency
-# generator is added to ansible-core in RHEL
+# ansible-core is in rhel 8.6 and later
 # Fedora - the automatic generator will add this - no need to explicit declare
 # it in the spec file
-# EL7 - no dependency on ansible because there is no ansible in el7 - user is
-# responsible for knowing they have to install ansible
-%if 0%{?rhel} >= 8
-Requires: (ansible-core >= 2.11.0 or ansible >= 2.9.0)
+%if 0%{?rhel}
+Requires: ansible-core >= 2.11.0
 %endif
 
 %if 0%{?rhel}
@@ -86,7 +82,7 @@ Requires: linux-system-roles
 %global auto_version 1.75.1
 %global mainid cdc706f14614ef5e80bbce8db10beb369e889df9
 %global parenturl https://github.com/linux-system-roles
-#Source: %{parenturl}/auto-maintenance/archive/%{mainid}/auto-maintenance-%{mainid}.tar.gz
+#Source: %%{parenturl}/auto-maintenance/archive/%%{mainid}/auto-maintenance-%%{mainid}.tar.gz
 Source: https://github.com/linux-system-roles/auto-maintenance/archive/refs/tags/%{auto_version}.zip
 Source1: %{parenturl}/%{rolename}/archive/%{version}/%{rolename}-%{version}.tar.gz
 
