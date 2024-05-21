@@ -16,7 +16,7 @@ Summary:        %{sum}
 
 License:        GPLv2+
 URL:            https://launchpad.net/python-distutils-extra
-Source0:        http://launchpad.net/%{name}/trunk/%{version}/+download/%{name}-%{version}.tar.gz
+Source0:        %{pypi_source}
 BuildArch:      noarch
 
 BuildRequires:  python%{python3_pkgversion}-devel

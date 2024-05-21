@@ -16,7 +16,7 @@ Summary:        JSON Matching Expressions
 
 License:        MIT
 URL:            https://github.com/jmespath/jmespath.py
-Source0:        %{url}/archive/%{version}/jmespath.py-%{version}.tar.gz
+Source0:        %{pypi_source}
 BuildArch:      noarch
 
 %description
@@ -43,7 +43,7 @@ JMESPath allows you to declaratively specify how to extract elements from
 a JSON document.
 
 %prep
-%setup -q -n jmespath.py-%{version}
+%setup -q -n %{pypi_name}-%{version}
 rm -rf %{pypi_name}.egg-info
 
 %build

@@ -5,6 +5,8 @@
 %global __python3 %{_bindir}/python%{python3_version}
 %endif
 
+%global pypi_name gast
+
 Name:           python-gast
 Version:        0.5.3
 #Release:        8%%{?dist}
@@ -12,7 +14,7 @@ Release:        0.8%{?dist}
 Summary:        Python AST that abstracts the underlying Python version
 License:        BSD-3-Clause
 URL:            https://github.com/serge-sans-paille/gast/
-Source0:        %{url}/archive/%{version}/gast-%{version}.tar.gz
+Source0:        %{pypi_source}
 BuildArch:      noarch
 
 BuildRequires:  python%{python3_pkgversion}-devel

@@ -13,7 +13,7 @@ Summary:        A process and system utilities module for Python
 
 License:        BSD-3-Clause
 URL:            https://github.com/giampaolo/psutil
-Source:         %{url}/archive/release-%{version}/psutil-%{version}.tar.gz
+Source0:        %{pypi_source}
 #
 # skip tests that fail in mock chroots
 #

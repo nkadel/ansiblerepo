@@ -22,7 +22,7 @@ Summary:        World Timezone Definitions for Python
 
 License:        MIT
 URL:            http://pytz.sourceforge.net/
-Source0:        %pypi_source
+Source0:        %{pypi_source}
 # Patch to use the system supplied zoneinfo files
 Patch0:         pytz-zoneinfo.patch
 # https://bugzilla.redhat.com/1497572

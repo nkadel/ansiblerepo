@@ -18,7 +18,7 @@ Summary:        The new features in unittest backported to Python 2.4+
 
 License:        BSD
 URL:            http://pypi.python.org/pypi/unittest2
-Source0:        https://pypi.python.org/packages/source/u/%{pypi_name}/%{pypi_name}-%{version}.tar.gz
+Source0:        %{pypi_source}
 # we don't need this in Fedora, since we have Python 2.7, which has argparse
 Patch0:         unittest2-1.1.0-remove-argparse-from-requires.patch
 # Conditionalize traceback2 in code (only use it for Python 2)
