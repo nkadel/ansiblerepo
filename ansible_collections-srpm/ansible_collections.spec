@@ -11,12 +11,12 @@
 # due to very confusing upsream renaming
 %global pypi_name ansible
 %global pypi_realname ansible_collections
-%global pypi_version 10.0.0
+%global pypi_version 10.0.1
 # Set this when there's a beta or rc version
 #%%global betaver %%{nil}
-%global betaver a2
+%global betaver %{nil}
 
-# Disable thye burdensume and pointless hardlink among the ginormous
+# Disable the burdenspme and pointless hardlink among the ginormous
 # ansible_collection modules
 %global __brp_python_hardlink %nil
 

@@ -2,7 +2,7 @@ ansiblerepo
 ==========-
 
 Wrapper for SRPM building tools for ansibl9 8.x and ansible-core 2.16
-using python3.11. CentOS 7 does not have python3.11 easily available,
+using python3.11. Almalinux 7 does not have python3.11 easily available,
 so it's no longer supported here for Ansible servers.
 
 Stop installing ansible package
@@ -50,8 +50,8 @@ through 9 and Fedora 38. Run these commands at the top directory.
 * make getsrc # Get source tarvalls for all SRPMs
 
 * make cfgs # Create local .cfg configs for "mock".
-* * centos-stream+epel-8-x86_64.cfg # Used for some Makefiles
-* * centos-stream+epel-9-x86_64.cfg # Used for some Makefiles
+* * almalinux+epel-8-x86_64.cfg # Used for some Makefiles
+* * almalinux+epel-9-x86_64.cfg # Used for some Makefiles
 * * fedora-38-x86_64.cfg # Used for some Makefiles
 * * ansiblerepo-8-x86_64.cfg
 * * ansiblerepo-9-x86_64.cfg
