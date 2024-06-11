@@ -100,8 +100,8 @@ CFGS+=ansiblerepo-f40-x86_64.cfg
 CFGS+=ansiblerepo-amz2023-x86_64.cfg
 
 # /etc/mock version lacks python3.12 modules
-MOCKCFGS+=centos-stream+epel-next-8-x86_64.cfg
-MOCKCFGS+=centos-stream+epel-next-9-x86_64.cfg
+MOCKCFGS+=alma+epel-8-x86_64.cfg
+MOCKCFGS+=alma+epel-9-x86_64.cfg
 MOCKCFGS+=fedora-40-x86_64.cfg
 MOCKCFGS+=amazonlinux-2023-x86_64.cfg
 
@@ -155,7 +155,7 @@ $(MOCKCFGS)::
 	@echo "config_opts['dnf_vars'] = { 'best': 'False' }" | tee -a $@
 
 # packages-microsoft-com-prod added for /bin/pwsh
-ansiblerepo-8-x86_64.cfg: ./centos-stream+epel-next-8-x86_64.cfg
+ansiblerepo-8-x86_64.cfg: ./alma+epel-8-x86_64.cfg
 	@echo Generating $@ from $?
 	@echo "include('$?')" | tee $@
 	@echo "config_opts['dnf_vars'] = { 'best': 'False' }" | tee -a $@
@@ -178,7 +178,7 @@ ansiblerepo-8-x86_64.cfg: ./centos-stream+epel-next-8-x86_64.cfg
 	@echo '"""' | tee -a $@
 
 # packages-microsoft-com-prod added for /bin/pwsh
-ansiblerepo-9-x86_64.cfg: centos-stream+epel-next-9-x86_64.cfg
+ansiblerepo-9-x86_64.cfg: alma+epel-9-x86_64.cfg
 	@echo Generating $@ from $?
 	@echo "include('$?')" | tee $@
 	@echo "config_opts['dnf_vars'] = { 'best': 'False' }" | tee -a $@
