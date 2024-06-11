@@ -22,7 +22,7 @@
 #%%endif
 
 # Set this when there's a beta or rc version
-%global betaver rc1
+%global betaver %{nil}
 
 # Differing names since upstream split
 %global pypi_name ansible-core
