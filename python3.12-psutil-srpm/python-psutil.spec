@@ -6,13 +6,16 @@
 %global __python3 %{_bindir}/python%{python3_version}
 %endif
 
-Name:           python-psutil
+%global pypi_name psutil
+
+
+Name:           python-%{pypi_name}
 Version:        5.9.8
 Release:        1%{?dist}
 Summary:        A process and system utilities module for Python
 
 License:        BSD-3-Clause
-URL:            https://github.com/giampaolo/psutil
+URL:            https://github.com/giampaolo/%{pypi_name}
 Source0:        %{pypi_source}
 #
 # skip tests that fail in mock chroots
@@ -21,15 +24,15 @@ Patch:          python-psutil-skip-tests-in-mock.patch
 #
 # avoid: AssertionError: 885725913.3 != 885725913.3000001 within 7 places
 #
-Patch:          https://github.com/giampaolo/psutil/pull/2372.patch
+Patch:          https://github.com/giampaolo/%{pypi_name}/pull/2372.patch
 #
 # Skip test_emulate_multi_cpu on aarch64
-# Failure reported upstream: https://github.com/giampaolo/psutil/issues/2373
+# Failure reported upstream: https://github.com/giampaolo/%{pypi_name}/issues/2373
 #
 Patch:          python-psutil-skip-test_emulate_multi_cpu-on-aarch64.patch
 #
 # Skip test_misc.TestCommonModule.test_debug
-# Failure reported upstream: https://github.com/giampaolo/psutil/issues/2374
+# Failure reported upstream: https://github.com/giampaolo/%{pypi_name}/issues/2374
 #
 Patch:          python-psutil-skip-test_debug.patch
 
@@ -47,10 +50,10 @@ command line tools such as: ps, top, df, kill, free, lsof, free, netstat,
 ifconfig, nice, ionice, iostat, iotop, uptime, pidof, tty, who, taskset, pmap.
 
 
-%package -n python%{python3_pkgversion}-psutil
+%package -n python%{python3_pkgversion}-%{pypi_name}
 Summary:        %{summary}
 
-%description -n python%{python3_pkgversion}-psutil
+%description -n python%{python3_pkgversion}-%{pypi_name}
 psutil is a module providing an interface for retrieving information on all
 running processes and system utilization (CPU, memory, disks, network, users) in
 a portable way by using Python 3, implementing many functionalities offered by
@@ -58,19 +61,19 @@ command line tools such as: ps, top, df, kill, free, lsof, free, netstat,
 ifconfig, nice, ionice, iostat, iotop, uptime, pidof, tty, who, taskset, pmap.
 
 
-%package -n python%{python3_pkgversion}-psutil-tests
+%package -n python%{python3_pkgversion}-%{pypi_name}-tests
 Summary:        %{summary}, test suite
-Requires:       python%{python3_pkgversion}-psutil%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
+Requires:       python%{python3_pkgversion}-%{pypi_name}%{?_isa} = %{?epoch:%{epoch}:}%{version}-%{release}
 
-%description -n python%{python3_pkgversion}-psutil-tests
+%description -n python%{python3_pkgversion}-%{pypi_name}-tests
 The test suite for psutil.
 
 
 %prep
-%autosetup -p1 -n psutil-release-%{version}
+%autosetup -p1 -n %{pypi_name}-%{version}
 
 # Remove shebangs
-find psutil -name \*.py | while read file; do
+find %{pypi_name} -name \*.py | while read file; do
   sed -i.orig -e '1{/^#!/d}' $file && \
   touch -r $file.orig $file && \
   rm $file.orig
@@ -87,7 +90,7 @@ done
 
 %install
 %pyproject_install
-%pyproject_save_files psutil
+%pyproject_save_files %{pypi_name}
 
 
 # Ignore tests when building with flatpak-module-tools to avoid build failures
@@ -101,16 +104,16 @@ done
 # Alternative is to set GITHUB_ACTIONS but that has undesirable side effects.
 
 # Note: We deliberately bypass the Makefile here to test the installed modules.
-APPVEYOR=1 %{py3_test_envvars} %{python3} psutil/tests/runner.py
+APPVEYOR=1 %{py3_test_envvars} %{python3} %{pypi_name}/tests/runner.py
 %endif
 
 
-%files -n python%{python3_pkgversion}-psutil -f %{pyproject_files}
+%files -n python%{python3_pkgversion}-%{pypi_name} -f %{pyproject_files}
 %doc CREDITS HISTORY.rst README.rst
-%exclude %{python3_sitearch}/psutil/tests
+%exclude %{python3_sitearch}/%{pypi_name}/tests
 
-%files -n python%{python3_pkgversion}-psutil-tests
-%{python3_sitearch}/psutil/tests/
+%files -n python%{python3_pkgversion}-%{pypi_name}-tests
+%{python3_sitearch}/%{pypi_name}/tests/
 
 
 %changelog
