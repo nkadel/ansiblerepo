@@ -88,6 +88,7 @@ ANSIBLEPKGS+=ansible-inventory-grapher-srpm
 
 REPOS+=ansiblerepo/el/8
 REPOS+=ansiblerepo/el/9
+REPOS+=ansiblerepo/el/10
 REPOS+=ansiblerepo/fedora/40
 REPOS+=ansiblerepo/amazon/2023
 
@@ -95,6 +96,7 @@ REPODIRS := $(patsubst %,%/x86_64/repodata,$(REPOS)) $(patsubst %,%/SRPMS/repoda
 
 CFGS+=ansiblerepo-8-x86_64.cfg
 CFGS+=ansiblerepo-9-x86_64.cfg
+CFGS+=ansiblerepo-10-x86_64.cfg
 CFGS+=ansiblerepo-f40-x86_64.cfg
 # Amazon 2 023config
 CFGS+=ansiblerepo-amz2023-x86_64.cfg
@@ -102,6 +104,7 @@ CFGS+=ansiblerepo-amz2023-x86_64.cfg
 # /etc/mock version lacks python3.12 modules
 MOCKCFGS+=alma+epel-8-x86_64.cfg
 MOCKCFGS+=alma+epel-9-x86_64.cfg
+MOCKCFGS+=alma+epel-10-x86_64.cfg
 MOCKCFGS+=fedora-40-x86_64.cfg
 MOCKCFGS+=amazonlinux-2023-x86_64.cfg
 
@@ -179,6 +182,29 @@ ansiblerepo-8-x86_64.cfg: ./alma+epel-8-x86_64.cfg
 
 # packages-microsoft-com-prod added for /bin/pwsh
 ansiblerepo-9-x86_64.cfg: alma+epel-9-x86_64.cfg
+	@echo Generating $@ from $?
+	@echo "include('$?')" | tee $@
+	@echo "config_opts['dnf_vars'] = { 'best': 'False' }" | tee -a $@
+	@echo "config_opts['root'] = 'ansiblerepo-{{ releasever }}-{{ target_arch }}'" | tee -a $@
+	@echo "config_opts['dnf.conf'] += \"\"\"" | tee -a $@
+	@echo '[ansiblerepo]' | tee -a $@
+	@echo 'name=ansiblerepo' | tee -a $@
+	@echo 'enabled=1' | tee -a $@
+	@echo 'baseurl=$(REPOBASE)/ansiblerepo/el/9/x86_64/' | tee -a $@
+	@echo 'skip_if_unavailable=False' | tee -a $@
+	@echo 'metadata_expire=1s' | tee -a $@
+	@echo 'gpgcheck=0' | tee -a $@
+	@echo '' | tee -a $@
+	@echo '[packages-microsoft-com-prod]' | tee -a $@
+	@echo 'name=packages-microsoft-com-prod' | tee -a $@
+	@echo 'baseurl=https://packages.microsoft.com/rhel/9/prod/' | tee -a $@
+	@echo 'enabled=0' | tee -a $@
+	@echo 'gpgcheck=1' | tee -a $@
+	@echo 'gpgkey=https://packages.microsoft.com/keys/microsoft.asc' | tee -a $@
+	@echo '"""' | tee -a $@
+
+# packages-microsoft-com-prod added for /bin/pwsh
+ansiblerepo-10-x86_64.cfg: alma+epel-10-x86_64.cfg
 	@echo Generating $@ from $?
 	@echo "include('$?')" | tee $@
 	@echo "config_opts['dnf_vars'] = { 'best': 'False' }" | tee -a $@

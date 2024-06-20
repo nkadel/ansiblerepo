@@ -7,12 +7,14 @@ LANG=C
 
 MOCKS+=alma+epel-8-x86_64
 MOCKS+=alma+epel-9-x86_64
+#MOCKS+=alma+epel-10-x86_64
 MOCKS+=fedora-40-x86_64
 MOCKS+=fedora-40-x86_64
 #MOCKS+=amazonlinux-2023-x86_64
 
 MOCKCFGS+=ansiblerepo-8-x86_64
 MOCKCFGS+=ansiblerepo-9-x86_64
+#MOCKCFGS+=ansiblerepo-10-x86_64
 MOCKCFGS+=ansiblerepo-f40-x86_64
 #MOCKCFGS+=ansiblerepo-amz2023-x86_64
 
