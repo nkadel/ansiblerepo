@@ -11,7 +11,7 @@
 # due to very confusing upsream renaming
 %global pypi_name ansible
 %global pypi_realname ansible_collections
-%global pypi_version 10.0.1
+%global pypi_version 10.1.0
 # Set this when there's a beta or rc version
 #%%global betaver %%{nil}
 %global betaver %{nil}
@@ -192,6 +192,9 @@ hardlink -v %{buildroot}%{ansible_licensedir}
 %doc %{_defaultdocdir}/%{pypi_realname}-%{version}%{?betaver}/%{pypi_realname}
 
 %changelog
+* Wed Jun 19 2024 Nico Kadel-Garcia - 10.1.0-0.1
+- Update to 10.1.0
+
 * Fri Apr 12 2024 Nico Kadel-Garcia - 10.0.0b1-0.1
 - Update to 10.0.0b1
 

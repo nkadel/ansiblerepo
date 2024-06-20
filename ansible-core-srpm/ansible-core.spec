@@ -30,7 +30,7 @@
 
 Name: %{pypi_name}
 Summary: A radically simple IT automation system
-Version: 2.17.0
+Version: 2.17.1
 Release: 0.1%{?betaver}%{?dist}
 
 License: GPLv3+
@@ -297,6 +297,9 @@ make PYTHON=%{__python3} tests-py3
 %endif
 
 %changelog
+* Wed Jun 19 2024 Nico Kadel-Garcia - 2.17.01-0.1
+- Update to 2.17.1
+
 * Tue Mar 26 2024 Nico Kadel-Garcia - 2.16.5-0.1
 - Update to 2.16.5
 
