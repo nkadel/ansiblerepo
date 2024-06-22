@@ -9,7 +9,7 @@
 %global _docdir_fmt %{name}
 
 Name:           ansible-collection-ansible-netcommon
-Version:        6.0.0
+Version:        6.1.3
 Release:        0.1%{?dist}
 Summary:        Ansible Network Collection for Common Code
 
