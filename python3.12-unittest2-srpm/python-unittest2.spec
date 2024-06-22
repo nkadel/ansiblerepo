@@ -29,12 +29,10 @@ Patch1:         unittest2-1.1.0-conditionalize-traceback2.patch
 Patch2:         unittest2-1.1.0-backport-tests-from-py3.5.patch
 BuildArch:      noarch
 
-
 %description
 unittest2 is a backport of the new features added to the unittest testing
 framework in Python 2.7 and onwards. It is tested to run on Python 2.6, 2.7,
 3.2, 3.3, 3.4 and pypy.
-
 
 %package -n     python%{python3_pkgversion}-%{pypi_name}
 Summary:        The new features in unittest backported to Python 2.4+
@@ -42,19 +40,14 @@ Summary:        The new features in unittest backported to Python 2.4+
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
 BuildRequires:  python%{python3_pkgversion}-six
-%if 0%{?rhel} && 0%{?rhel} >= 8
-Requires:       platform-python-setuptools
-%else
-Requires:       python%{python3_pkgversion}-setuptools
-%endif
-Requires:       python%{python3_pkgversion}-six
 
+Requires:       python%{python3_pkgversion}-setuptools
+Requires:       python%{python3_pkgversion}-six
 
 %description -n python%{python3_pkgversion}-%{pypi_name}
 unittest2 is a backport of the new features added to the unittest testing
 framework in Python 2.7 and onwards. It is tested to run on Python 2.6, 2.7,
 3.2, 3.3, 3.4 and pypy.
-
 
 %prep
 %setup -q -n %{pypi_name}-%{version}
@@ -65,10 +58,8 @@ rm -rf %{pypi_name}.egg-info
 %patch2 -p0
 %patch1 -p0
 
-
 %build
 %py3_build
-
 
 %install
 %py3_install
@@ -77,7 +68,6 @@ mv unit2 unit2-%{python3_version}
 # compatibility symlink
 ln -s unit2-%{python3_version} python%{python3_pkgversion}-unit2
 popd
-
 
 # Disable checks on el8 and el9, they don't work
 %if ! 0%{?el8} && ! 0%{?el9}
