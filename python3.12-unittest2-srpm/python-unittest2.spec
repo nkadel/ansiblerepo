@@ -40,6 +40,7 @@ Summary:        The new features in unittest backported to Python 2.4+
 BuildRequires:  python%{python3_pkgversion}-devel
 BuildRequires:  python%{python3_pkgversion}-setuptools
 BuildRequires:  python%{python3_pkgversion}-six
+BuildRequires:  python%{python3_pkgversion}-wheel
 
 Requires:       python%{python3_pkgversion}-setuptools
 Requires:       python%{python3_pkgversion}-six
