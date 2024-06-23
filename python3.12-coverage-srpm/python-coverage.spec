@@ -6,15 +6,13 @@
 %global __python3 %{_bindir}/python%{python3_version}
 %endif
 
-#global prever b1
-
 %global py2support 0
 
 Name:           python-coverage
 Summary:        Code coverage testing module for Python
 Version:        6.4.2
 #Release:        2%%{?dist}
-Release:        0.2%{?dist}
+Release:        0.3%{?dist}
 # jquery(MIT):
 #  coverage/htmlfiles/jquery.min.js
 # MIT or GPL:
@@ -22,8 +20,10 @@ Release:        0.2%{?dist}
 #  coverage/htmlfiles/jquery.hotkeys.js
 #  coverage/htmlfiles/jquery.isonscreen.js
 License:        ASL 2.0 and MIT and (MIT or GPL)
-URL:            http://nedbatchelder.com/code/modules/coverage.html
-Source0:        %{pypi_source}
+URL:            https://github.com/nedbat/coveragepy
+# pypi nameing is seriously screwed up
+#Source0:        %%{pypi_source}
+Source0:        https://github.com/nedbat/coveragepy/archive/tags/%{version}.zip
 BuildRequires:  gcc
 
 %description
@@ -85,7 +85,9 @@ Python standard library to determine which lines are executable, and which
 have been executed.
 
 %prep
-%setup -q -n coverage-%{version}%{?prever}
+# zip file naming is seriously screwed up
+#%setup -q
+%setup -q -n coveragepy-tags-%{version}
 
 find . -type f -exec chmod 0644 \{\} \;
 sed -i 's/\r//g' README.rst
