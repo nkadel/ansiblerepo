@@ -7,7 +7,7 @@ LANG=C
 #MOCKS+=ansiblerepo-7-x86_64
 #MOCKS+=ansiblerepo-8-x86_64
 MOCKS+=ansiblerepo-9-x86_64
-MOCKS+=ansiblerepo-10-x86_64
+##MOCKS+=ansiblerepo-10-x86_64
 #MOCKS+=ansiblerepo-f40-x86_64
 #MOCKS+=ansiblerepo-amz2023-x86_64
 
