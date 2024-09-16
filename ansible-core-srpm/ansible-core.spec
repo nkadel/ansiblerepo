@@ -30,7 +30,7 @@
 
 Name: %{pypi_name}
 Summary: A radically simple IT automation system
-Version: 2.17.1
+Version: 2.17.4
 Release: 0.1%{?betaver}%{?dist}
 
 License: GPLv3+
