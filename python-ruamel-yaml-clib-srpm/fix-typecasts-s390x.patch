@@ -1,38 +1,74 @@
-diff -up ruamel-yaml-clib-code-85e484db2b7c37107e4edd2ae6fc380877bbc08e/_ruamel_yaml.pxd.s390x ruamel-yaml-clib-code-85e484db2b7c37107e4edd2ae6fc380877bbc08e/_ruamel_yaml.pxd
---- ruamel-yaml-clib-code-85e484db2b7c37107e4edd2ae6fc380877bbc08e/_ruamel_yaml.pxd.s390x	2022-05-11 17:33:41.727476439 +0200
-+++ ruamel-yaml-clib-code-85e484db2b7c37107e4edd2ae6fc380877bbc08e/_ruamel_yaml.pxd	2022-05-11 17:34:34.197700039 +0200
-@@ -86,10 +86,10 @@ cdef extern from "_ruamel_yaml.h":
+diff --git a/_ruamel_yaml.pxd b/_ruamel_yaml.pxd
+index d8dc3c6bdaa27055..9e63ba7e4be3e4af 100644
+--- a/_ruamel_yaml.pxd
++++ b/_ruamel_yaml.pxd
+@@ -1,16 +1,16 @@
+ 
+ cdef extern from "_ruamel_yaml.h":
+ 
+-    void malloc(int l)
+-    void memcpy(char *d, char *s, int l)
+-    int strlen(char *s)
++    void malloc(size_t l)
++    void memcpy(void *d, const void *s, size_t l)
++    size_t strlen(const char *s)
+     int PyString_CheckExact(object o)
+     int PyUnicode_CheckExact(object o)
+     char *PyString_AS_STRING(object o)
+-    int PyString_GET_SIZE(object o)
+-    object PyString_FromStringAndSize(char *v, int l)
+-    object PyUnicode_FromString(char *u)
+-    object PyUnicode_DecodeUTF8(char *u, int s, char *e)
++    Py_ssize_t PyString_GET_SIZE(object o)
++    object PyString_FromStringAndSize(char *v, Py_ssize_t l)
++    object PyUnicode_FromString(const char *u)
++    object PyUnicode_DecodeUTF8(const char *u, size_t s, const char *e)
+     object PyUnicode_AsUTF8String(object o)
+     int PY_MAJOR_VERSION
+ 
+@@ -85,11 +85,11 @@ cdef extern from "_ruamel_yaml.h":
+         YAML_MAPPING_START_EVENT
          YAML_MAPPING_END_EVENT
  
-     ctypedef int yaml_read_handler_t(void *data, char *buffer,
+-    ctypedef int yaml_read_handler_t(void *data, char *buffer,
 -            int size, int *size_read) except 0
++    ctypedef int yaml_read_handler_t(void *data, unsigned char *buffer,
 +            size_t size, size_t *size_read) except 0
  
-     ctypedef int yaml_write_handler_t(void *data, char *buffer,
+-    ctypedef int yaml_write_handler_t(void *data, char *buffer,
 -            int size) except 0
++    ctypedef int yaml_write_handler_t(void *data, unsigned char *buffer,
 +            size_t size) except 0
  
      ctypedef struct yaml_mark_t:
          int index
-diff -up ruamel-yaml-clib-code-85e484db2b7c37107e4edd2ae6fc380877bbc08e/_ruamel_yaml.pyx.s390x ruamel-yaml-clib-code-85e484db2b7c37107e4edd2ae6fc380877bbc08e/_ruamel_yaml.pyx
---- ruamel-yaml-clib-code-85e484db2b7c37107e4edd2ae6fc380877bbc08e/_ruamel_yaml.pyx.s390x	2022-05-12 13:05:17.540913818 +0200
-+++ ruamel-yaml-clib-code-85e484db2b7c37107e4edd2ae6fc380877bbc08e/_ruamel_yaml.pyx	2022-05-12 13:06:38.211269280 +0200
+diff --git a/_ruamel_yaml.pyx b/_ruamel_yaml.pyx
+index 4fd50e207b8d5100..20a796a30662c890 100644
+--- a/_ruamel_yaml.pyx
++++ b/_ruamel_yaml.pyx
 @@ -904,7 +904,7 @@ cdef class CParser:
                  raise error
          return 1
  
 -cdef int input_handler(void *data, char *buffer, int size, int *read) except 0:
-+cdef int input_handler(void *data, char *buffer, size_t size, size_t *read) except 0:
++cdef int input_handler(void *data, unsigned char *buffer, size_t size, size_t *read) except 0:
      cdef CParser parser
      parser = <CParser>data
      if parser.stream_cache is None:
-@@ -1514,7 +1514,7 @@ cdef class CEmitter:
+@@ -1514,13 +1514,13 @@ cdef class CEmitter:
              self.ascend_resolver()
          return 1
  
 -cdef int output_handler(void *data, char *buffer, int size) except 0:
-+cdef int output_handler(void *data, char *buffer, size_t size) except 0:
++cdef int output_handler(void *data, unsigned char *buffer, size_t size) except 0:
      cdef CEmitter emitter
      emitter = <CEmitter>data
      if emitter.dump_unicode == 0:
-diff -up ruamel-yaml-clib-code-85e484db2b7c37107e4edd2ae6fc380877bbc08e/yaml.h.s390x ruamel-yaml-clib-code-85e484db2b7c37107e4edd2ae6fc380877bbc08e/yaml.h
+-        value = PyString_FromStringAndSize(buffer, size)
++        value = PyString_FromStringAndSize(<char *>buffer, size)
+     else:
+-        value = PyUnicode_DecodeUTF8(buffer, size, 'strict')
++        value = PyUnicode_DecodeUTF8(<char *>buffer, size, 'strict')
+     emitter.stream.write(value)
+     return 1
+ 
