@@ -9,33 +9,33 @@ REPOBASE=file://$(PWD)
 ANSIBLEPKGS+=ansible-freeipa-srpm
 ANSIBLEPKGS+=ansible-packaging-srpm
 ANSIBLEPKGS+=babel-srpm
-ANSIBLEPKGS+=python3.12-coverage-srpm
-ANSIBLEPKGS+=python3.12-gast-srpm
-ANSIBLEPKGS+=python3.12-jmespath-srpm
-ANSIBLEPKGS+=python3.12-markupsafe-srpm
-ANSIBLEPKGS+=python3.12-psutil-srpm
-ANSIBLEPKGS+=python3.12-pytz-srpm
+ANSIBLEPKGS+=python-coverage-srpm
+ANSIBLEPKGS+=python-gast-srpm
+ANSIBLEPKGS+=python-jmespath-srpm
+ANSIBLEPKGS+=python-markupsafe-srpm
+ANSIBLEPKGS+=python-psutil-srpm
+ANSIBLEPKGS+=python-pytz-srpm
 
-# RHEL 8 and 9 lack this with python3.12
-ANSIBLEPKGS+=python3.12-setuptools_scm-srpm
-ANSIBLEPKGS+=python3.12-toml-srpm
+# RHEL 8 and 9 lack this with python
+ANSIBLEPKGS+=python-setuptools_scm-srpm
+ANSIBLEPKGS+=python-toml-srpm
 
 # Remaining packages require ansiblerepo
 #ANSIBLEPKGS+=ansible-openstack-modules-srpm
 ANSIBLEPKGS+=ansible-collection-azure-azcollection-srpm
 ANSIBLEPKGS+=ansible-collection-netcommon-srpm
 ANSIBLEPKGS+=ansible-collections-openstack-srpm
-ANSIBLEPKGS+=python3.12-resolvelib-srpm
+ANSIBLEPKGS+=python-resolvelib-srpm
 
 #ANSIBLEPKGS+=doctest-srpm
 
-ANSIBLEPKGS+=python3.12-six-srpm
+ANSIBLEPKGS+=python-six-srpm
 
 # Requires six
-ANSIBLEPKGS+=python3.12-unittest2-srpm
+ANSIBLEPKGS+=python-unittest2-srpm
 
 # Requires babel and markupsafe
-ANSIBLEPKGS+=python3.12-jinja2-srpm
+ANSIBLEPKGS+=python-jinja2-srpm
 
 # Build testing requirements
 ##ANSIBLEPKGS+=antsibull-core-srpm
@@ -47,7 +47,7 @@ ANSIBLEPKGS+=python3.12-jinja2-srpm
 ##ANSIBLEPKGS+=ansible-lint-srpm
 
 # Requires six and unittest2
-ANSIBLEPKGS+=python3.12-mock-srpm
+ANSIBLEPKGS+=python-mock-srpm
 
 # Requires jinj2 and mock
 ANSIBLEPKGS+=ansible-core-srpm
@@ -59,9 +59,9 @@ ANSIBLEPKGS+=ansible-srpm
 #ANSIBLEPKGS+=ansible_collections-srpm
 
 ## Requires ruamel-yaml-glibc if not in bootstrap
-ANSIBLEPKGS+=python3.12-ruamel-yaml-srpm
+ANSIBLEPKGS+=python-ruamel-yaml-srpm
 # Requires ruamel-yaml
-ANSIBLEPKGS+=python3.12-ruamel-yaml-clib-srpm
+ANSIBLEPKGS+=python-ruamel-yaml-clib-srpm
 
 #
 ANSIBLEPKGS+=ansible-collection-ansible-netcommon-srpm
@@ -101,7 +101,7 @@ CFGS+=ansiblerepo-f40-x86_64.cfg
 # Amazon 2 023config
 CFGS+=ansiblerepo-amz2023-x86_64.cfg
 
-# /etc/mock version lacks python3.12 modules
+# /etc/mock version lacks python modules
 MOCKCFGS+=alma+epel-8-x86_64.cfg
 MOCKCFGS+=alma+epel-9-x86_64.cfg
 MOCKCFGS+=alma+epel-10-x86_64.cfg
