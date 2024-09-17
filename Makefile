@@ -64,7 +64,6 @@ ANSIBLEPKGS+=python-ruamel-yaml-srpm
 ANSIBLEPKGS+=python-ruamel-yaml-clib-srpm
 
 #
-ANSIBLEPKGS+=ansible-collection-ansible-netcommon-srpm
 # Updated in EPEL
 #ANSIBLEPKGS+=ansible-collection-ansible-posix-srpm
 #ANSIBLEPKGS+=ansible-collection-ansible-utils-srpm
