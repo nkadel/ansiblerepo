@@ -5,7 +5,13 @@ Wrapper for SRPM building tools for ansibl9 8.x and ansible-core 2.16
 using python3.11. Alma 7 does not have python3.11 easily available,
 so it's no longer supported here for Ansible servers.
 
-Stop installing ansible package
+Pre-install ansible-packaging for mock compilation
+--------------------------------------------------
+
+'make getsrc' relies on macros from ansible-packaging
+
+
+Stop installing 'ansible' package
 -------------------------------
 
 The "ansible" package itself is now pointless. It contains more than
