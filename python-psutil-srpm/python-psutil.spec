@@ -24,17 +24,17 @@ Patch:          python-psutil-skip-tests-in-mock.patch
 #
 # avoid: AssertionError: 885725913.3 != 885725913.3000001 within 7 places
 #
-Patch:          https://github.com/giampaolo/%{pypi_name}/pull/2372.patch
+Patch1:          https://github.com/giampaolo/%{pypi_name}/pull/2372.patch
 #
 # Skip test_emulate_multi_cpu on aarch64
 # Failure reported upstream: https://github.com/giampaolo/%{pypi_name}/issues/2373
 #
-Patch:          python-psutil-skip-test_emulate_multi_cpu-on-aarch64.patch
+Patch2:          python-psutil-skip-test_emulate_multi_cpu-on-aarch64.patch
 #
 # Skip test_misc.TestCommonModule.test_debug
 # Failure reported upstream: https://github.com/giampaolo/%{pypi_name}/issues/2374
 #
-Patch:          python-psutil-skip-test_debug.patch
+Patch3:          python-psutil-skip-test_debug.patch
 
 BuildRequires:  gcc
 BuildRequires:  sed
