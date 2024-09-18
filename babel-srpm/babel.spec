@@ -10,9 +10,9 @@
 # First of all we need babel (this package) to use sphinx
 # And pytest is at this point not yet ready
 %if 0%{?el8} || 0%{?el9}
-%bcond bootstrap 1
+%bcond_without bootstrap
 %else
-%bcond bootstrap 0
+%bcond_with bootstrap
 %endif
 
 # Since babel 2.12, the pytz dependency is optional.
@@ -24,7 +24,7 @@
 # Ideally, the dependency would be conditional on pytz availability in the repo,
 # but that's not possible in 2023 yet.
 # Additionally, the date/time tests require freezegun, which is unwanted in RHEL.
-%bcond datetime_tests %{undefined rhel}
+%bcond_without datetime_tests %{undefined rhel}
 
 Name:           babel
 Version:        2.13.1
@@ -91,6 +91,7 @@ Documentation for Babel
 %prep
 %autosetup -p1 -n Babel-%{version}
 
+# Requires EL9 or later
 %generate_buildrequires
 %pyproject_buildrequires
 
