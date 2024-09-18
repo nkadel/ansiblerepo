@@ -27,8 +27,6 @@ ANSIBLEPKGS+=ansible-collection-netcommon-srpm
 ANSIBLEPKGS+=ansible-collections-openstack-srpm
 ANSIBLEPKGS+=python-resolvelib-srpm
 
-#ANSIBLEPKGS+=doctest-srpm
-
 ANSIBLEPKGS+=python-six-srpm
 
 # Requires six
