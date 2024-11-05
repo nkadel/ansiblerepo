@@ -30,7 +30,7 @@
 
 Name: %{pypi_name}
 Summary: A radically simple IT automation system
-Version: 2.17.4
+Version: 2.17.5
 Release: 0.1%{?betaver}%{?dist}
 
 License: GPLv3+
@@ -297,55 +297,58 @@ make PYTHON=%{__python3} tests-py3
 %endif
 
 %changelog
-* Wed Jun 19 2024 Nico Kadel-Garcia - 2.17.01-0.1
+* Tue Nov 5 2024 Nico Kadel-Garcia <nkadel@gmail.com> - 2.17.5-0.1
+- Update to 2.17.5
+
+* Wed Jun 19 2024 Nico Kadel-Garcia <nkadel@gmail.com> - 2.17.01-0.1
 - Update to 2.17.1
 
-* Tue Mar 26 2024 Nico Kadel-Garcia - 2.16.5-0.1
+* Tue Mar 26 2024 Nico Kadel-Garcia <nkadel@gmail.com> - 2.16.5-0.1
 - Update to 2.16.5
 
-* Sun Mar 10 2024 Nico Kadel-Garcia - 2.16.4-0.1
+* Sun Mar 10 2024 Nico Kadel-Garcia <nkadel@gmail.com> - 2.16.4-0.1
 - Update to 2.16.5
 - Add Epoch to avoid conflicts on RHEL deployment
 
-* Tue Jul 18 2023 Nico Kadel-Garcia - 2.15.2-0.1
+* Tue Jul 18 2023 Nico Kadel-Garcia <nkadel@gmail.com> - 2.15.2-0.1
 - Update to 2.25.2
 
-* Mon Jul 17 2023 Nico Kadel-Garcia - 2.15.2-0.1rc1
+* Mon Jul 17 2023 Nico Kadel-Garcia <nkadel@gmail.com> - 2.15.2-0.1rc1
 - Update to 2.15.2rc1
 
-* Mon May 15 2023 Nico Kadel-Garcia - 2.15.0-0.1
+* Mon May 15 2023 Nico Kadel-Garcia <nkadel@gmail.com> - 2.15.0-0.1
 - Update to 2.15.0
 
-* Wed May 3 2023 Nico Kadel-Garcia - 2.15.0rc2-0.1
+* Wed May 3 2023 Nico Kadel-Garcia <nkadel@gmail.com> - 2.15.0rc2-0.1
 - Update to 2.15.0rc2
 
-* Tue Apr 25 2023 Nico Kadel-Garcia - 2.15.0b3-0.1
+* Tue Apr 25 2023 Nico Kadel-Garcia <nkadel@gmail.com> - 2.15.0b3-0.1
 - Update to 2.15.0b2
 
-* Sun Apr 23 2023 Nico Kadel-Garcia - 2.15.0b2-0.1
+* Sun Apr 23 2023 Nico Kadel-Garcia <nkadel@gmail.com> - 2.15.0b2-0.1
 - Update to 2.15.0b2
 - Disable conditional importlib-resources from requirements.txt on RHEL 8
 
-* Mon Mar 27 2023 Nico Kadel-Garcia - 2.14.4-0.1
+* Mon Mar 27 2023 Nico Kadel-Garcia <nkadel@gmail.com> - 2.14.4-0.1
 - Update to 2.14.4
 
-* Tue Feb 28 2023 Nico Kadel-Garcia - 2.14.3-0.1
+* Tue Feb 28 2023 Nico Kadel-Garcia <nkadel@gmail.com> - 2.14.3-0.1
 - Update to 2.14.3
 
-* Wed Feb 1 2023 Nico Kadel-Garcia - 2.14.2-0.1
+* Wed Feb 1 2023 Nico Kadel-Garcia <nkadel@gmail.com> - 2.14.2-0.1
 - Update to 2.14.2
 - Discard obsolete patches
 
-* Sat Nov 05 2022 Nico Kadel-Garcia - 2.14.0rc2-0.1
+* Sat Nov 05 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 2.14.0rc2-0.1
 - Update to 2.14.0rc2
 
-* Fri Oct 14 2022 Nico Kadel-Garcia - 2.13.5-0.2
+* Fri Oct 14 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 2.13.5-0.2
 - Split away ansible-test
 
-* Tue Oct 11 2022 Nico Kadel-Garcia - 2.13.5-0.1
+* Tue Oct 11 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 2.13.5-0.1
 - Update
 
-* Mon Sep 12 2022 Nico Kadel-Garcia - 2.13.4-0.1
+* Mon Sep 12 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 2.13.4-0.1
 - Update resolvelib dependencies
 
 * Mon Aug 15 2022 James Marshall <jamarsha@redhat.com> - 2.13.3-1

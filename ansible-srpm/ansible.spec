@@ -11,7 +11,7 @@
 # due to very confusing upsream renaming
 %global pypi_name ansible
 %global pypi_realname ansible_collections
-%global pypi_version 10.4.0
+%global pypi_version 10.5.0
 # Set this when there's a beta or rc version
 #%%global betaver %%{nil}
 %global betaver %{nil}
@@ -194,56 +194,59 @@ hardlink -v %{buildroot}%{ansible_licensedir}
 %doc %{_defaultdocdir}/%{pypi_realname}-%{version}%{?betaver}/%{pypi_realname}
 
 %changelog
-* Wed Jun 19 2024 Nico Kadel-Garcia - 10.1.0-0.1
+* Tue Nov 5 2024 Nico Kadel-Garcia <nkadel@gmail.com> - 10.5.0-0.1
+- Update to 10.5.0
+
+* Wed Jun 19 2024 Nico Kadel-Garcia <nkadel@gmail.com> - 10.1.0-0.1
 - Update to 10.1.0
 
-* Fri Apr 12 2024 Nico Kadel-Garcia - 10.0.0b1-0.1
+* Fri Apr 12 2024 Nico Kadel-Garcia <nkadel@gmail.com> - 10.0.0b1-0.1
 - Update to 10.0.0b1
 
-* Wed Jan 31 2024 Nico Kadel-Garcia - 9.2.9-0.1
+* Wed Jan 31 2024 Nico Kadel-Garcia <nkadel@gmail.com> - 9.2.9-0.1
 - Update to 9.2.0
 
-* Wed Sep 13 2023 Nico Kadel-Garcia - 8.4.0-0.1
+* Wed Sep 13 2023 Nico Kadel-Garcia <nkadel@gmail.com> - 8.4.0-0.1
 - Update to 8.4.0
 
-* Tue May 30 2023 Nico Kadel-Garcia - 8.0.0-0.4
+* Tue May 30 2023 Nico Kadel-Garcia <nkadel@gmail.com> - 8.0.0-0.4
 - Update to 8.0.0
 
-* Tue May 2 2023 Nico Kadel-Garcia - 8.0.0a1-0.3
+* Tue May 2 2023 Nico Kadel-Garcia <nkadel@gmail.com> - 8.0.0a1-0.3
 - Update to 8.0.0a3
 - Reduce spew from find statements in %%setup
 
-* Wed Apr 12 2023 Nico Kadel-Garcia - 8.0.0a1-0.1
+* Wed Apr 12 2023 Nico Kadel-Garcia <nkadel@gmail.com> - 8.0.0a1-0.1
 - Update to 8.0.0a1
 
-* Tue Feb 28 2023 Nico Kadel-Garcia - 7.3.0-0.1
+* Tue Feb 28 2023 Nico Kadel-Garcia <nkadel@gmail.com> - 7.3.0-0.1
 - Update to 7.3.0
 
-* Wed Feb 1 2023 Nico Kadel-Garcia - 7.2.0-0.1
+* Wed Feb 1 2023 Nico Kadel-Garcia <nkadel@gmail.com> - 7.2.0-0.1
 - Update to 7.2.0
 
-* Thu Dec 8 2022 Nico Kadel-Garcia - 7.1.0-0.1
+* Thu Dec 8 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 7.1.0-0.1
 - Update to release 7.1.0
 - Disable the burdensume and pointless hardlink among the ginormous
   ansible_collection modules
 
-* Tue Nov 22 2022 Nico Kadel-Garcia - 7.0.0-0.1
+* Tue Nov 22 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 7.0.0-0.1
 - Update to release 7.0.0
 
-* Wed Nov 9 2022 Nico Kadel-Garcia - 7.0.0b1-0.1
+* Wed Nov 9 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 7.0.0b1-0.1
 - Update to 7.0.0b1
 
-* Sat Oct 29 2022 Nico Kadel-Garcia - 7.0.0a2-0.1
+* Sat Oct 29 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 7.0.0a2-0.1
 - Update to 7.0.0a2
 - Set all *.py files to non-executable to avoid dependencies
 
-* Thu Oct 13 2022 Nico Kadel-Garcia - 6.5.0-0.1
+* Thu Oct 13 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 6.5.0-0.1
 - Update to 6.5.0
 
-* Thu Aug 25 2022 Nico Kadel-Garcia - 6.3.0-0.1
+* Thu Aug 25 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 6.3.0-0.1
 - Update to 6.3.0
 
-* Tue Aug 2 2022 Nico Kadel-Garcia - 6.2.0-0.2
+* Tue Aug 2 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 6.2.0-0.2
 - Update to 6.2.0
 - Integrate python39 and RHEL 8 compatibility support
 
