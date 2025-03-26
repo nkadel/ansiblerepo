@@ -1,0 +1,26 @@
+2024-12-06T15:43:28,174 Using pip 23.2.1 from /usr/lib/python3.12/site-packages/pip (python 3.12)
+2024-12-06T15:43:28,174 Defaulting to user installation because normal site-packages is not writeable
+2024-12-06T15:43:28,221 Created temporary directory: /tmp/pip-build-tracker-sfwvy7ep
+2024-12-06T15:43:28,221 Initialized build tracking at /tmp/pip-build-tracker-sfwvy7ep
+2024-12-06T15:43:28,221 Created build tracker: /tmp/pip-build-tracker-sfwvy7ep
+2024-12-06T15:43:28,221 Entered build tracker: /tmp/pip-build-tracker-sfwvy7ep
+2024-12-06T15:43:28,222 Created temporary directory: /tmp/pip-install-nhtchc8m
+2024-12-06T15:43:28,222 ERROR: You must give at least one requirement to install (see "pip help install")
+2024-12-06T15:43:28,222 Exception information:
+2024-12-06T15:43:28,222 Traceback (most recent call last):
+2024-12-06T15:43:28,222   File "/usr/lib/python3.12/site-packages/pip/_internal/cli/base_command.py", line 180, in exc_logging_wrapper
+2024-12-06T15:43:28,222     status = run_func(*args)
+2024-12-06T15:43:28,222              ^^^^^^^^^^^^^^^
+2024-12-06T15:43:28,222   File "/usr/lib/python3.12/site-packages/pip/_internal/cli/req_command.py", line 248, in wrapper
+2024-12-06T15:43:28,222     return func(self, options, args)
+2024-12-06T15:43:28,222            ^^^^^^^^^^^^^^^^^^^^^^^^^
+2024-12-06T15:43:28,222   File "/usr/lib/python3.12/site-packages/pip/_internal/commands/install.py", line 342, in run
+2024-12-06T15:43:28,222     reqs = self.get_requirements(args, options, finder, session)
+2024-12-06T15:43:28,222            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2024-12-06T15:43:28,222   File "/usr/lib/python3.12/site-packages/pip/_internal/cli/req_command.py", line 464, in get_requirements
+2024-12-06T15:43:28,222     raise CommandError(
+2024-12-06T15:43:28,222 pip._internal.exceptions.CommandError: You must give at least one requirement to install (see "pip help install")
+2024-12-06T15:43:28,239 Remote version of pip: 24.3.1
+2024-12-06T15:43:28,239 Local version of pip:  23.2.1
+2024-12-06T15:43:28,248 Was pip installed by pip? False
+2024-12-06T15:43:28,249 Removed build tracker: '/tmp/pip-build-tracker-sfwvy7ep'

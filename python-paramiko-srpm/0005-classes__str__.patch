@@ -1,0 +1,62 @@
+--- a/paramiko/agent.py
++++ b/paramiko/agent.py
+@@ -415,9 +415,6 @@ class AgentKey(PKey):
+     def asbytes(self):
+         return self.blob
+ 
+-    def __str__(self):
+-        return self.asbytes()
+-
+     def get_name(self):
+         return self.name
+ 
+--- a/paramiko/message.py
++++ b/paramiko/message.py
+@@ -53,10 +53,7 @@ class Message(object):
+         else:
+             self.packet = BytesIO()
+ 
+-    def __str__(self):
+-        """
+-        Return the byte stream content of this message, as a string/bytes obj.
+-        """
++    def __bytes__(self):
+         return self.asbytes()
+ 
+     def __repr__(self):
+--- a/paramiko/pkey.py
++++ b/paramiko/pkey.py
+@@ -118,7 +119,7 @@ class PKey(object):
+         """
+         return bytes()
+ 
+-    def __str__(self):
++    def __bytes__(self):
+         return self.asbytes()
+ 
+     # noinspection PyUnresolvedReferences
+--- a/tests/test_agent.py
++++ b/tests/test_agent.py
+@@ -48,3 +48,10 @@ class AgentTests(unittest.TestCase):
+             kwargs=dict(algorithm="rsa-sha2-512"),
+             expectation=SSH_AGENT_RSA_SHA2_512,
+         )
++
++    def test_agent_key_str_kinda_fixed(self):
++        # Tests for a missed spot in Python 3 upgrades: AgentKey.__str__ was
++        # returning bytes, as if under Python 2. When bug present, this
++        # explodes with "__str__ returned non-string".
++        key = AgentKey(ChaosAgent(), b("secret!!!"))
++        assert str(key) == repr(key)
+--- a/tests/test_message.py
++++ b/tests/test_message.py
+@@ -105,3 +105,9 @@ class MessageTest(unittest.TestCase):
+         self.assertEqual(msg.get_adaptive_int(), 5)
+         self.assertEqual(msg.get_so_far(), self.__d[:4])
+         self.assertEqual(msg.get_remainder(), self.__d[4:])
++
++    def test_bytes_str_and_repr(self):
++        msg = Message(self.__d)
++        assert str(msg) == f"paramiko.Message({self.__d!r})"
++        assert repr(msg) == str(msg)
++        assert bytes(msg) == msg.asbytes() == self.__d
