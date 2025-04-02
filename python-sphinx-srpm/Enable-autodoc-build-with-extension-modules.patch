@@ -1,0 +1,25 @@
+From 924b2e2cee46753d26a8419f273ffe045bbfb9bb Mon Sep 17 00:00:00 2001
+From: Karolina Surma <ksurma@redhat.com>
+Date: Tue, 21 Nov 2023 11:27:42 +0100
+Subject: [PATCH] Enable autodoc build with extension modules
+
+---
+ sphinx/ext/autodoc/__init__.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/sphinx/ext/autodoc/__init__.py b/sphinx/ext/autodoc/__init__.py
+index 54e91a1..dba5769 100644
+--- a/sphinx/ext/autodoc/__init__.py
++++ b/sphinx/ext/autodoc/__init__.py
+@@ -1871,7 +1871,7 @@ class DataDocumenter(GenericAliasMixin, NewTypeMixin, TypeVarMixin,
+             for (classname, attrname), annotation in analyzer.annotations.items():
+                 if classname == '' and attrname not in annotations:
+                     annotations[attrname] = annotation
+-        except AttributeError:
++        except (AttributeError, PycodeError):
+             pass
+ 
+     def import_object(self, raiseerror: bool = False) -> bool:
+-- 
+2.41.0
+
