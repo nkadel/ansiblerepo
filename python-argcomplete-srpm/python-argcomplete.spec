@@ -27,7 +27,7 @@ BuildRequires: python%{python3_pkgversion}-setuptools
 %if %{with check}
 BuildRequires: tcsh
 BuildRequires: fish
-BuildRequires: /usr/bin/pip
+BuildRequires: /usr/bin/pip-%{python3_pkgversion}
 BuildRequires: python%{python3_pkgversion}-pexpect
 %endif
 
