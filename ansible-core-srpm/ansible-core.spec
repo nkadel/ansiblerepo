@@ -6,217 +6,188 @@
 %global __python3 %{_bindir}/python%{python3_version}
 %endif
 
-#
-# If we should enable docs building
-# Currently we cannot until we get a stack of needed packages added and a few bugs fixed
-#
-%bcond_with docs
+# SPDX-License-Identifier: MIT
+# Copyright (C) Fedora Project Authors
+# License Text: https://spdx.org/licenses/MIT.html
 
-#
-# If we should enable tests by default
-#
-#%%if 0%%{?rhel}
-%bcond_with tests
-#%%%else
-#%%bcond_without tests
-#%%endif
+# several test dependencies are unwanted in RHEL
+%bcond tests %{undefined rhel}
 
-# Set this when there's a beta or rc version
-%global betaver %{nil}
+# controls whether to generate shell completions
+# may be useful for bootstrapping purposes
+%bcond argcomplete 1
 
-# Differing names since upstream split
-%global pypi_name ansible-core
-%global srcname ansible
+# disable the python -s shbang flag as we want to be able to find non system modules
+%undefine _py3_shebang_s
 
-Name: %{pypi_name}
-Summary: A radically simple IT automation system
-Version: 2.18.0
-Release: 0.1%{?betaver}%{?dist}
+Name:           ansible-core
+Version:        2.18.3
+%global uversion %{version_no_tilde %{quote:%nil}}
+Release:        1%{?dist}
+Summary:        A radically simple IT automation system
 
-License: GPLv3+
-Epoch: 1
+# The main license is GPLv3+. Many of the files in lib/ansible/module_utils
+# are BSD licensed. There are various files scattered throughout the codebase
+# containing code under different licenses.
+License:        GPL-3.0-or-later AND BSD-2-Clause AND PSF-2.0 AND MIT AND Apache-2.0
+URL:            https://ansible.com
 
-#Source0: %%pypi_source %%{pypi_name} %%{version}%%{?betaver}
-Source0: https://github.com/ansible/%{srcname}/archive/refs/tags/v%{version}%{betaver}.zip
+Source0:        https://github.com/ansible/ansible/archive/v%{uversion}/%{name}-%{uversion}.tar.gz
+Source1:        https://github.com/ansible/ansible-documentation/archive/v%{uversion}/ansible-documentation-%{uversion}.tar.gz
 
-Url: https://ansible.com
-BuildArch: noarch
+# dnf5,apt: add auto_install_module_deps option (#84292)
+# https://github.com/ansible/ansible/pull/84292.patch
+# https://bugzilla.redhat.com/2322751
+Patch:          0001-dnf5-apt-add-auto_install_module_deps-option-84292.patch
 
-# This makes the transition seamless for other packages
-# Not all rpm versions support if statements
-#Requires: (ansible-packaging if rpm-build)
-Requires: ansible-packaging
+BuildArch:      noarch
 
-#Provides: ansible = %%{version}-%%{release}
-# For now conflict with the ansible 'classic' package.
-Conflicts: ansible < 2.11.0
+# Virtual provides for bundled libraries
+# Search for `_BUNDLED_METADATA` to find them
+
+# lib/ansible/module_utils/distro/*
+# SPDX-License-Identifier: Apache-2.0
+Provides:       bundled(python3dist(distro)) = 1.9.0
+
+# lib/ansible/module_utils/six/*
+# SPDX-License-Identifier: MIT
+Provides:       bundled(python3dist(six)) = 1.16.0
+
+Conflicts:      ansible <= 2.9.99
 #
 # obsoletes/provides for ansible-base
 #
-Obsoletes: ansible-base < 2.11.0
+Provides:       ansible-base = %{version}-%{release}
+Obsoletes:      ansible-base < 2.10.6-1
+
+BuildRequires:  make
+BuildRequires:  python%{python3_pkgversion}-devel
+# This is only used in %%prep to relax the required setuptools version,
+# which is not necessary in RHEL 10+.
+# Not using it in RHEL avoids unwanted dependencies.
+%if %{undefined rhel}
+BuildRequires:  tomcli >= 0.3.0
+%endif
+# Needed to build manpages from source.
+BuildRequires:  python%{python3_pkgversion}-docutils
 
 %if %{with tests}
-#
-# For tests
-#
-# These two exist on both fedora and rhel8
-#
-BuildRequires: make
-BuildRequires: git-core
-BuildRequires: python%{python3_pkgversion}-packaging
-BuildRequires: python%{python3_pkgversion}-pexpect
-BuildRequires: openssl
-BuildRequires: python%{python3_pkgversion}-systemd
-BuildRequires: python%{python3_pkgversion}-pytz
-BuildRequires: glibc-all-langpacks
-BuildRequires: python%{python3_pkgversion}-resolvelib >= 0.5.3
-BuildRequires: python%{python3_pkgversion}-resolvelib < 1.1.0
-BuildRequires: python%{python3_pkgversion}-rpm-macros
-#
-# These only exist on Fedora. RHEL8 will just skip tests that need them.
-#
-%if 0%{?fedora}
-BuildRequires: python%{python3_pkgversion}-paramiko
-BuildRequires: python%{python3_pkgversion}-winrm
-
-BuildRequires: python%{python3_pkgversion}-crypto
-BuildRequires: python%{python3_pkgversion}-pbkdf2
-BuildRequires: python%{python3_pkgversion}-httmock
-BuildRequires: python%{python3_pkgversion}-gitlab
-BuildRequires: python%{python3_pkgversion}-boto3
-BuildRequires: python%{python3_pkgversion}-botocore
-BuildRequires: python%{python3_pkgversion}-coverage
-BuildRequires: python%{python3_pkgversion}-passlib
-%endif
-%endif
-%if %{with docs}
-BuildRequires: make
-BuildRequires: python%{python3_pkgversion}-sphinx
-BuildRequires: python%{python3_pkgversion}-sphinx-theme-alabaster
-BuildRequires: python%{python3_pkgversion}-sphinx-notfound-page
-BuildRequires: asciidoc
-BuildRequires: python%{python3_pkgversion}-straight-plugin
-BuildRequires: python%{python3_pkgversion}-rstcheck
-BuildRequires: python%{python3_pkgversion}-pygments
-#BuildRequires: antsibull
+BuildRequires:  git-core
+BuildRequires:  glibc-all-langpacks
+BuildRequires:  python%{python3_pkgversion}-systemd
 %endif
 
-#
-# main buildrequires to build
-#
-BuildRequires: python%{python3_pkgversion}
-BuildRequires: python%{python3_pkgversion}-devel
-BuildRequires: python%{python3_pkgversion}-setuptools
-BuildRequires: python%{python3_pkgversion}-six
-BuildRequires: python%{python3_pkgversion}-requests
-BuildRequires: python%{python3_pkgversion}-mock
-BuildRequires: python%{python3_pkgversion}-jinja2 >= 3.0.0
-BuildRequires: python%{python3_pkgversion}-pyyaml >= 5.1
-BuildRequires: python%{python3_pkgversion}-cryptography
-
-%if %{with tests}
-BuildRequires: python%{python3_pkgversion}-pytest
-BuildRequires: python%{python3_pkgversion}-pytest-xdist
-BuildRequires: python%{python3_pkgversion}-pytest-mock
-BuildRequires: python%{python3_pkgversion}-pyvmomi
-BuildRequires: unzip
-
-# Some tests have awkward "#!/usr/bin/env python"
-BuildRequires: /usr/bin/python
-BuildRequires: /usr/bin/pip
+%if %{with argcomplete}
+Requires:       python%{python3_pkgversion}-argcomplete
+%endif
+%if 0%{?fedora} >= 39
+BuildRequires:  python%{python3_pkgversion}-libdnf5
+Recommends:     python%{python3_pkgversion}-libdnf5
 %endif
 
-# RHEL8 doesn't have python3-paramiko or python3-winrm (yet), but Fedora does
-%if 0%{?el} > 8 || 0%{?fedora}
-Recommends: python%{python3_pkgversion}-paramiko
-Recommends: python%{python3_pkgversion}-winrm
-%endif
 
-# needed for json_query filter
-Requires: python%{python3_pkgversion}-jmespath
-# needed for galaxy
-Requires: python%{python3_pkgversion}-resolvelib >= 0.5.3
-Requires: python%{python3_pkgversion}-resolvelib < 1.1.0
-# avoid module wackiness
-Requires: python%{python3_pkgversion}-packaging
-
-# needed for ansible galaxy
-Requires: python%{python3_pkgversion}-jinja2 >= 3.0.0
-
-%description
+%global _description %{expand:
 Ansible is a radically simple model-driven configuration management,
 multi-node deployment, and remote task execution system. Ansible works
 over SSH and does not require any software or daemons to be installed
 on remote nodes. Extension modules can be written in any language and
-are transferred to managed machines automatically.
+are transferred to managed machines automatically.}
+
+%description %_description
 
 This is the base part of ansible (the engine).
 
-%package -n ansible-test
-Summary: Tool for testing ansible plugin and module code
-Requires: %{name} = %{version}-%{release}
+%package doc
+Summary:        Documentation for Ansible Core
+Provides:       ansible-base-doc = %{version}-%{release}
+Obsoletes:      ansible-base-doc < 2.10.6-1
 
-%description -n ansible-test
-Ansible is a radically simple model-driven configuration management,
-multi-node deployment, and remote task execution system. Ansible works
-over SSH and does not require any software or daemons to be installed
-on remote nodes. Extension modules can be written in any language and
-are transferred to managed machines automatically.
+%description doc %_description
 
-This package installs the ansible-test command for testing modules and plugins
-developed for ansible.
+This package installs extensive documentation for ansible-core
 
-%package -n %{pypi_name}-doc
-Summary: Documentation for Ansible Base
-Obsoletes: ansible-base-doc < 2.10.6-1%{?dist}
-
-%description -n %{pypi_name}-doc
-
-Ansible is a radically simple model-driven configuration management,
-multi-node deployment, and remote task execution system. Ansible works
-over SSH and does not require any software or daemons to be installed
-on remote nodes. Extension modules can be written in any language and
-are transferred to managed machines automatically.
-
-This package installs extensive documentation for %{pypi_name}
 
 %prep
-%autosetup -p1 -n %{srcname}-%{version}%{?betaver}
-
-# RPM dependency generation confused by dependencies on RHEL 8,
-# python 3.11 has this module built in
-%if 0%{?el8}
-sed -i.bak 's/^importlib_resources /#importlib_resources /g' requirements.txt
+%autosetup -p1 -n ansible-%{uversion} -a1
+# Relax setuptools constraint on Fedora
+# Future RHELs have new enough setuptools
+%if %{undefined rhel}
+tomcli-set pyproject.toml lists replace \
+    'build-system.requires' 'setuptools >=.*' 'setuptools'
 %endif
 
-# pytest in Fedora 38 does not support --forked opton
-%if 0%{?fc38}
-sed -i.bak '/--forked/d' test/lib/ansible_test/_internal/commands/units/__init__.py
+sed -i -s 's|/usr/bin/env python|%{python3}|' \
+    bin/ansible-test \
+    test/lib/ansible_test/_util/target/cli/ansible_test_cli_stub.py
+
+
+# TODO: Investigate why hostname is the only module that still has a shebang
+# and file an upstream issue if needed.
+sed -i -e '1{\@^#!.*@d}' lib/ansible/modules/hostname.py
+
+sed '/^mock$/d' test/lib/ansible_test/_data/requirements/units.txt > _requirements.txt
+
+
+%generate_buildrequires
+%pyproject_buildrequires %{?with_tests:_requirements.txt test/units/requirements.txt}
+%if %{with argcomplete}
+# Shell completions
+echo 'python%{python3_pkgversion}-argcomplete'
 %endif
 
-# Set /usr/bin/python consistently for tests
-#grep -rl "'/usr/bin/python'" tests/ | \
-#grep '.py$' | \
-#while reead name; do
-#      sed -i.bak "s|'/usr/bin/python'|'/usr/bin/python3'|g" $name
-#done
 
 %build
-sed -i -s 's|/usr/bin/env python$|%{__python3}|g' test/lib/ansible_test/_util/target/cli/ansible_test_cli_stub.py
+%pyproject_wheel
 
-# disable the python -s shbang flag as we want to be able to find non system modules
-%global py3_shbang_opts %(echo %{py3_shbang_opts} | sed 's/-s//')
-%py3_build
+# Build manpages
+mkdir -p docs/man/man1
+%{python3} packaging/cli-doc/build.py man --output-dir docs/man/man1
 
-%if %{with docs}
-  make PYTHON=%{__python3} SPHINXBUILD=sphinx-build-3 -Cdocs/docsite webdocs
-%else
-  # we still need things to build these minimal docs too.
-  #make PYTHON=%{__python3} -Cdocs/docsite config cli keywords modules plugins testing
+
+%if %{with argcomplete}
+# Build shell completions
+(
+    cd bin
+    for shell in bash fish; do
+        mkdir -p "../${shell}_completions"
+        for bin in *; do
+            if grep -q PYTHON_ARGCOMPLETE_OK "${bin}"; then
+                case "${shell}" in
+                    bash)
+                        format="${bin}"
+                        ;;
+                    fish)
+                        format="${bin}.${shell}"
+                        ;;
+                esac
+                register-python-argcomplete --shell "${shell}" "${bin}" > "../${shell}_completions/${format}"
+            else
+                echo "Skipped generating completions for ${bin}"
+            fi
+        done
+    done
+)
 %endif
 
+
 %install
-%py3_install
+%pyproject_install
+%pyproject_save_files ansible ansible_test
+
+# These files are executable when they shouldn't be.
+# Only the actual "binaries" in %%{_bindir} need to be executable
+# and have shebangs.
+while read -r file; do
+    sed -i -e '1{\@^#!.*@d}' "${file}"
+done < <(find \
+    %{buildroot}%{python3_sitelib}/ansible/cli/*.py \
+    %{buildroot}%{python3_sitelib}/ansible/cli/scripts/ansible_connection_cli_stub.py \
+        -type f ! -executable)
+
+%if %{with argcomplete}
+install -Dpm 0644 bash_completions/* -t %{buildroot}%{bash_completions_dir}
+install -Dpm 0644 fish_completions/* -t %{buildroot}%{fish_completions_dir}
+%endif
 
 # Create system directories that Ansible defines as default locations in
 # ansible/config/base.yml
@@ -251,188 +222,343 @@ fi
 
 mkdir -p %{buildroot}%{_datadir}/ansible/plugins/
 for location in $DATADIR_LOCATIONS ; do
-	mkdir %{buildroot}"$location"
+    mkdir %{buildroot}"$location"
 done
-mkdir -p %{buildroot}/etc/ansible/
-mkdir -p %{buildroot}/etc/ansible/roles/
+mkdir -p %{buildroot}%{_sysconfdir}/ansible/
+mkdir -p %{buildroot}%{_sysconfdir}/ansible/roles/
 
-# no need to ship zero length files
-find %{buildroot}/%{python3_sitelib} -name .git_keep -exec rm -f {} \;
-find %{buildroot}/%{python3_sitelib} -name .travis.yml -exec rm -f {} \;
+cp ansible-documentation-%{uversion}/examples/hosts %{buildroot}/etc/ansible/
+cp ansible-documentation-%{uversion}/examples/ansible.cfg %{buildroot}/etc/ansible/
+mkdir -p %{buildroot}/%{_mandir}/man1
+cp -v docs/man/man1/*.1 %{buildroot}/%{_mandir}/man1/
+
+# We install licenses in this manner so we don't miss new licenses:
+  # 1. Copy all files in licenses to %%{_pkglicensedir}.
+  # 2. List the files explicitly in %%files.
+  # 3. The build will fail with unpackaged file errors if license
+  #    files aren't accounted for.
+%global _pkglicensedir %{_licensedir}/ansible-core
+install -Dpm 0644 licenses/* -t %{buildroot}%{_pkglicensedir}
 
 %check
 %if %{with tests}
-ln -s /usr/bin/pytest-%{python3_version} bin/pytest
-# This test needs a module not packaged in Fedora so disable it.
-#rm -f test/units/modules/cloud/cloudstack/test_cs_traffic_type.py
-# These tests are failing with pytest 6
-rm -f test/units/galaxy/test_collection_install.py
-rm -f test/units/module_utils/urls/test_prepare_multipart.py
-# requires perms to read/manipulate iptables rules
-rm -f test/units/modules/test_iptables.py
-# This seems sunos specific
-rm -f test/units/modules/test_service.py
-make PYTHON=%{__python3} tests-py3
+%{python3} bin/ansible-test \
+    units --local --python-interpreter %{python3} -vv
 %endif
 
-%files
+
+%files -f %{pyproject_files}
 %license COPYING
-%doc README.md
-%doc changelogs/CHANGELOG-*.rst
+%license %{_pkglicensedir}/{Apache-License,MIT-license,PSF-license,simplified_bsd}.txt
+%doc README.md changelogs/CHANGELOG-v2.1?.rst
 %dir %{_sysconfdir}/ansible/
 %config(noreplace) %{_sysconfdir}/ansible/*
 %{_bindir}/ansible*
-%exclude %{_bindir}/ansible-test
 %{_datadir}/ansible/
-%{python3_sitelib}/ansible*
-%exclude %{python3_sitelib}/ansible_test
+%if %{with argcomplete}
+%{bash_completions_dir}/ansible*
+%{fish_completions_dir}/ansible*.fish
+%endif
+%{_mandir}/man1/ansible*
 
-%files -n ansible-test
-%{_bindir}/ansible-test
-%{python3_sitelib}/ansible_test
-
-%files -n %{pypi_name}-doc
+%files doc
+%doc ansible-documentation-%{uversion}/docs/docsite/rst
 %if %{with docs}
-%doc docs/docsite/_build/html
+%doc ansible-documentation-%{uversion}/docs/docsite/_build/html
 %endif
 
+
 %changelog
-* Tue Nov 5 2024 Nico Kadel-Garcia <nkadel@gmail.com> - 2.17.5-0.1
-- Update to 2.17.5
+* Mon Mar 17 2025 Packit <hello@packit.dev> - 2.18.3-1
+- Update to version 2.18.3
+- Resolves: rhbz#2342365
 
-* Wed Jun 19 2024 Nico Kadel-Garcia <nkadel@gmail.com> - 2.17.01-0.1
-- Update to 2.17.1
+* Thu Jan 16 2025 Fedora Release Engineering <releng@fedoraproject.org> - 2.18.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_42_Mass_Rebuild
 
-* Tue Mar 26 2024 Nico Kadel-Garcia <nkadel@gmail.com> - 2.16.5-0.1
-- Update to 2.16.5
+* Wed Dec 04 2024 Maxwell G <maxwell@gtmx.me> - 2.18.1-1
+- Update to 2.18.1. Fixes rhbz#2330005.
+- dnf5 - backport support for automatically installing python3-libdnf5 (rhbz#2322751).
 
-* Sun Mar 10 2024 Nico Kadel-Garcia <nkadel@gmail.com> - 2.16.4-0.1
-- Update to 2.16.5
-- Add Epoch to avoid conflicts on RHEL deployment
+* Tue Nov 26 2024 Maxwell G <maxwell@gtmx.me> - 2.18.0-1
+- Update to 2.18.0. Fixes rhbz#2282011.
 
-* Tue Jul 18 2023 Nico Kadel-Garcia <nkadel@gmail.com> - 2.15.2-0.1
-- Update to 2.25.2
+* Fri Oct 11 2024 Maxwell G <maxwell@gtmx.me> - 2.16.12-1
+- Update to 2.16.12.
 
-* Mon Jul 17 2023 Nico Kadel-Garcia <nkadel@gmail.com> - 2.15.2-0.1rc1
-- Update to 2.15.2rc1
+* Tue Sep 10 2024 Maxwell G <maxwell@gtmx.me> - 2.16.11-1
+- Update to 2.16.11.
 
-* Mon May 15 2023 Nico Kadel-Garcia <nkadel@gmail.com> - 2.15.0-0.1
-- Update to 2.15.0
+* Tue Aug 13 2024 Maxwell G <maxwell@gtmx.me> - 2.16.10-1
+- Update to 2.16.10.
 
-* Wed May 3 2023 Nico Kadel-Garcia <nkadel@gmail.com> - 2.15.0rc2-0.1
-- Update to 2.15.0rc2
+* Fri Jul 19 2024 Maxwell G <maxwell@gtmx.me> - 2.16.9-1
+- Update to 2.16.9.
 
-* Tue Apr 25 2023 Nico Kadel-Garcia <nkadel@gmail.com> - 2.15.0b3-0.1
-- Update to 2.15.0b2
+* Wed Jul 17 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.16.8-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_41_Mass_Rebuild
 
-* Sun Apr 23 2023 Nico Kadel-Garcia <nkadel@gmail.com> - 2.15.0b2-0.1
-- Update to 2.15.0b2
-- Disable conditional importlib-resources from requirements.txt on RHEL 8
+* Sun Jun 23 2024 Maxwell G <maxwell@gtmx.me> - 2.16.8-1
+- Update to 2.16.8.
 
-* Mon Mar 27 2023 Nico Kadel-Garcia <nkadel@gmail.com> - 2.14.4-0.1
-- Update to 2.14.4
+* Sun Jun 09 2024 Python Maint <python-maint@redhat.com> - 2.16.7-2
+- Rebuilt for Python 3.13
 
-* Tue Feb 28 2023 Nico Kadel-Garcia <nkadel@gmail.com> - 2.14.3-0.1
-- Update to 2.14.3
+* Tue Jun 04 2024 Maxwell G <maxwell@gtmx.me> - 2.16.7-1
+- Update to 2.16.7.
 
-* Wed Feb 1 2023 Nico Kadel-Garcia <nkadel@gmail.com> - 2.14.2-0.1
-- Update to 2.14.2
-- Discard obsolete patches
+* Thu May 23 2024 Miro Hrončok <mhroncok@redhat.com> - 2.16.6-2
+- Fix build with Python 3.13
 
-* Sat Nov 05 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 2.14.0rc2-0.1
-- Update to 2.14.0rc2
+* Tue Apr 16 2024 Maxwell G <maxwell@gtmx.me> - 2.16.6-1
+- Update to 2.16.6. Fixes rhbz#2261507.
 
-* Fri Oct 14 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 2.13.5-0.2
-- Split away ansible-test
+* Fri Mar 29 2024 Maxwell G <maxwell@gtmx.me> - 2.16.5-1
+- Update to 2.16.5. Fixes rhbz#2261507.
 
-* Tue Oct 11 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 2.13.5-0.1
-- Update
+* Fri Mar 29 2024 Maxwell G <maxwell@gtmx.me> - 2.16.5-1
+- Update to 2.16.5.
 
-* Mon Sep 12 2022 Nico Kadel-Garcia <nkadel@gmail.com> - 2.13.4-0.1
-- Update resolvelib dependencies
+* Sat Mar 02 2024 Maxwell G <maxwell@gtmx.me> - 2.16.4-1
+- Update to 2.16.4. Fixes rhbz#2261507.
 
-* Mon Aug 15 2022 James Marshall <jamarsha@redhat.com> - 2.13.3-1
-- ansible-core 2.13.3 release (rhbz#2118475)
+* Thu Feb 01 2024 Maxwell G <maxwell@gtmx.me> - 2.16.3-1
+- Update to 2.16.3. Fixes rhbz#2261507.
 
-* Wed Jul 20 2022 James Marshall <jamarsha@redhat.com> - 2.13.2-1
-- ansible-core 2.13.2 release (rhbz#2109192)
+* Mon Jan 22 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.16.2-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
 
-* Mon Jul 04 2022 Dimitri Savineau <dsavinea@redhat.com> - 2.13.1-1
-- ansible-core 2.13.1 release (rhbz#2103699)
-- add bundled version of jinja2, markupsafe and resolvelib
-- rebuild with python 3.9
+* Fri Jan 19 2024 Fedora Release Engineering <releng@fedoraproject.org> - 2.16.2-3
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_40_Mass_Rebuild
 
-* Mon Jun 20 2022 Dimitri Savineau <dsavinea@redhat.com> - 2.12.7-1
-- ansible-core 2.12.7 release (rhbz#2099323)
+* Thu Jan 18 2024 Maxwell G <maxwell@gtmx.me> - 2.16.2-2
+- Mitigate CVE-2024-0690.
 
-* Thu Jun 09 2022 Dimitri Savineau <dsavinea@redhat.com> - 2.12.6-3
-- Build manpages (rhbz#2032809)
-- Remove legacy files
+* Mon Dec 11 2023 Maxwell G <maxwell@gtmx.me> - 2.16.2-1
+- Update to 2.16.2. Fixes rhbz#2254093.
 
-* Tue Jun 07 2022 Dimitri Savineau <dsavinea@redhat.com> - 2.12.6-2
-- switch from git to git-core dependency (rhbz#2094549)
+* Wed Dec 06 2023 Maxwell G <maxwell@gtmx.me> - 2.16.1-1
+- Update to 2.16.1. Fixes rhbz#2252860.
 
-* Tue May 24 2022 James Marshall <jamarsha@redhat.com> - 2.12.6-1
-- ansible-core 2.12.6 release
+* Fri Nov 10 2023 Maxwell G <maxwell@gtmx.me> - 2.16.0-1
+- Update to 2.16.0. Fixes rhbz#2248187.
 
-* Mon May 09 2022 Dimitri Savineau <dsavinea@redhat.com> - 2.12.5-1
-- ansible-core 2.12.5 release
+* Thu Oct 19 2023 Maxwell G <maxwell@gtmx.me> - 2.16.0~rc1-1
+- Update to 2.16.0~rc1.
 
-* Mon Apr 11 2022 James Marshall <jamarsha@redhat.com> - 2.12.4-1
-- ansible-core 2.12.4 release
+* Tue Oct 03 2023 Maxwell G <maxwell@gtmx.me> - 2.16.0~b2-1
+- Update to 2.16.0~b2.
 
-* Mon Mar 14 2022 Dimitri Savineau <dsavinea@redhat.com> - 2.12.3-1
-- ansible-core 2.12.3 release
-- re-enable changelog and manpages
+* Mon Oct 02 2023 Miro Hrončok <mhroncok@redhat.com> - 2.16.0~b1-2
+- Do not use tomcli in Fedora ELN, avoid pulling unwanted dependencies
 
-* Mon Mar 07 2022 Dimitri Savineau <dsavinea@redhat.com> - 2.12.2-3
-- replace Obsolete to Conflicts
+* Wed Sep 27 2023 Maxwell G <maxwell@gtmx.me> - 2.16.0~b1-1
+- Update to 2.16.0~b1.
 
-* Wed Feb 02 2022 Dimitri Savineau <dsavinea@redhat.com> - 2.12.2-2
-- fix ansible tarball setup
+* Tue Sep 26 2023 Kevin Fenzi <kevin@scrye.com> - 2.15.4-2
+- Add patch to fix readfp with python-3.12. Fixes rhbz#2239728
 
-* Wed Feb 02 2022 Dimitri Savineau <dsavinea@redhat.com> - 2.12.2-1
-- ansible-core 2.12.2 release
-- add gating and test files
+* Mon Sep 11 2023 Maxwell G <maxwell@gtmx.me> - 2.15.4-1
+- Update to 2.15.4. Fixes rhbz#2238445.
 
-* Wed Jan 19 2022 Dimitri Savineau <dsavinea@redhat.com> - 2.12.1-2
-- Remove Provides on ansible
+* Thu Aug 17 2023 Maxwell G <maxwell@gtmx.me> - 2.15.3-1
+- Update to 2.15.3. Fixes rhbz#2231963.
 
-* Thu Dec 16 2021 Yanis Guenane <yguenane@redhat.com> - 2.12.1-1
-- ansible-core 2.12.1-1
+* Wed Jul 19 2023 Fedora Release Engineering <releng@fedoraproject.org> - 2.15.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_39_Mass_Rebuild
 
-* Wed Jul 21 2021 Paul Belanger <pabelanger@redhat.com> - 2.11.3-2
-- Add git dependency for ansible-galaxy CLI command.
+* Tue Jul 18 2023 Maxwell G <maxwell@gtmx.me> - 2.15.2-1
+- Update to 2.15.2. Fixes rhbz#2223469.
+- Use the docs sources from https://github.com/ansible/ansible-documentation.
 
-* Tue Jul 20 2021 Yanis Guenane <yguenane@redhat.com> - 2.11.3-1
-- ansible-core 2.11.3-1
+* Mon Jul 03 2023 Maxwell G <maxwell@gtmx.me> - 2.15.1-2
+- Rebuilt for Python 3.12
 
-* Fri Jul 02 2021 Satoe Imaishi <simaishi@redhat.com> - 2.11.2-2
-- Add man pages
+* Thu Jun 22 2023 Maxwell G <maxwell@gtmx.me> - 2.15.1-1
+- Update to 2.15.1. Fixes rhbz#2204492.
+- Add Recommends on python3-libdnf5 for Fedora 39
 
-* Tue Jun 29 2021 Paul Belanger <pabelanger@redhat.com> - 2.11.2-1
-- ansible-core 2.11.2 released.
-- Drop bundled version of resolvelib in favor of
-  python38-resolvelib.
+* Sat Jun 17 2023 Maxwell G <maxwell@gtmx.me> - 2.15.0-5
+- Add patch to avoid importlib.abc.TraversableResources DeprecationWarning
 
-* Wed Mar 31 2021 Rick Elrod <relrod@redhat.com> - 2.11.0b4-1
-- ansible-core 2.11.0 beta 4
+* Fri Jun 16 2023 Python Maint <python-maint@redhat.com> - 2.15.0-4
+- Rebuilt for Python 3.12
 
-* Thu Mar 18 2021 Rick Elrod <relrod@redhat.com> - 2.11.0b2-3
-- Try adding a Provides for old ansible.
+* Tue Jun 13 2023 Maxwell G <maxwell@gtmx.me> - 2.15.0-3
+- Add support for Python 3.12. Fixes rhbz#2196539.
+- Remove conditional Requires on ansible-packaging.
 
-* Thu Mar 18 2021 Rick Elrod <relrod@redhat.com> - 2.11.0b2-2
-- Try Obsoletes instead of Conflicts.
+* Tue May 23 2023 Yaakov Selkowitz <yselkowi@redhat.com> - 2.15.0-2
+- Disable tests in RHEL builds
 
-* Thu Mar 18 2021 Rick Elrod <relrod@redhat.com> - 2.11.0b2-1
-- ansible-core 2.11.0 beta 2
-- Conflict with old ansible and ansible-base.
+* Tue May 16 2023 Maxwell G <maxwell@gtmx.me> - 2.15.0-1
+- Update to 2.15.0.
+- Don't remove dotfiles and empty files. ansible-core actually needs these.
 
-* Thu Mar 11 2021 Rick Elrod <relrod@redhat.com> - 2.11.0b1-1
-- ansible-core 2.11.0 beta 1
+* Wed May 03 2023 Maxwell G <maxwell@gtmx.me> - 2.15.0~rc2-1
+- Update to 2.15.0~rc2.
 
-* Mon Nov 30 2020 Rick Elrod <relrod@redhat.com> - 2.11.0-1
-- ansible-core, beta
+* Thu Apr 27 2023 Maxwell G <maxwell@gtmx.me> - 2.15.0~rc1-1
+- Update to 2.15.0~rc1.
 
-* Wed Jun 10 2020 Rick Elrod <relrod@redhat.com> - 2.10.0-1
-- ansible-base, beta
+* Mon Apr 24 2023 Maxwell G <maxwell@gtmx.me> - 2.15.0~b3-1
+- Update to 2.15.0~b3.
+- Account for the removed Makefile
+
+* Mon Apr 24 2023 Maxwell G <maxwell@gtmx.me> - 2.14.4-2
+- Add gating
+
+* Wed Mar 29 2023 Maxwell G <maxwell@gtmx.me> - 2.14.4-1
+- Update to 2.14.4. Fixes rhbz#2173765.
+
+* Wed Mar 01 2023 Maxwell G <maxwell@gtmx.me> - 2.14.3-1
+- Update to 2.14.3.
+
+* Tue Jan 31 2023 David Moreau-Simard <moi@dmsimard.com> - 2.14.2-1
+- Update to 2.14.2. Fixes rhbz#2165629.
+
+* Wed Jan 18 2023 Fedora Release Engineering <releng@fedoraproject.org> - 2.14.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_38_Mass_Rebuild
+
+* Fri Dec 09 2022 Maxwell G <gotmax@e.email> - 2.14.1-1
+- Update to 2.14.1.
+
+* Mon Nov 07 2022 Maxwell G <gotmax@e.email> - 2.14.0-1
+- Update to 2.14.0.
+
+* Wed Nov 02 2022 Maxwell G <gotmax@e.email> - 2.14.0~rc2-1
+- Update to 2.14.0~rc2.
+
+* Fri Oct 28 2022 Maxwell G <gotmax@e.email> - 2.14.0~rc1-1
+- Update to 2.14.0~rc1.
+
+* Wed Oct 12 2022 Maxwell G <gotmax@e.email> - 2.13.5-1
+- Update to 2.13.5.
+
+* Tue Sep 13 2022 Maxwell G <gotmax@e.email> - 2.13.4-1
+- Update to 2.13.4.
+
+* Wed Aug 31 2022 Maxwell G <gotmax@e.email> - 2.13.3-2
+- Remove weak deps on paramiko and winrm
+
+* Mon Aug 15 2022 Maxwell G <gotmax@e.email> - 2.13.3-1
+- Update to 2.13.3.
+
+* Wed Jul 20 2022 Fedora Release Engineering <releng@fedoraproject.org> - 2.13.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_37_Mass_Rebuild
+
+* Tue Jul 19 2022 Maxwell G <gotmax@e.email> - 2.13.2-1
+- Update to 2.13.2. Fixes rhbz#2108195.
+
+* Thu Jul 07 2022 Miro Hrončok <mhroncok@redhat.com> - 2.13.1-2
+- Don't put -- into Python shebangs
+
+* Wed Jun 22 2022 Maxwell G <gotmax@e.email> - 2.13.1-1
+- Update to 2.13.1 (rhbz#2096312).
+
+* Thu Jun 16 2022 Maxwell G <gotmax@e.email> - 2.13.0-1
+- Update to 2.13.0.
+- Re-enable tests that work with newer pytest
+- Patch out python3-mock
+- Manually build manpages to workaround upstream issue.
+- Remove unneeded BRs and switch to pyproject-rpm-macros.
+- Make ansible-base* Obsoletes/Provides compliant with Packaging Guidelines
+- Remove python3-jmespath dependency. json_query is part of community.general.
+- Correct licensing
+- Generate shell completions
+
+* Thu Jun 16 2022 Python Maint <python-maint@redhat.com> - 2.12.6-2
+- Rebuilt for Python 3.11
+
+* Tue May 24 2022 Maxwell G <gotmax@e.email> - 2.12.6-1
+- Update to 2.12.6.
+
+* Wed Apr 27 2022 Maxwell G <gotmax@e.email> - 2.12.5-1
+- Update to 2.12.5. Fixes rhbz#2078558.
+
+* Sat Apr 02 2022 Maxwell G <gotmax@e.email> - 2.12.4-1
+- Update to 2.12.4. Fixes rhbz#2069384.
+
+* Thu Mar 10 2022 Maxwell G <gotmax@e.email> - 2.12.3-2
+- Add patch to fix failing tests and FTBFS with Pytest 7.
+- Resolves: rhbz#2059937
+
+* Tue Mar 01 2022 Kevin Fenzi <kevin@scrye.com> - 2.12.3-1
+- Update to 2.12.3. Fixes rhbz#2059284
+
+* Mon Jan 31 2022 Kevin Fenzi <kevin@scrye.com> - 2.12.2-1
+- Update to 2.12.2. Fixes rhbz#2048795
+
+* Wed Jan 19 2022 Fedora Release Engineering <releng@fedoraproject.org> - 2.12.1-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_36_Mass_Rebuild
+
+* Thu Jan 13 2022 Neal Gompa <ngompa@fedoraproject.org> - 2.12.1-3
+- Split out packaging macros and generators to ansible-packaging
+
+* Wed Dec 08 2021 Kevin Fenzi <kevin@scrye.com> - 2.12.1-2
+- Re-enable tests
+
+* Tue Dec 07 2021 Kevin Fenzi <kevin@scrye.com> - 2.12.1-1
+- Update to 2.12.1. Fixes rhbz#2029598
+
+* Mon Nov 08 2021 Kevin Fenzi <kevin@scrye.com> - 2.12.0-1
+- Update to 2.12.0. Fixes rhbz#2022533
+
+* Thu Oct 14 2021 Maxwell G <gotmax@e.email> - 2.11.6-1
+- Update to 2.11.6.
+
+* Tue Sep 14 2021 Kevin Fenzi <kevin@scrye.com> - 2.11.5-1
+- Update to 2.11.5. Fixes rhbz#2002393
+
+* Thu Aug 19 2021 Kevin Fenzi <kevin@scrye.com> - 2.11.4-1
+- Update to 2.11.4. Fixes rhbz#1994107
+
+* Sun Jul 25 2021 Kevin Fenzi <kevin@scrye.com> - 2.11.3-1
+- Update to 2.11.3. Fixes rhbz#1983836
+
+* Wed Jul 21 2021 Fedora Release Engineering <releng@fedoraproject.org> - 2.11.2-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_35_Mass_Rebuild
+
+* Tue Jun 22 2021 Kevin Fenzi <kevin@scrye.com> - 2.11.2-1
+- Update to 2.11.2. Fixed rhbz#1974593
+
+* Fri Jun 04 2021 Python Maint <python-maint@redhat.com> - 2.11.1-2
+- Rebuilt for Python 3.10
+
+* Mon May 24 2021 Kevin Fenzi <kevin@scrye.com> - 2.11.1-1
+- Update to 2.11.1. Fixes rhbz#1964172
+
+* Tue Apr 27 2021 Kevin Fenzi <kevin@scrye.com> - 2.11.0-1
+- Update to 2.11.0 final.
+
+* Sat Apr 24 2021 Kevin Fenzi <kevin@scrye.com> - 2.11.0-0.3.rc2
+- Update to 2.11.0rc2.
+
+* Sat Apr 03 2021 Kevin Fenzi <kevin@scrye.com> - 2.11.0-0.1.b4
+- Rename to ansible-base, update to b4 beta version.
+
+* Sat Feb 20 2021 Kevin Fenzi <kevin@scrye.com> - 2.10.6-1
+- Update to 2.10.6.
+- Fixes CVE-2021-20228
+
+* Tue Jan 26 2021 Fedora Release Engineering <releng@fedoraproject.org> - 2.10.5-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
+
+* Sun Jan 24 2021 Kevin Fenzi <kevin@scrye.com> - 2.10.5-1
+- Update to 2.10.5.
+
+* Sat Dec 19 2020 Kevin Fenzi <kevin@scrye.com> - 2.10.4-1
+- Update to 2.10.4
+
+* Sat Nov 07 2020 Kevin Fenzi <kevin@scrye.com> - 2.10.3-2
+- Various review fixes
+
+* Tue Nov 03 2020 Kevin Fenzi <kevin@scrye.com> - 2.10.3-1
+- Update to 2.10.3
+
+* Sat Oct 10 2020 Kevin Fenzi <kevin@scrye.com> - 2.10.2-1
+- Update to 2.10.2
+
+* Sat Sep 26 2020 Kevin Fenzi <kevin@scrye.com> - 2.10.1-1
+- Initial version for review.
+
