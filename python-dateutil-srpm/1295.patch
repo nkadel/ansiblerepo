@@ -1,0 +1,57 @@
+From a97d0ff4b7559a431f42102b6208fb876f511194 Mon Sep 17 00:00:00 2001
+From: Petr Viktorin <encukou@gmail.com>
+Date: Tue, 27 Jun 2023 15:28:36 +0200
+Subject: [PATCH 1/2] zoneinfo.rebuild: Extract using tarfile data filter (PEP
+ 706) if available
+
+---
+ src/dateutil/zoneinfo/rebuild.py | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/src/dateutil/zoneinfo/rebuild.py b/src/dateutil/zoneinfo/rebuild.py
+index 684c6586f..1b6e34b15 100644
+--- a/dateutil/zoneinfo/rebuild.py
++++ b/dateutil/zoneinfo/rebuild.py
+@@ -4,6 +4,7 @@
+ import shutil
+ import json
+ from subprocess import check_call
++import tarfile
+ from tarfile import TarFile
+ 
+ from dateutil.zoneinfo import METADATA_FN, ZONEFILENAME
+@@ -20,6 +21,13 @@ def rebuild(filename, tag=None, format="gz", zonegroups=[], metadata=None):
+     moduledir = os.path.dirname(__file__)
+     try:
+         with TarFile.open(filename) as tf:
++
++            # Limit extraction to safe, plain data files, if this Python
++            # allows it easily. If not, just trust the input.
++            # See: https://docs.python.org/3/library/tarfile.html#supporting-older-python-versions
++            tf.extraction_filter = getattr(tarfile, 'data_filter',
++                                           (lambda member, path: member))
++
+             for name in zonegroups:
+                 tf.extract(name, tmpdir)
+             filepaths = [os.path.join(tmpdir, n) for n in zonegroups]
+
+From 4790f9d64451002fd3c31c2fbe0d70322019a92a Mon Sep 17 00:00:00 2001
+From: Petr Viktorin <encukou@gmail.com>
+Date: Tue, 27 Jun 2023 16:12:14 +0200
+Subject: [PATCH 2/2] Add changelog entry
+
+---
+ changelog.d/1295.misc.rst | 4 ++++
+ 1 file changed, 4 insertions(+)
+ create mode 100644 changelog.d/1295.misc.rst
+
+diff --git a/changelog.d/1295.misc.rst b/changelog.d/1295.misc.rst
+new file mode 100644
+index 000000000..c2876dd65
+--- /dev/null
++++ b/changelog.d/1295.misc.rst
+@@ -0,0 +1,4 @@
++On Python versions that support it, ``zoneinfo.rebuild`` now uses the
++tarfile ``data`` filter to limit damage in case it's used with a
++malicious tarball, and to avoid a deprecation warning on Python 3.12.
++Reported and fixed by @encukou (gh pr #1295)
