@@ -1,0 +1,29 @@
+From 434141ae48b911d3b56675a34f38f9ffbb49b641 Mon Sep 17 00:00:00 2001
+From: "Benjamin A. Beasley" <code@musicinmybrain.net>
+Date: Mon, 24 Jul 2023 11:30:02 -0400
+Subject: [PATCH] Downstream-only: loosen dependency versions for EPEL9
+
+See discussion in https://bugzilla.redhat.com/show_bug.cgi?id=2158497.
+---
+ backend/pyproject.toml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/backend/pyproject.toml b/backend/pyproject.toml
+index 8e4e5ffc..2655b7d6 100644
+--- a/backend/pyproject.toml
++++ b/backend/pyproject.toml
+@@ -35,9 +35,9 @@ classifiers = [
+ ]
+ dependencies = [
+   "editables>=0.3",
+-  "packaging>=21.3",
++  "packaging>=20.9",
+   "pathspec>=0.10.1",
+-  "pluggy>=1.0.0",
++  "pluggy>=0.13.1",
+   "tomli>=1.2.2; python_version < '3.11'",
+   "trove-classifiers",
+ ]
+-- 
+2.41.0
+
