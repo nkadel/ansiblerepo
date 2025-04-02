@@ -37,13 +37,18 @@ It also handles file finders for the supported SCMs.
 %package -n python%{python3_pkgversion}-setuptools_scm
 Summary:        %{summary}
 
+# Added for RHEL 9
+# Force python38 for RHEL 8, which has python 3.6 by default
+%if 0%{?el8} || 0%{?el9}
+Provides: python%{python3_pkgversion}-setuptools-scm
+Provides: python%{python3_pkgversion}setuptools-scm
+%endif
+
 %description -n python%{python3_pkgversion}-setuptools_scm
 Setuptools_scm handles managing your Python package versions in SCM metadata.
 It also handles file finders for the supported SCMs.
 
-
 %pyproject_extras_subpkg -n python%{python3_pkgversion}-setuptools_scm toml
-
 
 %prep
 %autosetup -p1 -n setuptools_scm-%{version}
