@@ -10,15 +10,51 @@ ANSIBLEPKGS+=ansible-freeipa-srpm
 ANSIBLEPKGS+=ansible-packaging-srpm
 ANSIBLEPKGS+=babel-srpm
 ANSIBLEPKGS+=python-coverage-srpm
+ANSIBLEPKGS+=python-d2toi-srpm
+ANSIBLEPKGS+=python-docutils-srpm
+ANSIBLEPKGS+=python-distutils-extra-srpm
 ANSIBLEPKGS+=python-gast-srpm
 ANSIBLEPKGS+=python-jmespath-srpm
 ANSIBLEPKGS+=python-markupsafe-srpm
+ANSIBLEPKGS+=python-pbr-srpm
 ANSIBLEPKGS+=python-psutil-srpm
+ANSIBLEPKGS+=python-pygments-srpm
+ANSIBLEPKGS+=python-pytest-xdist-srpm
 ANSIBLEPKGS+=python-pytz-srpm
+
+# Requires pytest
+ANSIBLEPKGS+=python-editable-srpm
+
+# Requires editables and pathspec and trove-classifiers
+ANSIBLEPKGS+=python-hatchling-srpm
+
+# Requires hatchling
+ANSIBLEPKGS+=python-attr-srpm
+
+# Requires sphinx
+ANSIBLEPKGS+=python-dateutil-srpm
+
+# Requires pytest-xdist, filelock, py
+ANSIBLEPKGS+=python-tox-srpm
+
+# Requires tox
+ANSIBLEPKGS+=python-tox-current-env-srpm
+
+# Requires tox-current-env
+ANSIBLEPKGS+=python-pep517-srpm
+
+# Requires distutils and pexpect
+ANSIBLEPKGS+=python-argcomplete-srpm
+ANSIBLEPKGS+=python-ptyprocess-srpm
+# Requires ptyprocess
+ANSIBLEPKGS+=python-pexpect-srpm
 
 # RHEL 8 and 9 lack this with python
 ANSIBLEPKGS+=python-setuptools_scm-srpm
 ANSIBLEPKGS+=python-toml-srpm
+
+# Requires setuptools_scm
+ANSIBLEPKGS+=python-apipo-srpm
 
 # Remaining packages require ansiblerepo
 #ANSIBLEPKGS+=ansible-openstack-modules-srpm
@@ -44,10 +80,13 @@ ANSIBLEPKGS+=python-jinja2-srpm
 # Incompatible with RHEL
 ##ANSIBLEPKGS+=ansible-lint-srpm
 
-# Requires six and unittest2
+# Requires six and unittest2 and pbr
 ANSIBLEPKGS+=python-mock-srpm
 
-# Requires jinj2 and mock
+# Reuires requests-mock
+ANSIBLEPKGS+=python-py-srpm
+
+# Requires jinj2 and mock and docutils and argcomplete
 ANSIBLEPKGS+=ansible-core-srpm
 
 # Restrict to latest version
@@ -83,26 +122,23 @@ ANSIBLEPKGS+=ansible-collection-microsoft-sql-srpm
 # Has built-in ansible bundle reuirement
 ANSIBLEPKGS+=ansible-inventory-grapher-srpm
 
-REPOS+=ansiblerepo/el/8
 REPOS+=ansiblerepo/el/9
 REPOS+=ansiblerepo/el/10
-REPOS+=ansiblerepo/fedora/40
+REPOS+=ansiblerepo/fedora/41
 REPOS+=ansiblerepo/amazon/2023
 
 REPODIRS := $(patsubst %,%/x86_64/repodata,$(REPOS)) $(patsubst %,%/SRPMS/repodata,$(REPOS))
 
-CFGS+=ansiblerepo-8-x86_64.cfg
 CFGS+=ansiblerepo-9-x86_64.cfg
 CFGS+=ansiblerepo-10-x86_64.cfg
-CFGS+=ansiblerepo-f40-x86_64.cfg
+CFGS+=ansiblerepo-f41-x86_64.cfg
 # Amazon 2 023config
 CFGS+=ansiblerepo-amz2023-x86_64.cfg
 
 # /etc/mock version lacks python modules
-MOCKCFGS+=centos-stream+epel-8-x86_64.cfg
 MOCKCFGS+=centos-stream+epel-9-x86_64.cfg
 MOCKCFGS+=centos-stream+epel-10-x86_64.cfg
-MOCKCFGS+=fedora-40-x86_64.cfg
+MOCKCFGS+=fedora-41-x86_64.cfg
 MOCKCFGS+=amazonlinux-2023-x86_64.cfg
 
 all:: install
@@ -155,29 +191,6 @@ $(MOCKCFGS)::
 	@echo "config_opts['dnf_vars'] = { 'best': 'False' }" | tee -a $@
 
 # packages-microsoft-com-prod added for /bin/pwsh
-ansiblerepo-8-x86_64.cfg: ./centos-stream+epel-8-x86_64.cfg
-	@echo Generating $@ from $?
-	@echo "include('$?')" | tee $@
-	@echo "config_opts['dnf_vars'] = { 'best': 'False' }" | tee -a $@
-	@echo "config_opts['root'] = 'ansiblerepo-{{ releasever }}-{{ target_arch }}'" | tee -a $@
-	@echo "config_opts['dnf.conf'] += \"\"\"" | tee -a $@
-	@echo '[ansiblerepo]' | tee -a $@
-	@echo 'name=ansiblerepo' | tee -a $@
-	@echo 'enabled=1' | tee -a $@
-	@echo 'baseurl=$(REPOBASE)/ansiblerepo/el/8/x86_64/' | tee -a $@
-	@echo 'skip_if_unavailable=False' | tee -a $@
-	@echo 'metadata_expire=1s' | tee -a $@
-	@echo 'gpgcheck=0' | tee -a $@
-	@echo '' | tee -a $@
-	@echo '[packages-microsoft-com-prod]' | tee -a $@
-	@echo 'name=packages-microsoft-com-prod' | tee -a $@
-	@echo 'baseurl=https://packages.microsoft.com/rhel/8/prod/' | tee -a $@
-	@echo 'enabled=0' | tee -a $@
-	@echo 'gpgcheck=1' | tee -a $@
-	@echo 'gpgkey=https://packages.microsoft.com/keys/microsoft.asc' | tee -a $@
-	@echo '"""' | tee -a $@
-
-# packages-microsoft-com-prod added for /bin/pwsh
 ansiblerepo-9-x86_64.cfg: centos-stream+epel-9-x86_64.cfg
 	@echo Generating $@ from $?
 	@echo "include('$?')" | tee $@
@@ -223,7 +236,7 @@ ansiblerepo-10-x86_64.cfg: centos-stream+epel-10-x86_64.cfg
 	@echo 'gpgkey=https://packages.microsoft.com/keys/microsoft.asc' | tee -a $@
 	@echo '"""' | tee -a $@
 
-ansiblerepo-f40-x86_64.cfg: ./fedora-40-x86_64.cfg
+ansiblerepo-f41-x86_64.cfg: ./fedora-41-x86_64.cfg
 	@echo Generating $@ from $?
 	@echo "include('$?')" | tee $@
 	@echo "config_opts['dnf_vars'] = { 'best': 'False' }" | tee -a $@
@@ -232,7 +245,7 @@ ansiblerepo-f40-x86_64.cfg: ./fedora-40-x86_64.cfg
 	@echo '[ansiblerepo]' | tee -a $@
 	@echo 'name=ansiblerepo' | tee -a $@
 	@echo 'enabled=1' | tee -a $@
-	@echo 'baseurl=$(REPOBASE)/ansiblerepo/fedora/40/x86_64/' | tee -a $@
+	@echo 'baseurl=$(REPOBASE)/ansiblerepo/fedora/41/x86_64/' | tee -a $@
 	@echo 'skip_if_unavailable=False' | tee -a $@
 	@echo 'metadata_expire=1s' | tee -a $@
 	@echo 'gpgcheck=0' | tee -a $@
