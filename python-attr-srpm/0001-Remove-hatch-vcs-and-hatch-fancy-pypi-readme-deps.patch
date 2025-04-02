@@ -1,0 +1,98 @@
+From dea54349ce9d0bc12f5ea27d9ba1f1821cd06faa Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Ond=C5=99ej=20Budai?= <ondrej@budai.cz>
+Date: Wed, 26 Jun 2024 17:04:38 +0200
+Subject: [PATCH] Remove hatch-vcs and hatch-fancy-pypi-readme deps
+
+    These apparently have no effect on the built RPM (I checked manually),
+    so let's drop them from pyproject.toml, so we can remove them from RHEL.
+---
+ pyproject.toml | 51 +++-----------------------------------------------
+ 1 file changed, 3 insertions(+), 48 deletions(-)
+
+diff --git a/pyproject.toml b/pyproject.toml
+index 1c72fc2..d61be73 100644
+--- a/pyproject.toml
++++ b/pyproject.toml
+@@ -1,12 +1,13 @@
+ # SPDX-License-Identifier: MIT
+ 
+ [build-system]
+-requires = ["hatchling", "hatch-vcs", "hatch-fancy-pypi-readme>=23.2.0"]
++requires = ["hatchling"]
+ build-backend = "hatchling.build"
+ 
+ 
+ [project]
+ name = "attrs"
++version = "23.2.0"
+ authors = [{ name = "Hynek Schlawack", email = "hs@ox.cx" }]
+ license = "MIT"
+ requires-python = ">=3.7"
+@@ -26,7 +27,7 @@ classifiers = [
+   "Typing :: Typed",
+ ]
+ dependencies = ["importlib_metadata;python_version<'3.8'"]
+-dynamic = ["version", "readme"]
++dynamic = ["readme"]
+ 
+ [project.optional-dependencies]
+ tests-mypy = [
+@@ -69,55 +70,9 @@ GitHub = "https://github.com/python-attrs/attrs"
+ Funding = "https://github.com/sponsors/hynek"
+ Tidelift = "https://tidelift.com/subscription/pkg/pypi-attrs?utm_source=pypi-attrs&utm_medium=pypi"
+ 
+-
+-[tool.hatch.version]
+-source = "vcs"
+-raw-options = { local_scheme = "no-local-version" }
+-
+ [tool.hatch.build.targets.wheel]
+ packages = ["src/attr", "src/attrs"]
+ 
+-[tool.hatch.metadata.hooks.fancy-pypi-readme]
+-content-type = "text/markdown"
+-
+-# PyPI doesn't support the <picture> tag.
+-[[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
+-text = """<p align="center">
+-  <a href="https://www.attrs.org/">
+-    <img src="https://raw.githubusercontent.com/python-attrs/attrs/main/docs/_static/attrs_logo.svg" width="35%" alt="attrs" />
+-  </a>
+-</p>
+-"""
+-
+-[[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
+-path = "README.md"
+-start-after = "<!-- teaser-begin -->"
+-
+-[[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
+-text = """
+-
+-## Release Information
+-
+-"""
+-
+-[[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
+-path = "CHANGELOG.md"
+-pattern = "\n(###.+?\n)## "
+-
+-[[tool.hatch.metadata.hooks.fancy-pypi-readme.fragments]]
+-text = """
+-
+----
+-
+-[Full changelog](https://www.attrs.org/en/stable/changelog.html)
+-"""
+-
+-# Point sponsor image URLs to versions.
+-[[tool.hatch.metadata.hooks.fancy-pypi-readme.substitutions]]
+-pattern = '\/latest\/_static/sponsors'
+-replacement = '/$HFPR_VERSION/_static/sponsors'
+-
+-
+ [tool.pytest.ini_options]
+ addopts = ["-ra", "--strict-markers", "--strict-config"]
+ xfail_strict = true
+-- 
+2.45.2
+
